@@ -1,0 +1,21 @@
+package com.project.util;
+/**
+ * 支付参数
+ * @author Administrator
+ *
+ */
+public class PayParameter {
+	
+	/**************支付宝********************/
+
+	public static final String ALI_APP_ID = "2018101561660544";
+	public static final String ALI_APP_PRIVATE_KEY = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDfMR5OMI+Zuh7nk6Wv/u9+uBq9Hl+uSZWCpXB++u8F8LHToX9GjSyQ99aeyjaIr5/++vH2DWazxla0PoPKpzDgDWcx6n4i/8zUQaLLqlCl3091X6fx0oyPAF0zx5gICKvYYIow0QBJF5A3v1nJaq7Kq1gGr2KjVzN3x5cXo1OIshiriSvohENMLJw4DhgyW/CMe3U8y8Q+517KtfUwWe0ZwUrpkVWcmcy+U02S+X5d7OpfSY6JveFEvKz8aalxGdB0CFGTLEsEO9QcqHRcchk0kMnSoYUDCjwdsaTMm7BG69acZDExrhCr1DjvDJ9zuaTHr51xDiIZzQzHxB1gbQovAgMBAAECggEAMpYpbkNnaMpcktROK3O2yJvlw5OM0C3xaykgNEefwVLqmzLxbAY3YawqwtbGQXi85Mfv63riGkEMCdJZgKcgVsfy6cdiS4B65mjyAwNZQB87HTlPEWpNXWQRu9izRq7gdCx9Zc8ZJ3flwhzmttYtQ9ZOH0XFL4xmJ/He9waXulVm0kdrxNZNVKS0s2aLUc6dZqOj8Q9sCt2lg40kqaXPJ3J7UtnZd5nsim6K1T7OJt1y/bco5Z47sCN0nUvAWTiipU3bWTowG4k2jGK5JTwMgBDWtxC0WKG7rCa1jYnXDMQJL6zQ77+Uq5m+cK6wXXfP+SsAreWpuXYf+WudkGsqoQKBgQD/61vWvoVUFDw3oAPsXux4IowJO37gV3w9bmouFlARXrUy9a/0GPZu93DMKlCfipqWx64holODwaJfUY1ZpBDsUBk3lCofRO0wPiuUHvwJDsKc8j0jyaq+iTzQ6UiEYL0V5mOf0xZW7Y6sRPOhnQEKNyd2/i79mk6fSuKAmWv9qQKBgQDfQx63kW+Buq291PWL4m41a1ScxDK1m30veNv92+rkOQl+wA2zzP+RZ7KbQ5yk9T7sTbQPYGqD3pkIRMrF8XxdMik0aj++YeiKv4wehqcDbTx2S/q1X7xGgC6eqfHbGAF++97Yx3jwC7dLwJYYaVk0JAqm3TO8UFfVExGt8TdAFwKBgBnyzkQO20v0JUrqkZtE4KsprZM+EhZDKJi9+kwj/QhV1v+Mw8N3SH1l320EGVqj3hrNsk08vUUNvB34EeH17bVYRcZJ4p97CKWsmBSTs7Bja74oHaTkTMi295CjJrQtbt6qlo1dBNXZjm7PKvjHB5T2lKzPBwq1u6URHbg2VinJAoGBALoHBD4yaXXv5TqqilqfNfM+1ka1WAdoYru+eZehuaumNtotDn3FjyFKBVFH2eq9Ckv9Rs4VKUttm5d/MnISj+xbkmfBLBHnJMsPZaI90kWRrHJpRqH//jHENpQvyH0lGIIFPh7kvklNidINy0LV7OT8Lv/wil4bl8PL2sxTlBTLAoGAF0uZDuk1tS8ho556jqmELTx54/IdeeKiHFdfUQkhohQPyMUqw9yTlzjowT9jNOzkYAT0vK8VrQybvhV9hHW9uMs15cysaFbYoSgwKL34UZcPID0VEsBDXaLRazx1uaync9c+E6yui//hgp9ZzGI/hZb1AWqlNgaw5raTiG+K88M=";
+	//应用公钥
+    public static String  Ali_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3zEeTjCPmboe55Olr/7vfrgavR5frkmVgqVwfvrvBfCx06F/Ro0skPfWnso2iK+f/vrx9g1ms8ZWtD6Dyqcw4A1nMep+Iv/M1EGiy6pQpd9PdV+n8dKMjwBdM8eYCAir2GCKMNEASReQN79ZyWquyqtYBq9io1czd8eXF6NTiLIYq4kr6IRDTCycOA4YMlvwjHt1PMvEPudeyrX1MFntGcFK6ZFVnJnMvlNNkvl+XezqX0mOib3hRLys/GmpcRnQdAhRkyxLBDvUHKh0XHIZNJDJ0qGFAwo8HbGkzJuwRuvWnGQxMa4Qq9Q47wyfc7mkx6+dcQ4iGc0Mx8QdYG0KLwIDAQAB";
+    // 支付宝公钥 
+    public static String ALI_ALIPAY_PUBLIC_KEY ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA03Qenf6gILTucNgToEWBG5BS8PcfiG8ZwmpcC8Jd+BqiVQ0iRdjt41pA/GNzSN6A45XAMh2qGRObFfYSoLSirCoGl4eBwvh0mBRF63RS7Z2QjsY3SVRjbQApyPS9og3TEAVMu9hCacI3h6yAL5POuJlNINj/SXstAtvKaUDtC5MiwEUVMdUxqPOskvX+CLTqml2T1LJD7YlUhwVgCNu/7eSWZ6/8tjssm0PEEdMakvqtGVEmoahsmfmU269SKqTy2F6CLI/C7WQGVvWjWfgegyaNIDyH3/NWOQWTFDYS4ETp6Y5jZHXeqERM5wLkMr4nD9dZWfCbtdyWfkIuRrYI/QIDAQAB";
+    /**********************微信支付参数*********/
+	public static final String WEI_APPID = "wx70baae3747a1e3b3";
+	public static final String WEI_MCHID = "1516925241";
+	public static final String WEI_KEY = "Y3YusYNuXI2c0CWofZPWi07qZVIjx3LF";
+}
