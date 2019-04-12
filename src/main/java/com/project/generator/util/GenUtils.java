@@ -70,6 +70,7 @@ public class GenUtils {
         VelocityContext velocityContext = new VelocityContext();
         String packageName = Global.getPackageName();
         velocityContext.put("tableName", table.getTableName());
+        velocityContext.put("aliasName", table.getAliasName());
         velocityContext.put("tableComment", replaceKeyword(table.getTableComment()));
         velocityContext.put("primaryKey", table.getPrimaryKey());
         velocityContext.put("className", table.getClassName());

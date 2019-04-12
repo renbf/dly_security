@@ -101,6 +101,20 @@ public class GenServiceImpl implements IGenService
     {
         // 表名转换成Java属性名
         String className = GenUtils.tableToJava(table.getTableName());
+        String[] aliasNames = table.getTableName().split("_");
+        String aliasName = "";
+        if(aliasNames != null && aliasNames.length > 0) {
+        	for(int i=0;i<aliasNames.length;i++) {
+            	if(i > 0) {
+            		aliasName +=aliasNames[i].substring(0,1);
+            	}
+            }
+        }
+        if(StringUtils.isEmpty(aliasName)) {
+        	aliasName = table.getTableName().substring(0,1);
+        }
+        
+        table.setAliasName(aliasName);
         table.setClassName(className);
         table.setClassname(StringUtils.uncapitalize(className));
         // 列信息

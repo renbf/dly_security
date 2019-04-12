@@ -1,6 +1,5 @@
 package com.project.system.controller.system;
 
-import com.github.pagehelper.PageInfo;
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -22,7 +21,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 用户信息
@@ -32,6 +30,7 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/system/user")
 public class UserController extends BaseController {
+    private String prefix = "system/user";
 
     @Autowired
     private ISysUserService userService;
@@ -45,23 +44,23 @@ public class UserController extends BaseController {
     @Autowired
     private PasswordService passwordService;
 
-    @GetMapping("/list")
+    @RequiresPermissions("system:user:view")
+    @GetMapping()
+    public String user() {
+        return prefix + "/user";
+    }
+
+    @RequiresPermissions("system:user:list")
+    @PostMapping("/list")
     @ResponseBody
-    public AjaxResult list(SysUser user) {
+    public TableDataInfo list(SysUser user) {
         startPage();
         List<SysUser> list = userService.selectUserList(user);
-        AjaxResult ajaxResult= AjaxResult.success();
-        ajaxResult.put("data",new PageInfo(list));
-        return ajaxResult;
+        return getDataTable(list);
     }
-    @GetMapping("/detail")
-    @ResponseBody
-    public AjaxResult detail( String userId) {
-        AjaxResult ajaxResult= AjaxResult.success();
-        ajaxResult.put("data",userService.selectUserById(Long.valueOf(userId)));
-        return ajaxResult;
-    }
+
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("system:user:export")
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysUser user) {
@@ -69,36 +68,70 @@ public class UserController extends BaseController {
         ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
         return util.exportExcel(list, "user");
     }
+    /**
+     * 新增用户
+     */
+    @GetMapping("/add")
+    public String add(ModelMap mmap) {
+        mmap.put("roles", roleService.selectRoleAll());
+        mmap.put("posts", postService.selectPostAll());
+        return prefix + "/add";
+    }
 
     /**
      * 新增保存用户
      */
+    @RequiresPermissions("system:user:add")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
-    @PostMapping("/save")
+    @PostMapping("/add")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(SysUser user) {
         if (StringUtils.isNotNull(user.getUserId()) && SysUser.isAdmin(user.getUserId())) {
             return error("不允许修改超级管理员用户");
         }
-
-        if(Objects.isNull(user.getUserId())||user.getUserId()==0){
-            user.setPassword("123456");//初始密码
-            user.setSalt(ShiroUtils.randomSalt());
-            user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
-            user.setCreateBy(ShiroUtils.getLoginName());
-            return toAjax(userService.insertUser(user));
-        }else{
-
-            user.setUpdateBy(ShiroUtils.getLoginName());
-            return toAjax(userService.updateUser(user));
-        }
+        user.setSalt(ShiroUtils.randomSalt());
+        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
+        user.setCreateBy(ShiroUtils.getLoginName());
+        return toAjax(userService.insertUser(user));
     }
 
+    /**
+     * 修改用户
+     */
+    @GetMapping("/edit/{userId}")
+    public String edit(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put("user", userService.selectUserById(userId));
+        mmap.put("roles", roleService.selectRolesByUserId(userId));
+        mmap.put("posts", postService.selectPostsByUserId(userId));
+        return prefix + "/edit";
+    }
 
+    /**
+     * 修改保存用户
+     */
+    @RequiresPermissions("system:user:edit")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/edit")
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    public AjaxResult editSave(SysUser user) {
+        if (StringUtils.isNotNull(user.getUserId()) && SysUser.isAdmin(user.getUserId())) {
+            return error("不允许修改超级管理员用户");
+        }
+        user.setUpdateBy(ShiroUtils.getLoginName());
+        return toAjax(userService.updateUser(user));
+    }
 
+    @RequiresPermissions("system:user:resetPwd")
+    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @GetMapping("/resetPwd/{userId}")
+    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put("user", userService.selectUserById(userId));
+        return prefix + "/resetPwd";
+    }
 
-
+    @RequiresPermissions("system:user:resetPwd")
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
     @PostMapping("/resetPwd")
     @ResponseBody
@@ -108,12 +141,13 @@ public class UserController extends BaseController {
         return toAjax(userService.resetUserPwd(user));
     }
 
+    @RequiresPermissions("system:user:remove")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
-    public AjaxResult remove(Long userId) {
+    public AjaxResult remove(String ids) {
         try {
-            return toAjax(userService.deleteUserById(userId));
+            return toAjax(userService.deleteUserByIds(ids));
         } catch (Exception e) {
             return error(e.getMessage());
         }

@@ -17,7 +17,10 @@ public class TableInfo extends BaseEntity {
      * 表名称
      */
     private String tableName;
-
+    /**
+     * 表别名
+     */
+    private String aliasName;
     /**
      * 表描述
      */
@@ -98,4 +101,13 @@ public class TableInfo extends BaseEntity {
     public void setPrimaryKey(ColumnInfo primaryKey) {
         this.primaryKey = primaryKey;
     }
+
+	public String getAliasName() {
+		return aliasName;
+	}
+
+	public void setAliasName(String aliasName) {
+		this.aliasName = aliasName;
+	}
+    
 }

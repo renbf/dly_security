@@ -1,6 +1,5 @@
 package com.project.system.controller.system;
 
-import com.github.pagehelper.PageInfo;
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -18,7 +17,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 角色信息
@@ -28,28 +26,25 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/system/role")
 public class RoleController extends BaseController {
+    private String prefix = "system/role";
 
     @Autowired
     private ISysRoleService roleService;
 
-    @GetMapping("/list")
+    @RequiresPermissions("system:role:view")
+    @GetMapping()
+    public String role() {
+        return prefix + "/role";
+    }
+
+    @RequiresPermissions("system:role:list")
+    @PostMapping("/list")
     @ResponseBody
-    public AjaxResult list(SysRole role) {
+    public TableDataInfo list(SysRole role) {
         startPage();
         List<SysRole> list = roleService.selectRoleList(role);
-        AjaxResult ajaxResult=AjaxResult.success();
-        ajaxResult.put("data",new PageInfo(list));
-        return ajaxResult;
+        return getDataTable(list);
     }
-
-    @GetMapping("/detail")
-    @ResponseBody
-    public AjaxResult detail(String  roleId) {
-        AjaxResult ajaxResult=AjaxResult.success();
-        ajaxResult.put("data",roleService.selectRoleById(Long.valueOf(roleId)));
-        return ajaxResult;
-    }
-
 
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     @RequiresPermissions("system:role:export")
@@ -61,54 +56,75 @@ public class RoleController extends BaseController {
         return util.exportExcel(list, "role");
     }
 
+    /**
+     * 新增角色
+     */
+    @GetMapping("/add")
+    public String add() {
+        return prefix + "/add";
+    }
 
     /**
      * 新增保存角色
      */
+    @RequiresPermissions("system:role:add")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
-    @PostMapping("/save")
+    @PostMapping("/add")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult addSave(SysRole role) {
-        if(Objects.isNull(role.getRoleId())||role.getRoleId()==0){
-            role.setCreateBy(ShiroUtils.getUser().getUserName());
-            ShiroUtils.clearCachedAuthorizationInfo();
-            return toAjax(roleService.insertRole(role));
-        }else{
-            role.setUpdateBy(ShiroUtils.getUser().getUserName());
-            return toAjax(roleService.updateRole(role));
-        }
+        role.setCreateBy(ShiroUtils.getLoginName());
+        ShiroUtils.clearCachedAuthorizationInfo();
+        return toAjax(roleService.insertRole(role));
+
     }
 
-//
-//    /**
-//     * 修改保存角色
-//     */
-//    @RequiresPermissions("system:role:edit")
-//    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-//    @PostMapping("/edit")
-//    @Transactional(rollbackFor = Exception.class)
-//    @ResponseBody
-//    public AjaxResult editSave(SysRole role) {
-//        role.setUpdateBy(ShiroUtils.getLoginName());
-//        ShiroUtils.clearCachedAuthorizationInfo();
-//        return toAjax(roleService.updateRole(role));
-//    }
-//
-//
-//    /**
-//     * 修改保存数据权限
-//     */
-//    @RequiresPermissions("system:role:edit")
-//    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-//    @PostMapping("/rule")
-//    @Transactional(rollbackFor = Exception.class)
-//    @ResponseBody
-//    public AjaxResult ruleSave(SysRole role) {
-//        role.setUpdateBy(ShiroUtils.getLoginName());
-//        return toAjax(roleService.updateRule(role));
-//    }
+    /**
+     * 修改角色
+     */
+    @GetMapping("/edit/{roleId}")
+    public String edit(@PathVariable("roleId") Long roleId, ModelMap mmap) {
+        mmap.put("role", roleService.selectRoleById(roleId));
+        return prefix + "/edit";
+    }
 
+    /**
+     * 修改保存角色
+     */
+    @RequiresPermissions("system:role:edit")
+    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/edit")
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    public AjaxResult editSave(SysRole role) {
+        role.setUpdateBy(ShiroUtils.getLoginName());
+        ShiroUtils.clearCachedAuthorizationInfo();
+        return toAjax(roleService.updateRole(role));
+    }
+
+    /**
+     * 新增数据权限
+     */
+    @GetMapping("/rule/{roleId}")
+    public String rule(@PathVariable("roleId") Long roleId, ModelMap mmap) {
+        mmap.put("role", roleService.selectRoleById(roleId));
+        return prefix + "/rule";
+    }
+
+    /**
+     * 修改保存数据权限
+     */
+    @RequiresPermissions("system:role:edit")
+    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/rule")
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    public AjaxResult ruleSave(SysRole role) {
+        role.setUpdateBy(ShiroUtils.getLoginName());
+        return toAjax(roleService.updateRule(role));
+    }
+
+    @RequiresPermissions("system:role:remove")
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
@@ -138,4 +154,11 @@ public class RoleController extends BaseController {
         return roleService.checkRoleKeyUnique(role);
     }
 
+    /**
+     * 选择菜单树
+     */
+    @GetMapping("/selectMenuTree")
+    public String selectMenuTree() {
+        return prefix + "/tree";
+    }
 }

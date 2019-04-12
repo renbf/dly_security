@@ -3,7 +3,6 @@ package com.project.system.controller.system;
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
-import com.project.common.utils.StringUtils;
 import com.project.framework.util.ShiroUtils;
 import com.project.system.core.base.BaseController;
 import com.project.system.domain.SysMenu;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 菜单信息
@@ -27,10 +25,18 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/system/menu")
 public class MenuController extends BaseController {
+    private String prefix = "system/menu";
 
     @Autowired
     private ISysMenuService menuService;
 
+    @RequiresPermissions("system:menu:view")
+    @GetMapping()
+    public String menu() {
+        return prefix + "/menu";
+    }
+
+    @RequiresPermissions("system:menu:list")
     @GetMapping("/list")
     @ResponseBody
     public List<SysMenu> list(SysMenu menu) {
@@ -42,9 +48,10 @@ public class MenuController extends BaseController {
      * 删除菜单
      */
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
-    @PostMapping("/remove")
+    @RequiresPermissions("system:menu:remove")
+    @PostMapping("/remove/{menuId}")
     @ResponseBody
-    public AjaxResult remove( Long menuId) {
+    public AjaxResult remove(@PathVariable("menuId") Long menuId) {
         if (menuService.selectCountMenuByParentId(menuId) > 0) {
             return error(1, "存在子菜单,不允许删除");
         }
@@ -55,31 +62,50 @@ public class MenuController extends BaseController {
         return toAjax(menuService.deleteMenuById(menuId));
     }
 
+    /**
+     * 新增
+     */
+    @GetMapping("/add/{parentId}")
+    public String add(@PathVariable("parentId") Long parentId, ModelMap mmap) {
+        SysMenu menu = null;
+        if (0L != parentId) {
+            menu = menuService.selectMenuById(parentId);
+        } else {
+            menu = new SysMenu();
+            menu.setMenuId(0L);
+            menu.setMenuName("主目录");
+        }
+        mmap.put("menu", menu);
+        return prefix + "/add";
+    }
 
     /**
      * 新增保存菜单
      */
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
-    @PostMapping("/save")
+    @RequiresPermissions("system:menu:add")
+    @PostMapping("/add")
     @ResponseBody
-    public AjaxResult save(@RequestBody SysMenu menu) {
-        if(Objects.isNull(menu.getMenuId())||menu.getMenuId()==0){
-            menu.setCreateBy(ShiroUtils.getUser().getUserName());
-            ShiroUtils.clearCachedAuthorizationInfo();
-            return toAjax(menuService.insertMenu(menu));
-        }else{
-            menu.setUpdateBy(ShiroUtils.getLoginName());
-            ShiroUtils.clearCachedAuthorizationInfo();
-            return toAjax(menuService.updateMenu(menu));
-        }
-
+    public AjaxResult addSave(SysMenu menu) {
+        menu.setCreateBy(ShiroUtils.getLoginName());
+        ShiroUtils.clearCachedAuthorizationInfo();
+        return toAjax(menuService.insertMenu(menu));
     }
 
+    /**
+     * 修改菜单
+     */
+    @GetMapping("/edit/{menuId}")
+    public String edit(@PathVariable("menuId") Long menuId, ModelMap mmap) {
+        mmap.put("menu", menuService.selectMenuById(menuId));
+        return prefix + "/edit";
+    }
 
     /**
      * 修改保存菜单
      */
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:menu:edit")
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(SysMenu menu) {
@@ -88,6 +114,13 @@ public class MenuController extends BaseController {
         return toAjax(menuService.updateMenu(menu));
     }
 
+    /**
+     * 选择菜单图标
+     */
+    @GetMapping("/icon")
+    public String icon() {
+        return prefix + "/icon";
+    }
 
     /**
      * 校验菜单名称
@@ -119,34 +152,11 @@ public class MenuController extends BaseController {
     }
 
     /**
-     * 查询菜单父级或子级列表
-     * @param  menuId 菜单ID
-     * @param type 1-父级列表，2-子级列表，3-平级列表
+     * 选择菜单树
      */
-    @GetMapping("/childrens")
-    @ResponseBody
-    public AjaxResult childrens(@RequestParam(name="menuId",defaultValue = "0") String menuId,@RequestParam(name="type",defaultValue = "2") Integer type)
-    {
-        AjaxResult ajaxResult=AjaxResult.success();
-        ajaxResult.put("data",menuService.childrensMap(Long.valueOf(menuId),type));
-        return ajaxResult;
+    @GetMapping("/selectMenuTree/{menuId}")
+    public String selectMenuTree(@PathVariable("menuId") Long menuId, ModelMap mmap) {
+        mmap.put("menu", menuService.selectMenuById(menuId));
+        return prefix + "/tree";
     }
-
-    /**
-     * 查询菜单详情
-     * @param  menuId 菜单ID
-     */
-    @GetMapping("/detail")
-    @ResponseBody
-    public AjaxResult detail(String  menuId)
-    {
-        AjaxResult ajaxResult=AjaxResult.success();
-        ajaxResult.put("data",menuService.selectMenuById(Long.valueOf(menuId)));
-        return ajaxResult;
-    }
-
-
-
-
-
 }

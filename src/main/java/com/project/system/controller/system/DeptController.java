@@ -1,6 +1,5 @@
 package com.project.system.controller.system;
 
-import com.github.pagehelper.PageInfo;
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.config.Global;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 部门信息
@@ -31,62 +29,95 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/system/dept")
 public class DeptController extends BaseController {
-
+    private String prefix = "system/dept";
 
     @Autowired
     private ISysDeptService deptService;
 
-    /**
-     * 查询部门父级或子级列表
-     * @param  deptId 部门ID
-     * @param type 1-父级列表，2-子级列表，3-平级列表
-     */
-    @GetMapping("/list")
-    @ResponseBody
-    public AjaxResult list(@RequestParam(name="deptId",defaultValue = "0") String deptId,@RequestParam(name="type",defaultValue = "2") Integer type)
-    {
-        AjaxResult ajaxResult=AjaxResult.success();
-        ajaxResult.put("data",deptService.childrensMap(Long.valueOf(deptId),type));
-        return ajaxResult;
+    @RequiresPermissions("system:dept:view")
+    @GetMapping()
+    public String dept(ModelMap modelMap) {
+        SysDept dept = deptService.selectRootDept(new SysDept(),"0");
+        if(dept!=null){
+            modelMap.addAttribute("rootIdValue",dept.getParentId());
+        }
+        return prefix + "/dept";
     }
 
+    @RequiresPermissions("system:dept:list")
+    @GetMapping("/list")
+    @ResponseBody
+    public List<SysDept> list(SysDept dept,String delFlag) {
+        List<SysDept> deptList = deptService.queryDeptList(dept,delFlag);
+        return deptList;
+    }
 
+    /**
+     * 新增部门
+     */
+    @GetMapping("/add")
+    public String add(Long parentId, ModelMap mmap) {
+        if(parentId==null){
+            parentId = Global.ROOT_DEPT_ID;
+        }
+        mmap.put("dept", deptService.selectDeptById(parentId));
+        return prefix + "/add";
+    }
 
     /**
      * 新增保存部门
      */
     @Log(title = "部门管理", businessType = BusinessType.INSERT)
-    @PostMapping("/save")
+    @RequiresPermissions("system:dept:add")
+    @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(SysDept dept) {
-        if(Objects.isNull(dept.getDeptId())||dept.getDeptId()==0){
-            AjaxResult ar = checkDeptCanAdd(dept.getParentId());
-            if(ar!=null){
-                return ar;
-            }
-            return toAjax(deptService.insertDept(dept));
-        }else{
-            dept.setUpdateBy(ShiroUtils.getLoginName());
-            return toAjax(deptService.updateDept(dept));
+        AjaxResult ar = checkDeptCanAdd(dept.getParentId());
+        if(ar!=null){
+            return ar;
         }
+        return toAjax(deptService.insertDept(dept));
     }
 
+    /**
+     * 修改
+     */
+    @GetMapping("/edit/{deptId}")
+    public String edit(@PathVariable("deptId") Long deptId, ModelMap mmap) {
+        SysDept dept = deptService.selectDeptById(deptId);
+        if (StringUtils.isNotNull(dept) && Global.ROOT_DEPT_ID == deptId) {
+            dept.setParentName("无");
+        }
+        mmap.put("dept", dept);
+        return prefix + "/edit";
+    }
 
-
+    /**
+     * 保存
+     */
+    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:dept:edit")
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(SysDept dept) {
+        dept.setUpdateBy(ShiroUtils.getLoginName());
+        return toAjax(deptService.updateDept(dept));
+    }
 
     /**
      * 删除
      */
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
-    @PostMapping("/remove")
+    @RequiresPermissions("system:dept:remove")
+    @PostMapping("/remove/{deptId}")
     @ResponseBody
-    public AjaxResult remove( Long deptId) {
-//        if (deptService.selectDeptCount(null,deptId,"0") > 0) {
-//            return error(1, "存在下级部门,不允许删除");
-//        }
-//        if (deptService.checkDeptExistUser(deptId)) {
-//            return error(1, "部门存在用户,不允许删除");
-//        }
+    public AjaxResult remove(@PathVariable("deptId") Long deptId) {
+        if (deptService.selectDeptCount(null,deptId,"0") > 0) {
+            return error(1, "存在下级部门,不允许删除");
+        }
+        if (deptService.checkDeptExistUser(deptId)) {
+            return error(1, "部门存在用户,不允许删除");
+        }
         return toAjax(deptService.deleteDeptById(deptId));
     }
     @Log(title = "部门管理-修改上级", businessType = BusinessType.UPDATE)
@@ -108,20 +139,20 @@ public class DeptController extends BaseController {
         return deptService.checkDeptNameUnique(dept.getDeptName(),dept.getDeptId());
     }
 
-//    /**
-//     * 选择部门树
-//     */
-//    @GetMapping("/selectDeptTree")
-//    public String selectDeptTree(Long deptId,String notUnderJbdm, ModelMap mmap) {
-//        if(deptId==null){
-//            deptId= Global.ROOT_DEPT_ID;
-//        }
-//        if(notUnderJbdm!=null){
-//            mmap.put("notUnderJbdm",notUnderJbdm);
-//        }
-//        mmap.put("dept", deptService.selectDeptById(deptId));
-//        return prefix + "/tree";
-//    }
+    /**
+     * 选择部门树
+     */
+    @GetMapping("/selectDeptTree")
+    public String selectDeptTree(Long deptId,String notUnderJbdm, ModelMap mmap) {
+        if(deptId==null){
+            deptId= Global.ROOT_DEPT_ID;
+        }
+        if(notUnderJbdm!=null){
+            mmap.put("notUnderJbdm",notUnderJbdm);
+        }
+        mmap.put("dept", deptService.selectDeptById(deptId));
+        return prefix + "/tree";
+    }
 
     /**
      * 加载部门列表树

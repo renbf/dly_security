@@ -11,21 +11,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="select${className}Vo">
-        select#foreach($column in $columns) $column.columnName#if($velocityCount != $columns.size()),#end#end from ${tableName}
+        select#foreach($column in $columns) ${aliasName}.$column.columnName#if($velocityCount != $columns.size()),#end#end from ${tableName} ${aliasName}
     </sql>
 	
     <select id="select${className}List" parameterType="${className}" resultMap="${className}Result">
         <include refid="select${className}Vo"/>
         <where>  
 #foreach($column in $columns)
-            <if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname.trim() != '' #end"> and $column.columnName = #{$column.attrname}</if>
+            <if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname.trim() != '' #end"> and ${aliasName}.$column.columnName = #{$column.attrname}</if>
  #end
         </where>
     </select>
     
     <select id="select${className}ById" parameterType="${primaryKey.attrType}" resultMap="${className}Result">
         <include refid="select${className}Vo"/>
-        where ${primaryKey.columnName} = #{${primaryKey.attrname}}
+        where ${aliasName}.${primaryKey.columnName} = #{${primaryKey.attrname}}
     </select>
         
     <insert id="insert${className}" parameterType="${className}"#if($primaryKey.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$primaryKey.attrname"#end>
