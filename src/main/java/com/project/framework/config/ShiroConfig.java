@@ -1,8 +1,8 @@
 package com.project.framework.config;
 
-import java.net.InetSocketAddress;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.servlet.Filter;
 
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import com.project.common.utils.StringUtils;
 import com.project.framework.shiro.realm.UserRealm;
 import com.project.framework.shiro.session.OnlineSessionDAO;
@@ -27,6 +28,7 @@ import com.project.framework.shiro.web.filter.online.OnlineSessionFilter;
 import com.project.framework.shiro.web.filter.sync.SyncOnlineSessionFilter;
 import com.project.framework.shiro.web.session.OnlineWebSessionManager;
 import com.project.framework.shiro.web.session.SpringSessionValidationScheduler;
+
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**

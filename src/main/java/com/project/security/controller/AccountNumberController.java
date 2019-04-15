@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.security.service.IAccountNumberService;
 import com.project.security.service.IUserInfoService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -28,6 +29,8 @@ public class AccountNumberController {
 	
 	@Autowired
 	private IUserInfoService userInfoService;
+	@Autowired
+	private IAccountNumberService accountNumberService;
 	
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	@ApiOperation(value="登录",httpMethod="POST",response=Result.class)
@@ -66,18 +69,18 @@ public class AccountNumberController {
 	}
 	
 	
-	@RequestMapping(value="/bannerAndNotice",method=RequestMethod.POST)
-	@ApiOperation(value="轮播图和公告以及消息",httpMethod="POST",response=Result.class)
+	@RequestMapping(value="/bannerAndNotice",method=RequestMethod.GET)
+	@ApiOperation(value="轮播图和公告以及消息",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result bannerAndNotice(HttpServletRequest request,
-										 @ApiParam(name="userId",value="密码",required=true) String userId
+										 @ApiParam(name="userId",value="用户id",required=true) String userId
 	){
 		DataResult result=new DataResult();
 		try {
-//			result = userInfoService.uploadAuthUrl(userId, authImg);
+			result = accountNumberService.bannerAndNotice(userId);
 			return result;
 		} catch (Exception e) {
-			log.error("用户登录失败",e);
-			result.setMessage("用户登录失败");
+			log.error("查询轮播图和公告以及消息失败",e);
+			result.setMessage("查询轮播图和公告以及消息失败");
 			result.setStatus(Result.FAILED);
 			return result;
 		}

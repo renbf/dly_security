@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.security.mapper.TBannerMapper">
+    
+    <resultMap type="com.project.security.domain.TBanner" id="TBannerResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="webUrl"    column="web_url"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTBannerbasicColums">
+        select b.id, b.name, b.img_url, b.web_url, b.add_user_id, b.create_date, b.update_date, b.update_user_id    </sql>
+	
+    <select id="selectTBannerList" parameterType="com.project.security.domain.TBanner" resultMap="TBannerResult">
+        <include refid="selectTBannerbasicColums"/>
+        from t_banner b
+        <where>  
+            <if test="id != null  and id != '' "> and b.id = #{id}</if>
+             <if test="name != null  and name != '' "> and b.name = #{name}</if>
+             <if test="imgUrl != null  and imgUrl != '' "> and b.img_url = #{imgUrl}</if>
+             <if test="webUrl != null  and webUrl != '' "> and b.web_url = #{webUrl}</if>
+             <if test="addUserId != null  and addUserId != '' "> and b.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and b.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and b.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and b.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTBannerById" parameterType="String" resultMap="TBannerResult">
+        <include refid="selectTBannerbasicColums"/>
+        from t_banner b
+        where b.id = #{id}
+    </select>
+        
+    <insert id="insertTBanner" parameterType="com.project.security.domain.TBanner">
+        insert into t_banner
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="imgUrl != null  and imgUrl != ''  ">img_url,</if>
+			<if test="webUrl != null  and webUrl != ''  ">web_url,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="imgUrl != null  and imgUrl != ''  ">#{imgUrl},</if>
+			<if test="webUrl != null  and webUrl != ''  ">#{webUrl},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTBanner" parameterType="com.project.security.domain.TBanner">
+        update t_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="imgUrl != null  and imgUrl != ''  ">img_url = #{imgUrl},</if>
+            <if test="webUrl != null  and webUrl != ''  ">web_url = #{webUrl},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTBannerById" parameterType="String">
+        delete from t_banner where id = #{id}
+    </delete>
+	
+    <delete id="deleteTBannerByIds" parameterType="String">
+        delete from t_banner where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select u.user_id, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.password, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.update_by, u.update_time, u.remark, u.is_auth, u.business_id, u.auth_url
     </sql>
 	
-    <select id="selectUserList" parameterType="User" resultMap="UserResult">
+    <select id="selectUserList" parameterType="com.project.system.domain.SysUser" resultMap="UserResult">
         <include refid="selectUserVo"/>
         from sys_user u
         <where>  
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where u.user_id = #{userId}
     </select>
         
-    <insert id="insertUser" parameterType="User">
+    <insert id="insertUser" parameterType="com.project.system.domain.SysUser">
         insert into sys_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null  ">user_id,</if>
@@ -124,7 +124,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 	 
-    <update id="updateUser" parameterType="User">
+    <update id="updateUser" parameterType="com.project.system.domain.SysUser">
         update sys_user
         <trim prefix="SET" suffixOverrides=",">
             <if test="deptId != null  ">dept_id = #{deptId},</if>
@@ -165,13 +165,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
     
-    <select id="selectUserByLoginName" parameterType="java.lang.String">
+    <select id="selectUserByLoginName" parameterType="java.lang.String" resultMap="UserResult">
     	<include refid="selectUserVo"/>
     	from sys_user u
 		where u.login_name = #{userName} and u.status!='9'
     </select>
     
-    <update id="updateUserAuth" parameterType="SysUser">
+    <update id="updateUserAuth" parameterType="com.project.system.domain.SysUser">
  		update sys_user set is_auth = #{isAuth},auth_url = #{authUrl}
  		where user_id = #{userId}
  	</update>

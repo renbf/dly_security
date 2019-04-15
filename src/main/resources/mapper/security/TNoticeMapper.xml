@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.security.mapper.TNoticeMapper">
+    
+    <resultMap type="com.project.security.domain.TNotice" id="TNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTNoticebasicColums">
+        select n.id, n.name, n.add_user_id, n.create_date, n.update_date, n.update_user_id    </sql>
+	
+    <select id="selectTNoticeList" parameterType="com.project.security.domain.TNotice" resultMap="TNoticeResult">
+        <include refid="selectTNoticebasicColums"/>
+        from t_notice n
+        <where>  
+            <if test="id != null  and id != '' "> and n.id = #{id}</if>
+             <if test="name != null  and name != '' "> and n.name = #{name}</if>
+             <if test="addUserId != null  and addUserId != '' "> and n.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and n.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and n.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and n.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTNoticeById" parameterType="String" resultMap="TNoticeResult">
+        <include refid="selectTNoticebasicColums"/>
+        from t_notice n
+        where n.id = #{id}
+    </select>
+        
+    <insert id="insertTNotice" parameterType="com.project.security.domain.TNotice">
+        insert into t_notice
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTNotice" parameterType="com.project.security.domain.TNotice">
+        update t_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTNoticeById" parameterType="String">
+        delete from t_notice where id = #{id}
+    </delete>
+	
+    <delete id="deleteTNoticeByIds" parameterType="String">
+        delete from t_notice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

@@ -59,6 +59,7 @@ public interface UserMapper
      * @return 结果
      */
 	public int deleteUserByIds(String[] userIds);
+	//以上自动生成的尽量别动
 	/**
 	 * 
 	 * @param userName
