@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.security.mapper.UserMapper">
+    
+    <resultMap type="com.project.system.domain.SysUser" id="UserResult">
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="loginName"    column="login_name"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userType"    column="user_type"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="salt"    column="salt"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="isAuth"    column="is_auth"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="authUrl"    column="auth_url"    />
+    </resultMap>
+	
+	<sql id="selectUserVo">
+        select u.user_id, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.password, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.update_by, u.update_time, u.remark, u.is_auth, u.business_id, u.auth_url
+    </sql>
+	
+    <select id="selectUserList" parameterType="User" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        from sys_user u
+        <where>  
+            <if test="userId != null "> and u.user_id = #{userId}</if>
+             <if test="deptId != null "> and u.dept_id = #{deptId}</if>
+             <if test="loginName != null  and loginName != '' "> and u.login_name = #{loginName}</if>
+             <if test="userName != null  and userName != '' "> and u.user_name = #{userName}</if>
+             <if test="userType != null  and userType != '' "> and u.user_type = #{userType}</if>
+             <if test="email != null  and email != '' "> and u.email = #{email}</if>
+             <if test="phonenumber != null  and phonenumber != '' "> and u.phonenumber = #{phonenumber}</if>
+             <if test="sex != null  and sex != '' "> and u.sex = #{sex}</if>
+             <if test="avatar != null  and avatar != '' "> and u.avatar = #{avatar}</if>
+             <if test="password != null  and password != '' "> and u.password = #{password}</if>
+             <if test="salt != null  and salt != '' "> and u.salt = #{salt}</if>
+             <if test="status != null  and status != '' "> and u.status = #{status}</if>
+             <if test="delFlag != null  and delFlag != '' "> and u.del_flag = #{delFlag}</if>
+             <if test="loginIp != null  and loginIp != '' "> and u.login_ip = #{loginIp}</if>
+             <if test="loginDate != null "> and u.login_date = #{loginDate}</if>
+             <if test="createBy != null  and createBy != '' "> and u.create_by = #{createBy}</if>
+             <if test="createTime != null "> and u.create_time = #{createTime}</if>
+             <if test="updateBy != null  and updateBy != '' "> and u.update_by = #{updateBy}</if>
+             <if test="updateTime != null "> and u.update_time = #{updateTime}</if>
+             <if test="remark != null  and remark != '' "> and u.remark = #{remark}</if>
+             <if test="isAuth != null  and isAuth != '' "> and u.is_auth = #{isAuth}</if>
+             <if test="businessId != null  and businessId != '' "> and u.business_id = #{businessId}</if>
+             <if test="authUrl != null  and authUrl != '' "> and u.auth_url = #{authUrl}</if>
+         </where>
+    </select>
+    
+    <select id="selectUserById" parameterType="Long" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        from sys_user u
+        where u.user_id = #{userId}
+    </select>
+        
+    <insert id="insertUser" parameterType="User">
+        insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null  ">user_id,</if>
+			<if test="deptId != null  ">dept_id,</if>
+			<if test="loginName != null  and loginName != ''  ">login_name,</if>
+			<if test="userName != null  and userName != ''  ">user_name,</if>
+			<if test="userType != null  and userType != ''  ">user_type,</if>
+			<if test="email != null  and email != ''  ">email,</if>
+			<if test="phonenumber != null  and phonenumber != ''  ">phonenumber,</if>
+			<if test="sex != null  and sex != ''  ">sex,</if>
+			<if test="avatar != null  and avatar != ''  ">avatar,</if>
+			<if test="password != null  and password != ''  ">password,</if>
+			<if test="salt != null  and salt != ''  ">salt,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+			<if test="loginIp != null  and loginIp != ''  ">login_ip,</if>
+			<if test="loginDate != null  ">login_date,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="isAuth != null  and isAuth != ''  ">is_auth,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="authUrl != null  and authUrl != ''  ">auth_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null  ">#{userId},</if>
+			<if test="deptId != null  ">#{deptId},</if>
+			<if test="loginName != null  and loginName != ''  ">#{loginName},</if>
+			<if test="userName != null  and userName != ''  ">#{userName},</if>
+			<if test="userType != null  and userType != ''  ">#{userType},</if>
+			<if test="email != null  and email != ''  ">#{email},</if>
+			<if test="phonenumber != null  and phonenumber != ''  ">#{phonenumber},</if>
+			<if test="sex != null  and sex != ''  ">#{sex},</if>
+			<if test="avatar != null  and avatar != ''  ">#{avatar},</if>
+			<if test="password != null  and password != ''  ">#{password},</if>
+			<if test="salt != null  and salt != ''  ">#{salt},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+			<if test="loginIp != null  and loginIp != ''  ">#{loginIp},</if>
+			<if test="loginDate != null  ">#{loginDate},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="isAuth != null  and isAuth != ''  ">#{isAuth},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="authUrl != null  and authUrl != ''  ">#{authUrl},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateUser" parameterType="User">
+        update sys_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="loginName != null  and loginName != ''  ">login_name = #{loginName},</if>
+            <if test="userName != null  and userName != ''  ">user_name = #{userName},</if>
+            <if test="userType != null  and userType != ''  ">user_type = #{userType},</if>
+            <if test="email != null  and email != ''  ">email = #{email},</if>
+            <if test="phonenumber != null  and phonenumber != ''  ">phonenumber = #{phonenumber},</if>
+            <if test="sex != null  and sex != ''  ">sex = #{sex},</if>
+            <if test="avatar != null  and avatar != ''  ">avatar = #{avatar},</if>
+            <if test="password != null  and password != ''  ">password = #{password},</if>
+            <if test="salt != null  and salt != ''  ">salt = #{salt},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+            <if test="loginIp != null  and loginIp != ''  ">login_ip = #{loginIp},</if>
+            <if test="loginDate != null  ">login_date = #{loginDate},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="isAuth != null  and isAuth != ''  ">is_auth = #{isAuth},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="authUrl != null  and authUrl != ''  ">auth_url = #{authUrl},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+	<delete id="deleteUserById" parameterType="Long">
+        delete from sys_user where user_id = #{userId}
+    </delete>
+	
+    <delete id="deleteUserByIds" parameterType="String">
+        delete from sys_user where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+    <select id="selectUserByLoginName" parameterType="java.lang.String">
+    	<include refid="selectUserVo"/>
+    	from sys_user u
+		where u.login_name = #{userName} and u.status!='9'
+    </select>
+    
+    <update id="updateUserAuth" parameterType="SysUser">
+ 		update sys_user set is_auth = #{isAuth},auth_url = #{authUrl}
+ 		where user_id = #{userId}
+ 	</update>
+</mapper>

@@ -142,6 +142,14 @@ public class SysUser extends BaseEntity {
      * 是否为认证用户0没有认证，1认证
      */
     private String isAuth;
+    /**
+     * 用户类型
+     */
+    private String userType;
+    /**
+     * 用户类型
+     */
+    private String authUrl;
     public Long getUserId() {
         return userId;
     }
@@ -326,6 +334,22 @@ public class SysUser extends BaseEntity {
 		this.deptName = deptName;
 	}
 
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String getAuthUrl() {
+		return authUrl;
+	}
+
+	public void setAuthUrl(String authUrl) {
+		this.authUrl = authUrl;
+	}
+
 	@Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -349,6 +373,8 @@ public class SysUser extends BaseEntity {
                 .append("updateTime", getUpdateTime())
                 .append("remark", getRemark())
                 .append("isAuth", getIsAuth())
+                .append("userType", getUserType())
+                .append("authUrl", getAuthUrl())
                 .toString();
     }
 }

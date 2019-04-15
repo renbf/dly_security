@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.constant.Constants;
 import com.project.common.constant.UserConstants;
@@ -19,12 +20,9 @@ import com.project.framework.manager.factory.AsyncFactory;
 import com.project.framework.shiro.service.LoginService;
 import com.project.framework.shiro.service.PasswordService;
 import com.project.framework.util.MessageUtils;
-import com.project.framework.web.exception.user.UserBlockedException;
-import com.project.framework.web.exception.user.UserDeleteException;
-import com.project.framework.web.exception.user.UserNotExistsException;
+import com.project.security.mapper.UserMapper;
 import com.project.security.service.IUserInfoService;
 import com.project.system.domain.SysUser;
-import com.project.system.service.ISysUserService;
 
 /**
  * 
@@ -36,12 +34,12 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	private static final Logger log = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 
 	@Autowired
-	private ISysUserService userService;
-	@Autowired
 	private PasswordService passwordService;
 	@Autowired
 	private LoginService loginService;
-
+	@Autowired
+	private UserMapper userMapper;
+	
 	@Override
 	public DataResult login(String userName, String passWord) {
 		DataResult result = new DataResult();
@@ -67,8 +65,13 @@ public class UserInfoServiceImpl implements IUserInfoService {
 				return result;
 			}
 
-			SysUser user = userService.selectUserByLoginName(userName);
+			SysUser user = userMapper.selectUserByLoginName(userName);
 			if (user == null) {
+				result.setMessage("用户不存在");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
+			if("00".equals(user.getUserType())) {
 				result.setMessage("用户不存在");
 				result.setStatus(Result.FAILED);
 				return result;
@@ -107,7 +110,26 @@ public class UserInfoServiceImpl implements IUserInfoService {
 			result.setStatus(Result.SUCCESS);
 			return result;
 		} catch (Exception e) {
+			log.error("登录接口异常",e);
 			throw new RuntimeException("登录接口异常");
+		}
+	}
+
+	@Override
+	public DataResult uploadAuthUrl(String userId, MultipartFile authImg) {
+		DataResult result = new DataResult();
+		try {
+			SysUser user = new SysUser();
+			user.setIsAuth("1");
+			user.setAuthUrl("http://localhost:8080");
+			user.setUserId(Long.valueOf(userId));
+			userMapper.updateUserAuth(user);
+			result.setMessage("上传认证成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("上传认证接口异常",e);
+			throw new RuntimeException("上传认证接口异常");
 		}
 	}
 
