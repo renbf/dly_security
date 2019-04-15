@@ -138,7 +138,10 @@ public class SysUser extends BaseEntity {
      * 岗位组
      */
     private Long[] postIds;
-
+    /**
+     * 是否为认证用户0没有认证，1认证
+     */
+    private String isAuth;
     public Long getUserId() {
         return userId;
     }
@@ -310,7 +313,20 @@ public class SysUser extends BaseEntity {
     public String getDeptName(){
         return this.deptName;
     }
-    @Override
+    
+    public String getIsAuth() {
+		return isAuth;
+	}
+
+	public void setIsAuth(String isAuth) {
+		this.isAuth = isAuth;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	@Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())
@@ -332,6 +348,7 @@ public class SysUser extends BaseEntity {
                 .append("updateBy", getUpdateBy())
                 .append("updateTime", getUpdateTime())
                 .append("remark", getRemark())
+                .append("isAuth", getIsAuth())
                 .toString();
     }
 }
