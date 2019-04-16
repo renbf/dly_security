@@ -6,37 +6,31 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
- * 行业动态表 t_industry_dynamics
+ * 用户消息表 t_user_message
  * 
  * @author rbf
- * @date 2019-04-15
+ * @date 2019-04-16
  */
-public class TIndustryDynamics implements Serializable
+public class TUserMessage implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
 	/** ID */
 	private String id;
-	/** 行业标题 */
-	private String title;
-	/** 动态内容 */
-	private String context;
-	/** 上传图片 */
-	private String uploadUrl;
+	/** 消息ID */
+	private String messageId;
+	/** 用户id */
+	private String userId;
+	/** 是否已读0否1是 */
+	private String isRead;
 	/** 创建人id */
-	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
-	@JsonIgnore
 	private Date createDate;
 	/** 修改时间 */
-	@JsonIgnore
 	private Date updateDate;
 	/** 修改人id */
-	@JsonIgnore
 	private String updateUserId;
 
 	public void setId(String id) 
@@ -48,32 +42,32 @@ public class TIndustryDynamics implements Serializable
 	{
 		return id;
 	}
-	public void setTitle(String title) 
+	public void setMessageId(String messageId) 
 	{
-		this.title = title;
+		this.messageId = messageId;
 	}
 
-	public String getTitle() 
+	public String getMessageId() 
 	{
-		return title;
+		return messageId;
 	}
-	public void setContext(String context) 
+	public void setUserId(String userId) 
 	{
-		this.context = context;
-	}
-
-	public String getContext() 
-	{
-		return context;
-	}
-	public void setUploadUrl(String uploadUrl) 
-	{
-		this.uploadUrl = uploadUrl;
+		this.userId = userId;
 	}
 
-	public String getUploadUrl() 
+	public String getUserId() 
 	{
-		return uploadUrl;
+		return userId;
+	}
+	public void setIsRead(String isRead) 
+	{
+		this.isRead = isRead;
+	}
+
+	public String getIsRead() 
+	{
+		return isRead;
 	}
 	public void setAddUserId(String addUserId) 
 	{
@@ -115,9 +109,9 @@ public class TIndustryDynamics implements Serializable
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("title", getTitle())
-            .append("context", getContext())
-            .append("uploadUrl", getUploadUrl())
+            .append("messageId", getMessageId())
+            .append("userId", getUserId())
+            .append("isRead", getIsRead())
             .append("addUserId", getAddUserId())
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())

@@ -7,10 +7,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 用户消息表 t_message
+ * 消息表 t_message
  * 
  * @author rbf
- * @date 2019-04-15
+ * @date 2019-04-16
  */
 public class TMessage implements Serializable
 {
@@ -18,16 +18,12 @@ public class TMessage implements Serializable
 	
 	/** ID */
 	private String id;
-	/** 用户id */
-	private String userId;
 	/** 消息名称 */
 	private String title;
 	/** 消息内容 */
 	private String context;
 	/** 消息类型 */
 	private String messageType;
-	/** 是否已读0否1是 */
-	private String isRead;
 	/** 创建人id */
 	private String addUserId;
 	/** 创建时间 */
@@ -45,15 +41,6 @@ public class TMessage implements Serializable
 	public String getId() 
 	{
 		return id;
-	}
-	public void setUserId(String userId) 
-	{
-		this.userId = userId;
-	}
-
-	public String getUserId() 
-	{
-		return userId;
 	}
 	public void setTitle(String title) 
 	{
@@ -81,15 +68,6 @@ public class TMessage implements Serializable
 	public String getMessageType() 
 	{
 		return messageType;
-	}
-	public void setIsRead(String isRead) 
-	{
-		this.isRead = isRead;
-	}
-
-	public String getIsRead() 
-	{
-		return isRead;
 	}
 	public void setAddUserId(String addUserId) 
 	{
@@ -131,11 +109,9 @@ public class TMessage implements Serializable
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("userId", getUserId())
             .append("title", getTitle())
             .append("context", getContext())
             .append("messageType", getMessageType())
-            .append("isRead", getIsRead())
             .append("addUserId", getAddUserId())
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())

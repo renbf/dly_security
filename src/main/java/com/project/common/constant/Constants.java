@@ -48,10 +48,14 @@ public class Constants
     public static String PAGE_NUM = "pageNum";
 
     /**
-     * 每页显示记录数
+     * 每页显示记录数属性
      */
     public static String PAGE_SIZE = "pageSize";
-
+    /**
+     * 每页显示记录数
+     */
+    public static Integer PAGE_SIZE_NUMBER = 10;
+    
     /**
      * 排序列
      */

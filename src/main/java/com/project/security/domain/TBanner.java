@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 轮播图表 t_banner
@@ -27,12 +27,16 @@ public class TBanner implements Serializable
 	/** 详情url */
 	private String webUrl;
 	/** 创建人id */
+	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
+	@JsonIgnore
 	private Date createDate;
 	/** 修改时间 */
+	@JsonIgnore
 	private Date updateDate;
 	/** 修改人id */
+	@JsonIgnore
 	private String updateUserId;
 
 	public void setId(String id) 

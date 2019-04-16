@@ -2,6 +2,8 @@ package com.project.framework.config;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +14,15 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
+/**
+ * 
+ * @author rbf
+ *
+ */
 @Configuration
 public class JacksonConfig {
- 
+	private static final Logger log = LoggerFactory.getLogger(JacksonConfig.class);
+	
 	@Bean
 	@Primary
 	@ConditionalOnMissingBean(ObjectMapper.class)
