@@ -149,3 +149,28 @@ gen:
   autoRemovePre: false
   # 表前缀(类名不会包含表前缀)
   tablePrefix: sys_
+  
+#sftp协议
+sftp:
+  client:
+    protocol: sftp
+# ip地址
+    host: 127.0.0.1
+# 端口
+    port: 22
+# 用户名
+    username: sftp
+# 密码
+    password: sftp
+# 根路径
+    root: /home/sftp/
+# 密钥文件路径
+    privateKey: 
+# 密钥的密码
+    passphrase: 
+# 
+    sessionStrictHostKeyChecking: no
+# session连接超时时间
+    sessionConnectTimeout: 15000
+# channel连接超时时间
+    channelConnectedTimeout: 15000
