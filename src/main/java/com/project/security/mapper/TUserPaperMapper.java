@@ -3,7 +3,8 @@ package com.project.security.mapper;
 import java.util.List;
 
 import com.project.security.domain.TUserPaper;
-import com.project.security.domain.vo.TUserPaperVo;	
+import com.project.security.domain.vo.TUserPaperVo;
+import com.project.security.domain.vo.UserPaperDetailVo;	
 
 /**
  * 用户考试安排 数据层
@@ -61,6 +62,16 @@ public interface TUserPaperMapper
      */
 	public int deleteTUserPaperByIds(String[] ids);
 	//以上自动生成的尽量别动
-	
+	/**
+	 * 查询考试试卷
+	 * @param userId
+	 * @return
+	 */
 	public List<TUserPaperVo> selectTUserPapersByUserId(String userId);
+	/**
+	 * 用户试卷详情
+	 * @param userPaperId
+	 * @return
+	 */
+	public List<UserPaperDetailVo> examPaperDetail(String userPaperId);
 }

@@ -1,11 +1,10 @@
 package com.project.security.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.project.common.base.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 字典表 t_dict

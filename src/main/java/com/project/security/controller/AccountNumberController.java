@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.security.domain.TInspectTeamProject;
 import com.project.security.service.IAccountNumberService;
 import com.project.security.service.IUserInfoService;
 import com.wordnik.swagger.annotations.Api;
@@ -233,15 +234,209 @@ public class AccountNumberController {
 	@RequestMapping(value="/examPaperDetail",method=RequestMethod.GET)
 	@ApiOperation(value="考试试卷详情接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result examPaperDetail(HttpServletRequest request,
-			@ApiParam(name="userPaperIdId",value="用户考卷id",required=true) String userPaperIdId
+			@ApiParam(name="userPaperId",value="用户考卷id",required=true) String userPaperId
 	){
 		DataResult result=new DataResult();
 		try {
-			result = accountNumberService.examPaperDetail(userPaperIdId);
+			result = accountNumberService.examPaperDetail(userPaperId);
 			return result;
 		} catch (Exception e) {
 			log.error("考试试卷详情接口失败",e);
 			result.setMessage("考试试卷详情接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/submitSubject",method=RequestMethod.POST)
+	@ApiOperation(value="提交题目接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result submitSubject(HttpServletRequest request,
+			@ApiParam(name="userSubjectJson",value="用户考题json字符串",required=true) String userSubjectJson
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.submitSubject(userSubjectJson);
+			return result;
+		} catch (Exception e) {
+			log.error("提交题目接口失败",e);
+			result.setMessage("提交题目接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/submitPaper",method=RequestMethod.POST)
+	@ApiOperation(value="提交考卷接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result submitPaper(HttpServletRequest request,
+			@ApiParam(name="userPaperId",value="用户考卷id",required=true) String userPaperId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.submitPaper(userPaperId);
+			return result;
+		} catch (Exception e) {
+			log.error("提交考卷接口失败",e);
+			result.setMessage("提交考卷接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/courseRanking",method=RequestMethod.GET)
+	@ApiOperation(value="课时排名接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result courseRanking(HttpServletRequest request,
+			@ApiParam(name="userId",value="用户id",required=true) String userId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.courseRanking(userId);
+			return result;
+		} catch (Exception e) {
+			log.error("课时排名接口失败",e);
+			result.setMessage("课时排名接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/videoCollection",method=RequestMethod.GET)
+	@ApiOperation(value="收藏视频接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result videoCollection(HttpServletRequest request,
+			@ApiParam(name="userId",value="用户id",required=true) String userId,
+			@ApiParam(name="courseId",value="课程id",required=true) String courseId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.videoCollection(userId,courseId);
+			return result;
+		} catch (Exception e) {
+			log.error("收藏视频接口失败",e);
+			result.setMessage("收藏视频接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/subjectCollection",method=RequestMethod.GET)
+	@ApiOperation(value="收藏题目接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result subjectCollection(HttpServletRequest request,
+			@ApiParam(name="userId",value="用户id",required=true) String userId,
+			@ApiParam(name="subjectId",value="题目id",required=true) String subjectId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.subjectCollection(userId,subjectId);
+			return result;
+		} catch (Exception e) {
+			log.error("收藏题目接口失败",e);
+			result.setMessage("收藏题目接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/checkPlan",method=RequestMethod.GET)
+	@ApiOperation(value="检查计划接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result checkPlan(HttpServletRequest request,
+			@ApiParam(name="userId",value="用户id",required=true) String userId,
+			@ApiParam(name="pageNumber",value="第几页",required=true) Integer pageNumber
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.checkPlan(userId,pageNumber);
+			return result;
+		} catch (Exception e) {
+			log.error("检查计划接口失败",e);
+			result.setMessage("检查计划接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	
+	@RequestMapping(value="/queryCheckProject",method=RequestMethod.GET)
+	@ApiOperation(value="查询检查项接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryCheckProject(HttpServletRequest request,
+			@ApiParam(name="inspectPlanId",value="检查计划id",required=true) String inspectPlanId,
+			@ApiParam(name="projectId",value="检查项目id",required=true) String projectId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.queryCheckProject(inspectPlanId,projectId);
+			return result;
+		} catch (Exception e) {
+			log.error("查询检查项接口失败",e);
+			result.setMessage("查询检查项接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/saveCheckProject",method=RequestMethod.POST)
+	@ApiOperation(value="保存检查项接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result saveCheckProject(HttpServletRequest request,
+			@ApiParam(name="inspectTeamProjectJson",value="检查项json字符串",required=true) String inspectTeamProjectJson
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.saveCheckProject(inspectTeamProjectJson);
+			return result;
+		} catch (Exception e) {
+			log.error("保存检查项接口失败",e);
+			result.setMessage("保存检查项接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/completeCheck",method=RequestMethod.POST)
+	@ApiOperation(value="完成检查计划接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result completeCheck(HttpServletRequest request,
+			@ApiParam(name="inspectRecordJson",value="完成检查计划json字符串",required=true) String inspectRecordJson,
+			@ApiParam(name="file",value="签名图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.completeCheck(inspectRecordJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("完成检查计划接口失败",e);
+			result.setMessage("完成检查计划接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/queryHiddenDanger",method=RequestMethod.GET)
+	@ApiOperation(value="上传隐患——查询部门等接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryHiddenDanger(HttpServletRequest request,
+			@ApiParam(name="businessId",value="企业id",required=true) String businessId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.queryHiddenDanger(businessId);
+			return result;
+		} catch (Exception e) {
+			log.error("上传隐患——查询部门接口失败",e);
+			result.setMessage("上传隐患——查询部门接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/uploadHiddenDanger",method=RequestMethod.POST)
+	@ApiOperation(value="上报隐患接口接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result uploadHiddenDanger(HttpServletRequest request,
+			@ApiParam(name="dangerJson",value="上报隐患json字符串",required=true) String dangerJson,
+			@ApiParam(name="file",value="隐患图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.uploadHiddenDanger(dangerJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("上报隐患失败",e);
+			result.setMessage("上报隐患接口失败");
 			result.setStatus(Result.FAILED);
 			return result;
 		}

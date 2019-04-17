@@ -1,7 +1,11 @@
 package com.project.security.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.project.security.domain.TUserCourse;
-import java.util.List;	
+import com.project.security.domain.vo.TUserCourseVo;	
 
 /**
  * 课程安排 数据层
@@ -67,4 +71,20 @@ public interface TUserCourseMapper
      * @return 结果
      */
 	public int updateTUserCourseByUser(TUserCourse tUserCourse);
+	
+	/**
+	 * 课时排名
+	 * @param userId
+	 * @param businessId
+	 * @return
+	 */
+	public List<TUserCourseVo> courseRanking(String userId);
+	/**
+	 * 当前人课时排名
+	 * @param userId
+	 * @param businessId
+	 * @return
+	 */
+	public TUserCourseVo courseRankingByUserId(@Param("userId")String userId,@Param("businessId")String businessId);
+	
 }

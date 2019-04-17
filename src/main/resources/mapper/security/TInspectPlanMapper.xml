@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.security.mapper.TInspectPlanMapper">
+    
+    <resultMap type="com.project.security.domain.TInspectPlan" id="TInspectPlanResult">
+        <result property="id"    column="id"    />
+        <result property="titleId"    column="title_id"    />
+        <result property="checkTitle"    column="check_title"    />
+        <result property="checkYear"    column="check_year"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTInspectPlanbasicColums">
+        select ip.id, ip.title_id, ip.check_title, ip.check_year, ip.check_time, ip.check_type, ip.dept_id, ip.user_id, ip.check_status, ip.business_id, ip.remark, ip.add_user_id, ip.create_date, ip.update_date, ip.update_user_id    </sql>
+	
+    <select id="selectTInspectPlanList" parameterType="com.project.security.domain.TInspectPlan" resultMap="TInspectPlanResult">
+        <include refid="selectTInspectPlanbasicColums"/>
+        from t_inspect_plan ip
+        <where>  
+            <if test="id != null  and id != '' "> and ip.id = #{id}</if>
+             <if test="titleId != null  and titleId != '' "> and ip.title_id = #{titleId}</if>
+             <if test="checkTitle != null  and checkTitle != '' "> and ip.check_title = #{checkTitle}</if>
+             <if test="checkYear != null  and checkYear != '' "> and ip.check_year = #{checkYear}</if>
+             <if test="checkTime != null "> and ip.check_time = #{checkTime}</if>
+             <if test="checkType != null  and checkType != '' "> and ip.check_type = #{checkType}</if>
+             <if test="deptId != null "> and ip.dept_id = #{deptId}</if>
+             <if test="userId != null  and userId != '' "> and ip.user_id = #{userId}</if>
+             <if test="checkStatus != null  and checkStatus != '' "> and ip.check_status = #{checkStatus}</if>
+             <if test="businessId != null  and businessId != '' "> and ip.business_id = #{businessId}</if>
+             <if test="remark != null  and remark != '' "> and ip.remark = #{remark}</if>
+             <if test="addUserId != null  and addUserId != '' "> and ip.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and ip.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and ip.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and ip.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTInspectPlanById" parameterType="String" resultMap="TInspectPlanResult">
+        <include refid="selectTInspectPlanbasicColums"/>
+        from t_inspect_plan ip
+        where ip.id = #{id}
+    </select>
+        
+    <insert id="insertTInspectPlan" parameterType="com.project.security.domain.TInspectPlan">
+        insert into t_inspect_plan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="titleId != null  and titleId != ''  ">title_id,</if>
+			<if test="checkTitle != null  and checkTitle != ''  ">check_title,</if>
+			<if test="checkYear != null  and checkYear != ''  ">check_year,</if>
+			<if test="checkTime != null  ">check_time,</if>
+			<if test="checkType != null  and checkType != ''  ">check_type,</if>
+			<if test="deptId != null  ">dept_id,</if>
+			<if test="userId != null  and userId != ''  ">user_id,</if>
+			<if test="checkStatus != null  and checkStatus != ''  ">check_status,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="titleId != null  and titleId != ''  ">#{titleId},</if>
+			<if test="checkTitle != null  and checkTitle != ''  ">#{checkTitle},</if>
+			<if test="checkYear != null  and checkYear != ''  ">#{checkYear},</if>
+			<if test="checkTime != null  ">#{checkTime},</if>
+			<if test="checkType != null  and checkType != ''  ">#{checkType},</if>
+			<if test="deptId != null  ">#{deptId},</if>
+			<if test="userId != null  and userId != ''  ">#{userId},</if>
+			<if test="checkStatus != null  and checkStatus != ''  ">#{checkStatus},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTInspectPlan" parameterType="com.project.security.domain.TInspectPlan">
+        update t_inspect_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="titleId != null  and titleId != ''  ">title_id = #{titleId},</if>
+            <if test="checkTitle != null  and checkTitle != ''  ">check_title = #{checkTitle},</if>
+            <if test="checkYear != null  and checkYear != ''  ">check_year = #{checkYear},</if>
+            <if test="checkTime != null  ">check_time = #{checkTime},</if>
+            <if test="checkType != null  and checkType != ''  ">check_type = #{checkType},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
+            <if test="checkStatus != null  and checkStatus != ''  ">check_status = #{checkStatus},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTInspectPlanById" parameterType="String">
+        delete from t_inspect_plan where id = #{id}
+    </delete>
+	
+    <delete id="deleteTInspectPlanByIds" parameterType="String">
+        delete from t_inspect_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    <resultMap type="com.project.security.domain.vo.TInspectPlanVo" id="TInspectPlanVoResult">
+        <result property="id"    column="id"    />
+        <result property="titleId"    column="title_id"    />
+        <result property="checkTitle"    column="check_title"    />
+        <result property="checkYear"    column="check_year"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="checkTypeName"    column="check_type_name"    />
+        <result property="checkName"    column="checkName"    />
+    </resultMap>
+    
+    <select id="selectTInspectPlanListByUserId" parameterType="java.lang.String" resultMap="TInspectPlanVoResult">
+    	<include refid="selectTInspectPlanbasicColums"/>,
+    	dd.dict_name check_type_name,GROUP_CONCAT(d.id,':',d.dict_name) checkName
+        from t_inspect_plan ip
+        join t_inspect_title_team itt on ip.title_id = itt.title_id
+		join t_dict d on d.id = itt.check_team
+		where ip.user_id = #{userId}
+		order by ip.check_status 
+    </select>
+    
+</mapper>

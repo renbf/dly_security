@@ -150,6 +150,10 @@ public class SysUser extends BaseEntity {
      * 用户类型
      */
     private String authUrl;
+    /**
+     * 企业id
+     */
+    private String businessId;
     public Long getUserId() {
         return userId;
     }
@@ -348,6 +352,14 @@ public class SysUser extends BaseEntity {
 
 	public void setAuthUrl(String authUrl) {
 		this.authUrl = authUrl;
+	}
+
+	public String getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
 	}
 
 	@Override

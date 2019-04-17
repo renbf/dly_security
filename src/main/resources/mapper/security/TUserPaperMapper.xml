@@ -131,6 +131,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="paperName"    column="paper_name"    />
     </resultMap>
     
+    <resultMap type="com.project.security.domain.vo.UserPaperDetailVo" id="UserPaperDetailVoResult">
+    	<result property="paperId"    column="paper_id"    />
+        <result property="paperTimes"    column="paper_times"    />
+        <result property="subjectId"    column="subject_id"    />
+        <result property="subject"    column="subject"    />
+        <result property="annotation"    column="annotation"    />
+        <result property="trueAnswer"    column="true_answer"    />
+        <result property="subjectScore"    column="subject_score"    />
+        <result property="subjectSort"    column="subject_sort"    />
+        <result property="optionContents"    column="optionContents"    />
+        <result property="userPaperId"    column="user_paper_id"    />
+        <result property="status"    column="status"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="commitDate"    column="commit_date"    />
+        <result property="paperScore"    column="paper_score"    />
+        <result property="userAnswer"    column="user_answer"    />
+        <result property="isTrue"    column="is_true"    />
+        <result property="isCollect"    column="is_collect"    />
+    </resultMap>
+    
     <select id="selectTUserPapersByUserId" parameterType="java.lang.String" resultMap="TUserPaperVoResult">
         <include refid="selectTUserPaperbasicColums"/>,
         p.name paper_name
@@ -138,4 +158,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         join t_paper p on up.paper_id = p.id
     	where up.user_id = #{userId}
     </select>
+    
+    <select id="examPaperDetail" parameterType="java.lang.String" resultMap="UserPaperDetailVoResult">
+    	select 
+		p.id paper_id,p.paper_times,
+		s.id subject_id,s.subject,s.annotation,s.true_answer,sp.subject_score,sp.subject_sort,
+		(select GROUP_CONCAT(so.option_value,':',so.content) from t_subject_option so where so.subject_id = s.id order by so.option_sort) optionContents,
+		up.id user_paper_id,up.status,up.start_date,up.commit_date,up.paper_score,
+		us.user_answer,us.is_true,usc.is_collect
+		from t_user_paper up
+		join t_paper p on up.paper_id = p.id
+		join t_subject_paper sp on up.paper_id = sp.paper_id
+		join t_subject s on s.id = sp.subject_id
+		left join t_user_subject us on us.user_paper_id = up.id and us.subject_id = s.id 
+		left join t_user_subject_collect usc on usc.user_id = up.user_id and usc.subject_id = s.id
+		where up.id = #{userPaperId}
+    </select>
+    
 </mapper>

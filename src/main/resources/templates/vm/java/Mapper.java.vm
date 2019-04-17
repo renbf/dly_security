@@ -58,5 +58,5 @@ public interface ${className}Mapper
      * @return 结果
      */
 	public int delete${className}ByIds(String[] ${primaryKey.attrname}s);
-	//以上自动生成的尽量别动
+	
 }

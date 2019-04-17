@@ -1,5 +1,7 @@
 package com.project.security.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,32 +12,56 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.project.common.constant.Constants;
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.security.domain.Dept;
 import com.project.security.domain.TBanner;
+import com.project.security.domain.TDict;
 import com.project.security.domain.TIndustryDynamics;
+import com.project.security.domain.TInspectPlan;
+import com.project.security.domain.TInspectRecord;
+import com.project.security.domain.TInspectTeamProject;
 import com.project.security.domain.TNotice;
 import com.project.security.domain.TUserCourse;
 import com.project.security.domain.TUserMessage;
+import com.project.security.domain.TUserPaper;
+import com.project.security.domain.TUserSubject;
+import com.project.security.domain.TUserSubjectCollect;
 import com.project.security.domain.vo.TCourseVo;
+import com.project.security.domain.vo.TInspectPlanVo;
+import com.project.security.domain.vo.TInspectTeamProjectVo;
+import com.project.security.domain.vo.TUserCourseVo;
 import com.project.security.domain.vo.TUserMessageVo;
 import com.project.security.domain.vo.TUserPaperVo;
+import com.project.security.domain.vo.UserPaperDetailVo;
+import com.project.security.mapper.DeptMapper;
 import com.project.security.mapper.TBannerMapper;
 import com.project.security.mapper.TCourseMapper;
 import com.project.security.mapper.TDictMapper;
 import com.project.security.mapper.TIndustryDynamicsMapper;
+import com.project.security.mapper.TInspectPlanMapper;
+import com.project.security.mapper.TInspectRecordMapper;
+import com.project.security.mapper.TInspectTeamProjectMapper;
 import com.project.security.mapper.TMessageMapper;
 import com.project.security.mapper.TNoticeMapper;
 import com.project.security.mapper.TUserCourseMapper;
 import com.project.security.mapper.TUserMessageMapper;
 import com.project.security.mapper.TUserPaperMapper;
+import com.project.security.mapper.TUserSubjectCollectMapper;
 import com.project.security.mapper.TUserSubjectMapper;
+import com.project.security.mapper.UserMapper;
 import com.project.security.service.IAccountNumberService;
 import com.project.security.utils.page.PageInfoUtil;
 import com.project.security.utils.page.TableDataView;
+import com.project.system.domain.SysUser;
+import com.project.util.UUIDUtil;
 
 /**
  * 
@@ -64,6 +90,18 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	private TUserPaperMapper userPaperMapper;
 	@Autowired
 	private TUserSubjectMapper userSubjectMapper;
+	@Autowired
+	private UserMapper userMapper;
+	@Autowired
+	private TUserSubjectCollectMapper userSubjectCollectMapper;
+	@Autowired
+	private TInspectPlanMapper inspectPlanMapper;
+	@Autowired
+	private TInspectTeamProjectMapper inspectTeamProjectMapper;
+	@Autowired
+	private DeptMapper deptMapper;
+	@Autowired
+	private TInspectRecordMapper inspectRecordMapper;
 	@Autowired
 	private TDictMapper dictMapper;
 	
@@ -248,19 +286,303 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 		}
 	}
 	@Override
-	public DataResult examPaperDetail(String userId) {
+	public DataResult examPaperDetail(String userPaperId) {
 		DataResult result = new DataResult();
         try {
-//    		List<TUserPaperVo> courseList = userSubjectMapper.selectTUserPapersByUserId(userId);
-//			result.setResult(tableDataView);
-			result.setMessage("考试试卷成功");
+        	TUserPaper userPaper = userPaperMapper.selectTUserPaperById(userPaperId);
+        	if(userPaper == null) {
+        		result.setMessage("没有查到试卷");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	if(userPaper.getStartDate() == null) {
+        		userPaper.setStartDate(new Date());
+        		userPaper.setStatus("1");
+        		userPaperMapper.updateTUserPaper(userPaper);
+        	}
+    		List<UserPaperDetailVo> userPaperDetailVos = userPaperMapper.examPaperDetail(userPaperId);
+			result.setResult(userPaperDetailVos);
+			result.setMessage("考试试卷详情成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
 		} catch (Exception e) {
-			log.error("考试试卷接口异常",e);
-			throw new RuntimeException("考试试卷接口异常");
+			log.error("考试试卷详情接口异常",e);
+			throw new RuntimeException("考试试卷详情接口异常");
 		}
 	}
+	
+	
+	
+	@Override
+	public DataResult submitSubject(String userSubjectJson) {
+		DataResult result = new DataResult();
+        try {
+        	TUserSubject userSubject = JSON.parseObject(userSubjectJson, TUserSubject.class);
+        	if(StringUtils.isEmpty(userSubject.getId())) {
+        		userSubject.setId(UUIDUtil.getUUID());
+        		userSubjectMapper.insertTUserSubject(userSubject);
+        	}else {
+        		userSubjectMapper.updateTUserSubject(userSubject);
+        	}
+			result.setMessage("提交题目成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("提交题目接口异常",e);
+			throw new RuntimeException("提交题目接口异常");
+		}
+	}
+	
+	
+	@Override
+	public DataResult submitPaper(String userPaperId) {
+		DataResult result = new DataResult();
+        try {
+        	TUserPaper userPaper = new TUserPaper();
+        	userPaper.setId(userPaperId);
+        	userPaper.setCommitDate(new Date());
+        	userPaperMapper.updateTUserPaper(userPaper);
+			result.setMessage("提交考卷成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("提交考卷接口异常",e);
+			throw new RuntimeException("提交考卷接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult courseRanking(String userId) {
+		DataResult result = new DataResult();
+        try {
+        	SysUser sysUser = userMapper.selectUserById(Long.valueOf(userId));
+    		List<TUserCourseVo> userCourseVos = userCourseMapper.courseRanking(userId);
+    		TUserCourseVo userCourseVo = userCourseMapper.courseRankingByUserId(userId, sysUser.getBusinessId());
+    		Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("userCourseVos", userCourseVos);
+			mapResult.put("userCourseVo", userCourseVo);
+			result.setResult(mapResult);
+			result.setMessage("考试试卷详情成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("考试试卷详情接口异常",e);
+			throw new RuntimeException("考试试卷详情接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult videoCollection(String userId, String courseId) {
+		DataResult result = new DataResult();
+        try {
+        	TUserCourse tUserCourse = new TUserCourse();
+        	tUserCourse.setUserId(userId);
+        	tUserCourse.setCourseId(courseId);
+        	tUserCourse.setIsCollect("1");
+        	userCourseMapper.updateTUserCourse(tUserCourse);
+			result.setMessage("收藏视频成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("收藏视频接口异常",e);
+			throw new RuntimeException("收藏视频接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult subjectCollection(String userId, String subjectId) {
+		DataResult result = new DataResult();
+        try {
+        	TUserSubjectCollect tUserSubjectCollect = new TUserSubjectCollect();
+        	tUserSubjectCollect.setUserId(userId);
+        	tUserSubjectCollect.setSubjectId(subjectId);
+        	tUserSubjectCollect.setIsCollect("1");
+        	userSubjectCollectMapper.insertTUserSubjectCollect(tUserSubjectCollect);
+			result.setMessage("收藏题目成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("收藏题目接口异常",e);
+			throw new RuntimeException("收藏题目接口异常");
+		}
+	}
+	@Override
+	public DataResult checkPlan(String userId,Integer pageNumber) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	List<TInspectPlanVo> inspectPlanList = inspectPlanMapper.selectTInspectPlanListByUserId(userId);
+        	if(CollectionUtils.isNotEmpty(inspectPlanList)) {
+        		for(TInspectPlanVo inspectPlanVo:inspectPlanList) {
+        			List<Map<String,Object>> checkProjects = new ArrayList<Map<String,Object>>();
+        			String checkName = inspectPlanVo.getCheckName();
+        			if(StringUtils.isNotEmpty(checkName)) {
+        				Map<String,Object> map = new HashMap<String,Object>();
+        				//checkName = id:name,id2:name2
+        				String[] str = checkName.split(",");
+        				for(String checkItem:str) {
+        					String[] dictArr = checkItem.split(":");
+        					map.put(dictArr[0], dictArr[1]);
+        				}
+        				checkProjects.add(map);
+        			}
+        			inspectPlanVo.setCheckProjects(checkProjects);
+        		}
+        	}
+    		TableDataView<TInspectPlanVo> tableDataView = PageInfoUtil.addPageInfo(inspectPlanList);
+			result.setResult(tableDataView);
+			result.setMessage("检查计划成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("检查计划接口异常",e);
+			throw new RuntimeException("检查计划接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryCheckProject(String inspectPlanId, String projectId) {
+		DataResult result = new DataResult();
+        try {
+        	List<TInspectTeamProjectVo> inspectTeamProjects = inspectTeamProjectMapper.selectTInspectTeamProjects(inspectPlanId,projectId);
+        	result.setResult(inspectTeamProjects);
+			result.setMessage("查询检查项成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询检查项接口异常",e);
+			throw new RuntimeException("查询检查项接口异常");
+		}
+	}
+	
+	
+	@Override
+	@Transactional
+	public DataResult saveCheckProject(String inspectTeamProjectJson) {
+		DataResult result = new DataResult();
+        try {
+        	List<TInspectTeamProject> tInspectTeamProjects = JSONArray.parseArray(inspectTeamProjectJson, TInspectTeamProject.class);
+        	if(CollectionUtils.isNotEmpty(tInspectTeamProjects)) {
+        		String inspectPlanId = tInspectTeamProjects.get(0).getInspectPlanId();
+        		String checkTeamId = tInspectTeamProjects.get(0).getCheckTeamId();
+        		inspectTeamProjectMapper.deleteTInspectTeamProjectByTeamId(inspectPlanId, checkTeamId);
+        		inspectTeamProjectMapper.addBatchTInspectTeamProjects(tInspectTeamProjects);
+        	}
+			result.setMessage("保存检查项成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("保存检查项接口异常",e);
+			throw new RuntimeException("保存检查项接口异常");
+		}
+	}
+	
+	
+	@Override
+	@Transactional
+	public DataResult completeCheck(String inspectRecordJson,MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	TInspectRecord tInspectRecord = JSON.parseObject(inspectRecordJson, TInspectRecord.class);
+        	if(tInspectRecord == null) {
+        		result.setMessage("完成检查计划参数错误");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	TInspectPlan tInspectPlan = new TInspectPlan();
+        	tInspectPlan.setId(tInspectRecord.getInspectPlanId());
+        	tInspectPlan.setCheckStatus("1");
+        	inspectPlanMapper.updateTInspectPlan(tInspectPlan);
+        	inspectRecordMapper.insertTInspectRecord(tInspectRecord);
+			result.setMessage("完成检查计划成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("完成检查计划接口异常",e);
+			throw new RuntimeException("完成检查计划接口异常");
+		}
+	}
+	
+	
+	@Override
+	public DataResult queryHiddenDanger(String businessId) {
+		DataResult result = new DataResult();
+        try {
+        	//部门
+        	Dept dept = new Dept();
+        	dept.setBusinessId(businessId);
+        	List<Dept> deptList = deptMapper.selectDeptList(dept);
+        	
+        	//检查类型
+        	TDict tDict = new TDict();
+        	tDict.setParentId("");
+        	tDict.setBusinessId(businessId);
+        	List<TDict> checkTypePid = dictMapper.selectTDictList(tDict);
+        	if(CollectionUtils.isEmpty(checkTypePid) || checkTypePid.size() != 1) {
+        		result.setMessage("上传隐患——查询部门等接口失败");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	TDict checkTypeDict = new TDict();
+        	checkTypeDict.setParentId(checkTypePid.get(0).getId());
+        	checkTypeDict.setBusinessId(businessId);
+        	List<TDict> checkTypes = dictMapper.selectTDictList(checkTypeDict);
+        	//隐患类型
+        	TDict dangerTypeDict = new TDict();
+        	dangerTypeDict.setParentId("");
+        	dangerTypeDict.setBusinessId(businessId);
+        	List<TDict> dangerTypes = dictMapper.selectTDictList(dangerTypeDict);
+        	//隐患等级
+        	TDict dangerLevelDict = new TDict();
+        	dangerLevelDict.setParentId("");
+        	dangerLevelDict.setBusinessId(businessId);
+        	List<TDict> dangerLevels = dictMapper.selectTDictList(dangerLevelDict);
+        	//可能后果
+        	TDict maybeResultDict = new TDict();
+        	maybeResultDict.setParentId("");
+        	maybeResultDict.setBusinessId(businessId);
+        	List<TDict> maybeResults = dictMapper.selectTDictList(maybeResultDict);
+        	
+        	Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("deptList", deptList);
+			mapResult.put("checkTypes", checkTypes);
+			mapResult.put("dangerTypes", dangerTypes);
+			mapResult.put("dangerLevels", dangerLevels);
+			mapResult.put("maybeResults", maybeResults);
+        	result.setResult(mapResult);
+			result.setMessage("查询检查项成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询检查项接口异常",e);
+			throw new RuntimeException("查询检查项接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult uploadHiddenDanger(String dangerJson, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	TInspectRecord tInspectRecord = JSON.parseObject(dangerJson, TInspectRecord.class);
+        	if(tInspectRecord == null) {
+        		result.setMessage("完成检查计划参数错误");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	TInspectPlan tInspectPlan = new TInspectPlan();
+        	tInspectPlan.setId(tInspectRecord.getInspectPlanId());
+        	tInspectPlan.setCheckStatus("1");
+        	inspectPlanMapper.updateTInspectPlan(tInspectPlan);
+        	inspectRecordMapper.insertTInspectRecord(tInspectRecord);
+			result.setMessage("完成检查计划成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("完成检查计划接口异常",e);
+			throw new RuntimeException("完成检查计划接口异常");
+		}
+	}
+	
 	
 	
 }

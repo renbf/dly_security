@@ -108,6 +108,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
+    <resultMap type="com.project.security.domain.vo.TUserCourseVo" id="TUserCourseVoResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="progress"    column="progress"    />
+        <result property="proSum"    column="proSum"    />
+        <result property="rank"    column="rank"    />
+    </resultMap>
     
     <update id="updateTUserCourseByUser" parameterType="com.project.security.domain.TUserCourse">
         update t_user_course
@@ -124,4 +134,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where user_id = #{userId} and course_id = #{courseId}
     </update>
+    
+    <select id="courseRanking" parameterType="java.lang.String" resultMap="TUserCourseVoResult">
+    	select u.user_id,u.user_name,d.dept_id,d.dept_name,uc.progress
+		from t_user_course uc 
+		join sys_user u on uc.user_id = u.user_id
+		join sys_dept d on d.dept_id = u.dept_id
+		where uc.user_id = #{userId}
+		order by uc.progress desc
+    </select>
+    
+    <select id="courseRankingByUserId" parameterType="java.util.Map" resultMap="TUserCourseVoResult">
+    	SELECT a.user_id,a.proSum,
+		(SELECT count(DISTINCT proSum) FROM (select uc.user_id,sum(uc.progress) proSum
+		from t_user_course uc 
+		join sys_user u on uc.user_id = u.user_id
+		where u.business_id = #{businessId}
+		group by uc.user_id) b WHERE b.proSum > a.proSum)+1 rank
+		FROM (select uc.user_id,sum(uc.progress) proSum
+		from t_user_course uc 
+		join sys_user u on uc.user_id = u.user_id
+		where u.business_id = #{businessId}
+		group by uc.user_id) a 
+		where a.user_id = #{userId}
+    </select>
 </mapper>
