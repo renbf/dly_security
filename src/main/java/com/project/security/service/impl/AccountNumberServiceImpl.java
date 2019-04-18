@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,7 +24,13 @@ import com.project.common.result.DataResult;
 import com.project.common.result.Result;
 import com.project.security.domain.Dept;
 import com.project.security.domain.TBanner;
+import com.project.security.domain.TDanger;
 import com.project.security.domain.TDict;
+import com.project.security.domain.TDriverAfterLog;
+import com.project.security.domain.TDriverBeforeLog;
+import com.project.security.domain.TDriverLog;
+import com.project.security.domain.TDriverMiddleLog;
+import com.project.security.domain.TGoodsNameType;
 import com.project.security.domain.TIndustryDynamics;
 import com.project.security.domain.TInspectPlan;
 import com.project.security.domain.TInspectRecord;
@@ -35,6 +42,9 @@ import com.project.security.domain.TUserPaper;
 import com.project.security.domain.TUserSubject;
 import com.project.security.domain.TUserSubjectCollect;
 import com.project.security.domain.vo.TCourseVo;
+import com.project.security.domain.vo.TDangerVo;
+import com.project.security.domain.vo.TDictView;
+import com.project.security.domain.vo.TDriverBeforeLogVo;
 import com.project.security.domain.vo.TInspectPlanVo;
 import com.project.security.domain.vo.TInspectTeamProjectVo;
 import com.project.security.domain.vo.TUserCourseVo;
@@ -44,7 +54,13 @@ import com.project.security.domain.vo.UserPaperDetailVo;
 import com.project.security.mapper.DeptMapper;
 import com.project.security.mapper.TBannerMapper;
 import com.project.security.mapper.TCourseMapper;
+import com.project.security.mapper.TDangerMapper;
 import com.project.security.mapper.TDictMapper;
+import com.project.security.mapper.TDriverAfterLogMapper;
+import com.project.security.mapper.TDriverBeforeLogMapper;
+import com.project.security.mapper.TDriverLogMapper;
+import com.project.security.mapper.TDriverMiddleLogMapper;
+import com.project.security.mapper.TGoodsNameTypeMapper;
 import com.project.security.mapper.TIndustryDynamicsMapper;
 import com.project.security.mapper.TInspectPlanMapper;
 import com.project.security.mapper.TInspectRecordMapper;
@@ -58,6 +74,7 @@ import com.project.security.mapper.TUserSubjectCollectMapper;
 import com.project.security.mapper.TUserSubjectMapper;
 import com.project.security.mapper.UserMapper;
 import com.project.security.service.IAccountNumberService;
+import com.project.security.service.IFileSystemService;
 import com.project.security.utils.page.PageInfoUtil;
 import com.project.security.utils.page.TableDataView;
 import com.project.system.domain.SysUser;
@@ -81,6 +98,8 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	@Autowired
 	private TUserMessageMapper userMessageMapper;
 	@Autowired
+	private IFileSystemService fileSystemService;
+	@Autowired
 	private TIndustryDynamicsMapper industryDynamicsMapper;
 	@Autowired
 	private TCourseMapper courseMapper;
@@ -102,6 +121,18 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	private DeptMapper deptMapper;
 	@Autowired
 	private TInspectRecordMapper inspectRecordMapper;
+	@Autowired
+	private TDangerMapper dangerMapper;
+	@Autowired
+	private TGoodsNameTypeMapper goodsNameTypeMapper;
+	@Autowired
+	private TDriverLogMapper driverLogMapper;
+	@Autowired
+	private TDriverBeforeLogMapper driverBeforeLogMapper;
+	@Autowired
+	private TDriverMiddleLogMapper driverMiddleLogMapper;
+	@Autowired
+	private TDriverAfterLogMapper driverAfterLogMapper;
 	@Autowired
 	private TDictMapper dictMapper;
 	
@@ -550,12 +581,27 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 			mapResult.put("dangerLevels", dangerLevels);
 			mapResult.put("maybeResults", maybeResults);
         	result.setResult(mapResult);
-			result.setMessage("查询检查项成功");
+			result.setMessage("上传隐患——查询部门等成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
 		} catch (Exception e) {
-			log.error("查询检查项接口异常",e);
-			throw new RuntimeException("查询检查项接口异常");
+			log.error("上传隐患——查询部门等接口异常",e);
+			throw new RuntimeException("上传隐患——查询部门等接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryHiddenDangerDetail(String dangerId) {
+		DataResult result = new DataResult();
+        try {
+        	TDangerVo tDangerVo = dangerMapper.selectTDangerVoByDangerId(dangerId);
+        	result.setResult(tDangerVo);
+			result.setMessage("隐患详情成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患详情接口异常",e);
+			throw new RuntimeException("隐患详情接口异常");
 		}
 	}
 	
@@ -563,26 +609,238 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult uploadHiddenDanger(String dangerJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	TInspectRecord tInspectRecord = JSON.parseObject(dangerJson, TInspectRecord.class);
-        	if(tInspectRecord == null) {
-        		result.setMessage("完成检查计划参数错误");
-    			result.setStatus(Result.FAILED);
-    			return result;
-        	}
-        	TInspectPlan tInspectPlan = new TInspectPlan();
-        	tInspectPlan.setId(tInspectRecord.getInspectPlanId());
-        	tInspectPlan.setCheckStatus("1");
-        	inspectPlanMapper.updateTInspectPlan(tInspectPlan);
-        	inspectRecordMapper.insertTInspectRecord(tInspectRecord);
-			result.setMessage("完成检查计划成功");
+        	String dangerUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
+        	danger.setId(UUIDUtil.getUUID());
+        	danger.setCreateDate(new Date());
+        	danger.setDangerUrl(dangerUrl);
+        	danger.setStatus("0");
+        	dangerMapper.insertTDanger(danger);
+			result.setMessage("上报隐患成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
 		} catch (Exception e) {
-			log.error("完成检查计划接口异常",e);
-			throw new RuntimeException("完成检查计划接口异常");
+			log.error("上报隐患接口异常",e);
+			throw new RuntimeException("上报隐患接口异常");
 		}
 	}
 	
+	@Override
+	public DataResult rectification(Integer pageNumber,String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	TDanger tDanger = new TDanger();
+        	tDanger.setDochangeUserId(userId);
+        	tDanger.setStatus("1");
+        	List<TDanger> dangerList = dangerMapper.selectTDangerList(tDanger);
+    		TableDataView<TDanger> tableDataView = PageInfoUtil.addPageInfo(dangerList);
+			result.setResult(tableDataView);
+			result.setMessage("隐患整改成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患整改接口异常",e);
+			throw new RuntimeException("隐患整改接口异常");
+		}
+	}
 	
+	@Override
+	public DataResult rectificationDetail(String dangerJson, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	String dochangePicture = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
+        	danger.setStatus("2");
+        	danger.setDochangePicture(dochangePicture);
+        	dangerMapper.updateTDanger(danger);
+			result.setMessage("隐患整改提交成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患整改提交接口异常",e);
+			throw new RuntimeException("隐患整改提交接口异常");
+		}
+	}
 	
+	@Override
+	public DataResult refuseDochange(String dangerId, String refuseText) {
+		DataResult result = new DataResult();
+        try {
+        	TDanger danger = new TDanger();
+        	danger.setId(dangerId);
+        	danger.setStatus("0");
+        	danger.setRefuseText(refuseText);
+        	dangerMapper.updateTDanger(danger);
+			result.setMessage("拒绝整改成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("拒绝整改接口异常",e);
+			throw new RuntimeException("拒绝整改接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult rectificationCheck(Integer pageNumber, String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	TDanger tDanger = new TDanger();
+        	tDanger.setCheckAcceptUserId(userId);
+        	tDanger.setStatus("2");
+        	List<TDanger> dangerList = dangerMapper.selectTDangerList(tDanger);
+    		TableDataView<TDanger> tableDataView = PageInfoUtil.addPageInfo(dangerList);
+			result.setResult(tableDataView);
+			result.setMessage("隐患验收成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患验收接口异常",e);
+			throw new RuntimeException("隐患验收接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult rectificationClose(String dangerJson, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	String checkAcceptUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
+        	danger.setStatus("3");
+        	danger.setCheckAcceptUrl(checkAcceptUrl);
+        	dangerMapper.updateTDanger(danger);
+			result.setMessage("提交隐患验收成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("提交隐患验收接口异常",e);
+			throw new RuntimeException("提交隐患验收接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryLogParamBefore(String businessId) {
+		DataResult result = new DataResult();
+        try {
+        	//货物名称
+        	TGoodsNameType tGoodsNameType = new TGoodsNameType();
+        	tGoodsNameType.setBusinessId(businessId);
+        	List<TGoodsNameType> goodsNameTypeList = goodsNameTypeMapper.selectTGoodsNameTypeList(tGoodsNameType);
+        	//货物类项
+        	List<TDictView> type = dictMapper.selectTDictsByGoodsType("");
+        	//驾驶员
+        	List<SysUser> drivers = userMapper.selectUserByDriver(businessId);
+        	//天气
+        	List<TDictView> weather = dictMapper.selectTDictListByParentId("");
+        	//行车前事项
+        	List<TDictView> carCheckProject = dictMapper.selectTDictListByParentId("");
+        	//确认结论
+        	List<TDictView> sureComment = dictMapper.selectTDictListByParentId("");
+        	Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("goodsNameTypeList", goodsNameTypeList);
+			mapResult.put("type", type);
+			mapResult.put("drivers", drivers);
+			mapResult.put("weather", weather);
+			mapResult.put("carCheckProject", carCheckProject);
+			mapResult.put("sureComment", sureComment);
+        	result.setResult(mapResult);
+			result.setMessage("查询行车前需要日志参数成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询行车前需要日志参数接口异常",e);
+			throw new RuntimeException("查询行车前需要日志参数接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryLogParamMiddle(String businessId) {
+		DataResult result = new DataResult();
+        try {
+        	//行车中事项
+        	List<TDictView> carCheckProject = dictMapper.selectTDictListByParentId("");
+        	Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("carCheckProject", carCheckProject);
+        	result.setResult(mapResult);
+			result.setMessage("查询行车中需要日志参数成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询行车中需要日志参数接口异常",e);
+			throw new RuntimeException("查询行车中需要日志参数接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryLogParamAfter(String businessId) {
+		DataResult result = new DataResult();
+        try {
+        	//行车后事项
+        	List<TDictView> carCheckProject = dictMapper.selectTDictListByParentId("");
+        	Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("carCheckProject", carCheckProject);
+        	result.setResult(mapResult);
+			result.setMessage("查询行车后需要日志参数成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询行车后需要日志参数接口异常",e);
+			throw new RuntimeException("查询行车后需要日志参数接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult addBeforeLog(String driverLogJson, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	String checkAcceptUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	TDriverBeforeLogVo driverLog = JSON.parseObject(driverLogJson, TDriverBeforeLogVo.class);
+        	TDriverLog tDriverLog = new TDriverLog();
+        	TDriverBeforeLog tDriverBeforeLog = new TDriverBeforeLog();
+        	BeanUtils.copyProperties(tDriverLog, driverLog);
+        	BeanUtils.copyProperties(tDriverBeforeLog, driverLog);
+        	List<TDictView> carCheckProjectList = driverLog.getCarCheckProjectList();
+        	tDriverBeforeLog.setCarCheckProject(JSON.toJSONString(carCheckProjectList));
+        	driverLogMapper.insertTDriverLog(tDriverLog);
+        	driverBeforeLogMapper.insertTDriverBeforeLog(tDriverBeforeLog);
+			result.setMessage("添加行车前日志成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("添加行车前日志接口异常",e);
+			throw new RuntimeException("添加行车前日志接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult addMiddleLog(String driverLogJson, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	String checkAcceptUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	TDriverMiddleLog tDriverMiddleLog = JSON.parseObject(driverLogJson, TDriverMiddleLog.class);
+        	driverMiddleLogMapper.insertTDriverMiddleLog(tDriverMiddleLog);
+			result.setMessage("添加行车中日志成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("添加行车中日志接口异常",e);
+			throw new RuntimeException("添加行车中日志接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult addAfterLog(String driverLogJson, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	TDriverAfterLog tDriverAfterLog = JSON.parseObject(driverLogJson, TDriverAfterLog.class);
+        	driverAfterLogMapper.insertTDriverAfterLog(tDriverAfterLog);
+			result.setMessage("添加行车后日志成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("添加行车后日志接口异常",e);
+			throw new RuntimeException("添加行车后日志接口异常");
+		}
+	}
 }

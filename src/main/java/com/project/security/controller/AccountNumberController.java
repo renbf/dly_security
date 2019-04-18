@@ -442,4 +442,217 @@ public class AccountNumberController {
 		}
 	}
 	
+	@RequestMapping(value="/rectification ",method=RequestMethod.GET)
+	@ApiOperation(value="隐患整改接口接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result rectification(HttpServletRequest request,
+			@ApiParam(name="pageNumber",value="第几页",required=true) Integer pageNumber,
+			@ApiParam(name="userId",value="用户id",required=true) String userId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.rectification(pageNumber,userId);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患整改失败",e);
+			result.setMessage("隐患整改接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/queryHiddenDangerDetail",method=RequestMethod.GET)
+	@ApiOperation(value="隐患详情接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryHiddenDangerDetail(HttpServletRequest request,
+			@ApiParam(name="dangerId",value="隐患id",required=true) String dangerId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.queryHiddenDangerDetail(dangerId);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患详情接口失败",e);
+			result.setMessage("隐患详情接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/rectificationDetail",method=RequestMethod.POST)
+	@ApiOperation(value="隐患整改提交接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result rectificationDetail(HttpServletRequest request,
+			@ApiParam(name="dangerJson",value="隐患整改提交json字符串",required=true) String dangerJson,
+			@ApiParam(name="file",value="整改图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.rectificationDetail(dangerJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患整改提交失败",e);
+			result.setMessage("隐患整改提交接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/refuseDochange",method=RequestMethod.POST)
+	@ApiOperation(value="拒绝整改接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result refuseDochange(HttpServletRequest request,
+			@ApiParam(name="dangerId",value="隐患id",required=true) String dangerId,
+			@ApiParam(name="refuseText",value="拒绝原因",required=true) String refuseText
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.refuseDochange(dangerId,refuseText);
+			return result;
+		} catch (Exception e) {
+			log.error("拒绝整改失败",e);
+			result.setMessage("拒绝整改接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/rectificationCheck",method=RequestMethod.GET)
+	@ApiOperation(value="隐患验收接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result rectificationCheck(HttpServletRequest request,
+			@ApiParam(name="pageNumber",value="第几页",required=true) Integer pageNumber,
+			@ApiParam(name="userId",value="用户id",required=true) String userId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.rectificationCheck(pageNumber,userId);
+			return result;
+		} catch (Exception e) {
+			log.error("隐患验收失败",e);
+			result.setMessage("隐患验收接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	
+	@RequestMapping(value="/rectificationClose",method=RequestMethod.POST)
+	@ApiOperation(value="提交隐患验收接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result rectificationClose(HttpServletRequest request,
+			@ApiParam(name="dangerJson",value="提交隐患验收json字符串",required=true) String dangerJson,
+			@ApiParam(name="file",value="验收图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.rectificationClose(dangerJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("提交隐患验收失败",e);
+			result.setMessage("提交隐患验收接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/queryLogParamBefore",method=RequestMethod.GET)
+	@ApiOperation(value="行车前需要日志参数接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryLogParamBefore(HttpServletRequest request,
+			@ApiParam(name="businessId",value="企业id",required=true) String businessId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.queryLogParamBefore(businessId);
+			return result;
+		} catch (Exception e) {
+			log.error("查询行车前需要日志参数失败",e);
+			result.setMessage("查询行车前需要日志参数失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/queryLogParamMiddle",method=RequestMethod.GET)
+	@ApiOperation(value="行车中需要日志参数接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryLogParamMiddle(HttpServletRequest request,
+			@ApiParam(name="businessId",value="企业id",required=true) String businessId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.queryLogParamMiddle(businessId);
+			return result;
+		} catch (Exception e) {
+			log.error("查询行车中需要日志参数失败",e);
+			result.setMessage("查询行车中需要日志参数失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/queryLogParamAfter",method=RequestMethod.GET)
+	@ApiOperation(value="行车后需要日志参数接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryLogParamAfter(HttpServletRequest request,
+			@ApiParam(name="businessId",value="企业id",required=true) String businessId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.queryLogParamAfter(businessId);
+			return result;
+		} catch (Exception e) {
+			log.error("查询行车后需要日志参数失败",e);
+			result.setMessage("查询行车后需要日志参数失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	
+	@RequestMapping(value="/addBeforeLog",method=RequestMethod.POST)
+	@ApiOperation(value="添加行车前日志接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result addBeforeLog(HttpServletRequest request,
+			@ApiParam(name="driverLogJson",value="添加日志json字符串",required=true) String driverLogJson,
+			@ApiParam(name="file",value="验收图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.addBeforeLog(driverLogJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("添加行车前日志失败",e);
+			result.setMessage("添加行车前日志接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/addMiddleLog",method=RequestMethod.POST)
+	@ApiOperation(value="添加行车中日志接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result addMiddleLog(HttpServletRequest request,
+			@ApiParam(name="driverLogJson",value="添加日志json字符串",required=true) String driverLogJson,
+			@ApiParam(name="file",value="验收图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.addMiddleLog(driverLogJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("添加行车中日志失败",e);
+			result.setMessage("添加行车中日志接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/addAfterLog",method=RequestMethod.POST)
+	@ApiOperation(value="添加行车后日志接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result addAfterLog(HttpServletRequest request,
+			@ApiParam(name="driverLogJson",value="添加日志json字符串",required=true) String driverLogJson,
+			@ApiParam(name="file",value="验收图片",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = accountNumberService.addAfterLog(driverLogJson,file);
+			return result;
+		} catch (Exception e) {
+			log.error("添加行车后日志失败",e);
+			result.setMessage("添加行车后日志接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
 }

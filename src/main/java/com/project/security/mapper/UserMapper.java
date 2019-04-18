@@ -74,5 +74,11 @@ public interface UserMapper
      * @return
      */
     public int updateUserAuth(SysUser user);
+    /**
+     * 查询公司的驾驶员
+     * @param businessId
+     * @return
+     */
+    public List<SysUser> selectUserByDriver(String businessId);
     
 }

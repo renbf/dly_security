@@ -1,7 +1,8 @@
 package com.project.security.service;
 
 import java.io.File;
-import java.io.InputStream;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 
@@ -10,10 +11,8 @@ import java.io.InputStream;
  */
 public interface IFileSystemService {
 	
-	boolean uploadFile(String targetPath, InputStream inputStream) throws Exception;
+	String uploadFile(String targetPath, MultipartFile file) throws Exception;
 	 
-    boolean uploadFile(String targetPath, File file) throws Exception;
- 
     File downloadFile(String targetPath) throws Exception;
  
     boolean deleteFile(String targetPath) throws Exception;

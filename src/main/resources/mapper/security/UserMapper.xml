@@ -175,4 +175,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		update sys_user set is_auth = #{isAuth},auth_url = #{authUrl}
  		where user_id = #{userId}
  	</update>
+ 	
+ 	<select id="selectUserByDriver" parameterType="java.lang.String" resultMap="UserResult">
+ 		<include refid="selectUserVo"/>
+    	from sys_user u
+ 		join t_user_driver_basic udb
+ 		where udb.business_id = #{businessId}
+ 	</select>
 </mapper>

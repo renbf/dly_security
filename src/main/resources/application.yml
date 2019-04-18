@@ -155,15 +155,15 @@ sftp:
   client:
     protocol: sftp
 # ip地址
-    host: 127.0.0.1
+    host: 60.205.187.254
 # 端口
     port: 22
 # 用户名
-    username: sftp
+    username: root
 # 密码
-    password: sftp
+    password: Yiyoushequ@0929
 # 根路径
-    root: /home/sftp/
+    root: /home/apache-tomcat-8.5.8/webapps/image/
 # 密钥文件路径
     privateKey: 
 # 密钥的密码

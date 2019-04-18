@@ -129,8 +129,75 @@ public interface IAccountNumberService {
 	public DataResult queryHiddenDanger(String businessId);
 	
 	/**
+	 * 隐患详情接口
+	 * @return
+	 */
+	public DataResult queryHiddenDangerDetail(String dangerId);
+	
+	/**
 	 * 上报隐患接口
 	 * @return
 	 */
 	public DataResult uploadHiddenDanger(String dangerJson,MultipartFile file);
+	/**
+	 * 隐患整改接口
+	 * @param userId
+	 * @return
+	 */
+	public DataResult rectification(Integer pageNumber,String userId);
+	
+	/**
+	 * 隐患整改提交接口
+	 * @return
+	 */
+	public DataResult rectificationDetail(String dangerJson,MultipartFile file);
+	
+	/**
+	 * 拒绝整改接口
+	 * @return
+	 */
+	public DataResult refuseDochange(String dangerId,String refuseText);
+	
+	/**
+	 * 隐患验收接口
+	 * @return
+	 */
+	public DataResult rectificationCheck(Integer pageNumber,String userId);
+	
+	/**
+	 * 提交隐患验收接口
+	 * @return
+	 */
+	public DataResult rectificationClose(String dangerJson,MultipartFile file);
+	/**
+	 * 查询行车前需要日志参数接口
+	 * @return
+	 */
+	public DataResult queryLogParamBefore(String businessId);
+	/**
+	 * 查询行车中需要日志参数接口
+	 * @return
+	 */
+	public DataResult queryLogParamMiddle(String businessId);
+	
+	/**
+	 * 查询行车后需要日志参数接口
+	 * @return
+	 */
+	public DataResult queryLogParamAfter(String businessId);
+	/**
+	 * 添加行车前日志接口
+	 * @return
+	 */
+	public DataResult addBeforeLog(String driverLogJson,MultipartFile file);
+	/**
+	 * 添加行车中日志接口
+	 * @return
+	 */
+	public DataResult addMiddleLog(String driverLogJson,MultipartFile file);
+	/**
+	 * 添加行车后日志接口
+	 * @return
+	 */
+	public DataResult addAfterLog(String driverLogJson,MultipartFile file);
 }

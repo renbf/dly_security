@@ -108,5 +108,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
+    <resultMap type="com.project.security.domain.vo.TDictView" id="TDictViewResult">
+        <result property="id"    column="id"    />
+        <result property="dictName"    column="dict_name"    />
+        <result property="dictCode"    column="dict_code"    />
+    </resultMap>
     
+    <select id="selectTDictListByParentId" parameterType="java.lang.String" resultMap="TDictViewResult">
+    	<include refid="selectTDictbasicColums"/>
+        from t_dict d
+        where d.parent_id = #{parentId}
+    </select>
+    
+    <select id="selectTDictsByGoodsType" parameterType="java.lang.String" resultMap="TDictViewResult">
+    	select d.id,d.dict_name,d.parent_id
+		from t_dict d
+		where d.parent_id = #{dictId}
+		union all 
+		select d.id,d.dict_name,d.parent_id
+		from t_dict d
+		where d.parent_id in (select id from t_dict where parent_id = #{dictId})
+		union all 
+		select d.id,d.dict_name,d.parent_id
+		from t_dict d
+		where d.parent_id in (select d1.id from t_dict d1 where d1.parent_id in (select id from t_dict where parent_id = #{dictId}))
+    </select>
 </mapper>

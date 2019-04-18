@@ -77,7 +77,7 @@ public class GenUtils {
         velocityContext.put("classname", table.getClassname());
         velocityContext.put("moduleName", GenUtils.getModuleName(packageName));
         velocityContext.put("columns", table.getColumns());
-        velocityContext.put("package", packageName + "." + table.getClassname());
+        velocityContext.put("package", packageName);
         velocityContext.put("author", Global.getAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
         return velocityContext;
@@ -128,9 +128,9 @@ public class GenUtils {
         String mybatisPath = MYBATIS_PATH + "/" + moduleName + "/" + className;
         String htmlPath = TEMPLATES_PATH + "/" + moduleName + "/" + classname;
 
-        if (StringUtils.isNotEmpty(classname)) {
-            javaPath += classname.replace(".", "/") + "/";
-        }
+//        if (StringUtils.isNotEmpty(classname)) {
+//            javaPath += classname.replace(".", "/") + "/";
+//        }
 
         if (template.contains("domain.java.vm")) {
             return javaPath + "domain" + "/" + className + ".java";
@@ -145,7 +145,7 @@ public class GenUtils {
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
-            return javaPath + "service" + "/" + className + "ServiceImpl.java";
+            return javaPath + "service" + "/impl/" + className + "ServiceImpl.java";
         }
 
         if (template.contains("Controller.java.vm")) {

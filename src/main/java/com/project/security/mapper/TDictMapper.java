@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
+import java.util.List;
+
 import com.project.security.domain.TDict;
-import java.util.List;	
+import com.project.security.domain.vo.TDictView;	
 
 /**
  * 字典 数据层
@@ -59,4 +61,16 @@ public interface TDictMapper
      */
 	public int deleteTDictByIds(String[] ids);
 	//以上自动生成的尽量别动
+	/**
+	 * 查询子节点
+	 * @param parentId
+	 * @return
+	 */
+	public List<TDictView> selectTDictListByParentId(String parentId);
+	/**
+	 * 货物名称，类项字典
+	 * @param dictId
+	 * @return
+	 */
+	public List<TDictView> selectTDictsByGoodsType(String dictId);
 }

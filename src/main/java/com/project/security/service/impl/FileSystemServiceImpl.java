@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -19,6 +20,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import com.project.common.utils.Md5Utils;
 import com.project.framework.config.SftpConfig;
 import com.project.security.service.IFileSystemService;
 /**
@@ -172,7 +174,7 @@ public class FileSystemServiceImpl implements IFileSystemService {
     }
     
 	@Override
-	public boolean uploadFile(String targetPath, InputStream inputStream) throws Exception{
+	public String uploadFile(String targetPath, MultipartFile file) throws Exception{
 		ChannelSftp sftp = this.createSftp();
 	    try {
 	        sftp.cd(config.getRoot());
@@ -186,24 +188,17 @@ public class FileSystemServiceImpl implements IFileSystemService {
 	            log.error("Remote path error. path:{}", targetPath);
 	            throw new Exception("Upload File failure");
 	        }
-	        sftp.put(inputStream, fileName);
-	        return true;
+	        fileName = fileName.replace("_", " ");
+	        fileName = Md5Utils.hash(fileName + System.nanoTime());
+	        sftp.put(file.getInputStream(), fileName);
+	        
+	        return "http://60.205.187.254:8088/image/sercurity/"+fileName;
 	    } catch (Exception e) {
 	        log.error("Upload file failure. TargetPath: {}", targetPath, e);
 	        throw new RuntimeException("Upload File failure");
 	    } finally {
 	        this.disconnect(sftp);
 	    }
-	}
-
-	@Override
-	public boolean uploadFile(String targetPath, File file) throws Exception{
-		try {
-			return this.uploadFile(targetPath, new FileInputStream(file));
-		} catch (Exception e) {
-			log.error("",e);
-			throw new RuntimeException("uploadFile(String targetPath, File file)失败");
-		}
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import com.project.framework.shiro.service.LoginService;
 import com.project.framework.shiro.service.PasswordService;
 import com.project.framework.util.MessageUtils;
 import com.project.security.mapper.UserMapper;
+import com.project.security.service.IFileSystemService;
 import com.project.security.service.IUserInfoService;
 import com.project.system.domain.SysUser;
 
@@ -39,6 +40,8 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	private LoginService loginService;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private IFileSystemService fileSystemService;
 	
 	@Override
 	public DataResult login(String userName, String passWord) {
@@ -119,9 +122,10 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	public DataResult uploadAuthUrl(String userId, MultipartFile authImg) {
 		DataResult result = new DataResult();
 		try {
+			String authUrl = fileSystemService.uploadFile("/sercurity/"+authImg.getOriginalFilename(), authImg);
 			SysUser user = new SysUser();
 			user.setIsAuth("1");
-			user.setAuthUrl("http://localhost:8080");
+			user.setAuthUrl(authUrl);
 			user.setUserId(Long.valueOf(userId));
 			userMapper.updateUserAuth(user);
 			result.setMessage("上传认证成功");
