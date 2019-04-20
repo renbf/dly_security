@@ -3,8 +3,10 @@ package com.project.security.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -41,12 +43,16 @@ import com.project.security.domain.TUserMessage;
 import com.project.security.domain.TUserPaper;
 import com.project.security.domain.TUserSubject;
 import com.project.security.domain.TUserSubjectCollect;
+import com.project.security.domain.User;
 import com.project.security.domain.vo.TCourseVo;
 import com.project.security.domain.vo.TDangerVo;
 import com.project.security.domain.vo.TDictView;
+import com.project.security.domain.vo.TDriverAfterLogVo;
 import com.project.security.domain.vo.TDriverBeforeLogVo;
+import com.project.security.domain.vo.TDriverMiddleLogVo;
 import com.project.security.domain.vo.TInspectPlanVo;
 import com.project.security.domain.vo.TInspectTeamProjectVo;
+import com.project.security.domain.vo.TSubjectVo;
 import com.project.security.domain.vo.TUserCourseVo;
 import com.project.security.domain.vo.TUserMessageVo;
 import com.project.security.domain.vo.TUserPaperVo;
@@ -67,6 +73,7 @@ import com.project.security.mapper.TInspectRecordMapper;
 import com.project.security.mapper.TInspectTeamProjectMapper;
 import com.project.security.mapper.TMessageMapper;
 import com.project.security.mapper.TNoticeMapper;
+import com.project.security.mapper.TSubjectMapper;
 import com.project.security.mapper.TUserCourseMapper;
 import com.project.security.mapper.TUserMessageMapper;
 import com.project.security.mapper.TUserPaperMapper;
@@ -133,6 +140,8 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	private TDriverMiddleLogMapper driverMiddleLogMapper;
 	@Autowired
 	private TDriverAfterLogMapper driverAfterLogMapper;
+	@Autowired
+	private TSubjectMapper subjectMapper;
 	@Autowired
 	private TDictMapper dictMapper;
 	
@@ -320,19 +329,62 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult examPaperDetail(String userPaperId) {
 		DataResult result = new DataResult();
         try {
-        	TUserPaper userPaper = userPaperMapper.selectTUserPaperById(userPaperId);
+        	TUserPaperVo userPaper = userPaperMapper.selectTUserPaperByUserPaperId(userPaperId);
         	if(userPaper == null) {
         		result.setMessage("没有查到试卷");
     			result.setStatus(Result.FAILED);
     			return result;
         	}
         	if(userPaper.getStartDate() == null) {
-        		userPaper.setStartDate(new Date());
-        		userPaper.setStatus("1");
-        		userPaperMapper.updateTUserPaper(userPaper);
+        		TUserPaper tUserPaper = new TUserPaper();
+        		tUserPaper.setStartDate(new Date());
+        		tUserPaper.setStatus("1");
+        		tUserPaper.setId(userPaperId);
+        		userPaperMapper.updateTUserPaper(tUserPaper);
+        		userPaper.setRemainingTime(Long.valueOf(userPaper.getPaperTimes()));
+        	}else {
+        		if(userPaper.getRemainingTime().longValue() <= 0) {
+            		if(userPaper.getCommitDate() == null) {
+            			TUserPaper tUserPaper = new TUserPaper();
+                		tUserPaper.setCommitDate(new Date());
+                		tUserPaper.setId(userPaperId);
+                		userPaperMapper.updateTUserPaper(tUserPaper);
+            		}
+            		result.setMessage("考试时间已到");
+        			result.setStatus(Result.FAILED);
+        			return result;
+            	}
         	}
-    		List<UserPaperDetailVo> userPaperDetailVos = userPaperMapper.examPaperDetail(userPaperId);
-			result.setResult(userPaperDetailVos);
+    		List<UserPaperDetailVo> userPaperDetailVoList = userPaperMapper.examPaperDetail(userPaperId);
+    		Set<String> distinctSet = new HashSet<String>();
+    		List<UserPaperDetailVo> examQuestions = new ArrayList<UserPaperDetailVo>();
+    		for(UserPaperDetailVo userPaperDetailVo:userPaperDetailVoList) {
+    			String subjectId = userPaperDetailVo.getSubjectId();
+    			if(!distinctSet.contains(subjectId)) {
+    				List<Map<String,Object>> optionContents = new ArrayList<Map<String,Object>>();
+    				Map<String,Object> optionMap = new HashMap<String, Object>();
+    				optionMap.put("optionValue", userPaperDetailVo.getOptionValue());
+    				optionMap.put("content", userPaperDetailVo.getContent());
+    				optionMap.put("optionSort", userPaperDetailVo.getOptionSort());
+    				optionContents.add(optionMap);
+    				userPaperDetailVo.setOptionContents(optionContents);
+    				userPaperDetailVo.setOptionValue(null);
+    				userPaperDetailVo.setContent(null);
+    				userPaperDetailVo.setOptionSort(null);
+    				examQuestions.add(userPaperDetailVo);
+    				distinctSet.add(subjectId);
+    			}else {
+    				UserPaperDetailVo userPaperDetailVo2 = examQuestions.get(examQuestions.size() -1);
+    				List<Map<String,Object>> optionContents = userPaperDetailVo2.getOptionContents();
+    				Map<String,Object> optionMap = new HashMap<String, Object>();
+    				optionMap.put("optionValue", userPaperDetailVo.getOptionValue());
+    				optionMap.put("content", userPaperDetailVo.getContent());
+    				optionMap.put("optionSort", userPaperDetailVo.getOptionSort());
+    				optionContents.add(optionMap);
+    			}
+    		}
+    		userPaper.setExamQuestions(examQuestions);
+			result.setResult(userPaper);
 			result.setMessage("考试试卷详情成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -403,13 +455,13 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	}
 	
 	@Override
-	public DataResult videoCollection(String userId, String courseId) {
+	public DataResult videoCollection(String userId, String courseId,String isCollect) {
 		DataResult result = new DataResult();
         try {
         	TUserCourse tUserCourse = new TUserCourse();
         	tUserCourse.setUserId(userId);
         	tUserCourse.setCourseId(courseId);
-        	tUserCourse.setIsCollect("1");
+        	tUserCourse.setIsCollect(isCollect);
         	userCourseMapper.updateTUserCourse(tUserCourse);
 			result.setMessage("收藏视频成功");
 			result.setStatus(Result.SUCCESS);
@@ -421,14 +473,18 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	}
 	
 	@Override
-	public DataResult subjectCollection(String userId, String subjectId) {
+	public DataResult subjectCollection(String userId, String subjectId,String isCollect) {
 		DataResult result = new DataResult();
         try {
-        	TUserSubjectCollect tUserSubjectCollect = new TUserSubjectCollect();
-        	tUserSubjectCollect.setUserId(userId);
-        	tUserSubjectCollect.setSubjectId(subjectId);
-        	tUserSubjectCollect.setIsCollect("1");
-        	userSubjectCollectMapper.insertTUserSubjectCollect(tUserSubjectCollect);
+        	if("1".equals(isCollect)) {
+        		TUserSubjectCollect tUserSubjectCollect = new TUserSubjectCollect();
+            	tUserSubjectCollect.setUserId(userId);
+            	tUserSubjectCollect.setSubjectId(subjectId);
+            	tUserSubjectCollect.setIsCollect("1");
+            	userSubjectCollectMapper.insertTUserSubjectCollect(tUserSubjectCollect);
+        	}else {
+        		userSubjectCollectMapper.deleteTUserSubjectCollectByKey(userId,subjectId);
+        	}
 			result.setMessage("收藏题目成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -520,6 +576,13 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
     			result.setStatus(Result.FAILED);
     			return result;
         	}
+        	String userSignUrl = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(userSignUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
+			tInspectRecord.setUserSignUrl(userSignUrl);
         	TInspectPlan tInspectPlan = new TInspectPlan();
         	tInspectPlan.setId(tInspectRecord.getInspectPlanId());
         	tInspectPlan.setCheckStatus("1");
@@ -609,7 +672,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult uploadHiddenDanger(String dangerJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	String dangerUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	String dangerUrl = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(dangerUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
         	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
         	danger.setId(UUIDUtil.getUUID());
         	danger.setCreateDate(new Date());
@@ -649,7 +717,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult rectificationDetail(String dangerJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	String dochangePicture = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	String dochangePicture = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(dochangePicture)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
         	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
         	danger.setStatus("2");
         	danger.setDochangePicture(dochangePicture);
@@ -705,7 +778,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult rectificationClose(String dangerJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	String checkAcceptUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	String checkAcceptUrl = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(checkAcceptUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
         	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
         	danger.setStatus("3");
         	danger.setCheckAcceptUrl(checkAcceptUrl);
@@ -720,9 +798,16 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	}
 	
 	@Override
-	public DataResult queryLogParamBefore(String businessId) {
+	public DataResult queryLogParamBefore(String userId) {
 		DataResult result = new DataResult();
         try {
+        	SysUser driver = userMapper.selectDriverUser(userId);
+        	if(driver == null) {
+        		result.setMessage("当前用户不是驾驶员");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	String businessId = driver.getBusinessId();
         	//货物名称
         	TGoodsNameType tGoodsNameType = new TGoodsNameType();
         	tGoodsNameType.setBusinessId(businessId);
@@ -731,17 +816,14 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
         	List<TDictView> type = dictMapper.selectTDictsByGoodsType("");
         	//驾驶员
         	List<SysUser> drivers = userMapper.selectUserByDriver(businessId);
-        	//天气
-        	List<TDictView> weather = dictMapper.selectTDictListByParentId("");
         	//行车前事项
-        	List<TDictView> carCheckProject = dictMapper.selectTDictListByParentId("");
+        	List<TDictView> carCheckProject = dictMapper.selectTDictListBybusinessId("",businessId);
         	//确认结论
-        	List<TDictView> sureComment = dictMapper.selectTDictListByParentId("");
+        	List<TDictView> sureComment = dictMapper.selectTDictListBybusinessId("",businessId);
         	Map<String, Object> mapResult = new HashMap<>();
 			mapResult.put("goodsNameTypeList", goodsNameTypeList);
 			mapResult.put("type", type);
 			mapResult.put("drivers", drivers);
-			mapResult.put("weather", weather);
 			mapResult.put("carCheckProject", carCheckProject);
 			mapResult.put("sureComment", sureComment);
         	result.setResult(mapResult);
@@ -759,7 +841,7 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 		DataResult result = new DataResult();
         try {
         	//行车中事项
-        	List<TDictView> carCheckProject = dictMapper.selectTDictListByParentId("");
+        	List<TDictView> carCheckProject = dictMapper.selectTDictListBybusinessId("",businessId);
         	Map<String, Object> mapResult = new HashMap<>();
 			mapResult.put("carCheckProject", carCheckProject);
         	result.setResult(mapResult);
@@ -777,7 +859,7 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 		DataResult result = new DataResult();
         try {
         	//行车后事项
-        	List<TDictView> carCheckProject = dictMapper.selectTDictListByParentId("");
+        	List<TDictView> carCheckProject = dictMapper.selectTDictListBybusinessId("",businessId);
         	Map<String, Object> mapResult = new HashMap<>();
 			mapResult.put("carCheckProject", carCheckProject);
         	result.setResult(mapResult);
@@ -794,7 +876,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult addBeforeLog(String driverLogJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	String checkAcceptUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	String drivePhotoUrl = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(drivePhotoUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
         	TDriverBeforeLogVo driverLog = JSON.parseObject(driverLogJson, TDriverBeforeLogVo.class);
         	TDriverLog tDriverLog = new TDriverLog();
         	TDriverBeforeLog tDriverBeforeLog = new TDriverBeforeLog();
@@ -802,6 +889,7 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
         	BeanUtils.copyProperties(tDriverBeforeLog, driverLog);
         	List<TDictView> carCheckProjectList = driverLog.getCarCheckProjectList();
         	tDriverBeforeLog.setCarCheckProject(JSON.toJSONString(carCheckProjectList));
+        	tDriverBeforeLog.setDrivePhotoUrl(drivePhotoUrl);
         	driverLogMapper.insertTDriverLog(tDriverLog);
         	driverBeforeLogMapper.insertTDriverBeforeLog(tDriverBeforeLog);
 			result.setMessage("添加行车前日志成功");
@@ -817,8 +905,14 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult addMiddleLog(String driverLogJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	String checkAcceptUrl = fileSystemService.uploadFile("/security"+file.getOriginalFilename(), file);
+        	String drivePhotoUrl = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(drivePhotoUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
         	TDriverMiddleLog tDriverMiddleLog = JSON.parseObject(driverLogJson, TDriverMiddleLog.class);
+        	tDriverMiddleLog.setDrivingPhoto(drivePhotoUrl);
         	driverMiddleLogMapper.insertTDriverMiddleLog(tDriverMiddleLog);
 			result.setMessage("添加行车中日志成功");
 			result.setStatus(Result.SUCCESS);
@@ -833,7 +927,14 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult addAfterLog(String driverLogJson, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
+        	String drivePhotoUrl = fileSystemService.uploadFile(file);
+			if(StringUtils.isEmpty(drivePhotoUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
         	TDriverAfterLog tDriverAfterLog = JSON.parseObject(driverLogJson, TDriverAfterLog.class);
+        	tDriverAfterLog.setDrivingPhoto(drivePhotoUrl);
         	driverAfterLogMapper.insertTDriverAfterLog(tDriverAfterLog);
 			result.setMessage("添加行车后日志成功");
 			result.setStatus(Result.SUCCESS);
@@ -843,4 +944,168 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 			throw new RuntimeException("添加行车后日志接口异常");
 		}
 	}
+	
+	@Override
+	public DataResult queryLogBeforeDetail(String driverLogId) {
+		DataResult result = new DataResult();
+        try {
+        	TDriverBeforeLogVo driverBeforeLogVo = driverLogMapper.queryLogBeforeDetail(driverLogId);
+        	String carCheckProject = driverBeforeLogVo.getCarCheckProject();
+        	List<TDictView> carCheckProjectList = JSONArray.parseArray(carCheckProject, TDictView.class);
+        	driverBeforeLogVo.setCarCheckProjectList(carCheckProjectList);
+        	result.setResult(driverBeforeLogVo);
+			result.setMessage("查询日志详情——行车前成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询日志详情——行车前接口异常",e);
+			throw new RuntimeException("查询日志详情——行车前接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryLogMiddleDetail(String driverLogId) {
+		DataResult result = new DataResult();
+        try {
+        	TDriverMiddleLogVo driverMiddleLogVo = driverLogMapper.queryLogMiddleDetail(driverLogId);
+        	String carCheckProject = driverMiddleLogVo.getCarCheckProject();
+        	List<TDictView> carCheckProjectList = JSONArray.parseArray(carCheckProject, TDictView.class);
+        	driverMiddleLogVo.setCarCheckProjectList(carCheckProjectList);
+        	result.setResult(driverMiddleLogVo);
+			result.setMessage("查询日志详情——行车中成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询日志详情——行车中接口异常",e);
+			throw new RuntimeException("查询日志详情——行车中接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryLogAfterDetail(String driverLogId) {
+		DataResult result = new DataResult();
+        try {
+        	TDriverAfterLogVo driverAfterLogVo = driverLogMapper.queryLogAfterDetail(driverLogId);
+        	String carCheckProject = driverAfterLogVo.getCarCheckProject();
+        	List<TDictView> carCheckProjectList = JSONArray.parseArray(carCheckProject, TDictView.class);
+        	driverAfterLogVo.setCarCheckProjectList(carCheckProjectList);
+        	result.setResult(driverAfterLogVo);
+			result.setMessage("查询日志详情——行车后成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询日志详情——行车后接口异常",e);
+			throw new RuntimeException("查询日志详情——行车后接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult queryLog(Integer pageNumber,String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	List<TDriverLog> driverLogs = driverLogMapper.selectTDriverLogsByUserId(userId);
+    		TableDataView<TDriverLog> tableDataView = PageInfoUtil.addPageInfo(driverLogs);
+			result.setResult(tableDataView);
+			result.setMessage("查询日志成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询日志接口异常",e);
+			throw new RuntimeException("查询日志接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult myExam(Integer pageNumber, String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	Map<String,Object> param = new HashMap<String, Object>();
+        	param.put("hasCommitDate", "1");
+        	param.put("userId", userId);
+    		List<TUserPaperVo> list = userPaperMapper.selectTUserPapersByWhere(param);
+    		TableDataView<TUserPaperVo> tableDataView = PageInfoUtil.addPageInfo(list);
+			result.setResult(tableDataView);
+			result.setMessage("查询我的考卷成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询我的考卷接口异常",e);
+			throw new RuntimeException("查询我的考卷接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult courseCollection(Integer pageNumber, String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	Map<String,Object> param = new HashMap<String, Object>();
+        	param.put("isCollect", "1");
+        	param.put("userId", userId);
+    		List<TCourseVo> courseList = courseMapper.courseCollection(param);
+    		TableDataView<TCourseVo> tableDataView = PageInfoUtil.addPageInfo(courseList);
+			result.setResult(tableDataView);
+			result.setMessage("查询我的课程收藏成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询我的课程收藏接口异常",e);
+			throw new RuntimeException("查询我的课程收藏接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult examCollection(Integer pageNumber, String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+    		List<TSubjectVo> list = subjectMapper.examCollection(userId);
+    		TableDataView<TSubjectVo> tableDataView = PageInfoUtil.addPageInfo(list);
+			result.setResult(tableDataView);
+			result.setMessage("查询我的考题收藏成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询我的考题收藏接口异常",e);
+			throw new RuntimeException("查询我的考题收藏接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult myCourse(Integer pageNumber, String userId) {
+		DataResult result = new DataResult();
+        try {
+        	PageHelper.startPage(pageNumber, Constants.PAGE_SIZE_NUMBER);
+        	Map<String,Object> param = new HashMap<String, Object>();
+        	param.put("status", "2");
+        	param.put("userId", userId);
+    		List<TCourseVo> courseList = courseMapper.courseCollection(param);
+    		TableDataView<TCourseVo> tableDataView = PageInfoUtil.addPageInfo(courseList);
+			result.setResult(tableDataView);
+			result.setMessage("查询我的课程成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询我的课程接口异常",e);
+			throw new RuntimeException("查询我的课程接口异常");
+		}
+	}
+	
+	@Override
+	public DataResult getUserInfo(String userId) {
+		DataResult result = new DataResult();
+        try {
+        	User sysUser = userMapper.selectUserByUserId(Long.valueOf(userId));
+        	result.setResult(sysUser);
+			result.setMessage("查询个人信息成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询个人信息接口异常",e);
+			throw new RuntimeException("查询个人信息接口异常");
+		}
+	}
+	
 }

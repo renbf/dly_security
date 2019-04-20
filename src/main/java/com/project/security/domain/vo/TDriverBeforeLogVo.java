@@ -76,6 +76,18 @@ public class TDriverBeforeLogVo implements Serializable
 	/** 交接备注 */
 	private String exchangeRemark;
 	
+	/** 货物名称 */
+	private String goodsNameValue;
+	/** 类项名称 */
+	private String typeName;
+	/** 确认评论名称 */
+	private String sureCommentName;
+	/** 驾驶员1 */
+	private String firstDriverName;
+	/** 驾驶员2 */
+	private String secondDriverName;
+	/** 押运员 */
+	private String escortName;
 	public String getId() {
 		return id;
 	}
@@ -255,6 +267,42 @@ public class TDriverBeforeLogVo implements Serializable
 	}
 	public void setCarCheckProjectList(List<TDictView> carCheckProjectList) {
 		this.carCheckProjectList = carCheckProjectList;
+	}
+	public String getGoodsNameValue() {
+		return goodsNameValue;
+	}
+	public void setGoodsNameValue(String goodsNameValue) {
+		this.goodsNameValue = goodsNameValue;
+	}
+	public String getTypeName() {
+		return typeName;
+	}
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	public String getSureCommentName() {
+		return sureCommentName;
+	}
+	public void setSureCommentName(String sureCommentName) {
+		this.sureCommentName = sureCommentName;
+	}
+	public String getFirstDriverName() {
+		return firstDriverName;
+	}
+	public void setFirstDriverName(String firstDriverName) {
+		this.firstDriverName = firstDriverName;
+	}
+	public String getSecondDriverName() {
+		return secondDriverName;
+	}
+	public void setSecondDriverName(String secondDriverName) {
+		this.secondDriverName = secondDriverName;
+	}
+	public String getEscortName() {
+		return escortName;
+	}
+	public void setEscortName(String escortName) {
+		this.escortName = escortName;
 	}
 	
 }

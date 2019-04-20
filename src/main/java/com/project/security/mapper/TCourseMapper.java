@@ -1,6 +1,7 @@
 package com.project.security.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -76,5 +77,12 @@ public interface TCourseMapper
 	 * @return
 	 */
 	public List<TCourseVo> courseArrange(@Param("userId") String userId);
+	
+	/**
+	 *我的 课程收藏
+	 * @param userId
+	 * @return
+	 */
+	public List<TCourseVo> courseCollection(Map<String,Object> param);
 	
 }

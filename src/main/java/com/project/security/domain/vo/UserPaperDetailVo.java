@@ -2,6 +2,8 @@ package com.project.security.domain.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 /**
  * 
  * @author rbf
@@ -23,12 +25,14 @@ public class UserPaperDetailVo implements Serializable
 	private String annotation;
 	/** 正确答案 */
 	private String trueAnswer;
+	/** 考卷类型 */
+	private String subjectType;
 	/** 题目分数 */
 	private Integer subjectScore;
 	/** 顺序 */
 	private Integer subjectSort;
 	/** 题目选项信息 */
-	private String optionContents;
+	private List<Map<String,Object>> optionContents;
 	/** 用户考卷ID */
 	private String userPaperId;
 	/** 状态0未答题，1已答题 */
@@ -45,6 +49,12 @@ public class UserPaperDetailVo implements Serializable
 	private String isTrue;
 	/** 是否收藏本题1是0否 */
 	private String isCollect;
+	/** 题目选项 */
+	private String optionValue;
+	/** 题目内容 */
+	private String content;
+	/** 题目顺序 */
+	private Integer optionSort;
 	public String getPaperId() {
 		return paperId;
 	}
@@ -93,10 +103,11 @@ public class UserPaperDetailVo implements Serializable
 	public void setSubjectSort(Integer subjectSort) {
 		this.subjectSort = subjectSort;
 	}
-	public String getOptionContents() {
+	
+	public List<Map<String, Object>> getOptionContents() {
 		return optionContents;
 	}
-	public void setOptionContents(String optionContents) {
+	public void setOptionContents(List<Map<String, Object>> optionContents) {
 		this.optionContents = optionContents;
 	}
 	public String getUserPaperId() {
@@ -146,6 +157,30 @@ public class UserPaperDetailVo implements Serializable
 	}
 	public void setIsCollect(String isCollect) {
 		this.isCollect = isCollect;
+	}
+	public String getOptionValue() {
+		return optionValue;
+	}
+	public void setOptionValue(String optionValue) {
+		this.optionValue = optionValue;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public Integer getOptionSort() {
+		return optionSort;
+	}
+	public void setOptionSort(Integer optionSort) {
+		this.optionSort = optionSort;
+	}
+	public String getSubjectType() {
+		return subjectType;
+	}
+	public void setSubjectType(String subjectType) {
+		this.subjectType = subjectType;
 	}
 	
 	

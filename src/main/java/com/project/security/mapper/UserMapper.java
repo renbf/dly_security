@@ -2,6 +2,7 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import com.project.security.domain.User;
 import com.project.system.domain.SysUser;	
 
 /**
@@ -80,5 +81,19 @@ public interface UserMapper
      * @return
      */
     public List<SysUser> selectUserByDriver(String businessId);
+    
+    /**
+     * 查询驾驶员
+     * @param userId
+     * @return
+     */
+    public SysUser selectDriverUser(String userId);
+    /**
+     * 查询用户信息
+     * 
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+	public User selectUserByUserId(Long userId);
     
 }

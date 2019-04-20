@@ -2,6 +2,8 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.project.security.domain.TDict;
 import com.project.security.domain.vo.TDictView;	
 
@@ -67,6 +69,13 @@ public interface TDictMapper
 	 * @return
 	 */
 	public List<TDictView> selectTDictListByParentId(String parentId);
+	
+	/**
+	 * 查询子节点
+	 * @param parentId
+	 * @return
+	 */
+	public List<TDictView> selectTDictListBybusinessId(@Param("parentId") String parentId,@Param("businessId") String businessId);
 	/**
 	 * 货物名称，类项字典
 	 * @param dictId

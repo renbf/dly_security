@@ -28,6 +28,8 @@ public class SftpConfig {
  
     private Integer channelConnectedTimeout;
 
+    private String returnUrlPath;
+    
 	public String getHost() {
 		return host;
 	}
@@ -114,6 +116,14 @@ public class SftpConfig {
 
 	public void setChannelConnectedTimeout(Integer channelConnectedTimeout) {
 		this.channelConnectedTimeout = channelConnectedTimeout;
+	}
+
+	public String getReturnUrlPath() {
+		return returnUrlPath;
+	}
+
+	public void setReturnUrlPath(String returnUrlPath) {
+		this.returnUrlPath = returnUrlPath;
 	}
     
 }

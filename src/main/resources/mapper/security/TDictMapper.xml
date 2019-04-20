@@ -115,21 +115,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     
     <select id="selectTDictListByParentId" parameterType="java.lang.String" resultMap="TDictViewResult">
-    	<include refid="selectTDictbasicColums"/>
+    	select d.id,d.dict_name,d.dict_code
         from t_dict d
         where d.parent_id = #{parentId}
     </select>
     
+    <select id="selectTDictListBybusinessId" parameterType="java.util.Map" resultMap="TDictViewResult">
+    	select d.id,d.dict_name,d.dict_code
+		from t_dict d
+		where d.parent_id = (select id from t_dict where parent_id = #{parentId} and business_id = #{businessId})
+    </select>
+    
     <select id="selectTDictsByGoodsType" parameterType="java.lang.String" resultMap="TDictViewResult">
-    	select d.id,d.dict_name,d.parent_id
+    	select d.id,d.dict_name
 		from t_dict d
 		where d.parent_id = #{dictId}
 		union all 
-		select d.id,d.dict_name,d.parent_id
+		select d.id,d.dict_name
 		from t_dict d
 		where d.parent_id in (select id from t_dict where parent_id = #{dictId})
 		union all 
-		select d.id,d.dict_name,d.parent_id
+		select d.id,d.dict_name
 		from t_dict d
 		where d.parent_id in (select d1.id from t_dict d1 where d1.parent_id in (select id from t_dict where parent_id = #{dictId}))
     </select>

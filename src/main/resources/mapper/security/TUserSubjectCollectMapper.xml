@@ -63,5 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+    <delete id="deleteTUserSubjectCollectByKey" parameterType="java.util.Map">
+        delete from t_user_subject_collect where user_id = #{userId} and subject_id = #{subjectId}
+    </delete>
 </mapper>

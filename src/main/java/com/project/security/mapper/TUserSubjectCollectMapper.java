@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
 import com.project.security.domain.TUserSubjectCollect;
-import java.util.List;	
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;	
 
 /**
  * 用户收藏记录 数据层
@@ -59,4 +61,5 @@ public interface TUserSubjectCollectMapper
      */
 	public int deleteTUserSubjectCollectByIds(String[] userIds);
 	//以上自动生成的尽量别动
+	public int deleteTUserSubjectCollectByKey(@Param("userId")String userId,@Param("subjectId")String subjectId);
 }

@@ -17,6 +17,8 @@ public class TDictView implements Serializable {
 	private String dictName;
 	/** 字典编码 */
 	private String dictCode;
+	/** 状态 */
+	private String status;
 
 	public String getId() {
 		return id;
@@ -40,6 +42,14 @@ public class TDictView implements Serializable {
 
 	public void setDictCode(String dictCode) {
 		this.dictCode = dictCode;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

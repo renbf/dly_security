@@ -163,7 +163,8 @@ sftp:
 # 密码
     password: Yiyoushequ@0929
 # 根路径
-    root: /home/apache-tomcat-8.5.8/webapps/image/
+    root: /home/apache-tomcat-8.5.8/webapps/image/sercurity
+    returnUrlPath: http://60.205.187.254:8088/image/sercurity/
 # 密钥文件路径
     privateKey: 
 # 密钥的密码

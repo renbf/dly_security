@@ -122,7 +122,12 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	public DataResult uploadAuthUrl(String userId, MultipartFile authImg) {
 		DataResult result = new DataResult();
 		try {
-			String authUrl = fileSystemService.uploadFile("/sercurity/"+authImg.getOriginalFilename(), authImg);
+			String authUrl = fileSystemService.uploadFile(authImg);
+			if(StringUtils.isEmpty(authUrl)) {
+				result.setMessage("上传图片失败");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
 			SysUser user = new SysUser();
 			user.setIsAuth("1");
 			user.setAuthUrl(authUrl);

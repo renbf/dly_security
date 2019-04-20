@@ -1,7 +1,11 @@
 package com.project.security.mapper;
 
+import java.util.List;
+
 import com.project.security.domain.TDriverLog;
-import java.util.List;	
+import com.project.security.domain.vo.TDriverAfterLogVo;
+import com.project.security.domain.vo.TDriverBeforeLogVo;
+import com.project.security.domain.vo.TDriverMiddleLogVo;	
 
 /**
  * 行车日志基础 数据层
@@ -59,4 +63,14 @@ public interface TDriverLogMapper
      */
 	public int deleteTDriverLogByIds(String[] ids);
 	//以上自动生成的尽量别动
+	/**
+     * 查询行车日志基础列表
+     * 
+     * @param tDriverLog 行车日志基础信息
+     * @return 行车日志基础集合
+     */
+	public List<TDriverLog> selectTDriverLogsByUserId(String userId);
+	public TDriverBeforeLogVo queryLogBeforeDetail(String driverLogId);
+	public TDriverMiddleLogVo queryLogMiddleDetail(String driverLogId);
+	public TDriverAfterLogVo queryLogAfterDetail(String driverLogId);
 }

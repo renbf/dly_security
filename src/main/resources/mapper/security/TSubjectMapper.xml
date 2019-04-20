@@ -113,5 +113,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
+    <resultMap type="com.project.security.domain.vo.TSubjectVo" id="TSubjectVoResult">
+        <result property="id"    column="id"    />
+        <result property="subject"    column="subject"    />
+        <result property="annotation"    column="annotation"    />
+        <result property="subjectType"    column="subject_type"    />
+        <result property="businessType"    column="business_type"    />
+        <result property="majorType"    column="major_type"    />
+        <result property="trueAnswer"    column="true_answer"    />
+        <result property="subjectSource"    column="subject_source"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="contents"    column="contents"    />
+    </resultMap>
     
+    <select id="examCollection" parameterType="java.lang.String" resultMap="TSubjectVoResult">
+    	<include refid="selectTSubjectbasicColums"/>,
+    	(select GROUP_CONCAT(so.option_value,':',so.content) from t_subject_option so where so.subject_id = s.id order by so.option_sort) contents
+        from t_subject s
+        join t_user_subject_collect usc on s.id = usc.subject_id
+		where usc.user_id = 
+    </select>
 </mapper>

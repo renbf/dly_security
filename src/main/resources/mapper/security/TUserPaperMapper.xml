@@ -129,6 +129,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
         <result property="paperName"    column="paper_name"    />
+        <result property="remainingTime"    column="remaining_time"    />
+        <result property="paperTimes"    column="paper_times"    />
     </resultMap>
     
     <resultMap type="com.project.security.domain.vo.UserPaperDetailVo" id="UserPaperDetailVoResult">
@@ -138,9 +140,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="subject"    column="subject"    />
         <result property="annotation"    column="annotation"    />
         <result property="trueAnswer"    column="true_answer"    />
+        <result property="subjectType"    column="subject_type"    />
         <result property="subjectScore"    column="subject_score"    />
         <result property="subjectSort"    column="subject_sort"    />
-        <result property="optionContents"    column="optionContents"    />
         <result property="userPaperId"    column="user_paper_id"    />
         <result property="status"    column="status"    />
         <result property="startDate"    column="start_date"    />
@@ -149,30 +151,68 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userAnswer"    column="user_answer"    />
         <result property="isTrue"    column="is_true"    />
         <result property="isCollect"    column="is_collect"    />
+        <result property="optionValue"    column="option_value"    />
+        <result property="content"    column="content"    />
+        <result property="optionSort"    column="option_sort"    />
     </resultMap>
     
     <select id="selectTUserPapersByUserId" parameterType="java.lang.String" resultMap="TUserPaperVoResult">
         <include refid="selectTUserPaperbasicColums"/>,
-        p.name paper_name
+        p.name paper_name,p.paper_times
         from t_user_paper up
         join t_paper p on up.paper_id = p.id
     	where up.user_id = #{userId}
     </select>
     
+    <select id="selectTUserPapersByWhere" parameterType="com.project.security.domain.TUserPaper" resultMap="TUserPaperVoResult">
+        <include refid="selectTUserPaperbasicColums"/>,
+        p.name paper_name,p.paper_times
+        from t_user_paper up
+        join t_paper p on up.paper_id = p.id
+    	<where>  
+             <if test="userId != null  and userId != '' "> and up.user_id = #{userId}</if>
+             <if test="paperId != null  and paperId != '' "> and up.paper_id = #{paperId}</if>
+             <if test="beginDate != null "> and up.begin_date = #{beginDate}</if>
+             <if test="endDate != null "> and up.end_date = #{endDate}</if>
+             <if test="status != null  and status != '' "> and up.status = #{status}</if>
+             <if test="paperScore != null "> and up.paper_score = #{paperScore}</if>
+             <if test="startDate != null "> and up.start_date = #{startDate}</if>
+             <if test="commitDate != null "> and up.commit_date = #{commitDate}</if>
+             <if test="addUserId != null  and addUserId != '' "> and up.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and up.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and up.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and up.update_user_id = #{updateUserId}</if>
+             
+             <if test="hasCommitDate != null "> and up.commit_date is not null</if>
+             
+         </where>
+    </select>
+    
     <select id="examPaperDetail" parameterType="java.lang.String" resultMap="UserPaperDetailVoResult">
     	select 
 		p.id paper_id,p.paper_times,
-		s.id subject_id,s.subject,s.annotation,s.true_answer,sp.subject_score,sp.subject_sort,
-		(select GROUP_CONCAT(so.option_value,':',so.content) from t_subject_option so where so.subject_id = s.id order by so.option_sort) optionContents,
+		s.id subject_id,s.subject,s.annotation,s.true_answer,s.subject_type,sp.subject_score,sp.subject_sort,
+		so.option_value,so.content,so.option_sort,
 		up.id user_paper_id,up.status,up.start_date,up.commit_date,up.paper_score,
 		us.user_answer,us.is_true,usc.is_collect
 		from t_user_paper up
 		join t_paper p on up.paper_id = p.id
 		join t_subject_paper sp on up.paper_id = sp.paper_id
 		join t_subject s on s.id = sp.subject_id
+		join t_subject_option so on so.subject_id = s.id
 		left join t_user_subject us on us.user_paper_id = up.id and us.subject_id = s.id 
 		left join t_user_subject_collect usc on usc.user_id = up.user_id and usc.subject_id = s.id
 		where up.id = #{userPaperId}
+		order by sp.subject_sort,so.option_sort
+    </select>
+    
+    <select id="selectTUserPaperByUserPaperId" parameterType="java.lang.String" resultMap="TUserPaperVoResult">
+    	<include refid="selectTUserPaperbasicColums"/>,
+    	(p.paper_times - (UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(up.start_date))) remaining_time,
+        p.name paper_name,p.paper_times
+        from t_user_paper up
+        join t_paper p on up.paper_id = p.id
+    	where up.id = #{id}
     </select>
     
 </mapper>

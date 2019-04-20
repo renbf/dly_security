@@ -158,5 +158,115 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
+    <resultMap type="com.project.security.domain.vo.TDriverBeforeLogVo" id="TDriverBeforeLogVoResult">
+        <result property="id"    column="id"    />
+        <result property="writeTime"    column="write_time"    />
+        <result property="carNumber"    column="car_number"    />
+        <result property="idealTonnage"    column="ideal_tonnage"    />
+        <result property="actualTonnage"    column="actual_tonnage"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="type"    column="type"    />
+        <result property="transporAddress"    column="transpor_address"    />
+        <result property="goalAddress"    column="goal_address"    />
+        <result property="transportDate"    column="transport_date"    />
+        <result property="arriveDate"    column="arrive_date"    />
+        <result property="km"    column="km"    />
+        <result property="status"    column="status"    />
+        <result property="firstDriverId"    column="first_driver_id"    />
+        <result property="secondDriverId"    column="second_driver_id"    />
+        <result property="escortId"    column="escort_id"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="weather"    column="weather"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        
+        <result property="carCheckProject"    column="car_check_project"    />
+        <result property="noAccord"    column="no_accord"    />
+        <result property="sureComment"    column="sure_comment"    />
+        <result property="drivePhotoUrl"    column="drive_photo_url"    />
+        <result property="autograph"    column="autograph"    />
+        <result property="remark"    column="remark"    />
+        <result property="exchangeRemark"    column="exchange_remark"    />
+        
+        <result property="goodsNameValue"    column="goods_name_value"    />
+        <result property="typeName"    column="type_name"    />
+        <result property="sureCommentName"    column="sure_comment_name"    />
+        <result property="firstDriverName"    column="first_driver_name"    />
+        <result property="secondDriverName"    column="second_driver_name"    />
+        <result property="escortName"    column="escort_name"    />
+    </resultMap>
     
+    <resultMap type="com.project.security.domain.vo.TDriverMiddleLogVo" id="TDriverMiddleLogVoResult">
+        <result property="driverLogId"    column="driver_log_id"    />
+        <result property="writeTime"    column="write_time"    />
+        <result property="carCheckProject"    column="car_check_project"    />
+        <result property="changeAddress"    column="change_address"    />
+        <result property="stopCarTime"    column="stop_car_time"    />
+        <result property="startCarTime"    column="start_car_time"    />
+        <result property="troubleShooting"    column="trouble_shooting"    />
+        <result property="drivingPhoto"    column="driving_photo"    />
+        <result property="autograph"    column="autograph"    />
+        <result property="remark"    column="remark"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+    
+    <resultMap type="com.project.security.domain.vo.TDriverAfterLogVo" id="TDriverAfterLogVoResult">
+        <result property="driverLogId"    column="driver_log_id"    />
+        <result property="writeTime"    column="write_time"    />
+        <result property="carCheckProject"    column="car_check_project"    />
+        <result property="faultHandling"    column="fault_handling"    />
+        <result property="autograph"    column="autograph"    />
+        <result property="drivingPhoto"    column="driving_photo"    />
+        <result property="startFromStation"    column="start_from_station"    />
+        <result property="startFromCheck"    column="start_from_check"    />
+        <result property="enRouteAddress"    column="en_route_address"    />
+        <result property="enRouteCheck"    column="en_route_check"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+    
+    <select id="queryLogBeforeDetail" parameterType="java.lang.String" resultMap="TDriverBeforeLogVoResult">
+    	<include refid="selectTDriverLogbasicColums"/>,
+    	dbl.car_check_project, dbl.no_accord, dbl.sure_comment, dbl.drive_photo_url, dbl.autograph, dbl.remark, dbl.exchange_remark,
+    	gnt.goods_name goods_name_value,
+		dic1.dict_name type_name,
+		dic2.dict_name sure_comment_name,
+		udb1.driver_name first_driver_name,
+		udb2.driver_name second_driver_name,
+		udb3.driver_name escort_name
+		from t_driver_log dl
+		join t_driver_before_log dbl on dbl.driver_log_id = dl.id
+		left join t_goods_name_type gnt on gnt.id = dl.goods_name
+		left join t_dict dic1 on dic1.id = dl.type 
+		left join t_dict dic2 on dic2.id = dbl.sure_comment 
+		left join t_user_driver_basic udb1 on dl.first_driver_id = udb1.driver_user_id
+		left join t_user_driver_basic udb2 on dl.second_driver_id = udb2.driver_user_id
+		left join t_user_driver_basic udb3 on dl.escort_id = udb3.driver_user_id
+		where dl.id = #{driverLogId}
+    </select>
+    
+    <select id="queryLogMiddleDetail" parameterType="java.lang.String" resultMap="TDriverMiddleLogVoResult">
+    	select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id
+    	from t_driver_middle_log dml
+        where dml.driver_log_id = #{driverLogId}
+    </select>
+    
+    <select id="queryLogAfterDetail" parameterType="java.lang.String" resultMap="TDriverAfterLogVoResult">
+    	select dal.driver_log_id, dal.write_time, dal.car_check_project, dal.fault_handling, dal.autograph, dal.driving_photo, dal.start_from_station, dal.start_from_check, dal.en_route_address, dal.en_route_check, dal.add_user_id, dal.create_date, dal.update_date, dal.update_user_id
+    	from t_driver_after_log dal
+        where dal.driver_log_id = #{driverLogId}
+    </select>
+    
+    <select id="selectTDriverLogsByUserId" parameterType="java.lang.String" resultMap="TDriverLogResult">
+    	<include refid="selectTDriverLogbasicColums"/>
+        from t_driver_log dl
+        where (dl.first_driver_id = #{userId} or dl.second_driver_id = #{userId})
+    </select>
 </mapper>

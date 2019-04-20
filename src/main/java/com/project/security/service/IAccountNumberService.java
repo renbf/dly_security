@@ -91,13 +91,13 @@ public interface IAccountNumberService {
 	 * 收藏视频接口
 	 * @return
 	 */
-	public DataResult videoCollection(String userId,String courseId);
+	public DataResult videoCollection(String userId,String courseId,String isCollect);
 	
 	/**
 	 * 收藏试题接口
 	 * @return
 	 */
-	public DataResult subjectCollection(String userId,String subjectId);
+	public DataResult subjectCollection(String userId,String subjectId,String isCollect);
 	
 	/**
 	 * 检查计划接口
@@ -200,4 +200,54 @@ public interface IAccountNumberService {
 	 * @return
 	 */
 	public DataResult addAfterLog(String driverLogJson,MultipartFile file);
+	
+	/**
+	 * 查询日志详情——行车前接口
+	 * @return
+	 */
+	public DataResult queryLogBeforeDetail(String driverLogId);
+	/**
+	 * 查询日志详情——行车中接口
+	 * @return
+	 */
+	public DataResult queryLogMiddleDetail(String driverLogId);
+	/**
+	 * 查询日志详情——行车后接口
+	 * @return
+	 */
+	public DataResult queryLogAfterDetail(String driverLogId);
+	
+	/**
+	 * 查询日志接口
+	 * @return
+	 */
+	public DataResult queryLog(Integer pageNumber,String userId);
+	
+	/**
+	 * 我的考卷接口
+	 * @return
+	 */
+	public DataResult myExam(Integer pageNumber,String userId);
+	
+	/**
+	 * 我的课程收藏接口
+	 * @return
+	 */
+	public DataResult courseCollection(Integer pageNumber,String userId);
+	
+	/**
+	 * 我的考题收藏接口
+	 * @return
+	 */
+	public DataResult examCollection(Integer pageNumber,String userId);
+	/**
+	 * 我的课程接口
+	 * @return
+	 */
+	public DataResult myCourse(Integer pageNumber,String userId);
+	/**
+	 * 个人信息接口
+	 * @return
+	 */
+	public DataResult getUserInfo(String userId);
 }

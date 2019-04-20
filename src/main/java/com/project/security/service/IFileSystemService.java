@@ -11,8 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface IFileSystemService {
 	
-	String uploadFile(String targetPath, MultipartFile file) throws Exception;
-	 
+	String uploadFile(MultipartFile file) throws Exception;
+	
+	String uploadFiles(MultipartFile[] files) throws Exception;
+	
     File downloadFile(String targetPath) throws Exception;
  
     boolean deleteFile(String targetPath) throws Exception;

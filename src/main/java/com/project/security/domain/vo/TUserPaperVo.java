@@ -2,6 +2,7 @@ package com.project.security.domain.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -44,7 +45,12 @@ public class TUserPaperVo implements Serializable
 	private String updateUserId;
 	/** 考卷名称 */
 	private String paperName;
-
+	/** 考试剩余时长 */
+	private Long remainingTime;
+	/** 考卷时间 */
+	private Integer paperTimes;
+	/** 考卷的考题 */
+	private List<UserPaperDetailVo> examQuestions;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -171,6 +177,30 @@ public class TUserPaperVo implements Serializable
 		this.paperName = paperName;
 	}
 
+	public Long getRemainingTime() {
+		return remainingTime;
+	}
+
+	public void setRemainingTime(Long remainingTime) {
+		this.remainingTime = remainingTime;
+	}
+
+	public List<UserPaperDetailVo> getExamQuestions() {
+		return examQuestions;
+	}
+
+	public void setExamQuestions(List<UserPaperDetailVo> examQuestions) {
+		this.examQuestions = examQuestions;
+	}
+
+	public Integer getPaperTimes() {
+		return paperTimes;
+	}
+
+	public void setPaperTimes(Integer paperTimes) {
+		this.paperTimes = paperTimes;
+	}
+
 	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
@@ -187,6 +217,7 @@ public class TUserPaperVo implements Serializable
             .append("updateDate", getUpdateDate())
             .append("updateUserId", getUpdateUserId())
             .append("paperName", getPaperName())
+            .append("remainingTime", getRemainingTime())
             .toString();
     }
 }

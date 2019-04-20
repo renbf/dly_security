@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
+import java.util.List;
+
 import com.project.security.domain.TSubject;
-import java.util.List;	
+import com.project.security.domain.vo.TSubjectVo;	
 
 /**
  * 题库 数据层
@@ -59,4 +61,6 @@ public interface TSubjectMapper
      */
 	public int deleteTSubjectByIds(String[] ids);
 	//以上自动生成的尽量别动
+	
+	public List<TSubjectVo> examCollection(String userId);
 }

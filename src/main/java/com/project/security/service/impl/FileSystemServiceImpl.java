@@ -1,9 +1,7 @@
 package com.project.security.service.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
@@ -20,6 +18,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import com.project.common.utils.DateUtils;
 import com.project.common.utils.Md5Utils;
 import com.project.framework.config.SftpConfig;
 import com.project.security.service.IFileSystemService;
@@ -174,27 +173,59 @@ public class FileSystemServiceImpl implements IFileSystemService {
     }
     
 	@Override
-	public String uploadFile(String targetPath, MultipartFile file) throws Exception{
+	public String uploadFile(MultipartFile file) throws Exception{
 		ChannelSftp sftp = this.createSftp();
 	    try {
 	        sftp.cd(config.getRoot());
 	        log.info("Change path to {}", config.getRoot());
-	 
-	        int index = targetPath.lastIndexOf("/");
-	        String fileDir = targetPath.substring(0, index);
-	        String fileName = targetPath.substring(index + 1);
-	        boolean dirs = this.createDirs(fileDir, sftp);
+	        String nowDate = DateUtils.getDate();
+	        boolean dirs = this.createDirs("/"+nowDate, sftp);
 	        if (!dirs) {
-	            log.error("Remote path error. path:{}", targetPath);
+	            log.error("Remote path error. path:{}", nowDate);
 	            throw new Exception("Upload File failure");
 	        }
+	        String fileName = file.getOriginalFilename();
 	        fileName = fileName.replace("_", " ");
 	        fileName = Md5Utils.hash(fileName + System.nanoTime());
 	        sftp.put(file.getInputStream(), fileName);
-	        
-	        return "http://60.205.187.254:8088/image/sercurity/"+fileName;
+	        String url = config.getReturnUrlPath()+nowDate+"/"+fileName;
+	        return url;
 	    } catch (Exception e) {
-	        log.error("Upload file failure. TargetPath: {}", targetPath, e);
+	        throw new RuntimeException("Upload File failure");
+	    } finally {
+	        this.disconnect(sftp);
+	    }
+	}
+
+	@Override
+	public String uploadFiles(MultipartFile[] files) throws Exception {
+		ChannelSftp sftp = this.createSftp();
+	    try {
+	        sftp.cd(config.getRoot());
+	        log.info("Change path to {}", config.getRoot());
+	        String nowDate = DateUtils.getDate();
+	        boolean dirs = this.createDirs("/"+nowDate, sftp);
+	        if (!dirs) {
+	            log.error("Remote path error. path:{}", nowDate);
+	            throw new Exception("Upload File failure");
+	        }
+	        StringBuffer sb = new StringBuffer();
+	        for(MultipartFile file:files) {
+	        	String fileName = file.getOriginalFilename();
+		        fileName = fileName.replace("_", " ");
+		        fileName = Md5Utils.hash(fileName + System.nanoTime());
+		        sftp.put(file.getInputStream(), fileName);
+		        String url = config.getReturnUrlPath()+nowDate+"/"+fileName;
+		        if(StringUtils.isNotEmpty(url)) {
+		        	sb.append(url+",");
+		        }
+			}
+	        if(StringUtils.isNotEmpty(sb.toString())) {
+	        	return sb.toString();
+	        }else {
+	        	return "";
+	        }
+	    } catch (Exception e) {
 	        throw new RuntimeException("Upload File failure");
 	    } finally {
 	        this.disconnect(sftp);

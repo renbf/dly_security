@@ -1,6 +1,7 @@
 package com.project.security.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.project.security.domain.TUserPaper;
 import com.project.security.domain.vo.TUserPaperVo;
@@ -74,4 +75,18 @@ public interface TUserPaperMapper
 	 * @return
 	 */
 	public List<UserPaperDetailVo> examPaperDetail(String userPaperId);
+	/**
+	 * 考卷列表
+	 * @param tUserPaper
+	 * @return
+	 */
+	public List<TUserPaperVo> selectTUserPapersByWhere(Map<String,Object> param);
+	
+	/**
+     * 查询用户考试安排信息
+     * 
+     * @param id 用户考试安排ID
+     * @return 用户考试安排信息
+     */
+	public TUserPaperVo selectTUserPaperByUserPaperId(String userPaperid);
 }
