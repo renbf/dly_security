@@ -1,31 +1,32 @@
 package com.project.web.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.project.common.base.AjaxResult;
+import com.project.common.support.Convert;
 import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-import com.project.web.mapper.TDictMapper;
 import com.project.web.domian.TDict;
+import com.project.web.mapper.TDictMapper;
 import com.project.web.service.ITDictService;
-import com.project.common.support.Convert;
 
 /**
  * 字典 服务层实现
  * 
  * @author rbf
- * @date 2019-04-23
+ * @date 2019-04-22
  */
 @Service
 public class TDictServiceImpl implements ITDictService 
 {
-	private static final Logger log = LoggerFactory.getLogger(TDictServiceImpl.class);
 	@Autowired
-	@Qualifier("tDictMapper")
 	private TDictMapper tDictMapper;
 
 	/**
@@ -47,9 +48,78 @@ public class TDictServiceImpl implements ITDictService
      * @return 字典集合
      */
 	@Override
-	public List<TDict> selectTDictList(TDict tDict)
+	public AjaxResult selectTDictListCar(TDict tDict)
 	{
-	    return tDictMapper.selectTDictList(tDict);
+		if(tDict ==null || "".equals(tDict.getDictCode())) {
+			 return AjaxResult.error(2, "字典类型不能为空");
+		}
+		AjaxResult ajaxResult= AjaxResult.success();
+		//总返回的数据
+	     Map<String, Object> allMap = new HashMap<>();
+	    List<TDict> carBeforList =null;
+	    List<TDict> carNowList =null;
+	    List<TDict> carafterList =null;
+		List<TDict> allInfo = tDictMapper.selectTDictList(tDict);
+		if(allInfo!=null && allInfo.size() > 0) {
+			//定义三种参数所用到的数据	
+			 String partenId="";
+		     for(TDict t:allInfo) {
+				//判断最顶级的id值为多少
+				if("0".equals(t.getParentId())) {
+					partenId=t.getId();
+					break;
+				}
+		     }
+		     //根据参数id   查询出出行车中  行车前   行车后的参数
+			TDict td =new TDict();
+		    td.setParentId(partenId);
+		    td.setBusinessId(tDict.getBusinessId());
+		    List<TDict> allInfo2 = tDictMapper.selectTDictList(td);
+	    	String beforPartenId="";
+			String nowPartenId="";
+			String afterPartenId="";
+		    if(allInfo2!=null && allInfo2.size()>0) {
+		    	for(TDict t:allInfo2) {
+		    		//sort 为0  行车前  1行车中   2行车后
+		    		if(0==t.getDictSort()) {
+		    			beforPartenId=t.getId();
+		    			continue;
+		    		}else if(1==t.getDictSort()) {
+		    			nowPartenId=t.getId();
+		    			continue;
+		    		}else {
+		    			afterPartenId=t.getId();
+		    			continue;
+		    		}
+		    	}
+		    	//查询行车前参数
+		    	TDict before =new TDict();
+		    	before.setParentId(beforPartenId);
+		    	carBeforList = tDictMapper.selectTDictList(before);
+		    	//查询行车中参数
+		    	 TDict now =new TDict();
+			     now.setParentId(nowPartenId);
+			     carNowList = tDictMapper.selectTDictList(now);
+			     //查询行车后参数
+		    	 TDict after =new TDict();
+		    	 after.setParentId(afterPartenId);
+			     carafterList = tDictMapper.selectTDictList(after);
+				
+		    }
+		    
+			allMap.put("carafterList", carafterList);//行车后
+			allMap.put("carNowList", carNowList);//行车中
+			allMap.put("carBeforList", carBeforList);//行车前
+			allMap.put("allPartenId", beforPartenId+","+nowPartenId+","+afterPartenId);//行车前
+			return ajaxResult.put("data", allMap);
+
+		}else {
+			return AjaxResult.error(2, "操作失败");
+		}
+
+		
+		
+	     
 	}
 	
     /**
@@ -62,8 +132,10 @@ public class TDictServiceImpl implements ITDictService
 	public int insertTDict(TDict tDict)
 	{
 		tDict.setId(UUIDUtil.getUUID());
+		tDict.setDictCode(tDict.getDictCode());
+		tDict.setStatus("0");
 		tDict.setCreateDate(new Date());
-		tDict.setAddUserId(ShiroUtils.getUserId().toString());
+		tDict.setAddUserId(ShiroUtils.getUserId()+"");
 	    return tDictMapper.insertTDict(tDict);
 	}
 	
@@ -76,7 +148,13 @@ public class TDictServiceImpl implements ITDictService
 	@Override
 	public int updateTDict(TDict tDict)
 	{
-	    return tDictMapper.updateTDict(tDict);
+		String[] ids =tDict.getId().split(",");
+//		tDict.setArray(ids);
+		tDict.setUpdateDate(new Date());
+		tDict.setUpdateUserId(ShiroUtils.getUserId()+"");
+		tDictMapper.updateNotStausTDictByids(tDict);
+		
+		return tDictMapper.updateYesStausTDictByids(tDict);
 	}
 
 	/**
@@ -90,5 +168,10 @@ public class TDictServiceImpl implements ITDictService
 	{
 		return tDictMapper.deleteTDictByIds(Convert.toStrArray(ids));
 	}
-	//以上自动生成的尽量别动
+
+	@Override
+	public List<TDict> selectTDictList(TDict tDict) {
+		return tDictMapper.selectTDictList(tDict);
+	}
+	
 }

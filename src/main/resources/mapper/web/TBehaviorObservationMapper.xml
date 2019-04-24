@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="observationPerZx"    column="observation_per_zx"    />
         <result property="observationDh"    column="observation_dh"    />
         <result property="observationRectification"    column="observation_rectification"    />
+        <result property="filePath"    column="file_path"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="userId"    column="user_id"    />
@@ -29,7 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTBehaviorObservationVo">
-        select bo.id, bo.observation_date, bo.observation_per, bo.observation_region, bo.observation_obj, bo.observation_name, bo.observation_per_fy, bo.observation_per_position, bo.observation_per_protection, bo.observation_per_tool, bo.observation_per_program, bo.observation_per_effect, bo.observation_per_zx, bo.observation_dh, bo.observation_rectification, bo.create_time, bo.update_time, bo.user_id, bo.meno, bo.business_id, bo.update_user_id from t_behavior_observation bo
+        select bo.id, 
+        DATE_FORMAT(bo.observation_date,'%Y-%m-%d') as observationDateStr,bo.observation_per, bo.observation_region, bo.observation_obj, bo.observation_name, bo.observation_per_fy, bo.observation_per_position, bo.observation_per_protection, bo.observation_per_tool, bo.observation_per_program, bo.observation_per_effect, bo.observation_per_zx, bo.observation_dh, bo.observation_rectification, bo.create_time, bo.update_time, bo.user_id, bo.meno, bo.business_id, bo.update_user_id,bo.file_path from t_behavior_observation bo
     </sql>
 	
     <select id="selectTBehaviorObservationList" parameterType="TBehaviorObservation" resultMap="TBehaviorObservationResult">
@@ -56,7 +58,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="meno != null  and meno != '' "> and bo.meno = #{meno}</if>
              <if test="businessId != null  and businessId != '' "> and bo.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and bo.update_user_id = #{updateUserId}</if>
+             <if test="filePath != null and filePath !='' "> and bo.file_path = #{filePath}</if>
          </where>
+         order by bo.create_time desc
     </select>
     
     <select id="selectTBehaviorObservationById" parameterType="String" resultMap="TBehaviorObservationResult">
@@ -88,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="meno != null  and meno != ''  ">meno,</if>
 			<if test="businessId != null  and businessId != ''  ">business_id,</if>
 			<if test="updateUserId != null  ">update_user_id,</if>
+			<if test="filePath != null and filePath !='' ">file_path,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -111,6 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="meno != null  and meno != ''  ">#{meno},</if>
 			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
 			<if test="updateUserId != null  ">#{updateUserId},</if>
+			<if test="filePath != null and filePath !='' ">#{filePath},</if>
          </trim>
     </insert>
 	 
@@ -137,6 +143,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
             <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+            <if test="filePath != null and filePath !='' ">file_path = #{filePath},</if>
         </trim>
         where id = #{id}
     </update>

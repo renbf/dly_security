@@ -51,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and dc.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and dc.update_user_id = #{updateUserId}</if>
          </where>
+         order by dc.create_time desc
     </select>
     
     <select id="selectTDepartureCheckById" parameterType="String" resultMap="TDepartureCheckResult">

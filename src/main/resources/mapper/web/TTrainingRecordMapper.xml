@@ -53,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and tr.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and tr.update_user_id = #{updateUserId}</if>
          </where>
+         order by tr.create_time desc
     </select>
     
     <select id="selectTTrainingRecordById" parameterType="String" resultMap="TTrainingRecordResult">

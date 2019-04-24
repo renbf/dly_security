@@ -34,17 +34,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTDangerTaskVo"/>
         <where>  
             <if test="id != null  and id != '' "> and dt.id = #{id}</if>
-             <if test="taskName != null  and taskName != '' "> and dt.task_name = #{taskName}</if>
+             <if test="taskName != null  and taskName != '' "> and dt.task_name like CONCAT('%',#{taskName},'%')</if>
              <if test="taskType != null  and taskType != '' "> and dt.task_type = #{taskType}</if>
              <if test="taskPlace != null  and taskPlace != '' "> and dt.task_place = #{taskPlace}</if>
-             <if test="(startTime != null and startTime !='' ) and startTime1 == null "> and dt.start_time &gt;= #{startTime}</if>
-             <if test="(startTime1 != null and startTime1 !='' ) and startTime == null  "> and dt.start_time &lt;= #{startTime1}</if>
-                    <if test="(startTime1 != null and startTime1 !='' ) and startTime != null  and startTime !='' "> and dt.start_time &gt;= #{startTime}
-                     and dt.start_time &lt;= #{startTime1}                   
+             <if test="(startTime != null  ) and startTime1 == null "> and DATE_FORMAT(dt.start_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d')</if>
+             <if test="(startTime1 != null ) and startTime == null  "> and DATE_FORMAT(dt.start_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{startTime1},'%Y-%m-%d')</if>
+                    <if test="(startTime1 != null  ) and startTime != null  and startTime !='' "> and dt.start_time &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d')
+                     and DATE_FORMAT(dt.start_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{startTime1},'%Y-%m-%d')                    
                     </if>
              <if test="endTime != null "> and dt.end_time = #{endTime}</if>
              <if test="isImplement != null  and isImplement != '' "> and dt.is_implement = #{isImplement}</if>
-             <if test="applyPer != null  and applyPer != '' "> and dt.apply_per = #{applyPer}</if>
+             <if test="applyPer != null  and applyPer != '' "> and dt.apply_per like CONCAT('%',#{applyPer},'%')</if>
              <if test="applyId != null "> and dt.apply_id = #{applyId}</if>
              <if test="sceneResponsiblePer != null  and sceneResponsiblePer != '' "> and dt.scene_responsible_per = #{sceneResponsiblePer}</if>
              <if test="technologyFilePath != null  and technologyFilePath != '' "> and dt.technology_file_path = #{technologyFilePath}</if>
@@ -56,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and dt.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and dt.update_user_id = #{updateUserId}</if>
          </where>
+         order by dt.create_time desc 
     </select>
     
     <select id="selectTDangerTaskById" parameterType="String" resultMap="TDangerTaskResult">

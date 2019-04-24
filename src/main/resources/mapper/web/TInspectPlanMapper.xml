@@ -47,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="updateDate != null "> and ip.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and ip.update_user_id = #{updateUserId}</if>
          </where>
+         order by ip.create_time desc
     </select>
     
     <select id="selectTInspectPlanById" parameterType="String" resultMap="TInspectPlanResult">

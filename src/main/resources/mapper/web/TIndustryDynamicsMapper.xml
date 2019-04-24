@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="updateDate != null "> and id.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and id.update_user_id = #{updateUserId}</if>
          </where>
+         order by id.create_time desc
     </select>
     
     <select id="selectTIndustryDynamicsById" parameterType="String" resultMap="TIndustryDynamicsResult">

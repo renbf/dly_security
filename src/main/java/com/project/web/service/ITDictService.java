@@ -1,13 +1,15 @@
 package com.project.web.service;
 
-import com.project.web.domian.TDict;
 import java.util.List;
+
+import com.project.common.base.AjaxResult;
+import com.project.web.domian.TDict;
 
 /**
  * 字典 服务层
  * 
  * @author rbf
- * @date 2019-04-23
+ * @date 2019-04-22
  */
 public interface ITDictService 
 {
@@ -25,6 +27,9 @@ public interface ITDictService
      * @param tDict 字典信息
      * @return 字典集合
      */
+	public AjaxResult selectTDictListCar(TDict tDict);
+	
+	
 	public List<TDict> selectTDictList(TDict tDict);
 	
 	/**
@@ -50,5 +55,5 @@ public interface ITDictService
      * @return 结果
      */
 	public int deleteTDictByIds(String ids);
-	//以上自动生成的尽量别动
+	
 }

@@ -43,6 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and ncod.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and ncod.update_user_id = #{updateUserId}</if>
          </where>
+         order by ncod.create_time desc
     </select>
     
     <select id="selectTNewspaperClassOutDepartureById" parameterType="String" resultMap="TNewspaperClassOutDepartureResult">

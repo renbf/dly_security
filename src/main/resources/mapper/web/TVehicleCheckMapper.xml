@@ -45,6 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="userId != null "> and vc.user_id = #{userId}</if>
              <if test="businessId != null  and businessId != '' "> and vc.business_id = #{businessId}</if>
          </where>
+         order by vc.create_time desc
     </select>
     
     <select id="selectTVehicleCheckById" parameterType="String" resultMap="TVehicleCheckResult">

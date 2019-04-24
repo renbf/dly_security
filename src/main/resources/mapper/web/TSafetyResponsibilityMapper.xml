@@ -39,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and sr.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and sr.update_user_id = #{updateUserId}</if>
          </where>
+         order by sr.create_time desc
     </select>
     
     <select id="selectTSafetyResponsibilityById" parameterType="String" resultMap="TSafetyResponsibilityResult">

@@ -1,6 +1,6 @@
 package ${package}.service;
 
-import ${package}.domian.${className};
+import ${package}.domain.${className};
 import java.util.List;
 
 /**
@@ -50,5 +50,5 @@ public interface I${className}Service
      * @return 结果
      */
 	public int delete${className}ByIds(String ids);
-	//以上自动生成的尽量别动
+	
 }

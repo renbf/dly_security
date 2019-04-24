@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and ped.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and ped.update_user_id = #{updateUserId}</if>
          </where>
+         order by ped.create_time desc
     </select>
     
     <select id="selectTPhysicalExaminationDetailById" parameterType="String" resultMap="TPhysicalExaminationDetailResult">
@@ -86,5 +87,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
-    
+    <delete id="deleteTPhysicalExaminationDetailByexaminationIds" parameterType="String">
+        delete from t_physical_examination_detail where examinationId in 
+        <foreach item="examinationId" collection="array" open="(" separator="," close=")">
+            #{examinationId}
+        </foreach>
+    </delete>
 </mapper>

@@ -1,6 +1,7 @@
 package com.project.common.utils;
 
 import java.lang.management.ManagementFactory;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -152,4 +153,28 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
     }
+
+
+    /**
+     * 用于比较两个时间的先后顺序,即比较两个时间大小.(*注*:只比较年月日)
+     * 没有判断入参非空,入参前请判断,杜绝空指针.
+     * @param leftDate  时间,左侧时间
+     * @param rightDate 时间,右侧时间
+     * @return 如果leftDate小于rithrDate,返回小于0,
+     *          如果leftDate等于rightDate,返回0,
+     *          如果leftDate大于rightDate,返回大于0
+     */
+    public static int dateCompareByYMD(Date leftDate,Date rightDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String leftDate1 = dateFormat.format(leftDate);
+        String rightDate1 = dateFormat.format(rightDate);
+        try {
+            return dateFormat.parse(leftDate1).compareTo(dateFormat.parse(rightDate1));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }

@@ -22,12 +22,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
         <result property="responsibleUserName"    column="responsible_user_name"    />
+        <result property="nextCheckDate"    column="next_check_date"    />
+        <result property="checkReq"    column="check_req"    />
     </resultMap>
 	
 	<sql id="selectTFacilitiesEquipmentVo">
         select fe.id, fe.responsible_user_id, fe.equipment_name, fe.equipment_type, fe.equipment_addr, fe.equipment_status,
-        DATE_FORMAT(fe.scrap_date,'%Y-%m-%d') scrapDateStr, 
-        DATE_FORMAT(fe.check_date,'%Y-%m-%d') checkDateStr, fe.file_path, fe.remark, fe.create_time, fe.update_time, fe.user_id, fe.meno, fe.business_id, fe.update_user_id,fe.responsible_user_name from t_facilities_equipment fe
+        DATE_FORMAT(fe.scrap_date,'%Y-%m-%d') scrapDateStr, fe.next_check_date,
+        DATE_FORMAT(fe.check_date,'%Y-%m-%d') checkDateStr, 
+        fe.check_req,
+        fe.file_path, fe.remark, fe.create_time, fe.update_time, fe.user_id, fe.meno, fe.business_id, fe.update_user_id,fe.responsible_user_name from t_facilities_equipment fe
     </sql>
 	
     <select id="selectTFacilitiesEquipmentList" parameterType="TFacilitiesEquipment" resultMap="TFacilitiesEquipmentResult">
@@ -35,12 +39,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="id != null  and id != '' "> and fe.id = #{id}</if>
              <if test="responsibleUserId != null "> and fe.responsible_user_id = #{responsibleUserId}</if>
-             <if test="equipmentName != null  and equipmentName != '' "> and fe.equipment_name = #{equipmentName}</if>
+             <if test="equipmentName != null  and equipmentName != '' "> and fe.equipment_name like CONCAT('%',#{equipmentName},'%')</if>
              <if test="equipmentType != null  and equipmentType != '' "> and fe.equipment_type = #{equipmentType}</if>
-             <if test="equipmentAddr != null  and equipmentAddr != '' "> and fe.equipment_addr = #{equipmentAddr}</if>
+             <if test="equipmentAddr != null  and equipmentAddr != '' "> and fe.equipment_addr like CONCAT('%',#{equipmentAddr},'%')</if>
              <if test="equipmentStatus != null  and equipmentStatus != '' "> and fe.equipment_status = #{equipmentStatus}</if>
-             <if test="scrapDate != null "> and fe.scrap_date = #{scrapDate}</if>
-             <if test="checkDate != null "> and fe.check_date = #{checkDate}</if>
+             <if test="scrapDate != null "> and DATE_FORMAT(fe.scrap_date,'%Y-%m-%d') =   DATE_FORMAT(#{scrapDate},'%Y-%m-%d')  </if>
+           <!--  <if test="checkDate != null "> and fe.check_date = #{checkDate}</if> --> 
+             <if test="(checkDateEnd != null ) and checkDate == null  "> and  DATE_FORMAT(fe.check_date,'%Y-%m-%d') &lt;= 
+             DATE_FORMAT(#{checkDateEnd},'%Y-%m-%d')
+            </if>
+                    <if test="(checkDateEnd != null ) and checkDate != null   "> and DATE_FORMAT(fe.check_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{checkDate},'%Y-%m-%d')
+                     and  DATE_FORMAT(fe.check_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{checkDateEnd},'%Y-%m-%d')                
+                    </if>
              <if test="filePath != null  and filePath != '' "> and fe.file_path = #{filePath}</if>
              <if test="remark != null  and remark != '' "> and fe.remark = #{remark}</if>
              <if test="createTime != null "> and fe.create_time = #{createTime}</if>
@@ -49,8 +59,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="meno != null  and meno != '' "> and fe.meno = #{meno}</if>
              <if test="businessId != null  and businessId != '' "> and fe.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and fe.update_user_id = #{updateUserId}</if>
-             <if test="responsibleUserName != null and responsibleUserName !='' "> and fe.responsible_user_name = #{responsibleUserName}</if>
+             <if test="responsibleUserName != null and responsibleUserName !='' "> and fe.responsible_user_name  like CONCAT('%',#{responsibleUserName},'%')</if>             
+             <if test="checkReq != null and checkReq !='' "> and fe.check_req = #{checkReq}</if>
+             <if test="nextCheckDate != null and nextCheckDate !='' "> and fe.next_check_date = #{nextCheckDate}</if>
          </where>
+	order by fe.create_time desc   
     </select>
     
     <select id="selectTFacilitiesEquipmentById" parameterType="String" resultMap="TFacilitiesEquipmentResult">
@@ -78,6 +91,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="businessId != null  and businessId != ''  ">business_id,</if>
 			<if test="updateUserId != null  ">update_user_id,</if>
 			<if test="responsibleUserName != null and responsibleUserName !=''  ">responsible_user_name,</if>
+		    <if test="checkReq != null and checkReq !='' ">check_req,</if>
+			<if test="nextCheckDate != null and nextCheckDate !=''  ">next_check_date,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -97,6 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
 			<if test="updateUserId != null  ">#{updateUserId},</if>
 			<if test="responsibleUserName != null and responsibleUserName !='' ">#{responsibleUserName},</if>
+		    <if test="checkReq != null and checkReq !=''  ">#{checkReq},</if>
+			<if test="nextCheckDate != null and nextCheckDate !=''  ">#{nextCheckDate},</if>
          </trim>
     </insert>
 	 
@@ -119,6 +136,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
             <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
             <if test="responsibleUserName != null and responsibleUserName !=''  ">responsible_user_name = #{responsibleUserName},</if>
+            <if test="checkReq != null and checkReq !='' "> and fe.check_req = #{checkReq}</if>
+            <if test="nextCheckDate != null and nextCheckDate !='' "> and fe.next_check_date = #{nextCheckDate}</if>
         </trim>
         where id = #{id}
     </update>

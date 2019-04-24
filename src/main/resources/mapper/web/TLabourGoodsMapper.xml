@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and lg.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and lg.update_user_id = #{updateUserId}</if>
          </where>
+         order by lg.create_time desc
     </select>
     
     <select id="selectTLabourGoodsById" parameterType="String" resultMap="TLabourGoodsResult">

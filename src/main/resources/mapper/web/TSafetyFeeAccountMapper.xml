@@ -47,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and sfa.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and sfa.update_user_id = #{updateUserId}</if>
          </where>
+         order by sfa.create_time desc
     </select>
     
     <select id="selectTSafetyFeeAccountById" parameterType="String" resultMap="TSafetyFeeAccountResult">

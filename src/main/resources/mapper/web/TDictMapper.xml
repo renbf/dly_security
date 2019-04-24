@@ -39,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="updateUserId != null  and updateUserId != '' "> and d.update_user_id = #{updateUserId}</if>
              <if test="remark != null  and remark != '' "> and d.remark = #{remark}</if>
          </where>
+         ORDER BY d.parent_id asc
     </select>
     
     <select id="selectTDictById" parameterType="String" resultMap="TDictResult">
@@ -107,6 +108,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
-    <!-- 以上是自动生成的代码尽量别动 -->
     
+     <update id="updateNotStausTDictByids" parameterType="com.project.web.domian.TDict">
+        update t_dict set status =0 ,
+        <if test="updateDate != null  "> update_date = #{updateDate},</if>
+        <if test="updateUserId != null  and updateUserId != ''  ">  update_user_id = #{updateUserId}</if>
+        where id not in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>       
+        and dict_code ='car_info' and parent_id != '0'
+    </update>
+    
+    <update id="updateYesStausTDictByids" parameterType="com.project.web.domian.TDict">
+        update t_dict set status =1,        
+        <if test="updateDate != null  ">  update_date = #{updateDate},</if>
+        <if test="updateUserId != null  and updateUserId != ''  ">  update_user_id = #{updateUserId}</if>
+         where id  in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and dict_code ='car_info' 
+    </update>
 </mapper>

@@ -41,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and op.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and op.update_user_id = #{updateUserId}</if>
          </where>
+         order by op.create_time desc
     </select>
     
     <select id="selectTOperatingProceduresById" parameterType="String" resultMap="TOperatingProceduresResult">

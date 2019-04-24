@@ -22,7 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTBusinessFileVo">
-        select bf.id, bf.business_file_name, bf.business_file_code, bf.business_file_type, bf.business_file_date, bf.operating_dept_id, bf.is_apply, bf.business_file_path, bf.create_time, bf.update_time, bf.user_id, bf.meno, bf.business_id, bf.update_user_id from t_business_file bf
+        select bf.id, bf.business_file_name, bf.business_file_code, bf.business_file_type, bf.business_file_date, bf.operating_dept_id, bf.is_apply, bf.business_file_path, 
+        DATE_FORMAT(bf.create_time,'%Y-%m-%d') as startCreateTime,
+        DATE_FORMAT(bf.business_file_date,'%Y-%m-%d') as businessFileDateStr,
+        bf.update_time, bf.user_id, bf.meno, bf.business_id, bf.update_user_id from t_business_file bf
+   
     </sql>
 	
     <select id="selectTBusinessFileList" parameterType="TBusinessFile" resultMap="TBusinessFileResult">
@@ -43,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and bf.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and bf.update_user_id = #{updateUserId}</if>
          </where>
+         order by bf.create_time desc
     </select>
     
     <select id="selectTBusinessFileById" parameterType="String" resultMap="TBusinessFileResult">

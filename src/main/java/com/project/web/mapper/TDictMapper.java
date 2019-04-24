@@ -1,15 +1,18 @@
 package com.project.web.mapper;
 
-import com.project.web.domian.TDict;
-import java.util.List;	
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
+import com.project.web.domian.TDict;
+
+
 /**
  * 字典 数据层
  * 
  * @author rbf
- * @date 2019-04-23
+ * @date 2019-04-16
  */
- @Repository("tDictMapper")
 public interface TDictMapper 
 {
 	/**
@@ -59,5 +62,21 @@ public interface TDictMapper
      * @return 结果
      */
 	public int deleteTDictByIds(String[] ids);
-	//以上自动生成的尽量别动
+	
+	/**
+     * 批量将参数更新为不可用
+     * 
+     * @param ids 
+     * @return 结果
+     */
+	public int updateNotStausTDictByids(TDict tDict);
+	/**
+     * 批量将参数更新为可用
+     * 
+     * @param ids 
+     * @return 结果
+     */
+	public int updateYesStausTDictByids(TDict tDict);
+	
+
 }

@@ -20,10 +20,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userId"    column="user_id"    />
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="filePath"    column="file_path"    />
     </resultMap>
 	
 	<sql id="selectTRelevantMessageVo">
-        select rm.id, rm.relevant_type, rm.relevant_code, rm.relevant_name, rm.relevant_contacts, rm.relevant_phone, rm.relevant_fax, rm.relevant_address, rm.relevant_remark, rm.relevant_evaluate, rm.create_time, rm.update_time, rm.user_id, rm.business_id, rm.update_user_id from t_relevant_message rm
+        select rm.id, rm.relevant_type, rm.relevant_code, rm.relevant_name, rm.relevant_contacts, rm.relevant_phone, rm.relevant_fax, rm.relevant_address, rm.relevant_remark, rm.relevant_evaluate, rm.create_time, rm.update_time, rm.user_id, rm.business_id, rm.update_user_id,rm.file_path from t_relevant_message rm
     </sql>
 	
     <select id="selectTRelevantMessageList" parameterType="TRelevantMessage" resultMap="TRelevantMessageResult">
@@ -45,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and rm.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and rm.update_user_id = #{updateUserId}</if>
          </where>
+         order by rm.create_time desc
     </select>
     
     <select id="selectTRelevantMessageById" parameterType="String" resultMap="TRelevantMessageResult">
@@ -70,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="userId != null  ">user_id,</if>
 			<if test="businessId != null  and businessId != ''  ">business_id,</if>
 			<if test="updateUserId != null  ">update_user_id,</if>
+			<if test="filePath != null and  filePath != '' ">file_path,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -87,6 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="userId != null  ">#{userId},</if>
 			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
 			<if test="updateUserId != null  ">#{updateUserId},</if>
+		   <if test="filePath != null and  filePath != '' ">#{filePath},</if>
          </trim>
     </insert>
 	 
@@ -107,6 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null  ">user_id = #{userId},</if>
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
             <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+            <if test="filePath != null and  filePath != '' ">  file_path  = #{filePath},</if>
         </trim>
         where id = #{id}
     </update>

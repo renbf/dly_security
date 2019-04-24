@@ -59,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="businessId != null  and businessId != '' "> and ai.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and ai.update_user_id = #{updateUserId}</if>
          </where>
+           order by ai.create_time desc
     </select>
     
     <select id="selectTAccidentInvestigationById" parameterType="String" resultMap="TAccidentInvestigationResult">
