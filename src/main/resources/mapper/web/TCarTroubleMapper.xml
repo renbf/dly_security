@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarTroubleMapper">
+    
+    <resultMap type="com.project.web.domian.TCarTrouble" id="TCarTroubleResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="troubleDate"    column="trouble_date"    />
+        <result property="troubleAddress"    column="trouble_address"    />
+        <result property="troubleType"    column="trouble_type"    />
+        <result property="troubleDuty"    column="trouble_duty"    />
+        <result property="lossSituation"    column="loss_situation"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCarTroublebasicColums">
+        select ct.id, ct.car_id, ct.trouble_date, ct.trouble_address, ct.trouble_type, ct.trouble_duty, ct.loss_situation, ct.add_user_id, ct.create_date, ct.update_date, ct.update_user_id    </sql>
+	
+    <select id="selectTCarTroubleList" parameterType="com.project.web.domian.TCarTrouble" resultMap="TCarTroubleResult">
+        <include refid="selectTCarTroublebasicColums"/>
+        from t_car_trouble ct
+        <where>  
+            <if test="id != null  and id != '' "> and ct.id = #{id}</if>
+             <if test="carId != null  and carId != '' "> and ct.car_id = #{carId}</if>
+             <if test="troubleDate != null "> and ct.trouble_date = #{troubleDate}</if>
+             <if test="troubleAddress != null  and troubleAddress != '' "> and ct.trouble_address = #{troubleAddress}</if>
+             <if test="troubleType != null  and troubleType != '' "> and ct.trouble_type = #{troubleType}</if>
+             <if test="troubleDuty != null  and troubleDuty != '' "> and ct.trouble_duty = #{troubleDuty}</if>
+             <if test="lossSituation != null  and lossSituation != '' "> and ct.loss_situation = #{lossSituation}</if>
+             <if test="addUserId != null  and addUserId != '' "> and ct.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and ct.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and ct.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and ct.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarTroubleById" parameterType="String" resultMap="TCarTroubleResult">
+        <include refid="selectTCarTroublebasicColums"/>
+        from t_car_trouble ct
+        where ct.id = #{id}
+    </select>
+        
+    <insert id="insertTCarTrouble" parameterType="com.project.web.domian.TCarTrouble">
+        insert into t_car_trouble
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carId != null  and carId != ''  ">car_id,</if>
+			<if test="troubleDate != null  ">trouble_date,</if>
+			<if test="troubleAddress != null  and troubleAddress != ''  ">trouble_address,</if>
+			<if test="troubleType != null  and troubleType != ''  ">trouble_type,</if>
+			<if test="troubleDuty != null  and troubleDuty != ''  ">trouble_duty,</if>
+			<if test="lossSituation != null  and lossSituation != ''  ">loss_situation,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carId != null  and carId != ''  ">#{carId},</if>
+			<if test="troubleDate != null  ">#{troubleDate},</if>
+			<if test="troubleAddress != null  and troubleAddress != ''  ">#{troubleAddress},</if>
+			<if test="troubleType != null  and troubleType != ''  ">#{troubleType},</if>
+			<if test="troubleDuty != null  and troubleDuty != ''  ">#{troubleDuty},</if>
+			<if test="lossSituation != null  and lossSituation != ''  ">#{lossSituation},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarTrouble" parameterType="com.project.web.domian.TCarTrouble">
+        update t_car_trouble
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null  and carId != ''  ">car_id = #{carId},</if>
+            <if test="troubleDate != null  ">trouble_date = #{troubleDate},</if>
+            <if test="troubleAddress != null  and troubleAddress != ''  ">trouble_address = #{troubleAddress},</if>
+            <if test="troubleType != null  and troubleType != ''  ">trouble_type = #{troubleType},</if>
+            <if test="troubleDuty != null  and troubleDuty != ''  ">trouble_duty = #{troubleDuty},</if>
+            <if test="lossSituation != null  and lossSituation != ''  ">loss_situation = #{lossSituation},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarTroubleById" parameterType="String">
+        delete from t_car_trouble where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarTroubleByIds" parameterType="String">
+        delete from t_car_trouble where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

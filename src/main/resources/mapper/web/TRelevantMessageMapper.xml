@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TRelevantMessageMapper">
+    
+    <resultMap type="TRelevantMessage" id="TRelevantMessageResult">
+        <result property="id"    column="id"    />
+        <result property="relevantType"    column="relevant_type"    />
+        <result property="relevantCode"    column="relevant_code"    />
+        <result property="relevantName"    column="relevant_name"    />
+        <result property="relevantContacts"    column="relevant_contacts"    />
+        <result property="relevantPhone"    column="relevant_phone"    />
+        <result property="relevantFax"    column="relevant_fax"    />
+        <result property="relevantAddress"    column="relevant_address"    />
+        <result property="relevantRemark"    column="relevant_remark"    />
+        <result property="relevantEvaluate"    column="relevant_evaluate"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTRelevantMessageVo">
+        select rm.id, rm.relevant_type, rm.relevant_code, rm.relevant_name, rm.relevant_contacts, rm.relevant_phone, rm.relevant_fax, rm.relevant_address, rm.relevant_remark, rm.relevant_evaluate, rm.create_time, rm.update_time, rm.user_id, rm.business_id, rm.update_user_id from t_relevant_message rm
+    </sql>
+	
+    <select id="selectTRelevantMessageList" parameterType="TRelevantMessage" resultMap="TRelevantMessageResult">
+        <include refid="selectTRelevantMessageVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and rm.id = #{id}</if>
+             <if test="relevantType != null  and relevantType != '' "> and rm.relevant_type = #{relevantType}</if>
+             <if test="relevantCode != null  and relevantCode != '' "> and rm.relevant_code = #{relevantCode}</if>
+             <if test="relevantName != null  and relevantName != '' "> and rm.relevant_name = #{relevantName}</if>
+             <if test="relevantContacts != null  and relevantContacts != '' "> and rm.relevant_contacts = #{relevantContacts}</if>
+             <if test="relevantPhone != null  and relevantPhone != '' "> and rm.relevant_phone = #{relevantPhone}</if>
+             <if test="relevantFax != null  and relevantFax != '' "> and rm.relevant_fax = #{relevantFax}</if>
+             <if test="relevantAddress != null  and relevantAddress != '' "> and rm.relevant_address = #{relevantAddress}</if>
+             <if test="relevantRemark != null  and relevantRemark != '' "> and rm.relevant_remark = #{relevantRemark}</if>
+             <if test="relevantEvaluate != null  and relevantEvaluate != '' "> and rm.relevant_evaluate = #{relevantEvaluate}</if>
+             <if test="createTime != null "> and rm.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and rm.update_time = #{updateTime}</if>
+             <if test="userId != null "> and rm.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and rm.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and rm.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTRelevantMessageById" parameterType="String" resultMap="TRelevantMessageResult">
+        <include refid="selectTRelevantMessageVo"/>
+        where rm.id = #{id}
+    </select>
+        
+    <insert id="insertTRelevantMessage" parameterType="TRelevantMessage">
+        insert into t_relevant_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="relevantType != null  and relevantType != ''  ">relevant_type,</if>
+			<if test="relevantCode != null  and relevantCode != ''  ">relevant_code,</if>
+			<if test="relevantName != null  and relevantName != ''  ">relevant_name,</if>
+			<if test="relevantContacts != null  and relevantContacts != ''  ">relevant_contacts,</if>
+			<if test="relevantPhone != null  and relevantPhone != ''  ">relevant_phone,</if>
+			<if test="relevantFax != null  and relevantFax != ''  ">relevant_fax,</if>
+			<if test="relevantAddress != null  and relevantAddress != ''  ">relevant_address,</if>
+			<if test="relevantRemark != null  and relevantRemark != ''  ">relevant_remark,</if>
+			<if test="relevantEvaluate != null  and relevantEvaluate != ''  ">relevant_evaluate,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="relevantType != null  and relevantType != ''  ">#{relevantType},</if>
+			<if test="relevantCode != null  and relevantCode != ''  ">#{relevantCode},</if>
+			<if test="relevantName != null  and relevantName != ''  ">#{relevantName},</if>
+			<if test="relevantContacts != null  and relevantContacts != ''  ">#{relevantContacts},</if>
+			<if test="relevantPhone != null  and relevantPhone != ''  ">#{relevantPhone},</if>
+			<if test="relevantFax != null  and relevantFax != ''  ">#{relevantFax},</if>
+			<if test="relevantAddress != null  and relevantAddress != ''  ">#{relevantAddress},</if>
+			<if test="relevantRemark != null  and relevantRemark != ''  ">#{relevantRemark},</if>
+			<if test="relevantEvaluate != null  and relevantEvaluate != ''  ">#{relevantEvaluate},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTRelevantMessage" parameterType="TRelevantMessage">
+        update t_relevant_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="relevantType != null  and relevantType != ''  ">relevant_type = #{relevantType},</if>
+            <if test="relevantCode != null  and relevantCode != ''  ">relevant_code = #{relevantCode},</if>
+            <if test="relevantName != null  and relevantName != ''  ">relevant_name = #{relevantName},</if>
+            <if test="relevantContacts != null  and relevantContacts != ''  ">relevant_contacts = #{relevantContacts},</if>
+            <if test="relevantPhone != null  and relevantPhone != ''  ">relevant_phone = #{relevantPhone},</if>
+            <if test="relevantFax != null  and relevantFax != ''  ">relevant_fax = #{relevantFax},</if>
+            <if test="relevantAddress != null  and relevantAddress != ''  ">relevant_address = #{relevantAddress},</if>
+            <if test="relevantRemark != null  and relevantRemark != ''  ">relevant_remark = #{relevantRemark},</if>
+            <if test="relevantEvaluate != null  and relevantEvaluate != ''  ">relevant_evaluate = #{relevantEvaluate},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTRelevantMessageById" parameterType="String">
+        delete from t_relevant_message where id = #{id}
+    </delete>
+	
+    <delete id="deleteTRelevantMessageByIds" parameterType="String">
+        delete from t_relevant_message where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -162,4 +162,10 @@ public class SysPostServiceImpl implements ISysPostService {
         }
         return UserConstants.POST_CODE_UNIQUE;
     }
+
+	@Override
+	public List<SysPost> businessPostList(SysPost post) {
+		
+		return postMapper.selectPagePostList(post);
+	}
 }

@@ -2,6 +2,8 @@ package com.project.security.domain.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -42,8 +44,14 @@ public class TSubjectVo implements Serializable
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
-	/** 选项s */
-	private String contents;
+	/** 题目选项 */
+	private String optionValue;
+	/** 题目内容 */
+	private String content;
+	/** 题目顺序 */
+	private Integer optionSort;
+	/** 题目选项信息 */
+	private List<Map<String,Object>> optionContents;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -162,12 +170,36 @@ public class TSubjectVo implements Serializable
 		return updateUserId;
 	}
 
-    public String getContents() {
-		return contents;
+	public List<Map<String, Object>> getOptionContents() {
+		return optionContents;
 	}
 
-	public void setContents(String contents) {
-		this.contents = contents;
+	public void setOptionContents(List<Map<String, Object>> optionContents) {
+		this.optionContents = optionContents;
+	}
+
+	public String getOptionValue() {
+		return optionValue;
+	}
+
+	public void setOptionValue(String optionValue) {
+		this.optionValue = optionValue;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getOptionSort() {
+		return optionSort;
+	}
+
+	public void setOptionSort(Integer optionSort) {
+		this.optionSort = optionSort;
 	}
 
 	public String toString() {

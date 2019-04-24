@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUsersManagementMapper">
+    
+    <resultMap type="TUsersManagement" id="TUsersManagementResult">
+        <result property="id"    column="id"    />
+        <result property="managementUserId"    column="management_user_id"    />
+        <result property="managementName"    column="management_name"    />
+        <result property="managementSex"    column="management_sex"    />
+        <result property="managementPhone"    column="management_phone"    />
+        <result property="isIncumbency"    column="is_incumbency"    />
+        <result property="managementEmail"    column="management_email"    />
+        <result property="managementIdNum"    column="management_id_num"    />
+        <result property="managementEducation"    column="management_education"    />
+        <result property="managementBirth"    column="management_birth"    />
+        <result property="managementAddr"    column="management_addr"    />
+        <result property="managementDeptId"    column="management_dept_id"    />
+        <result property="managementPost"    column="management_post"    />
+        <result property="managementNum"    column="management_num"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTUsersManagementVo">
+        select um.id, um.management_user_id, um.management_name, um.management_sex, um.management_phone, um.is_incumbency, um.management_email, um.management_id_num, um.management_education, um.management_birth, um.management_addr, um.management_dept_id, um.management_post, um.management_num, um.create_time, um.update_time, um.user_id, um.meno, um.business_id, um.update_user_id from t_users_management um
+    </sql>
+	
+    <select id="selectTUsersManagementList" parameterType="TUsersManagement" resultMap="TUsersManagementResult">
+        <include refid="selectTUsersManagementVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and um.id = #{id}</if>
+             <if test="managementUserId != null "> and um.management_user_id = #{managementUserId}</if>
+             <if test="managementName != null  and managementName != '' "> and um.management_name = #{managementName}</if>
+             <if test="managementSex != null  and managementSex != '' "> and um.management_sex = #{managementSex}</if>
+             <if test="managementPhone != null  and managementPhone != '' "> and um.management_phone = #{managementPhone}</if>
+             <if test="isIncumbency != null  and isIncumbency != '' "> and um.is_incumbency = #{isIncumbency}</if>
+             <if test="managementEmail != null  and managementEmail != '' "> and um.management_email = #{managementEmail}</if>
+             <if test="managementIdNum != null  and managementIdNum != '' "> and um.management_id_num = #{managementIdNum}</if>
+             <if test="managementEducation != null  and managementEducation != '' "> and um.management_education = #{managementEducation}</if>
+             <if test="managementBirth != null "> and um.management_birth = #{managementBirth}</if>
+             <if test="managementAddr != null  and managementAddr != '' "> and um.management_addr = #{managementAddr}</if>
+             <if test="managementDeptId != null  and managementDeptId != '' "> and um.management_dept_id = #{managementDeptId}</if>
+             <if test="managementPost != null  and managementPost != '' "> and um.management_post = #{managementPost}</if>
+             <if test="managementNum != null  and managementNum != '' "> and um.management_num = #{managementNum}</if>
+             <if test="createTime != null "> and um.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and um.update_time = #{updateTime}</if>
+             <if test="userId != null "> and um.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and um.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and um.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and um.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUsersManagementById" parameterType="String" resultMap="TUsersManagementResult">
+        <include refid="selectTUsersManagementVo"/>
+        where um.id = #{id}
+    </select>
+        
+    <insert id="insertTUsersManagement" parameterType="TUsersManagement">
+        insert into t_users_management
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="managementUserId != null  ">management_user_id,</if>
+			<if test="managementName != null  and managementName != ''  ">management_name,</if>
+			<if test="managementSex != null  and managementSex != ''  ">management_sex,</if>
+			<if test="managementPhone != null  and managementPhone != ''  ">management_phone,</if>
+			<if test="isIncumbency != null  and isIncumbency != ''  ">is_incumbency,</if>
+			<if test="managementEmail != null  and managementEmail != ''  ">management_email,</if>
+			<if test="managementIdNum != null  and managementIdNum != ''  ">management_id_num,</if>
+			<if test="managementEducation != null  and managementEducation != ''  ">management_education,</if>
+			<if test="managementBirth != null  ">management_birth,</if>
+			<if test="managementAddr != null  and managementAddr != ''  ">management_addr,</if>
+			<if test="managementDeptId != null  and managementDeptId != ''  ">management_dept_id,</if>
+			<if test="managementPost != null  and managementPost != ''  ">management_post,</if>
+			<if test="managementNum != null  and managementNum != ''  ">management_num,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="managementUserId != null  ">#{managementUserId},</if>
+			<if test="managementName != null  and managementName != ''  ">#{managementName},</if>
+			<if test="managementSex != null  and managementSex != ''  ">#{managementSex},</if>
+			<if test="managementPhone != null  and managementPhone != ''  ">#{managementPhone},</if>
+			<if test="isIncumbency != null  and isIncumbency != ''  ">#{isIncumbency},</if>
+			<if test="managementEmail != null  and managementEmail != ''  ">#{managementEmail},</if>
+			<if test="managementIdNum != null  and managementIdNum != ''  ">#{managementIdNum},</if>
+			<if test="managementEducation != null  and managementEducation != ''  ">#{managementEducation},</if>
+			<if test="managementBirth != null  ">#{managementBirth},</if>
+			<if test="managementAddr != null  and managementAddr != ''  ">#{managementAddr},</if>
+			<if test="managementDeptId != null  and managementDeptId != ''  ">#{managementDeptId},</if>
+			<if test="managementPost != null  and managementPost != ''  ">#{managementPost},</if>
+			<if test="managementNum != null  and managementNum != ''  ">#{managementNum},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUsersManagement" parameterType="TUsersManagement">
+        update t_users_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="managementUserId != null  ">management_user_id = #{managementUserId},</if>
+            <if test="managementName != null  and managementName != ''  ">management_name = #{managementName},</if>
+            <if test="managementSex != null  and managementSex != ''  ">management_sex = #{managementSex},</if>
+            <if test="managementPhone != null  and managementPhone != ''  ">management_phone = #{managementPhone},</if>
+            <if test="isIncumbency != null  and isIncumbency != ''  ">is_incumbency = #{isIncumbency},</if>
+            <if test="managementEmail != null  and managementEmail != ''  ">management_email = #{managementEmail},</if>
+            <if test="managementIdNum != null  and managementIdNum != ''  ">management_id_num = #{managementIdNum},</if>
+            <if test="managementEducation != null  and managementEducation != ''  ">management_education = #{managementEducation},</if>
+            <if test="managementBirth != null  ">management_birth = #{managementBirth},</if>
+            <if test="managementAddr != null  and managementAddr != ''  ">management_addr = #{managementAddr},</if>
+            <if test="managementDeptId != null  and managementDeptId != ''  ">management_dept_id = #{managementDeptId},</if>
+            <if test="managementPost != null  and managementPost != ''  ">management_post = #{managementPost},</if>
+            <if test="managementNum != null  and managementNum != ''  ">management_num = #{managementNum},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUsersManagementById" parameterType="String">
+        delete from t_users_management where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUsersManagementByIds" parameterType="String">
+        delete from t_users_management where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TPhysicalExaminationMapper">
+    
+    <resultMap type="TPhysicalExamination" id="TPhysicalExaminationResult">
+        <result property="id"    column="id"    />
+        <result property="physicalDate"    column="physical_date"    />
+        <result property="physicalUnit"    column="physical_unit"    />
+        <result property="suspectedNum"    column="suspected_num"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTPhysicalExaminationVo">
+        select pe.id, pe.physical_date, pe.physical_unit, pe.suspected_num, pe.file_path, pe.remark, pe.create_time, pe.update_time, pe.user_id, pe.business_id, pe.update_user_id from t_physical_examination pe
+    </sql>
+	
+    <select id="selectTPhysicalExaminationList" parameterType="TPhysicalExamination" resultMap="TPhysicalExaminationResult">
+        <include refid="selectTPhysicalExaminationVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and pe.id = #{id}</if>
+             <if test="physicalDate != null "> and pe.physical_date = #{physicalDate}</if>
+             <if test="physicalUnit != null  and physicalUnit != '' "> and pe.physical_unit = #{physicalUnit}</if>
+             <if test="suspectedNum != null  and suspectedNum != '' "> and pe.suspected_num = #{suspectedNum}</if>
+             <if test="filePath != null  and filePath != '' "> and pe.file_path = #{filePath}</if>
+             <if test="remark != null  and remark != '' "> and pe.remark = #{remark}</if>
+             <if test="createTime != null "> and pe.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and pe.update_time = #{updateTime}</if>
+             <if test="userId != null "> and pe.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and pe.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and pe.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTPhysicalExaminationById" parameterType="String" resultMap="TPhysicalExaminationResult">
+        <include refid="selectTPhysicalExaminationVo"/>
+        where pe.id = #{id}
+    </select>
+        
+    <insert id="insertTPhysicalExamination" parameterType="TPhysicalExamination">
+        insert into t_physical_examination
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="physicalDate != null  ">physical_date,</if>
+			<if test="physicalUnit != null  and physicalUnit != ''  ">physical_unit,</if>
+			<if test="suspectedNum != null  and suspectedNum != ''  ">suspected_num,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="physicalDate != null  ">#{physicalDate},</if>
+			<if test="physicalUnit != null  and physicalUnit != ''  ">#{physicalUnit},</if>
+			<if test="suspectedNum != null  and suspectedNum != ''  ">#{suspectedNum},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTPhysicalExamination" parameterType="TPhysicalExamination">
+        update t_physical_examination
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="physicalDate != null  ">physical_date = #{physicalDate},</if>
+            <if test="physicalUnit != null  and physicalUnit != ''  ">physical_unit = #{physicalUnit},</if>
+            <if test="suspectedNum != null  and suspectedNum != ''  ">suspected_num = #{suspectedNum},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTPhysicalExaminationById" parameterType="String">
+        delete from t_physical_examination where id = #{id}
+    </delete>
+	
+    <delete id="deleteTPhysicalExaminationByIds" parameterType="String">
+        delete from t_physical_examination where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

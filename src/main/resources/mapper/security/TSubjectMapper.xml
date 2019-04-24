@@ -127,14 +127,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
-        <result property="contents"    column="contents"    />
+        <result property="contents"    column="option_value"    />
     </resultMap>
     
     <select id="examCollection" parameterType="java.lang.String" resultMap="TSubjectVoResult">
     	<include refid="selectTSubjectbasicColums"/>,
-    	(select GROUP_CONCAT(so.option_value,':',so.content) from t_subject_option so where so.subject_id = s.id order by so.option_sort) contents
+    	so.option_value,so.content,so.option_sort
         from t_subject s
         join t_user_subject_collect usc on s.id = usc.subject_id
-		where usc.user_id = 
+        join t_subject_option so on so.subject_id = s.id
+		where usc.user_id = #{userId}
+		order by s.id,so.option_sort
     </select>
 </mapper>

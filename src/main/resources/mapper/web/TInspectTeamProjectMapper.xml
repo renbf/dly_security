@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TInspectTeamProjectMapper">
+    
+    <resultMap type="com.project.web.domian.TInspectTeamProject" id="TInspectTeamProjectResult">
+        <result property="inspectPlanId"    column="inspect_plan_id"    />
+        <result property="checkTeamId"    column="check_team_id"    />
+        <result property="checkProjectId"    column="check_project_id"    />
+        <result property="isOk"    column="is_ok"    />
+    </resultMap>
+	
+	<sql id="selectTInspectTeamProjectbasicColums">
+        select itp.inspect_plan_id, itp.check_team_id, itp.check_project_id, itp.is_ok    </sql>
+	
+    <select id="selectTInspectTeamProjectList" parameterType="com.project.web.domian.TInspectTeamProject" resultMap="TInspectTeamProjectResult">
+        <include refid="selectTInspectTeamProjectbasicColums"/>
+        from t_inspect_team_project itp
+        <where>  
+            <if test="inspectPlanId != null  and inspectPlanId != '' "> and itp.inspect_plan_id = #{inspectPlanId}</if>
+             <if test="checkTeamId != null  and checkTeamId != '' "> and itp.check_team_id = #{checkTeamId}</if>
+             <if test="checkProjectId != null  and checkProjectId != '' "> and itp.check_project_id = #{checkProjectId}</if>
+             <if test="isOk != null  and isOk != '' "> and itp.is_ok = #{isOk}</if>
+         </where>
+    </select>
+    
+    <select id="selectTInspectTeamProjectById" parameterType="String" resultMap="TInspectTeamProjectResult">
+        <include refid="selectTInspectTeamProjectbasicColums"/>
+        from t_inspect_team_project itp
+        where itp.inspect_plan_id = #{inspectPlanId}
+    </select>
+        
+    <insert id="insertTInspectTeamProject" parameterType="com.project.web.domian.TInspectTeamProject">
+        insert into t_inspect_team_project
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="inspectPlanId != null  and inspectPlanId != ''  ">inspect_plan_id,</if>
+			<if test="checkTeamId != null  and checkTeamId != ''  ">check_team_id,</if>
+			<if test="checkProjectId != null  and checkProjectId != ''  ">check_project_id,</if>
+			<if test="isOk != null  and isOk != ''  ">is_ok,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="inspectPlanId != null  and inspectPlanId != ''  ">#{inspectPlanId},</if>
+			<if test="checkTeamId != null  and checkTeamId != ''  ">#{checkTeamId},</if>
+			<if test="checkProjectId != null  and checkProjectId != ''  ">#{checkProjectId},</if>
+			<if test="isOk != null  and isOk != ''  ">#{isOk},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTInspectTeamProject" parameterType="com.project.web.domian.TInspectTeamProject">
+        update t_inspect_team_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkTeamId != null  and checkTeamId != ''  ">check_team_id = #{checkTeamId},</if>
+            <if test="checkProjectId != null  and checkProjectId != ''  ">check_project_id = #{checkProjectId},</if>
+            <if test="isOk != null  and isOk != ''  ">is_ok = #{isOk},</if>
+        </trim>
+        where inspect_plan_id = #{inspectPlanId}
+    </update>
+
+	<delete id="deleteTInspectTeamProjectById" parameterType="String">
+        delete from t_inspect_team_project where inspect_plan_id = #{inspectPlanId}
+    </delete>
+	
+    <delete id="deleteTInspectTeamProjectByIds" parameterType="String">
+        delete from t_inspect_team_project where inspect_plan_id in 
+        <foreach item="inspectPlanId" collection="array" open="(" separator="," close=")">
+            #{inspectPlanId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

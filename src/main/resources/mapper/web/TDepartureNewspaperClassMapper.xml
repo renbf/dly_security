@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDepartureNewspaperClassMapper">
+    
+    <resultMap type="TDepartureNewspaperClass" id="TDepartureNewspaperClassResult">
+        <result property="id"    column="id"    />
+        <result property="shiftsDate"    column="shifts_date"    />
+        <result property="shiftsNum"    column="shifts_num"    />
+        <result property="shiftsType"    column="shifts_type"    />
+        <result property="driver"    column="driver"    />
+        <result property="lineName"    column="line_name"    />
+        <result property="newspaperClassDate"    column="newspaper_class_date"    />
+        <result property="newspaperClassPer"    column="newspaper_class_per"    />
+        <result property="lastDate"    column="last_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTDepartureNewspaperClassVo">
+        select dnc.id, dnc.shifts_date, dnc.shifts_num, dnc.shifts_type, dnc.driver, dnc.line_name, dnc.newspaper_class_date, dnc.newspaper_class_per, dnc.last_date, dnc.create_time, dnc.update_time, dnc.user_id, dnc.business_id, dnc.update_user_id from t_departure_newspaper_class dnc
+    </sql>
+	
+    <select id="selectTDepartureNewspaperClassList" parameterType="TDepartureNewspaperClass" resultMap="TDepartureNewspaperClassResult">
+        <include refid="selectTDepartureNewspaperClassVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and dnc.id = #{id}</if>
+             <if test="shiftsDate != null "> and dnc.shifts_date = #{shiftsDate}</if>
+             <if test="shiftsNum != null  and shiftsNum != '' "> and dnc.shifts_num = #{shiftsNum}</if>
+             <if test="shiftsType != null  and shiftsType != '' "> and dnc.shifts_type = #{shiftsType}</if>
+             <if test="driver != null  and driver != '' "> and dnc.driver = #{driver}</if>
+             <if test="lineName != null  and lineName != '' "> and dnc.line_name = #{lineName}</if>
+             <if test="newspaperClassDate != null "> and dnc.newspaper_class_date = #{newspaperClassDate}</if>
+             <if test="newspaperClassPer != null  and newspaperClassPer != '' "> and dnc.newspaper_class_per = #{newspaperClassPer}</if>
+             <if test="lastDate != null "> and dnc.last_date = #{lastDate}</if>
+             <if test="createTime != null "> and dnc.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and dnc.update_time = #{updateTime}</if>
+             <if test="userId != null "> and dnc.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and dnc.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and dnc.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDepartureNewspaperClassById" parameterType="String" resultMap="TDepartureNewspaperClassResult">
+        <include refid="selectTDepartureNewspaperClassVo"/>
+        where dnc.id = #{id}
+    </select>
+        
+    <insert id="insertTDepartureNewspaperClass" parameterType="TDepartureNewspaperClass">
+        insert into t_departure_newspaper_class
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="shiftsDate != null  ">shifts_date,</if>
+			<if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num,</if>
+			<if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
+			<if test="driver != null  and driver != ''  ">driver,</if>
+			<if test="lineName != null  and lineName != ''  ">line_name,</if>
+			<if test="newspaperClassDate != null  ">newspaper_class_date,</if>
+			<if test="newspaperClassPer != null  and newspaperClassPer != ''  ">newspaper_class_per,</if>
+			<if test="lastDate != null  ">last_date,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="shiftsDate != null  ">#{shiftsDate},</if>
+			<if test="shiftsNum != null  and shiftsNum != ''  ">#{shiftsNum},</if>
+			<if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
+			<if test="driver != null  and driver != ''  ">#{driver},</if>
+			<if test="lineName != null  and lineName != ''  ">#{lineName},</if>
+			<if test="newspaperClassDate != null  ">#{newspaperClassDate},</if>
+			<if test="newspaperClassPer != null  and newspaperClassPer != ''  ">#{newspaperClassPer},</if>
+			<if test="lastDate != null  ">#{lastDate},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDepartureNewspaperClass" parameterType="TDepartureNewspaperClass">
+        update t_departure_newspaper_class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shiftsDate != null  ">shifts_date = #{shiftsDate},</if>
+            <if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num = #{shiftsNum},</if>
+            <if test="shiftsType != null  and shiftsType != ''  ">shifts_type = #{shiftsType},</if>
+            <if test="driver != null  and driver != ''  ">driver = #{driver},</if>
+            <if test="lineName != null  and lineName != ''  ">line_name = #{lineName},</if>
+            <if test="newspaperClassDate != null  ">newspaper_class_date = #{newspaperClassDate},</if>
+            <if test="newspaperClassPer != null  and newspaperClassPer != ''  ">newspaper_class_per = #{newspaperClassPer},</if>
+            <if test="lastDate != null  ">last_date = #{lastDate},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTDepartureNewspaperClassById" parameterType="String">
+        delete from t_departure_newspaper_class where id = #{id}
+    </delete>
+	
+    <delete id="deleteTDepartureNewspaperClassByIds" parameterType="String">
+        delete from t_departure_newspaper_class where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

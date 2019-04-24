@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDrillRecordMapper">
+    
+    <resultMap type="TDrillRecord" id="TDrillRecordResult">
+        <result property="id"    column="id"    />
+        <result property="contingencyPlan"    column="contingency_plan"    />
+        <result property="exerciseContent"    column="exercise_content"    />
+        <result property="exerciseName"    column="exercise_name"    />
+        <result property="effectEvaluation"    column="effect_evaluation"    />
+        <result property="exerciseDate"    column="exercise_date"    />
+        <result property="commandingOfficer"    column="commanding_officer"    />
+        <result property="exerciseType"    column="exercise_type"    />
+        <result property="participantsNum"    column="participants_num"    />
+        <result property="participantsLevl"    column="participants_levl"    />
+        <result property="checkInNum"    column="check_in_num"    />
+        <result property="exercisePlace"    column="exercise_place"    />
+        <result property="exerciseFilePath"    column="exercise_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTDrillRecordVo">
+        select dr.id, dr.contingency_plan, dr.exercise_content, dr.exercise_name, dr.effect_evaluation, dr.exercise_date, dr.commanding_officer, dr.exercise_type, dr.participants_num, dr.participants_levl, dr.check_in_num, dr.exercise_place, dr.exercise_file_path, dr.create_time, dr.update_time, dr.user_id, dr.meno, dr.business_id, dr.update_user_id from t_drill_record dr
+    </sql>
+	
+    <select id="selectTDrillRecordList" parameterType="TDrillRecord" resultMap="TDrillRecordResult">
+        <include refid="selectTDrillRecordVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and dr.id = #{id}</if>
+             <if test="contingencyPlan != null  and contingencyPlan != '' "> and dr.contingency_plan = #{contingencyPlan}</if>
+             <if test="exerciseContent != null  and exerciseContent != '' "> and dr.exercise_content = #{exerciseContent}</if>
+             <if test="exerciseName != null  and exerciseName != '' "> and dr.exercise_name = #{exerciseName}</if>
+             <if test="effectEvaluation != null  and effectEvaluation != '' "> and dr.effect_evaluation = #{effectEvaluation}</if>
+             <if test="exerciseDate != null "> and dr.exercise_date = #{exerciseDate}</if>
+             <if test="commandingOfficer != null  and commandingOfficer != '' "> and dr.commanding_officer = #{commandingOfficer}</if>
+             <if test="exerciseType != null  and exerciseType != '' "> and dr.exercise_type = #{exerciseType}</if>
+             <if test="participantsNum != null "> and dr.participants_num = #{participantsNum}</if>
+             <if test="participantsLevl != null  and participantsLevl != '' "> and dr.participants_levl = #{participantsLevl}</if>
+             <if test="checkInNum != null "> and dr.check_in_num = #{checkInNum}</if>
+             <if test="exercisePlace != null  and exercisePlace != '' "> and dr.exercise_place = #{exercisePlace}</if>
+             <if test="exerciseFilePath != null  and exerciseFilePath != '' "> and dr.exercise_file_path = #{exerciseFilePath}</if>
+             <if test="createTime != null "> and dr.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and dr.update_time = #{updateTime}</if>
+             <if test="userId != null "> and dr.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and dr.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and dr.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and dr.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDrillRecordById" parameterType="String" resultMap="TDrillRecordResult">
+        <include refid="selectTDrillRecordVo"/>
+        where dr.id = #{id}
+    </select>
+        
+    <insert id="insertTDrillRecord" parameterType="TDrillRecord">
+        insert into t_drill_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="contingencyPlan != null  and contingencyPlan != ''  ">contingency_plan,</if>
+			<if test="exerciseContent != null  and exerciseContent != ''  ">exercise_content,</if>
+			<if test="exerciseName != null  and exerciseName != ''  ">exercise_name,</if>
+			<if test="effectEvaluation != null  and effectEvaluation != ''  ">effect_evaluation,</if>
+			<if test="exerciseDate != null  ">exercise_date,</if>
+			<if test="commandingOfficer != null  and commandingOfficer != ''  ">commanding_officer,</if>
+			<if test="exerciseType != null  and exerciseType != ''  ">exercise_type,</if>
+			<if test="participantsNum != null  ">participants_num,</if>
+			<if test="participantsLevl != null  and participantsLevl != ''  ">participants_levl,</if>
+			<if test="checkInNum != null  ">check_in_num,</if>
+			<if test="exercisePlace != null  and exercisePlace != ''  ">exercise_place,</if>
+			<if test="exerciseFilePath != null  and exerciseFilePath != ''  ">exercise_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="contingencyPlan != null  and contingencyPlan != ''  ">#{contingencyPlan},</if>
+			<if test="exerciseContent != null  and exerciseContent != ''  ">#{exerciseContent},</if>
+			<if test="exerciseName != null  and exerciseName != ''  ">#{exerciseName},</if>
+			<if test="effectEvaluation != null  and effectEvaluation != ''  ">#{effectEvaluation},</if>
+			<if test="exerciseDate != null  ">#{exerciseDate},</if>
+			<if test="commandingOfficer != null  and commandingOfficer != ''  ">#{commandingOfficer},</if>
+			<if test="exerciseType != null  and exerciseType != ''  ">#{exerciseType},</if>
+			<if test="participantsNum != null  ">#{participantsNum},</if>
+			<if test="participantsLevl != null  and participantsLevl != ''  ">#{participantsLevl},</if>
+			<if test="checkInNum != null  ">#{checkInNum},</if>
+			<if test="exercisePlace != null  and exercisePlace != ''  ">#{exercisePlace},</if>
+			<if test="exerciseFilePath != null  and exerciseFilePath != ''  ">#{exerciseFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDrillRecord" parameterType="TDrillRecord">
+        update t_drill_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contingencyPlan != null  and contingencyPlan != ''  ">contingency_plan = #{contingencyPlan},</if>
+            <if test="exerciseContent != null  and exerciseContent != ''  ">exercise_content = #{exerciseContent},</if>
+            <if test="exerciseName != null  and exerciseName != ''  ">exercise_name = #{exerciseName},</if>
+            <if test="effectEvaluation != null  and effectEvaluation != ''  ">effect_evaluation = #{effectEvaluation},</if>
+            <if test="exerciseDate != null  ">exercise_date = #{exerciseDate},</if>
+            <if test="commandingOfficer != null  and commandingOfficer != ''  ">commanding_officer = #{commandingOfficer},</if>
+            <if test="exerciseType != null  and exerciseType != ''  ">exercise_type = #{exerciseType},</if>
+            <if test="participantsNum != null  ">participants_num = #{participantsNum},</if>
+            <if test="participantsLevl != null  and participantsLevl != ''  ">participants_levl = #{participantsLevl},</if>
+            <if test="checkInNum != null  ">check_in_num = #{checkInNum},</if>
+            <if test="exercisePlace != null  and exercisePlace != ''  ">exercise_place = #{exercisePlace},</if>
+            <if test="exerciseFilePath != null  and exerciseFilePath != ''  ">exercise_file_path = #{exerciseFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTDrillRecordById" parameterType="String">
+        delete from t_drill_record where id = #{id}
+    </delete>
+	
+    <delete id="deleteTDrillRecordByIds" parameterType="String">
+        delete from t_drill_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
 import com.project.security.domain.TPaper;
-import java.util.List;	
+import java.util.List;
+
+import org.springframework.stereotype.Repository;	
 
 /**
  * 考卷 数据层
@@ -9,6 +11,7 @@ import java.util.List;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("paperMapper")
 public interface TPaperMapper 
 {
 	/**

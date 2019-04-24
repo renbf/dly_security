@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TRoadTransportLogMapper">
+    
+    <resultMap type="com.project.web.domian.TRoadTransportLog" id="TRoadTransportLogResult">
+        <result property="id"    column="id"    />
+        <result property="ownerName"    column="owner_name"    />
+        <result property="roadTransportNumber"    column="road_transport_number"    />
+        <result property="validityTerm"    column="validity_term"    />
+        <result property="businessScope"    column="business_scope"    />
+        <result property="startDate"    column="start_date"    />
+    </resultMap>
+	
+	<sql id="selectTRoadTransportLogbasicColums">
+        select rtl.id, rtl.owner_name, rtl.road_transport_number, rtl.validity_term, rtl.business_scope, rtl.start_date    </sql>
+	
+    <select id="selectTRoadTransportLogList" parameterType="com.project.web.domian.TRoadTransportLog" resultMap="TRoadTransportLogResult">
+        <include refid="selectTRoadTransportLogbasicColums"/>
+        from t_road_transport_log rtl
+        <where>  
+            <if test="id != null  and id != '' "> and rtl.id = #{id}</if>
+             <if test="ownerName != null  and ownerName != '' "> and rtl.owner_name = #{ownerName}</if>
+             <if test="roadTransportNumber != null  and roadTransportNumber != '' "> and rtl.road_transport_number = #{roadTransportNumber}</if>
+             <if test="validityTerm != null  and validityTerm != '' "> and rtl.validity_term = #{validityTerm}</if>
+             <if test="businessScope != null  and businessScope != '' "> and rtl.business_scope = #{businessScope}</if>
+             <if test="startDate != null "> and rtl.start_date = #{startDate}</if>
+         </where>
+    </select>
+    
+    <select id="selectTRoadTransportLogById" parameterType="String" resultMap="TRoadTransportLogResult">
+        <include refid="selectTRoadTransportLogbasicColums"/>
+        from t_road_transport_log rtl
+        where rtl.id = #{id}
+    </select>
+        
+    <insert id="insertTRoadTransportLog" parameterType="com.project.web.domian.TRoadTransportLog">
+        insert into t_road_transport_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="ownerName != null  and ownerName != ''  ">owner_name,</if>
+			<if test="roadTransportNumber != null  and roadTransportNumber != ''  ">road_transport_number,</if>
+			<if test="validityTerm != null  and validityTerm != ''  ">validity_term,</if>
+			<if test="businessScope != null  and businessScope != ''  ">business_scope,</if>
+			<if test="startDate != null  ">start_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="ownerName != null  and ownerName != ''  ">#{ownerName},</if>
+			<if test="roadTransportNumber != null  and roadTransportNumber != ''  ">#{roadTransportNumber},</if>
+			<if test="validityTerm != null  and validityTerm != ''  ">#{validityTerm},</if>
+			<if test="businessScope != null  and businessScope != ''  ">#{businessScope},</if>
+			<if test="startDate != null  ">#{startDate},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTRoadTransportLog" parameterType="com.project.web.domian.TRoadTransportLog">
+        update t_road_transport_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ownerName != null  and ownerName != ''  ">owner_name = #{ownerName},</if>
+            <if test="roadTransportNumber != null  and roadTransportNumber != ''  ">road_transport_number = #{roadTransportNumber},</if>
+            <if test="validityTerm != null  and validityTerm != ''  ">validity_term = #{validityTerm},</if>
+            <if test="businessScope != null  and businessScope != ''  ">business_scope = #{businessScope},</if>
+            <if test="startDate != null  ">start_date = #{startDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTRoadTransportLogById" parameterType="String">
+        delete from t_road_transport_log where id = #{id}
+    </delete>
+	
+    <delete id="deleteTRoadTransportLogByIds" parameterType="String">
+        delete from t_road_transport_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

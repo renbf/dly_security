@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.system.tTransportManagement.mapper.TTransportManagementMapper">
+    
+    <resultMap type="TTransportManagement" id="TTransportManagementResult">
+        <result property="id"    column="id"    />
+        <result property="lineName"    column="line_name"    />
+        <result property="startCity"    column="start_city"    />
+        <result property="endCity"    column="end_city"    />
+        <result property="highSpeed"    column="high_speed"    />
+        <result property="notHighSpeed"    column="not_high_speed"    />
+        <result property="allMileage"    column="all_mileage"    />
+        <result property="lineType"    column="line_type"    />
+        <result property="lineLevel"    column="line_level"    />
+        <result property="isSuperLong"    column="is_super_long"    />
+        <result property="statrStation"    column="statr_station"    />
+        <result property="endStation"    column="end_station"    />
+        <result property="dayVehicle"    column="day_vehicle"    />
+        <result property="permitDate"    column="permit_date"    />
+        <result property="permitValidityDate"    column="permit_validity_date"    />
+        <result property="shiftsType"    column="shifts_type"    />
+        <result property="dayMileage"    column="day_mileage"    />
+        <result property="organization"    column="organization"    />
+        <result property="passByStation"    column="pass_by_station"    />
+        <result property="stopStation"    column="stop_station"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTTransportManagementVo">
+        select tm.id, tm.line_name, tm.start_city, tm.end_city, tm.high_speed, tm.not_high_speed, tm.all_mileage, tm.line_type, tm.line_level, tm.is_super_long, tm.statr_station, tm.end_station, tm.day_vehicle, tm.permit_date, tm.permit_validity_date, tm.shifts_type, tm.day_mileage, tm.organization, tm.pass_by_station, tm.stop_station, tm.file_path, tm.create_time, tm.update_time, tm.user_id, tm.business_id, tm.update_user_id from t_transport_management tm
+    </sql>
+	
+    <select id="selectTTransportManagementList" parameterType="TTransportManagement" resultMap="TTransportManagementResult">
+        <include refid="selectTTransportManagementVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and tm.id = #{id}</if>
+             <if test="lineName != null  and lineName != '' "> and tm.line_name = #{lineName}</if>
+             <if test="startCity != null  and startCity != '' "> and tm.start_city = #{startCity}</if>
+             <if test="endCity != null  and endCity != '' "> and tm.end_city = #{endCity}</if>
+             <if test="highSpeed != null  and highSpeed != '' "> and tm.high_speed = #{highSpeed}</if>
+             <if test="notHighSpeed != null  and notHighSpeed != '' "> and tm.not_high_speed = #{notHighSpeed}</if>
+             <if test="allMileage != null  and allMileage != '' "> and tm.all_mileage = #{allMileage}</if>
+             <if test="lineType != null  and lineType != '' "> and tm.line_type = #{lineType}</if>
+             <if test="lineLevel != null  and lineLevel != '' "> and tm.line_level = #{lineLevel}</if>
+             <if test="isSuperLong != null  and isSuperLong != '' "> and tm.is_super_long = #{isSuperLong}</if>
+             <if test="statrStation != null  and statrStation != '' "> and tm.statr_station = #{statrStation}</if>
+             <if test="endStation != null  and endStation != '' "> and tm.end_station = #{endStation}</if>
+             <if test="dayVehicle != null  and dayVehicle != '' "> and tm.day_vehicle = #{dayVehicle}</if>
+             <if test="permitDate != null "> and tm.permit_date = #{permitDate}</if>
+             <if test="permitValidityDate != null "> and tm.permit_validity_date = #{permitValidityDate}</if>
+             <if test="shiftsType != null  and shiftsType != '' "> and tm.shifts_type = #{shiftsType}</if>
+             <if test="dayMileage != null  and dayMileage != '' "> and tm.day_mileage = #{dayMileage}</if>
+             <if test="organization != null  and organization != '' "> and tm.organization = #{organization}</if>
+             <if test="passByStation != null  and passByStation != '' "> and tm.pass_by_station = #{passByStation}</if>
+             <if test="stopStation != null  and stopStation != '' "> and tm.stop_station = #{stopStation}</if>
+             <if test="filePath != null  and filePath != '' "> and tm.file_path = #{filePath}</if>
+             <if test="createTime != null "> and tm.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and tm.update_time = #{updateTime}</if>
+             <if test="userId != null "> and tm.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and tm.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and tm.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTTransportManagementById" parameterType="String" resultMap="TTransportManagementResult">
+        <include refid="selectTTransportManagementVo"/>
+        where tm.id = #{id}
+    </select>
+        
+    <insert id="insertTTransportManagement" parameterType="TTransportManagement">
+        insert into t_transport_management
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="lineName != null  and lineName != ''  ">line_name,</if>
+			<if test="startCity != null  and startCity != ''  ">start_city,</if>
+			<if test="endCity != null  and endCity != ''  ">end_city,</if>
+			<if test="highSpeed != null  and highSpeed != ''  ">high_speed,</if>
+			<if test="notHighSpeed != null  and notHighSpeed != ''  ">not_high_speed,</if>
+			<if test="allMileage != null  and allMileage != ''  ">all_mileage,</if>
+			<if test="lineType != null  and lineType != ''  ">line_type,</if>
+			<if test="lineLevel != null  and lineLevel != ''  ">line_level,</if>
+			<if test="isSuperLong != null  and isSuperLong != ''  ">is_super_long,</if>
+			<if test="statrStation != null  and statrStation != ''  ">statr_station,</if>
+			<if test="endStation != null  and endStation != ''  ">end_station,</if>
+			<if test="dayVehicle != null  and dayVehicle != ''  ">day_vehicle,</if>
+			<if test="permitDate != null  ">permit_date,</if>
+			<if test="permitValidityDate != null  ">permit_validity_date,</if>
+			<if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
+			<if test="dayMileage != null  and dayMileage != ''  ">day_mileage,</if>
+			<if test="organization != null  and organization != ''  ">organization,</if>
+			<if test="passByStation != null  and passByStation != ''  ">pass_by_station,</if>
+			<if test="stopStation != null  and stopStation != ''  ">stop_station,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="lineName != null  and lineName != ''  ">#{lineName},</if>
+			<if test="startCity != null  and startCity != ''  ">#{startCity},</if>
+			<if test="endCity != null  and endCity != ''  ">#{endCity},</if>
+			<if test="highSpeed != null  and highSpeed != ''  ">#{highSpeed},</if>
+			<if test="notHighSpeed != null  and notHighSpeed != ''  ">#{notHighSpeed},</if>
+			<if test="allMileage != null  and allMileage != ''  ">#{allMileage},</if>
+			<if test="lineType != null  and lineType != ''  ">#{lineType},</if>
+			<if test="lineLevel != null  and lineLevel != ''  ">#{lineLevel},</if>
+			<if test="isSuperLong != null  and isSuperLong != ''  ">#{isSuperLong},</if>
+			<if test="statrStation != null  and statrStation != ''  ">#{statrStation},</if>
+			<if test="endStation != null  and endStation != ''  ">#{endStation},</if>
+			<if test="dayVehicle != null  and dayVehicle != ''  ">#{dayVehicle},</if>
+			<if test="permitDate != null  ">#{permitDate},</if>
+			<if test="permitValidityDate != null  ">#{permitValidityDate},</if>
+			<if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
+			<if test="dayMileage != null  and dayMileage != ''  ">#{dayMileage},</if>
+			<if test="organization != null  and organization != ''  ">#{organization},</if>
+			<if test="passByStation != null  and passByStation != ''  ">#{passByStation},</if>
+			<if test="stopStation != null  and stopStation != ''  ">#{stopStation},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTTransportManagement" parameterType="TTransportManagement">
+        update t_transport_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lineName != null  and lineName != ''  ">line_name = #{lineName},</if>
+            <if test="startCity != null  and startCity != ''  ">start_city = #{startCity},</if>
+            <if test="endCity != null  and endCity != ''  ">end_city = #{endCity},</if>
+            <if test="highSpeed != null  and highSpeed != ''  ">high_speed = #{highSpeed},</if>
+            <if test="notHighSpeed != null  and notHighSpeed != ''  ">not_high_speed = #{notHighSpeed},</if>
+            <if test="allMileage != null  and allMileage != ''  ">all_mileage = #{allMileage},</if>
+            <if test="lineType != null  and lineType != ''  ">line_type = #{lineType},</if>
+            <if test="lineLevel != null  and lineLevel != ''  ">line_level = #{lineLevel},</if>
+            <if test="isSuperLong != null  and isSuperLong != ''  ">is_super_long = #{isSuperLong},</if>
+            <if test="statrStation != null  and statrStation != ''  ">statr_station = #{statrStation},</if>
+            <if test="endStation != null  and endStation != ''  ">end_station = #{endStation},</if>
+            <if test="dayVehicle != null  and dayVehicle != ''  ">day_vehicle = #{dayVehicle},</if>
+            <if test="permitDate != null  ">permit_date = #{permitDate},</if>
+            <if test="permitValidityDate != null  ">permit_validity_date = #{permitValidityDate},</if>
+            <if test="shiftsType != null  and shiftsType != ''  ">shifts_type = #{shiftsType},</if>
+            <if test="dayMileage != null  and dayMileage != ''  ">day_mileage = #{dayMileage},</if>
+            <if test="organization != null  and organization != ''  ">organization = #{organization},</if>
+            <if test="passByStation != null  and passByStation != ''  ">pass_by_station = #{passByStation},</if>
+            <if test="stopStation != null  and stopStation != ''  ">stop_station = #{stopStation},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTTransportManagementById" parameterType="String">
+        delete from t_transport_management where id = #{id}
+    </delete>
+	
+    <delete id="deleteTTransportManagementByIds" parameterType="String">
+        delete from t_transport_management where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

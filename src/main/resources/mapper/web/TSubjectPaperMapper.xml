@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSubjectPaperMapper">
+    
+    <resultMap type="com.project.web.domian.TSubjectPaper" id="TSubjectPaperResult">
+        <result property="paperId"    column="paper_id"    />
+        <result property="subjectId"    column="subject_id"    />
+        <result property="subjectScore"    column="subject_score"    />
+        <result property="subjectSort"    column="subject_sort"    />
+    </resultMap>
+	
+	<sql id="selectTSubjectPaperbasicColums">
+        select sp.paper_id, sp.subject_id, sp.subject_score, sp.subject_sort    </sql>
+	
+    <select id="selectTSubjectPaperList" parameterType="com.project.web.domian.TSubjectPaper" resultMap="TSubjectPaperResult">
+        <include refid="selectTSubjectPaperbasicColums"/>
+        from t_subject_paper sp
+        <where>  
+            <if test="paperId != null  and paperId != '' "> and sp.paper_id = #{paperId}</if>
+             <if test="subjectId != null  and subjectId != '' "> and sp.subject_id = #{subjectId}</if>
+             <if test="subjectScore != null "> and sp.subject_score = #{subjectScore}</if>
+             <if test="subjectSort != null "> and sp.subject_sort = #{subjectSort}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSubjectPaperById" parameterType="String" resultMap="TSubjectPaperResult">
+        <include refid="selectTSubjectPaperbasicColums"/>
+        from t_subject_paper sp
+        where sp.paper_id = #{paperId}
+    </select>
+        
+    <insert id="insertTSubjectPaper" parameterType="com.project.web.domian.TSubjectPaper">
+        insert into t_subject_paper
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="paperId != null  and paperId != ''  ">paper_id,</if>
+			<if test="subjectId != null  and subjectId != ''  ">subject_id,</if>
+			<if test="subjectScore != null  ">subject_score,</if>
+			<if test="subjectSort != null  ">subject_sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="paperId != null  and paperId != ''  ">#{paperId},</if>
+			<if test="subjectId != null  and subjectId != ''  ">#{subjectId},</if>
+			<if test="subjectScore != null  ">#{subjectScore},</if>
+			<if test="subjectSort != null  ">#{subjectSort},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSubjectPaper" parameterType="com.project.web.domian.TSubjectPaper">
+        update t_subject_paper
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subjectId != null  and subjectId != ''  ">subject_id = #{subjectId},</if>
+            <if test="subjectScore != null  ">subject_score = #{subjectScore},</if>
+            <if test="subjectSort != null  ">subject_sort = #{subjectSort},</if>
+        </trim>
+        where paper_id = #{paperId}
+    </update>
+
+	<delete id="deleteTSubjectPaperById" parameterType="String">
+        delete from t_subject_paper where paper_id = #{paperId}
+    </delete>
+	
+    <delete id="deleteTSubjectPaperByIds" parameterType="String">
+        delete from t_subject_paper where paper_id in 
+        <foreach item="paperId" collection="array" open="(" separator="," close=")">
+            #{paperId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

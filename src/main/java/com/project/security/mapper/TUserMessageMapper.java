@@ -2,6 +2,8 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.project.security.domain.TUserMessage;
 import com.project.security.domain.vo.TUserMessageVo;	
 
@@ -11,6 +13,7 @@ import com.project.security.domain.vo.TUserMessageVo;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("userMessageMapper")
 public interface TUserMessageMapper 
 {
 	/**

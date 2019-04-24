@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarLogMapper">
+    
+    <resultMap type="com.project.web.domian.TCarLog" id="TCarLogResult">
+        <result property="id"    column="id"    />
+        <result property="carNumber"    column="car_number"    />
+        <result property="color"    column="color"    />
+        <result property="updateDate"    column="update_date"    />
+    </resultMap>
+	
+	<sql id="selectTCarLogbasicColums">
+        select cl.id, cl.car_number, cl.color, cl.update_date    </sql>
+	
+    <select id="selectTCarLogList" parameterType="com.project.web.domian.TCarLog" resultMap="TCarLogResult">
+        <include refid="selectTCarLogbasicColums"/>
+        from t_car_log cl
+        <where>  
+            <if test="id != null  and id != '' "> and cl.id = #{id}</if>
+             <if test="carNumber != null  and carNumber != '' "> and cl.car_number = #{carNumber}</if>
+             <if test="color != null  and color != '' "> and cl.color = #{color}</if>
+             <if test="updateDate != null "> and cl.update_date = #{updateDate}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarLogById" parameterType="String" resultMap="TCarLogResult">
+        <include refid="selectTCarLogbasicColums"/>
+        from t_car_log cl
+        where cl.id = #{id}
+    </select>
+        
+    <insert id="insertTCarLog" parameterType="com.project.web.domian.TCarLog">
+        insert into t_car_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carNumber != null  and carNumber != ''  ">car_number,</if>
+			<if test="color != null  and color != ''  ">color,</if>
+			<if test="updateDate != null  ">update_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carNumber != null  and carNumber != ''  ">#{carNumber},</if>
+			<if test="color != null  and color != ''  ">#{color},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarLog" parameterType="com.project.web.domian.TCarLog">
+        update t_car_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carNumber != null  and carNumber != ''  ">car_number = #{carNumber},</if>
+            <if test="color != null  and color != ''  ">color = #{color},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarLogById" parameterType="String">
+        delete from t_car_log where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarLogByIds" parameterType="String">
+        delete from t_car_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

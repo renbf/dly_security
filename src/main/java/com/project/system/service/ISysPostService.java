@@ -17,6 +17,16 @@ public interface ISysPostService {
      * @return 岗位信息集合
      */
     public List<SysPost> selectPostList(SysPost post);
+    
+    /**
+     	* 查询岗位信息集合  new
+     *
+     * @param post 岗位信息
+     * @return 岗位信息集合
+     */
+    public List<SysPost> businessPostList(SysPost post);
+    
+    
 
     /**
      * 查询所有岗位

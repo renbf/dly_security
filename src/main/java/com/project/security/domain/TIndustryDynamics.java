@@ -1,18 +1,18 @@
 package com.project.security.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * 行业动态表 t_industry_dynamics
  * 
  * @author rbf
- * @date 2019-04-15
+ * @date 2019-04-22
  */
 public class TIndustryDynamics implements Serializable
 {
@@ -24,13 +24,14 @@ public class TIndustryDynamics implements Serializable
 	private String title;
 	/** 动态内容 */
 	private String context;
+	/** 详情url */
+	private String webUrl;
 	/** 上传图片 */
 	private String uploadUrl;
 	/** 创建人id */
 	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
-	@JsonIgnore
 	private Date createDate;
 	/** 修改时间 */
 	@JsonIgnore
@@ -65,6 +66,15 @@ public class TIndustryDynamics implements Serializable
 	public String getContext() 
 	{
 		return context;
+	}
+	public void setWebUrl(String webUrl) 
+	{
+		this.webUrl = webUrl;
+	}
+
+	public String getWebUrl() 
+	{
+		return webUrl;
 	}
 	public void setUploadUrl(String uploadUrl) 
 	{
@@ -117,6 +127,7 @@ public class TIndustryDynamics implements Serializable
             .append("id", getId())
             .append("title", getTitle())
             .append("context", getContext())
+            .append("webUrl", getWebUrl())
             .append("uploadUrl", getUploadUrl())
             .append("addUserId", getAddUserId())
             .append("createDate", getCreateDate())

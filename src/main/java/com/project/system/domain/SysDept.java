@@ -76,7 +76,20 @@ public class SysDept extends BaseEntity {
     private String parentName;
     private List<SysDept> childrens;
 
-    public List<SysDept> getChildrens() {
+    /**企业ID */
+    private String businessId;
+    
+    
+    
+    public String getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
+
+	public List<SysDept> getChildrens() {
         return childrens;
     }
 

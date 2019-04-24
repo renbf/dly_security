@@ -31,7 +31,7 @@ public class TInspectPlan implements Serializable
 	private Long deptId;
 	/** 责任人 */
 	private String userId;
-	/** 状态 0：待接收 1:已接收 2:已整改 3:拒绝 */
+	/** 状态 0：待检查 1:已完成 2:已上报*/
 	private String checkStatus;
 	/** 企业ID */
 	private String businessId;

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TLabourGoodsMapper">
+    
+    <resultMap type="TLabourGoods" id="TLabourGoodsResult">
+        <result property="id"    column="id"    />
+        <result property="grantDate"    column="grant_date"    />
+        <result property="receivePer"    column="receive_per"    />
+        <result property="receiveUserId"    column="receive_user_id"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTLabourGoodsVo">
+        select lg.id, lg.grant_date, lg.receive_per, lg.receive_user_id, lg.file_path, lg.remark, lg.create_time, lg.update_time, lg.user_id, lg.business_id, lg.update_user_id from t_labour_goods lg
+    </sql>
+	
+    <select id="selectTLabourGoodsList" parameterType="TLabourGoods" resultMap="TLabourGoodsResult">
+        <include refid="selectTLabourGoodsVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and lg.id = #{id}</if>
+             <if test="grantDate != null "> and lg.grant_date = #{grantDate}</if>
+             <if test="receivePer != null  and receivePer != '' "> and lg.receive_per = #{receivePer}</if>
+             <if test="receiveUserId != null "> and lg.receive_user_id = #{receiveUserId}</if>
+             <if test="filePath != null  and filePath != '' "> and lg.file_path = #{filePath}</if>
+             <if test="remark != null  and remark != '' "> and lg.remark = #{remark}</if>
+             <if test="createTime != null "> and lg.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and lg.update_time = #{updateTime}</if>
+             <if test="userId != null "> and lg.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and lg.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and lg.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTLabourGoodsById" parameterType="String" resultMap="TLabourGoodsResult">
+        <include refid="selectTLabourGoodsVo"/>
+        where lg.id = #{id}
+    </select>
+        
+    <insert id="insertTLabourGoods" parameterType="TLabourGoods">
+        insert into t_labour_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="grantDate != null  ">grant_date,</if>
+			<if test="receivePer != null  and receivePer != ''  ">receive_per,</if>
+			<if test="receiveUserId != null  ">receive_user_id,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="grantDate != null  ">#{grantDate},</if>
+			<if test="receivePer != null  and receivePer != ''  ">#{receivePer},</if>
+			<if test="receiveUserId != null  ">#{receiveUserId},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTLabourGoods" parameterType="TLabourGoods">
+        update t_labour_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="grantDate != null  ">grant_date = #{grantDate},</if>
+            <if test="receivePer != null  and receivePer != ''  ">receive_per = #{receivePer},</if>
+            <if test="receiveUserId != null  ">receive_user_id = #{receiveUserId},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTLabourGoodsById" parameterType="String">
+        delete from t_labour_goods where id = #{id}
+    </delete>
+	
+    <delete id="deleteTLabourGoodsByIds" parameterType="String">
+        delete from t_labour_goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

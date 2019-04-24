@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDrivingLicenseLogMapper">
+    
+    <resultMap type="com.project.web.domian.TDrivingLicenseLog" id="TDrivingLicenseLogResult">
+        <result property="id"    column="id"    />
+        <result property="travelNumber"    column="travel_number"    />
+        <result property="validityTerm"    column="validity_term"    />
+        <result property="attachmentUrl"    column="attachment_url"    />
+        <result property="startDate"    column="start_date"    />
+    </resultMap>
+	
+	<sql id="selectTDrivingLicenseLogbasicColums">
+        select dll.id, dll.travel_number, dll.validity_term, dll.attachment_url, dll.start_date    </sql>
+	
+    <select id="selectTDrivingLicenseLogList" parameterType="com.project.web.domian.TDrivingLicenseLog" resultMap="TDrivingLicenseLogResult">
+        <include refid="selectTDrivingLicenseLogbasicColums"/>
+        from t_driving_license_log dll
+        <where>  
+            <if test="id != null  and id != '' "> and dll.id = #{id}</if>
+             <if test="travelNumber != null  and travelNumber != '' "> and dll.travel_number = #{travelNumber}</if>
+             <if test="validityTerm != null  and validityTerm != '' "> and dll.validity_term = #{validityTerm}</if>
+             <if test="attachmentUrl != null  and attachmentUrl != '' "> and dll.attachment_url = #{attachmentUrl}</if>
+             <if test="startDate != null "> and dll.start_date = #{startDate}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDrivingLicenseLogById" parameterType="String" resultMap="TDrivingLicenseLogResult">
+        <include refid="selectTDrivingLicenseLogbasicColums"/>
+        from t_driving_license_log dll
+        where dll.id = #{id}
+    </select>
+        
+    <insert id="insertTDrivingLicenseLog" parameterType="com.project.web.domian.TDrivingLicenseLog">
+        insert into t_driving_license_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="travelNumber != null  and travelNumber != ''  ">travel_number,</if>
+			<if test="validityTerm != null  and validityTerm != ''  ">validity_term,</if>
+			<if test="attachmentUrl != null  and attachmentUrl != ''  ">attachment_url,</if>
+			<if test="startDate != null  ">start_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="travelNumber != null  and travelNumber != ''  ">#{travelNumber},</if>
+			<if test="validityTerm != null  and validityTerm != ''  ">#{validityTerm},</if>
+			<if test="attachmentUrl != null  and attachmentUrl != ''  ">#{attachmentUrl},</if>
+			<if test="startDate != null  ">#{startDate},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDrivingLicenseLog" parameterType="com.project.web.domian.TDrivingLicenseLog">
+        update t_driving_license_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="travelNumber != null  and travelNumber != ''  ">travel_number = #{travelNumber},</if>
+            <if test="validityTerm != null  and validityTerm != ''  ">validity_term = #{validityTerm},</if>
+            <if test="attachmentUrl != null  and attachmentUrl != ''  ">attachment_url = #{attachmentUrl},</if>
+            <if test="startDate != null  ">start_date = #{startDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTDrivingLicenseLogById" parameterType="String">
+        delete from t_driving_license_log where id = #{id}
+    </delete>
+	
+    <delete id="deleteTDrivingLicenseLogByIds" parameterType="String">
+        delete from t_driving_license_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

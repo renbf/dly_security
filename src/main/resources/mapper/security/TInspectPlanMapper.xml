@@ -140,17 +140,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
         <result property="checkTypeName"    column="check_type_name"    />
-        <result property="checkName"    column="checkName"    />
+        <result property="checkTeam"    column="check_team"    />
+        <result property="checkTeamName"    column="check_team_name"    />
     </resultMap>
     
     <select id="selectTInspectPlanListByUserId" parameterType="java.lang.String" resultMap="TInspectPlanVoResult">
     	<include refid="selectTInspectPlanbasicColums"/>,
-    	dd.dict_name check_type_name,GROUP_CONCAT(d.id,':',d.dict_name) checkName
+		dd.dict_name check_type_name,itt.check_team,d.dict_name check_team_name
         from t_inspect_plan ip
         join t_inspect_title_team itt on ip.title_id = itt.title_id
 		join t_dict d on d.id = itt.check_team
+		join t_dict dd on dd.id = ip.check_type
 		where ip.user_id = #{userId}
-		order by ip.check_status 
+		order by ip.title_id,ip.check_status 
     </select>
     
 </mapper>

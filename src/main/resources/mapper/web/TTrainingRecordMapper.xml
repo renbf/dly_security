@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.system.tTrainingRecord.mapper.TTrainingRecordMapper">
+    
+    <resultMap type="TTrainingRecord" id="TTrainingRecordResult">
+        <result property="id"    column="id"    />
+        <result property="trainTheme"    column="train_theme"    />
+        <result property="trainSholudNum"    column="train_sholud_num"    />
+        <result property="trainActNum"    column="train_act_num"    />
+        <result property="trainInfo"    column="train_info"    />
+        <result property="trainDate"    column="train_date"    />
+        <result property="isExamination"    column="is_examination"    />
+        <result property="trainLevel"    column="train_level"    />
+        <result property="trainHour"    column="train_hour"    />
+        <result property="trainEffect"    column="train_effect"    />
+        <result property="trainEffectPer"    column="train_effect_per"    />
+        <result property="trainEffectDate"    column="train_effect_date"    />
+        <result property="trainUserId"    column="train_user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTTrainingRecordVo">
+        select tr.id, tr.train_theme, tr.train_sholud_num, tr.train_act_num, tr.train_info, tr.train_date, tr.is_examination, tr.train_level, tr.train_hour, tr.train_effect, tr.train_effect_per, tr.train_effect_date, tr.train_user_id, tr.create_time, tr.update_time, tr.user_id, tr.meno, tr.business_id, tr.update_user_id from t_training_record tr
+    </sql>
+	
+    <select id="selectTTrainingRecordList" parameterType="TTrainingRecord" resultMap="TTrainingRecordResult">
+        <include refid="selectTTrainingRecordVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and tr.id = #{id}</if>
+             <if test="trainTheme != null  and trainTheme != '' "> and tr.train_theme = #{trainTheme}</if>
+             <if test="trainSholudNum != null "> and tr.train_sholud_num = #{trainSholudNum}</if>
+             <if test="trainActNum != null "> and tr.train_act_num = #{trainActNum}</if>
+             <if test="trainInfo != null  and trainInfo != '' "> and tr.train_info = #{trainInfo}</if>
+             <if test="trainDate != null "> and tr.train_date = #{trainDate}</if>
+             <if test="isExamination != null  and isExamination != '' "> and tr.is_examination = #{isExamination}</if>
+             <if test="trainLevel != null  and trainLevel != '' "> and tr.train_level = #{trainLevel}</if>
+             <if test="trainHour != null "> and tr.train_hour = #{trainHour}</if>
+             <if test="trainEffect != null  and trainEffect != '' "> and tr.train_effect = #{trainEffect}</if>
+             <if test="trainEffectPer != null  and trainEffectPer != '' "> and tr.train_effect_per = #{trainEffectPer}</if>
+             <if test="trainEffectDate != null "> and tr.train_effect_date = #{trainEffectDate}</if>
+             <if test="trainUserId != null "> and tr.train_user_id = #{trainUserId}</if>
+             <if test="createTime != null "> and tr.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and tr.update_time = #{updateTime}</if>
+             <if test="userId != null "> and tr.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and tr.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and tr.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and tr.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTTrainingRecordById" parameterType="String" resultMap="TTrainingRecordResult">
+        <include refid="selectTTrainingRecordVo"/>
+        where tr.id = #{id}
+    </select>
+        
+    <insert id="insertTTrainingRecord" parameterType="TTrainingRecord">
+        insert into t_training_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="trainTheme != null  and trainTheme != ''  ">train_theme,</if>
+			<if test="trainSholudNum != null  ">train_sholud_num,</if>
+			<if test="trainActNum != null  ">train_act_num,</if>
+			<if test="trainInfo != null  and trainInfo != ''  ">train_info,</if>
+			<if test="trainDate != null  ">train_date,</if>
+			<if test="isExamination != null  and isExamination != ''  ">is_examination,</if>
+			<if test="trainLevel != null  and trainLevel != ''  ">train_level,</if>
+			<if test="trainHour != null  ">train_hour,</if>
+			<if test="trainEffect != null  and trainEffect != ''  ">train_effect,</if>
+			<if test="trainEffectPer != null  and trainEffectPer != ''  ">train_effect_per,</if>
+			<if test="trainEffectDate != null  ">train_effect_date,</if>
+			<if test="trainUserId != null  ">train_user_id,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="trainTheme != null  and trainTheme != ''  ">#{trainTheme},</if>
+			<if test="trainSholudNum != null  ">#{trainSholudNum},</if>
+			<if test="trainActNum != null  ">#{trainActNum},</if>
+			<if test="trainInfo != null  and trainInfo != ''  ">#{trainInfo},</if>
+			<if test="trainDate != null  ">#{trainDate},</if>
+			<if test="isExamination != null  and isExamination != ''  ">#{isExamination},</if>
+			<if test="trainLevel != null  and trainLevel != ''  ">#{trainLevel},</if>
+			<if test="trainHour != null  ">#{trainHour},</if>
+			<if test="trainEffect != null  and trainEffect != ''  ">#{trainEffect},</if>
+			<if test="trainEffectPer != null  and trainEffectPer != ''  ">#{trainEffectPer},</if>
+			<if test="trainEffectDate != null  ">#{trainEffectDate},</if>
+			<if test="trainUserId != null  ">#{trainUserId},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTTrainingRecord" parameterType="TTrainingRecord">
+        update t_training_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trainTheme != null  and trainTheme != ''  ">train_theme = #{trainTheme},</if>
+            <if test="trainSholudNum != null  ">train_sholud_num = #{trainSholudNum},</if>
+            <if test="trainActNum != null  ">train_act_num = #{trainActNum},</if>
+            <if test="trainInfo != null  and trainInfo != ''  ">train_info = #{trainInfo},</if>
+            <if test="trainDate != null  ">train_date = #{trainDate},</if>
+            <if test="isExamination != null  and isExamination != ''  ">is_examination = #{isExamination},</if>
+            <if test="trainLevel != null  and trainLevel != ''  ">train_level = #{trainLevel},</if>
+            <if test="trainHour != null  ">train_hour = #{trainHour},</if>
+            <if test="trainEffect != null  and trainEffect != ''  ">train_effect = #{trainEffect},</if>
+            <if test="trainEffectPer != null  and trainEffectPer != ''  ">train_effect_per = #{trainEffectPer},</if>
+            <if test="trainEffectDate != null  ">train_effect_date = #{trainEffectDate},</if>
+            <if test="trainUserId != null  ">train_user_id = #{trainUserId},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTTrainingRecordById" parameterType="String">
+        delete from t_training_record where id = #{id}
+    </delete>
+	
+    <delete id="deleteTTrainingRecordByIds" parameterType="String">
+        delete from t_training_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

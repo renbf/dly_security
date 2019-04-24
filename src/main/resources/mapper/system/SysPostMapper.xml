@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateBy"      column="update_by"     />
 		<result property="updateTime"    column="update_time"   />
 		<result property="remark"        column="remark"        />
+		<result property="deptId"        column="dept_id"        />
 	</resultMap>
 	
 	<sql id="selectPostVo">
-        select post_id, post_code, post_name, post_sort, status, create_by, create_time, remark 
+        select post_id, post_code, post_name, post_sort, status, create_by, create_time, remark,dept_id
 		from sys_post
     </sql>
 	
@@ -80,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="status != null and status != ''">status = #{status},</if>
  			<if test="remark != null and remark != ''">remark = #{remark},</if>
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			<if test="deptId != null and deptId != ''">dept_id = #{deptId},</if>
  			update_time = sysdate()
  		</set>
  		where post_id = #{postId}
@@ -94,6 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="status != null and status != ''">status,</if>
  			<if test="remark != null and remark != ''">remark,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			<if test="deptId != null and deptId != ''">dept_id,</if>
  			create_time
  		)values(
  			<if test="postId != null and postId != 0">#{postId},</if>
@@ -103,8 +106,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="status != null and status != ''">#{status},</if>
  			<if test="remark != null and remark != ''">#{remark},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			<if test="deptId != null and deptId != ''">#{deptId},</if>
  			sysdate()
  		)
 	</insert>
+
+	<select id="selectPagePostList" parameterType="SysPost" resultMap="SysPostResult">
+		SELECT
+			sp.post_code,
+			sp.post_name,
+			sp.create_time,
+			sd.dept_name,
+			sd.dept_id
+		FROM
+			sys_post sp
+		LEFT JOIN sys_dept sd ON sp.dept_id = sd.dept_id
+		WHERE
+			sd.dept_id IS NOT NULL
+			<if test="postName != null and postName != ''">
+				AND sp.post_name like concat('%', #{postName}, '%')
+			</if>	
+			<if test="deptName != null and deptName != ''">
+				AND sd.dept_name like concat('%', #{deptName}, '%')
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				AND date_format(sp.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				AND date_format(sp.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
+			order by sp.create_time desc
+	</select>
+
 
 </mapper> 

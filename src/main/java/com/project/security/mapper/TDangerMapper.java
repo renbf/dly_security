@@ -2,6 +2,8 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.project.security.domain.TDanger;
 import com.project.security.domain.vo.TDangerVo;	
 
@@ -11,6 +13,7 @@ import com.project.security.domain.vo.TDangerVo;
  * @author rbf
  * @date 2019-04-18
  */
+@Repository("dangerMapper")
 public interface TDangerMapper 
 {
 	/**

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TEmergencyPlanReleaseMapper">
+    
+    <resultMap type="TEmergencyPlanRelease" id="TEmergencyPlanReleaseResult">
+        <result property="id"    column="id"    />
+        <result property="planName"    column="plan_name"    />
+        <result property="isImplement"    column="is_implement"    />
+        <result property="recordUnit"    column="record_unit"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="releaseDate"    column="release_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTEmergencyPlanReleaseVo">
+        select epr.id, epr.plan_name, epr.is_implement, epr.record_unit, epr.file_path, epr.release_date, epr.create_time, epr.update_time, epr.user_id, epr.meno, epr.business_id, epr.update_user_id from t_emergency_plan_release epr
+    </sql>
+	
+    <select id="selectTEmergencyPlanReleaseList" parameterType="TEmergencyPlanRelease" resultMap="TEmergencyPlanReleaseResult">
+        <include refid="selectTEmergencyPlanReleaseVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and epr.id = #{id}</if>
+             <if test="planName != null  and planName != '' "> and epr.plan_name = #{planName}</if>
+             <if test="isImplement != null  and isImplement != '' "> and epr.is_implement = #{isImplement}</if>
+             <if test="recordUnit != null  and recordUnit != '' "> and epr.record_unit = #{recordUnit}</if>
+             <if test="filePath != null  and filePath != '' "> and epr.file_path = #{filePath}</if>
+             <if test="releaseDate != null "> and epr.release_date = #{releaseDate}</if>
+             <if test="createTime != null "> and epr.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and epr.update_time = #{updateTime}</if>
+             <if test="userId != null "> and epr.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and epr.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and epr.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and epr.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTEmergencyPlanReleaseById" parameterType="String" resultMap="TEmergencyPlanReleaseResult">
+        <include refid="selectTEmergencyPlanReleaseVo"/>
+        where epr.id = #{id}
+    </select>
+        
+    <insert id="insertTEmergencyPlanRelease" parameterType="TEmergencyPlanRelease">
+        insert into t_emergency_plan_release
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="planName != null  and planName != ''  ">plan_name,</if>
+			<if test="isImplement != null  and isImplement != ''  ">is_implement,</if>
+			<if test="recordUnit != null  and recordUnit != ''  ">record_unit,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="releaseDate != null  ">release_date,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="planName != null  and planName != ''  ">#{planName},</if>
+			<if test="isImplement != null  and isImplement != ''  ">#{isImplement},</if>
+			<if test="recordUnit != null  and recordUnit != ''  ">#{recordUnit},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="releaseDate != null  ">#{releaseDate},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTEmergencyPlanRelease" parameterType="TEmergencyPlanRelease">
+        update t_emergency_plan_release
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planName != null  and planName != ''  ">plan_name = #{planName},</if>
+            <if test="isImplement != null  and isImplement != ''  ">is_implement = #{isImplement},</if>
+            <if test="recordUnit != null  and recordUnit != ''  ">record_unit = #{recordUnit},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="releaseDate != null  ">release_date = #{releaseDate},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTEmergencyPlanReleaseById" parameterType="String">
+        delete from t_emergency_plan_release where id = #{id}
+    </delete>
+	
+    <delete id="deleteTEmergencyPlanReleaseByIds" parameterType="String">
+        delete from t_emergency_plan_release where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

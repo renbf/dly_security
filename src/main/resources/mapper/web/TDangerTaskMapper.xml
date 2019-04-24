@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDangerTaskMapper">
+    
+    <resultMap type="TDangerTask" id="TDangerTaskResult">
+        <result property="id"    column="id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="taskType"    column="task_type"    />
+        <result property="taskPlace"    column="task_place"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="isImplement"    column="is_implement"    />
+        <result property="applyPer"    column="apply_per"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="sceneResponsiblePer"    column="scene_responsible_per"    />
+        <result property="technologyFilePath"    column="technology_file_path"    />
+        <result property="licenceFilePath"    column="licence_file_path"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTDangerTaskVo">
+        select dt.id, dt.task_name, dt.task_type, dt.task_place, DATE_FORMAT(dt.start_time,'%Y-%m-%d') as startCreateTime,
+        DATE_FORMAT(dt.end_time,'%Y-%m-%d') as endCreateTime, dt.is_implement, dt.apply_per, dt.apply_id, dt.scene_responsible_per, dt.technology_file_path, dt.licence_file_path, dt.remark, dt.create_time, dt.update_time, dt.user_id, dt.business_id, dt.update_user_id from t_danger_task dt
+    </sql>
+	
+    <select id="selectTDangerTaskList" parameterType="TDangerTask" resultMap="TDangerTaskResult">
+        <include refid="selectTDangerTaskVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and dt.id = #{id}</if>
+             <if test="taskName != null  and taskName != '' "> and dt.task_name = #{taskName}</if>
+             <if test="taskType != null  and taskType != '' "> and dt.task_type = #{taskType}</if>
+             <if test="taskPlace != null  and taskPlace != '' "> and dt.task_place = #{taskPlace}</if>
+             <if test="(startTime != null and startTime !='' ) and startTime1 == null "> and dt.start_time &gt;= #{startTime}</if>
+             <if test="(startTime1 != null and startTime1 !='' ) and startTime == null  "> and dt.start_time &lt;= #{startTime1}</if>
+                    <if test="(startTime1 != null and startTime1 !='' ) and startTime != null  and startTime !='' "> and dt.start_time &gt;= #{startTime}
+                     and dt.start_time &lt;= #{startTime1}                   
+                    </if>
+             <if test="endTime != null "> and dt.end_time = #{endTime}</if>
+             <if test="isImplement != null  and isImplement != '' "> and dt.is_implement = #{isImplement}</if>
+             <if test="applyPer != null  and applyPer != '' "> and dt.apply_per = #{applyPer}</if>
+             <if test="applyId != null "> and dt.apply_id = #{applyId}</if>
+             <if test="sceneResponsiblePer != null  and sceneResponsiblePer != '' "> and dt.scene_responsible_per = #{sceneResponsiblePer}</if>
+             <if test="technologyFilePath != null  and technologyFilePath != '' "> and dt.technology_file_path = #{technologyFilePath}</if>
+             <if test="licenceFilePath != null  and licenceFilePath != '' "> and dt.licence_file_path = #{licenceFilePath}</if>
+             <if test="remark != null  and remark != '' "> and dt.remark = #{remark}</if>
+             <if test="createTime != null "> and dt.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and dt.update_time = #{updateTime}</if>
+             <if test="userId != null "> and dt.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and dt.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and dt.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDangerTaskById" parameterType="String" resultMap="TDangerTaskResult">
+        <include refid="selectTDangerTaskVo"/>
+        where dt.id = #{id}
+    </select>
+        
+    <insert id="insertTDangerTask" parameterType="TDangerTask">
+        insert into t_danger_task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="taskName != null  and taskName != ''  ">task_name,</if>
+			<if test="taskType != null  and taskType != ''  ">task_type,</if>
+			<if test="taskPlace != null  and taskPlace != ''  ">task_place,</if>
+			<if test="startTime != null  ">start_time,</if>
+			<if test="endTime != null  ">end_time,</if>
+			<if test="isImplement != null  and isImplement != ''  ">is_implement,</if>
+			<if test="applyPer != null  and applyPer != ''  ">apply_per,</if>
+			<if test="applyId != null  ">apply_id,</if>
+			<if test="sceneResponsiblePer != null  and sceneResponsiblePer != ''  ">scene_responsible_per,</if>
+			<if test="technologyFilePath != null  and technologyFilePath != ''  ">technology_file_path,</if>
+			<if test="licenceFilePath != null  and licenceFilePath != ''  ">licence_file_path,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="taskName != null  and taskName != ''  ">#{taskName},</if>
+			<if test="taskType != null  and taskType != ''  ">#{taskType},</if>
+			<if test="taskPlace != null  and taskPlace != ''  ">#{taskPlace},</if>
+			<if test="startTime != null  ">#{startTime},</if>
+			<if test="endTime != null  ">#{endTime},</if>
+			<if test="isImplement != null  and isImplement != ''  ">#{isImplement},</if>
+			<if test="applyPer != null  and applyPer != ''  ">#{applyPer},</if>
+			<if test="applyId != null  ">#{applyId},</if>
+			<if test="sceneResponsiblePer != null  and sceneResponsiblePer != ''  ">#{sceneResponsiblePer},</if>
+			<if test="technologyFilePath != null  and technologyFilePath != ''  ">#{technologyFilePath},</if>
+			<if test="licenceFilePath != null  and licenceFilePath != ''  ">#{licenceFilePath},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDangerTask" parameterType="TDangerTask">
+        update t_danger_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskName != null  and taskName != ''  ">task_name = #{taskName},</if>
+            <if test="taskType != null  and taskType != ''  ">task_type = #{taskType},</if>
+            <if test="taskPlace != null  and taskPlace != ''  ">task_place = #{taskPlace},</if>
+            <if test="startTime != null  ">start_time = #{startTime},</if>
+            <if test="endTime != null  ">end_time = #{endTime},</if>
+            <if test="isImplement != null  and isImplement != ''  ">is_implement = #{isImplement},</if>
+            <if test="applyPer != null  and applyPer != ''  ">apply_per = #{applyPer},</if>
+            <if test="applyId != null  ">apply_id = #{applyId},</if>
+            <if test="sceneResponsiblePer != null  and sceneResponsiblePer != ''  ">scene_responsible_per = #{sceneResponsiblePer},</if>
+            <if test="technologyFilePath != null  and technologyFilePath != ''  ">technology_file_path = #{technologyFilePath},</if>
+            <if test="licenceFilePath != null  and licenceFilePath != ''  ">licence_file_path = #{licenceFilePath},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTDangerTaskById" parameterType="String">
+        delete from t_danger_task where id = #{id}
+    </delete>
+	
+    <delete id="deleteTDangerTaskByIds" parameterType="String">
+        delete from t_danger_task where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

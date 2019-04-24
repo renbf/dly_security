@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserDriverBasicMapper">
+    
+    <resultMap type="TUserDriverBasic" id="TUserDriverBasicResult">
+        <result property="id"    column="id"    />
+        <result property="driverUserId"    column="driver_user_id"    />
+        <result property="driverName"    column="driver_name"    />
+        <result property="driverSex"    column="driver_sex"    />
+        <result property="driverPhone"    column="driver_phone"    />
+        <result property="isIncumbency"    column="is_incumbency"    />
+        <result property="driverEmail"    column="driver_email"    />
+        <result property="driverIdNum"    column="driver_id_num"    />
+        <result property="driverEducation"    column="driver_education"    />
+        <result property="driverBirth"    column="driver_birth"    />
+        <result property="driverAddr"    column="driver_addr"    />
+        <result property="driverDept"    column="driver_dept"    />
+        <result property="driverPost"    column="driver_post"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTUserDriverBasicVo">
+        select udb.id, udb.driver_user_id, udb.driver_name, udb.driver_sex, udb.driver_phone, udb.is_incumbency, udb.driver_email, udb.driver_id_num, udb.driver_education, udb.driver_birth, udb.driver_addr, udb.driver_dept, udb.driver_post, udb.create_time, udb.update_time, udb.user_id, udb.meno, udb.business_id, udb.update_user_id from t_user_driver_basic udb
+    </sql>
+	
+    <select id="selectTUserDriverBasicList" parameterType="TUserDriverBasic" resultMap="TUserDriverBasicResult">
+        <include refid="selectTUserDriverBasicVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and udb.id = #{id}</if>
+             <if test="driverUserId != null "> and udb.driver_user_id = #{driverUserId}</if>
+             <if test="driverName != null  and driverName != '' "> and udb.driver_name = #{driverName}</if>
+             <if test="driverSex != null  and driverSex != '' "> and udb.driver_sex = #{driverSex}</if>
+             <if test="driverPhone != null  and driverPhone != '' "> and udb.driver_phone = #{driverPhone}</if>
+             <if test="isIncumbency != null  and isIncumbency != '' "> and udb.is_incumbency = #{isIncumbency}</if>
+             <if test="driverEmail != null  and driverEmail != '' "> and udb.driver_email = #{driverEmail}</if>
+             <if test="driverIdNum != null  and driverIdNum != '' "> and udb.driver_id_num = #{driverIdNum}</if>
+             <if test="driverEducation != null  and driverEducation != '' "> and udb.driver_education = #{driverEducation}</if>
+             <if test="driverBirth != null "> and udb.driver_birth = #{driverBirth}</if>
+             <if test="driverAddr != null  and driverAddr != '' "> and udb.driver_addr = #{driverAddr}</if>
+             <if test="driverDept != null  and driverDept != '' "> and udb.driver_dept = #{driverDept}</if>
+             <if test="driverPost != null  and driverPost != '' "> and udb.driver_post = #{driverPost}</if>
+             <if test="createTime != null "> and udb.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and udb.update_time = #{updateTime}</if>
+             <if test="userId != null "> and udb.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and udb.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and udb.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and udb.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserDriverBasicById" parameterType="String" resultMap="TUserDriverBasicResult">
+        <include refid="selectTUserDriverBasicVo"/>
+        where udb.id = #{id}
+    </select>
+        
+    <insert id="insertTUserDriverBasic" parameterType="TUserDriverBasic">
+        insert into t_user_driver_basic
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="driverUserId != null  ">driver_user_id,</if>
+			<if test="driverName != null  and driverName != ''  ">driver_name,</if>
+			<if test="driverSex != null  and driverSex != ''  ">driver_sex,</if>
+			<if test="driverPhone != null  and driverPhone != ''  ">driver_phone,</if>
+			<if test="isIncumbency != null  and isIncumbency != ''  ">is_incumbency,</if>
+			<if test="driverEmail != null  and driverEmail != ''  ">driver_email,</if>
+			<if test="driverIdNum != null  and driverIdNum != ''  ">driver_id_num,</if>
+			<if test="driverEducation != null  and driverEducation != ''  ">driver_education,</if>
+			<if test="driverBirth != null  ">driver_birth,</if>
+			<if test="driverAddr != null  and driverAddr != ''  ">driver_addr,</if>
+			<if test="driverDept != null  and driverDept != ''  ">driver_dept,</if>
+			<if test="driverPost != null  and driverPost != ''  ">driver_post,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="driverUserId != null  ">#{driverUserId},</if>
+			<if test="driverName != null  and driverName != ''  ">#{driverName},</if>
+			<if test="driverSex != null  and driverSex != ''  ">#{driverSex},</if>
+			<if test="driverPhone != null  and driverPhone != ''  ">#{driverPhone},</if>
+			<if test="isIncumbency != null  and isIncumbency != ''  ">#{isIncumbency},</if>
+			<if test="driverEmail != null  and driverEmail != ''  ">#{driverEmail},</if>
+			<if test="driverIdNum != null  and driverIdNum != ''  ">#{driverIdNum},</if>
+			<if test="driverEducation != null  and driverEducation != ''  ">#{driverEducation},</if>
+			<if test="driverBirth != null  ">#{driverBirth},</if>
+			<if test="driverAddr != null  and driverAddr != ''  ">#{driverAddr},</if>
+			<if test="driverDept != null  and driverDept != ''  ">#{driverDept},</if>
+			<if test="driverPost != null  and driverPost != ''  ">#{driverPost},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserDriverBasic" parameterType="TUserDriverBasic">
+        update t_user_driver_basic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="driverUserId != null  ">driver_user_id = #{driverUserId},</if>
+            <if test="driverName != null  and driverName != ''  ">driver_name = #{driverName},</if>
+            <if test="driverSex != null  and driverSex != ''  ">driver_sex = #{driverSex},</if>
+            <if test="driverPhone != null  and driverPhone != ''  ">driver_phone = #{driverPhone},</if>
+            <if test="isIncumbency != null  and isIncumbency != ''  ">is_incumbency = #{isIncumbency},</if>
+            <if test="driverEmail != null  and driverEmail != ''  ">driver_email = #{driverEmail},</if>
+            <if test="driverIdNum != null  and driverIdNum != ''  ">driver_id_num = #{driverIdNum},</if>
+            <if test="driverEducation != null  and driverEducation != ''  ">driver_education = #{driverEducation},</if>
+            <if test="driverBirth != null  ">driver_birth = #{driverBirth},</if>
+            <if test="driverAddr != null  and driverAddr != ''  ">driver_addr = #{driverAddr},</if>
+            <if test="driverDept != null  and driverDept != ''  ">driver_dept = #{driverDept},</if>
+            <if test="driverPost != null  and driverPost != ''  ">driver_post = #{driverPost},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserDriverBasicById" parameterType="String">
+        delete from t_user_driver_basic where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserDriverBasicByIds" parameterType="String">
+        delete from t_user_driver_basic where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -3,6 +3,8 @@ package com.project.security.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.project.security.domain.TUserPaper;
 import com.project.security.domain.vo.TUserPaperVo;
 import com.project.security.domain.vo.UserPaperDetailVo;	
@@ -13,6 +15,7 @@ import com.project.security.domain.vo.UserPaperDetailVo;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("userPaperMapper")
 public interface TUserPaperMapper 
 {
 	/**

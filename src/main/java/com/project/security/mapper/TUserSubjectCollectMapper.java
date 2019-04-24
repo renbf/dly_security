@@ -3,7 +3,8 @@ package com.project.security.mapper;
 import com.project.security.domain.TUserSubjectCollect;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;	
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;	
 
 /**
  * 用户收藏记录 数据层
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @author rbf
  * @date 2019-04-17
  */
+@Repository("userSubjectCollectMapper")
 public interface TUserSubjectCollectMapper 
 {
 	/**

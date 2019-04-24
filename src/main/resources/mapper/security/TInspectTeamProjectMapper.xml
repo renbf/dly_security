@@ -87,19 +87,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     
     <insert id="addBatchTInspectTeamProjects" parameterType="java.util.List">
-        insert into t_inspect_team_project
+        insert into t_inspect_team_project (inspect_plan_id,check_team_id,check_project_id,is_ok) values
          <foreach item="item" collection="list" separator="," >
-	     <trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="item.inspectPlanId != null  and item.inspectPlanId != ''  ">inspect_plan_id,</if>
-			<if test="item.checkTeamId != null  and item.checkTeamId != ''  ">check_team_id,</if>
-			<if test="item.checkProjectId != null  and item.checkProjectId != ''  ">check_project_id,</if>
-			<if test="item.isOk != null  and item.isOk != ''  ">is_ok,</if>
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="item.inspectPlanId != null  and item.inspectPlanId != ''  ">#{item.inspectPlanId},</if>
 			<if test="item.checkTeamId != null  and item.checkTeamId != ''  ">#{item.checkTeamId},</if>
 			<if test="item.checkProjectId != null  and item.checkProjectId != ''  ">#{item.checkProjectId},</if>
-			<if test="item.isOk != null  and isOk != ''  ">#{item.isOk},</if>
+			<if test="item.isOk != null  and item.isOk != ''  ">#{item.isOk},</if>
          </trim>
          </foreach>
     </insert>

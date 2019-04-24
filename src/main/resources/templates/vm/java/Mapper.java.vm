@@ -1,14 +1,15 @@
 package ${package}.mapper;
 
-import ${package}.domain.${className};
+import ${package}.domian.${className};
 import java.util.List;	
-
+import org.springframework.stereotype.Repository;
 /**
  * ${tableComment} 数据层
  * 
  * @author ${author}
  * @date ${datetime}
  */
+ @Repository("${classname}Mapper")
 public interface ${className}Mapper 
 {
 	/**

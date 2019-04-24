@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TManagementSystemMapper">
+    
+    <resultMap type="TManagementSystem" id="TManagementSystemResult">
+        <result property="id"    column="id"    />
+        <result property="managementName"    column="management_name"    />
+        <result property="managementType"    column="management_type"    />
+        <result property="managementUnit"    column="management_unit"    />
+        <result property="managementDate"    column="management_date"    />
+        <result property="managementDeptId"    column="management_dept_id"    />
+        <result property="isApply"    column="is_apply"    />
+        <result property="managementFilePath"    column="management_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTManagementSystemVo">
+        select ms.id, ms.management_name, ms.management_type, ms.management_unit, ms.management_date, ms.management_dept_id, ms.is_apply, ms.management_file_path, ms.create_time, ms.update_time, ms.user_id, ms.meno, ms.business_id, ms.update_user_id from t_management_system ms
+    </sql>
+	
+    <select id="selectTManagementSystemList" parameterType="TManagementSystem" resultMap="TManagementSystemResult">
+        <include refid="selectTManagementSystemVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and ms.id = #{id}</if>
+             <if test="managementName != null  and managementName != '' "> and ms.management_name = #{managementName}</if>
+             <if test="managementType != null  and managementType != '' "> and ms.management_type = #{managementType}</if>
+             <if test="managementUnit != null  and managementUnit != '' "> and ms.management_unit = #{managementUnit}</if>
+             <if test="managementDate != null "> and ms.management_date = #{managementDate}</if>
+             <if test="managementDeptId != null  and managementDeptId != '' "> and ms.management_dept_id = #{managementDeptId}</if>
+             <if test="isApply != null  and isApply != '' "> and ms.is_apply = #{isApply}</if>
+             <if test="managementFilePath != null  and managementFilePath != '' "> and ms.management_file_path = #{managementFilePath}</if>
+             <if test="createTime != null "> and ms.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and ms.update_time = #{updateTime}</if>
+             <if test="userId != null "> and ms.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and ms.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and ms.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and ms.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTManagementSystemById" parameterType="String" resultMap="TManagementSystemResult">
+        <include refid="selectTManagementSystemVo"/>
+        where ms.id = #{id}
+    </select>
+        
+    <insert id="insertTManagementSystem" parameterType="TManagementSystem">
+        insert into t_management_system
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="managementName != null  and managementName != ''  ">management_name,</if>
+			<if test="managementType != null  and managementType != ''  ">management_type,</if>
+			<if test="managementUnit != null  and managementUnit != ''  ">management_unit,</if>
+			<if test="managementDate != null  ">management_date,</if>
+			<if test="managementDeptId != null  and managementDeptId != ''  ">management_dept_id,</if>
+			<if test="isApply != null  and isApply != ''  ">is_apply,</if>
+			<if test="managementFilePath != null  and managementFilePath != ''  ">management_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="managementName != null  and managementName != ''  ">#{managementName},</if>
+			<if test="managementType != null  and managementType != ''  ">#{managementType},</if>
+			<if test="managementUnit != null  and managementUnit != ''  ">#{managementUnit},</if>
+			<if test="managementDate != null  ">#{managementDate},</if>
+			<if test="managementDeptId != null  and managementDeptId != ''  ">#{managementDeptId},</if>
+			<if test="isApply != null  and isApply != ''  ">#{isApply},</if>
+			<if test="managementFilePath != null  and managementFilePath != ''  ">#{managementFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTManagementSystem" parameterType="TManagementSystem">
+        update t_management_system
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="managementName != null  and managementName != ''  ">management_name = #{managementName},</if>
+            <if test="managementType != null  and managementType != ''  ">management_type = #{managementType},</if>
+            <if test="managementUnit != null  and managementUnit != ''  ">management_unit = #{managementUnit},</if>
+            <if test="managementDate != null  ">management_date = #{managementDate},</if>
+            <if test="managementDeptId != null  and managementDeptId != ''  ">management_dept_id = #{managementDeptId},</if>
+            <if test="isApply != null  and isApply != ''  ">is_apply = #{isApply},</if>
+            <if test="managementFilePath != null  and managementFilePath != ''  ">management_file_path = #{managementFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTManagementSystemById" parameterType="String">
+        delete from t_management_system where id = #{id}
+    </delete>
+	
+    <delete id="deleteTManagementSystemByIds" parameterType="String">
+        delete from t_management_system where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

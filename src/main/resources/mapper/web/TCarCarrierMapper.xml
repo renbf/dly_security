@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarCarrierMapper">
+    
+    <resultMap type="com.project.web.domian.TCarCarrier" id="TCarCarrierResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="validityDate"    column="validity_date"    />
+        <result property="insuranceUnit"    column="insurance_unit"    />
+        <result property="insuranceNumber"    column="insurance_number"    />
+        <result property="insurancePrice"    column="insurance_price"    />
+        <result property="insuranceCost"    column="insurance_cost"    />
+        <result property="remark"    column="remark"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCarCarrierbasicColums">
+        select cc.id, cc.car_id, cc.validity_date, cc.insurance_unit, cc.insurance_number, cc.insurance_price, cc.insurance_cost, cc.remark, cc.file_url, cc.add_user_id, cc.create_date, cc.update_date, cc.update_user_id    </sql>
+	
+    <select id="selectTCarCarrierList" parameterType="com.project.web.domian.TCarCarrier" resultMap="TCarCarrierResult">
+        <include refid="selectTCarCarrierbasicColums"/>
+        from t_car_carrier cc
+        <where>  
+            <if test="id != null  and id != '' "> and cc.id = #{id}</if>
+             <if test="carId != null  and carId != '' "> and cc.car_id = #{carId}</if>
+             <if test="validityDate != null "> and cc.validity_date = #{validityDate}</if>
+             <if test="insuranceUnit != null  and insuranceUnit != '' "> and cc.insurance_unit = #{insuranceUnit}</if>
+             <if test="insuranceNumber != null  and insuranceNumber != '' "> and cc.insurance_number = #{insuranceNumber}</if>
+             <if test="insurancePrice != null  and insurancePrice != '' "> and cc.insurance_price = #{insurancePrice}</if>
+             <if test="insuranceCost != null  and insuranceCost != '' "> and cc.insurance_cost = #{insuranceCost}</if>
+             <if test="remark != null  and remark != '' "> and cc.remark = #{remark}</if>
+             <if test="fileUrl != null  and fileUrl != '' "> and cc.file_url = #{fileUrl}</if>
+             <if test="addUserId != null  and addUserId != '' "> and cc.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and cc.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and cc.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and cc.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarCarrierById" parameterType="String" resultMap="TCarCarrierResult">
+        <include refid="selectTCarCarrierbasicColums"/>
+        from t_car_carrier cc
+        where cc.id = #{id}
+    </select>
+        
+    <insert id="insertTCarCarrier" parameterType="com.project.web.domian.TCarCarrier">
+        insert into t_car_carrier
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carId != null  and carId != ''  ">car_id,</if>
+			<if test="validityDate != null  ">validity_date,</if>
+			<if test="insuranceUnit != null  and insuranceUnit != ''  ">insurance_unit,</if>
+			<if test="insuranceNumber != null  and insuranceNumber != ''  ">insurance_number,</if>
+			<if test="insurancePrice != null  and insurancePrice != ''  ">insurance_price,</if>
+			<if test="insuranceCost != null  and insuranceCost != ''  ">insurance_cost,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="fileUrl != null  and fileUrl != ''  ">file_url,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carId != null  and carId != ''  ">#{carId},</if>
+			<if test="validityDate != null  ">#{validityDate},</if>
+			<if test="insuranceUnit != null  and insuranceUnit != ''  ">#{insuranceUnit},</if>
+			<if test="insuranceNumber != null  and insuranceNumber != ''  ">#{insuranceNumber},</if>
+			<if test="insurancePrice != null  and insurancePrice != ''  ">#{insurancePrice},</if>
+			<if test="insuranceCost != null  and insuranceCost != ''  ">#{insuranceCost},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="fileUrl != null  and fileUrl != ''  ">#{fileUrl},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarCarrier" parameterType="com.project.web.domian.TCarCarrier">
+        update t_car_carrier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null  and carId != ''  ">car_id = #{carId},</if>
+            <if test="validityDate != null  ">validity_date = #{validityDate},</if>
+            <if test="insuranceUnit != null  and insuranceUnit != ''  ">insurance_unit = #{insuranceUnit},</if>
+            <if test="insuranceNumber != null  and insuranceNumber != ''  ">insurance_number = #{insuranceNumber},</if>
+            <if test="insurancePrice != null  and insurancePrice != ''  ">insurance_price = #{insurancePrice},</if>
+            <if test="insuranceCost != null  and insuranceCost != ''  ">insurance_cost = #{insuranceCost},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="fileUrl != null  and fileUrl != ''  ">file_url = #{fileUrl},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarCarrierById" parameterType="String">
+        delete from t_car_carrier where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarCarrierByIds" parameterType="String">
+        delete from t_car_carrier where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

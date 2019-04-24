@@ -45,11 +45,14 @@ public class LoginController extends BaseController {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
+        	AjaxResult ajaxResult=AjaxResult.success();
             subject.login(token);
             SysUser user = ShiroUtils.getUser(subject);
             user.setJbdms(roleService.queryDataScopeJbdmByUserId(user.getUserId()));
             ShiroUtils.setUser(user);
-            return success();
+            ajaxResult.put("token",subject.getSession().getId());
+            ajaxResult.put("businessId",ShiroUtils.getBusinessId());
+            return ajaxResult;
         } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
             if (StringUtils.isNotEmpty(e.getMessage())) {

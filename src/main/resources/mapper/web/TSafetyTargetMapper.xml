@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSafetyTargetMapper">
+    
+    <resultMap type="TSafetyTarget" id="TSafetyTargetResult">
+        <result property="id"    column="id"    />
+        <result property="targetName"    column="target_name"    />
+        <result property="targetDate"    column="target_date"    />
+        <result property="targetEnactingPerson"    column="target_enacting_person"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="targetStatus"    column="target_status"    />
+        <result property="targetFilePath"    column="target_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSafetyTargetVo">
+        select st.id, st.target_name, st.target_date, st.target_enacting_person, st.org_id, st.target_status, st.target_file_path, st.create_time, st.update_time, st.user_id, st.meno, st.business_id, st.update_user_id from t_safety_target st
+    </sql>
+	
+    <select id="selectTSafetyTargetList" parameterType="TSafetyTarget" resultMap="TSafetyTargetResult">
+        <include refid="selectTSafetyTargetVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and st.id = #{id}</if>
+             <if test="targetName != null  and targetName != '' "> and st.target_name = #{targetName}</if>
+             <if test="targetDate != null "> and st.target_date = #{targetDate}</if>
+             <if test="targetEnactingPerson != null  and targetEnactingPerson != '' "> and st.target_enacting_person = #{targetEnactingPerson}</if>
+             <if test="orgId != null "> and st.org_id = #{orgId}</if>
+             <if test="targetStatus != null "> and st.target_status = #{targetStatus}</if>
+             <if test="targetFilePath != null  and targetFilePath != '' "> and st.target_file_path = #{targetFilePath}</if>
+             <if test="createTime != null "> and st.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and st.update_time = #{updateTime}</if>
+             <if test="userId != null "> and st.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and st.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and st.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and st.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSafetyTargetById" parameterType="String" resultMap="TSafetyTargetResult">
+        <include refid="selectTSafetyTargetVo"/>
+        where st.id = #{id}
+    </select>
+        
+    <insert id="insertTSafetyTarget" parameterType="TSafetyTarget">
+        insert into t_safety_target
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="targetName != null  and targetName != ''  ">target_name,</if>
+			<if test="targetDate != null  ">target_date,</if>
+			<if test="targetEnactingPerson != null  and targetEnactingPerson != ''  ">target_enacting_person,</if>
+			<if test="orgId != null  ">org_id,</if>
+			<if test="targetStatus != null  ">target_status,</if>
+			<if test="targetFilePath != null  and targetFilePath != ''  ">target_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="targetName != null  and targetName != ''  ">#{targetName},</if>
+			<if test="targetDate != null  ">#{targetDate},</if>
+			<if test="targetEnactingPerson != null  and targetEnactingPerson != ''  ">#{targetEnactingPerson},</if>
+			<if test="orgId != null  ">#{orgId},</if>
+			<if test="targetStatus != null  ">#{targetStatus},</if>
+			<if test="targetFilePath != null  and targetFilePath != ''  ">#{targetFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSafetyTarget" parameterType="TSafetyTarget">
+        update t_safety_target
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="targetName != null  and targetName != ''  ">target_name = #{targetName},</if>
+            <if test="targetDate != null  ">target_date = #{targetDate},</if>
+            <if test="targetEnactingPerson != null  and targetEnactingPerson != ''  ">target_enacting_person = #{targetEnactingPerson},</if>
+            <if test="orgId != null  ">org_id = #{orgId},</if>
+            <if test="targetStatus != null  ">target_status = #{targetStatus},</if>
+            <if test="targetFilePath != null  and targetFilePath != ''  ">target_file_path = #{targetFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSafetyTargetById" parameterType="String">
+        delete from t_safety_target where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSafetyTargetByIds" parameterType="String">
+        delete from t_safety_target where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserDriverPhotosMapper">
+    
+    <resultMap type="TUserDriverPhotos" id="TUserDriverPhotosResult">
+        <result property="id"    column="id"    />
+        <result property="driverUserId"    column="driver_user_id"    />
+        <result property="headImg"    column="head_img"    />
+        <result property="personalImg"    column="personal_img"    />
+        <result property="idCardCopyImg"    column="id_card_copy_img"    />
+        <result property="certificateCopyImg"    column="certificate_copy_img"    />
+        <result property="practitionersCopyImg"    column="practitioners_copy_img"    />
+        <result property="examinationPaperImg"    column="examination_paper_img"    />
+        <result property="examinationPaperSecondImg"    column="examination_paper_second_img"    />
+        <result property="examinationPaperThirdImg"    column="examination_paper_third_img"    />
+        <result property="examinationPaperFourImg"    column="examination_paper_four_img"    />
+        <result property="threeNotAccidentImg"    column="three_not_accident_img"    />
+        <result property="oneYearIllegalRecordImg"    column="one_year_illegal_record_img"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTUserDriverPhotosVo">
+        select udp.id, udp.driver_user_id, udp.head_img, udp.personal_img, udp.id_card_copy_img, udp.certificate_copy_img, udp.practitioners_copy_img, udp.examination_paper_img, udp.examination_paper_second_img, udp.examination_paper_third_img, udp.examination_paper_four_img, udp.three_not_accident_img, udp.one_year_illegal_record_img, udp.create_time, udp.update_time, udp.user_id, udp.meno, udp.business_id, udp.update_user_id from t_user_driver_photos udp
+    </sql>
+	
+    <select id="selectTUserDriverPhotosList" parameterType="TUserDriverPhotos" resultMap="TUserDriverPhotosResult">
+        <include refid="selectTUserDriverPhotosVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and udp.id = #{id}</if>
+             <if test="driverUserId != null "> and udp.driver_user_id = #{driverUserId}</if>
+             <if test="headImg != null  and headImg != '' "> and udp.head_img = #{headImg}</if>
+             <if test="personalImg != null  and personalImg != '' "> and udp.personal_img = #{personalImg}</if>
+             <if test="idCardCopyImg != null  and idCardCopyImg != '' "> and udp.id_card_copy_img = #{idCardCopyImg}</if>
+             <if test="certificateCopyImg != null  and certificateCopyImg != '' "> and udp.certificate_copy_img = #{certificateCopyImg}</if>
+             <if test="practitionersCopyImg != null  and practitionersCopyImg != '' "> and udp.practitioners_copy_img = #{practitionersCopyImg}</if>
+             <if test="examinationPaperImg != null  and examinationPaperImg != '' "> and udp.examination_paper_img = #{examinationPaperImg}</if>
+             <if test="examinationPaperSecondImg != null  and examinationPaperSecondImg != '' "> and udp.examination_paper_second_img = #{examinationPaperSecondImg}</if>
+             <if test="examinationPaperThirdImg != null  and examinationPaperThirdImg != '' "> and udp.examination_paper_third_img = #{examinationPaperThirdImg}</if>
+             <if test="examinationPaperFourImg != null  and examinationPaperFourImg != '' "> and udp.examination_paper_four_img = #{examinationPaperFourImg}</if>
+             <if test="threeNotAccidentImg != null  and threeNotAccidentImg != '' "> and udp.three_not_accident_img = #{threeNotAccidentImg}</if>
+             <if test="oneYearIllegalRecordImg != null  and oneYearIllegalRecordImg != '' "> and udp.one_year_illegal_record_img = #{oneYearIllegalRecordImg}</if>
+             <if test="createTime != null "> and udp.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and udp.update_time = #{updateTime}</if>
+             <if test="userId != null "> and udp.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and udp.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and udp.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and udp.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserDriverPhotosById" parameterType="String" resultMap="TUserDriverPhotosResult">
+        <include refid="selectTUserDriverPhotosVo"/>
+        where udp.id = #{id}
+    </select>
+        
+    <insert id="insertTUserDriverPhotos" parameterType="TUserDriverPhotos">
+        insert into t_user_driver_photos
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="driverUserId != null  ">driver_user_id,</if>
+			<if test="headImg != null  and headImg != ''  ">head_img,</if>
+			<if test="personalImg != null  and personalImg != ''  ">personal_img,</if>
+			<if test="idCardCopyImg != null  and idCardCopyImg != ''  ">id_card_copy_img,</if>
+			<if test="certificateCopyImg != null  and certificateCopyImg != ''  ">certificate_copy_img,</if>
+			<if test="practitionersCopyImg != null  and practitionersCopyImg != ''  ">practitioners_copy_img,</if>
+			<if test="examinationPaperImg != null  and examinationPaperImg != ''  ">examination_paper_img,</if>
+			<if test="examinationPaperSecondImg != null  and examinationPaperSecondImg != ''  ">examination_paper_second_img,</if>
+			<if test="examinationPaperThirdImg != null  and examinationPaperThirdImg != ''  ">examination_paper_third_img,</if>
+			<if test="examinationPaperFourImg != null  and examinationPaperFourImg != ''  ">examination_paper_four_img,</if>
+			<if test="threeNotAccidentImg != null  and threeNotAccidentImg != ''  ">three_not_accident_img,</if>
+			<if test="oneYearIllegalRecordImg != null  and oneYearIllegalRecordImg != ''  ">one_year_illegal_record_img,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="driverUserId != null  ">#{driverUserId},</if>
+			<if test="headImg != null  and headImg != ''  ">#{headImg},</if>
+			<if test="personalImg != null  and personalImg != ''  ">#{personalImg},</if>
+			<if test="idCardCopyImg != null  and idCardCopyImg != ''  ">#{idCardCopyImg},</if>
+			<if test="certificateCopyImg != null  and certificateCopyImg != ''  ">#{certificateCopyImg},</if>
+			<if test="practitionersCopyImg != null  and practitionersCopyImg != ''  ">#{practitionersCopyImg},</if>
+			<if test="examinationPaperImg != null  and examinationPaperImg != ''  ">#{examinationPaperImg},</if>
+			<if test="examinationPaperSecondImg != null  and examinationPaperSecondImg != ''  ">#{examinationPaperSecondImg},</if>
+			<if test="examinationPaperThirdImg != null  and examinationPaperThirdImg != ''  ">#{examinationPaperThirdImg},</if>
+			<if test="examinationPaperFourImg != null  and examinationPaperFourImg != ''  ">#{examinationPaperFourImg},</if>
+			<if test="threeNotAccidentImg != null  and threeNotAccidentImg != ''  ">#{threeNotAccidentImg},</if>
+			<if test="oneYearIllegalRecordImg != null  and oneYearIllegalRecordImg != ''  ">#{oneYearIllegalRecordImg},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserDriverPhotos" parameterType="TUserDriverPhotos">
+        update t_user_driver_photos
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="driverUserId != null  ">driver_user_id = #{driverUserId},</if>
+            <if test="headImg != null  and headImg != ''  ">head_img = #{headImg},</if>
+            <if test="personalImg != null  and personalImg != ''  ">personal_img = #{personalImg},</if>
+            <if test="idCardCopyImg != null  and idCardCopyImg != ''  ">id_card_copy_img = #{idCardCopyImg},</if>
+            <if test="certificateCopyImg != null  and certificateCopyImg != ''  ">certificate_copy_img = #{certificateCopyImg},</if>
+            <if test="practitionersCopyImg != null  and practitionersCopyImg != ''  ">practitioners_copy_img = #{practitionersCopyImg},</if>
+            <if test="examinationPaperImg != null  and examinationPaperImg != ''  ">examination_paper_img = #{examinationPaperImg},</if>
+            <if test="examinationPaperSecondImg != null  and examinationPaperSecondImg != ''  ">examination_paper_second_img = #{examinationPaperSecondImg},</if>
+            <if test="examinationPaperThirdImg != null  and examinationPaperThirdImg != ''  ">examination_paper_third_img = #{examinationPaperThirdImg},</if>
+            <if test="examinationPaperFourImg != null  and examinationPaperFourImg != ''  ">examination_paper_four_img = #{examinationPaperFourImg},</if>
+            <if test="threeNotAccidentImg != null  and threeNotAccidentImg != ''  ">three_not_accident_img = #{threeNotAccidentImg},</if>
+            <if test="oneYearIllegalRecordImg != null  and oneYearIllegalRecordImg != ''  ">one_year_illegal_record_img = #{oneYearIllegalRecordImg},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserDriverPhotosById" parameterType="String">
+        delete from t_user_driver_photos where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserDriverPhotosByIds" parameterType="String">
+        delete from t_user_driver_photos where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

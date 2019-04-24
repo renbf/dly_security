@@ -1,16 +1,15 @@
 package com.project.security.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 课程安排表 t_user_course
  * 
  * @author rbf
- * @date 2019-04-16
+ * @date 2019-04-22
  */
 public class TUserCourse implements Serializable
 {
@@ -24,6 +23,8 @@ public class TUserCourse implements Serializable
 	private Date startDate;
 	/** 课程id */
 	private String courseId;
+	/** 级别类型 */
+	private String levelType;
 	/** 学习状态0未学习1学习中2已完成 */
 	private String status;
 	/** 课时（秒） */
@@ -76,6 +77,15 @@ public class TUserCourse implements Serializable
 	public String getCourseId() 
 	{
 		return courseId;
+	}
+	public void setLevelType(String levelType) 
+	{
+		this.levelType = levelType;
+	}
+
+	public String getLevelType() 
+	{
+		return levelType;
 	}
 	public void setStatus(String status) 
 	{
@@ -156,6 +166,7 @@ public class TUserCourse implements Serializable
             .append("userId", getUserId())
             .append("startDate", getStartDate())
             .append("courseId", getCourseId())
+            .append("levelType", getLevelType())
             .append("status", getStatus())
             .append("classHour", getClassHour())
             .append("progress", getProgress())

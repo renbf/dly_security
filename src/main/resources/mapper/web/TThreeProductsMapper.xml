@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.system.tThreeProducts.mapper.TThreeProductsMapper">
+    
+    <resultMap type="TThreeProducts" id="TThreeProductsResult">
+        <result property="id"    column="id"    />
+        <result property="checkDate"    column="check_date"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="goodsType"    column="goods_type"    />
+        <result property="checkPersonnel"    column="check_personnel"    />
+        <result property="resultInfo"    column="result_info"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTThreeProductsVo">
+        select tp.id, tp.check_date, tp.goods_name, tp.goods_type, tp.check_personnel, tp.result_info, tp.remark, tp.create_time, tp.update_time, tp.user_id, tp.meno, tp.business_id, tp.update_user_id from t_three_products tp
+    </sql>
+	
+    <select id="selectTThreeProductsList" parameterType="TThreeProducts" resultMap="TThreeProductsResult">
+        <include refid="selectTThreeProductsVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and tp.id = #{id}</if>
+             <if test="checkDate != null "> and tp.check_date = #{checkDate}</if>
+             <if test="goodsName != null  and goodsName != '' "> and tp.goods_name = #{goodsName}</if>
+             <if test="goodsType != null  and goodsType != '' "> and tp.goods_type = #{goodsType}</if>
+             <if test="checkPersonnel != null  and checkPersonnel != '' "> and tp.check_personnel = #{checkPersonnel}</if>
+             <if test="resultInfo != null  and resultInfo != '' "> and tp.result_info = #{resultInfo}</if>
+             <if test="remark != null  and remark != '' "> and tp.remark = #{remark}</if>
+             <if test="createTime != null "> and tp.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and tp.update_time = #{updateTime}</if>
+             <if test="userId != null "> and tp.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and tp.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and tp.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and tp.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTThreeProductsById" parameterType="String" resultMap="TThreeProductsResult">
+        <include refid="selectTThreeProductsVo"/>
+        where tp.id = #{id}
+    </select>
+        
+    <insert id="insertTThreeProducts" parameterType="TThreeProducts">
+        insert into t_three_products
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="checkDate != null  ">check_date,</if>
+			<if test="goodsName != null  and goodsName != ''  ">goods_name,</if>
+			<if test="goodsType != null  and goodsType != ''  ">goods_type,</if>
+			<if test="checkPersonnel != null  and checkPersonnel != ''  ">check_personnel,</if>
+			<if test="resultInfo != null  and resultInfo != ''  ">result_info,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="checkDate != null  ">#{checkDate},</if>
+			<if test="goodsName != null  and goodsName != ''  ">#{goodsName},</if>
+			<if test="goodsType != null  and goodsType != ''  ">#{goodsType},</if>
+			<if test="checkPersonnel != null  and checkPersonnel != ''  ">#{checkPersonnel},</if>
+			<if test="resultInfo != null  and resultInfo != ''  ">#{resultInfo},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTThreeProducts" parameterType="TThreeProducts">
+        update t_three_products
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkDate != null  ">check_date = #{checkDate},</if>
+            <if test="goodsName != null  and goodsName != ''  ">goods_name = #{goodsName},</if>
+            <if test="goodsType != null  and goodsType != ''  ">goods_type = #{goodsType},</if>
+            <if test="checkPersonnel != null  and checkPersonnel != ''  ">check_personnel = #{checkPersonnel},</if>
+            <if test="resultInfo != null  and resultInfo != ''  ">result_info = #{resultInfo},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTThreeProductsById" parameterType="String">
+        delete from t_three_products where id = #{id}
+    </delete>
+	
+    <delete id="deleteTThreeProductsByIds" parameterType="String">
+        delete from t_three_products where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

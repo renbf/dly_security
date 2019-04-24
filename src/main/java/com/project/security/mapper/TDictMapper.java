@@ -3,8 +3,10 @@ package com.project.security.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.project.security.domain.TDict;
+import com.project.security.domain.vo.TDictNode;
 import com.project.security.domain.vo.TDictView;	
 
 /**
@@ -13,6 +15,7 @@ import com.project.security.domain.vo.TDictView;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("dictMapper")
 public interface TDictMapper 
 {
 	/**
@@ -82,4 +85,24 @@ public interface TDictMapper
 	 * @return
 	 */
 	public List<TDictView> selectTDictsByGoodsType(String dictId);
+	/**
+	 * 查询对应风险源
+	 * @param businessId
+	 * @return
+	 */
+	public List<TDictView> selectTRiskLevelControlDict(String businessId);
+	
+	/**
+	 * 查询子节点
+	 * @param parentId
+	 * @return
+	 */
+	public List<TDictNode> selectTDictNodesByParentId(String parentId);
+	
+	/**
+	 * 查询子节点
+	 * @param parentId
+	 * @return
+	 */
+	public List<TDictNode> selectTDictNodesBybusinessId(@Param("parentId") String parentId,@Param("businessId") String businessId);
 }

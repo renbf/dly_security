@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
 import com.project.security.domain.TGoodsNameType;
-import java.util.List;	
+import java.util.List;
+
+import org.springframework.stereotype.Repository;	
 
 /**
  * 货物名称类项关系 数据层
@@ -9,6 +11,7 @@ import java.util.List;
  * @author rbf
  * @date 2019-04-18
  */
+@Repository("goodsNameTypeMapper")
 public interface TGoodsNameTypeMapper 
 {
 	/**

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSafetyPlanMapper">
+    
+    <resultMap type="TSafetyPlan" id="TSafetyPlanResult">
+        <result property="id"    column="id"    />
+        <result property="palnName"    column="paln_name"    />
+        <result property="planDate"    column="plan_date"    />
+        <result property="planEnactingPerson"    column="plan_enacting_person"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="planStatus"    column="plan_status"    />
+        <result property="planFilePath"    column="plan_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSafetyPlanVo">
+        select sp.id, sp.paln_name, sp.plan_date, sp.plan_enacting_person, sp.dept_id, sp.plan_status, sp.plan_file_path, sp.create_time, sp.update_time, sp.user_id, sp.meno, sp.business_id, sp.update_user_id from t_safety_plan sp
+    </sql>
+	
+    <select id="selectTSafetyPlanList" parameterType="TSafetyPlan" resultMap="TSafetyPlanResult">
+        <include refid="selectTSafetyPlanVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and sp.id = #{id}</if>
+             <if test="palnName != null  and palnName != '' "> and sp.paln_name = #{palnName}</if>
+             <if test="planDate != null "> and sp.plan_date = #{planDate}</if>
+             <if test="planEnactingPerson != null  and planEnactingPerson != '' "> and sp.plan_enacting_person = #{planEnactingPerson}</if>
+             <if test="deptId != null  and deptId != '' "> and sp.dept_id = #{deptId}</if>
+             <if test="planStatus != null "> and sp.plan_status = #{planStatus}</if>
+             <if test="planFilePath != null  and planFilePath != '' "> and sp.plan_file_path = #{planFilePath}</if>
+             <if test="createTime != null "> and sp.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and sp.update_time = #{updateTime}</if>
+             <if test="userId != null "> and sp.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and sp.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and sp.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and sp.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSafetyPlanById" parameterType="String" resultMap="TSafetyPlanResult">
+        <include refid="selectTSafetyPlanVo"/>
+        where sp.id = #{id}
+    </select>
+        
+    <insert id="insertTSafetyPlan" parameterType="TSafetyPlan">
+        insert into t_safety_plan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="palnName != null  and palnName != ''  ">paln_name,</if>
+			<if test="planDate != null  ">plan_date,</if>
+			<if test="planEnactingPerson != null  and planEnactingPerson != ''  ">plan_enacting_person,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="planStatus != null  ">plan_status,</if>
+			<if test="planFilePath != null  and planFilePath != ''  ">plan_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="palnName != null  and palnName != ''  ">#{palnName},</if>
+			<if test="planDate != null  ">#{planDate},</if>
+			<if test="planEnactingPerson != null  and planEnactingPerson != ''  ">#{planEnactingPerson},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="planStatus != null  ">#{planStatus},</if>
+			<if test="planFilePath != null  and planFilePath != ''  ">#{planFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSafetyPlan" parameterType="TSafetyPlan">
+        update t_safety_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="palnName != null  and palnName != ''  ">paln_name = #{palnName},</if>
+            <if test="planDate != null  ">plan_date = #{planDate},</if>
+            <if test="planEnactingPerson != null  and planEnactingPerson != ''  ">plan_enacting_person = #{planEnactingPerson},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="planStatus != null  ">plan_status = #{planStatus},</if>
+            <if test="planFilePath != null  and planFilePath != ''  ">plan_file_path = #{planFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSafetyPlanById" parameterType="String">
+        delete from t_safety_plan where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSafetyPlanByIds" parameterType="String">
+        delete from t_safety_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -68,6 +68,10 @@ public class ShiroUtils {
         return getUser().getLoginName();
     }
 
+    public static String getBusinessId() {
+        return getUser().getBusinessId();
+    }
+
     public static String getIp() {
         return getSubjct().getSession().getHost();
     }

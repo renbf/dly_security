@@ -3,6 +3,7 @@ package com.project.security.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.project.security.domain.TInspectTeamProject;
 import com.project.security.domain.vo.TInspectTeamProjectVo;	
@@ -13,6 +14,7 @@ import com.project.security.domain.vo.TInspectTeamProjectVo;
  * @author rbf
  * @date 2019-04-17
  */
+@Repository("inspectTeamProjectMapper")
 public interface TInspectTeamProjectMapper 
 {
 	/**

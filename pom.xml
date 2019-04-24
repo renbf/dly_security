@@ -399,6 +399,11 @@
 		    <artifactId>jsch</artifactId>  
 		    <version>0.1.54</version>  
 	   </dependency>
+	   <dependency>
+		    <groupId>com.gexin.platform</groupId>
+		    <artifactId>gexin-rp-sdk-http</artifactId>
+		    <version>4.1.0.1</version>
+		</dependency>
     </dependencies>
 
     <build>
@@ -430,16 +435,20 @@
         </resources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>public</id>
+			<name>aliyun nexus</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>getui-nexus</id>
+			<url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
+		</repository>
+	</repositories>
 
     <pluginRepositories>
         <pluginRepository>

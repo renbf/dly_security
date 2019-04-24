@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userId"    column="user_id"    />
         <result property="startDate"    column="start_date"    />
         <result property="courseId"    column="course_id"    />
+        <result property="levelType"    column="level_type"    />
         <result property="status"    column="status"    />
         <result property="classHour"    column="class_hour"    />
         <result property="progress"    column="progress"    />
@@ -20,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTUserCoursebasicColums">
-        select uc.id, uc.user_id, uc.start_date, uc.course_id, uc.status, uc.class_hour, uc.progress, uc.is_collect, uc.add_user_id, uc.publish_date, uc.update_date, uc.update_user_id    </sql>
+        select uc.id, uc.user_id, uc.start_date, uc.course_id, uc.level_type, uc.status, uc.class_hour, uc.progress, uc.is_collect, uc.add_user_id, uc.publish_date, uc.update_date, uc.update_user_id    </sql>
 	
     <select id="selectTUserCourseList" parameterType="com.project.security.domain.TUserCourse" resultMap="TUserCourseResult">
         <include refid="selectTUserCoursebasicColums"/>
@@ -30,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="userId != null  and userId != '' "> and uc.user_id = #{userId}</if>
              <if test="startDate != null "> and uc.start_date = #{startDate}</if>
              <if test="courseId != null  and courseId != '' "> and uc.course_id = #{courseId}</if>
+             <if test="levelType != null  and levelType != '' "> and uc.level_type = #{levelType}</if>
              <if test="status != null  and status != '' "> and uc.status = #{status}</if>
              <if test="classHour != null "> and uc.class_hour = #{classHour}</if>
              <if test="progress != null "> and uc.progress = #{progress}</if>
@@ -54,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="userId != null  and userId != ''  ">user_id,</if>
 			<if test="startDate != null  ">start_date,</if>
 			<if test="courseId != null  and courseId != ''  ">course_id,</if>
+			<if test="levelType != null  and levelType != ''  ">level_type,</if>
 			<if test="status != null  and status != ''  ">status,</if>
 			<if test="classHour != null  ">class_hour,</if>
 			<if test="progress != null  ">progress,</if>
@@ -68,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="userId != null  and userId != ''  ">#{userId},</if>
 			<if test="startDate != null  ">#{startDate},</if>
 			<if test="courseId != null  and courseId != ''  ">#{courseId},</if>
+			<if test="levelType != null  and levelType != ''  ">#{levelType},</if>
 			<if test="status != null  and status != ''  ">#{status},</if>
 			<if test="classHour != null  ">#{classHour},</if>
 			<if test="progress != null  ">#{progress},</if>
@@ -85,6 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
             <if test="startDate != null  ">start_date = #{startDate},</if>
             <if test="courseId != null  and courseId != ''  ">course_id = #{courseId},</if>
+            <if test="levelType != null  and levelType != ''  ">level_type = #{levelType},</if>
             <if test="status != null  and status != ''  ">status = #{status},</if>
             <if test="classHour != null  ">class_hour = #{classHour},</if>
             <if test="progress != null  ">progress = #{progress},</if>
@@ -117,6 +122,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="progress"    column="progress"    />
         <result property="proSum"    column="proSum"    />
         <result property="rank"    column="rank"    />
+        <result property="classHour"    column="class_hour"    />
+        <result property="classHourSum"    column="class_hour_sum"    />
     </resultMap>
     
     <update id="updateTUserCourseByUser" parameterType="com.project.security.domain.TUserCourse">
@@ -136,16 +143,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     <select id="courseRanking" parameterType="java.lang.String" resultMap="TUserCourseVoResult">
-    	select u.user_id,u.user_name,d.dept_id,d.dept_name,uc.progress
+    	select u.user_id,u.user_name,d.dept_id,d.dept_name,uc.progress,round(uc.progress/chc.class_hour,2) class_hour
 		from t_user_course uc 
 		join sys_user u on uc.user_id = u.user_id
 		join sys_dept d on d.dept_id = u.dept_id
+		left join t_class_hour_config chc on chc.id is not null
 		where uc.user_id = #{userId}
 		order by uc.progress desc
+		limit 0,10
     </select>
     
     <select id="courseRankingByUserId" parameterType="java.util.Map" resultMap="TUserCourseVoResult">
-    	SELECT a.user_id,a.proSum,
+    	SELECT a.user_id,a.proSum,round(a.proSum/chc.class_hour,2) class_hour_sum,
 		(SELECT count(DISTINCT proSum) FROM (select uc.user_id,sum(uc.progress) proSum
 		from t_user_course uc 
 		join sys_user u on uc.user_id = u.user_id
@@ -156,6 +165,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join sys_user u on uc.user_id = u.user_id
 		where u.business_id = #{businessId}
 		group by uc.user_id) a 
+		left join t_class_hour_config chc on chc.id is not null
 		where a.user_id = #{userId}
     </select>
 </mapper>

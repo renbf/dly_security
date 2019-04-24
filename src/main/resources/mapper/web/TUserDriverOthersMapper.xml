@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserDriverOthersMapper">
+    
+    <resultMap type="TUserDriverOthers" id="TUserDriverOthersResult">
+        <result property="id"    column="id"    />
+        <result property="driverUserId"    column="driver_user_id"    />
+        <result property="isRecord"    column="is_record"    />
+        <result property="integrityExaminationPeriod"    column="integrity_examination_period"    />
+        <result property="integrityExaminationLevel"    column="integrity_examination_level"    />
+        <result property="accurateNum"    column="accurate_num"    />
+        <result property="transportationLine"    column="transportation_line"    />
+        <result property="driverValidityPeriod"    column="driver_validity_period"    />
+        <result property="isRisk"    column="is_risk"    />
+        <result property="riskStandard"    column="risk_standard"    />
+        <result property="riskAmt"    column="risk_amt"    />
+        <result property="assessor"    column="assessor"    />
+        <result property="assessorDate"    column="assessor_date"    />
+        <result property="assessorInfo"    column="assessor_info"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTUserDriverOthersVo">
+        select udo.id, udo.driver_user_id, udo.is_record, udo.integrity_examination_period, udo.integrity_examination_level, udo.accurate_num, udo.transportation_line, udo.driver_validity_period, udo.is_risk, udo.risk_standard, udo.risk_amt, udo.assessor, udo.assessor_date, udo.assessor_info, udo.create_time, udo.update_time, udo.user_id, udo.meno, udo.business_id, udo.update_user_id from t_user_driver_others udo
+    </sql>
+	
+    <select id="selectTUserDriverOthersList" parameterType="TUserDriverOthers" resultMap="TUserDriverOthersResult">
+        <include refid="selectTUserDriverOthersVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and udo.id = #{id}</if>
+             <if test="driverUserId != null "> and udo.driver_user_id = #{driverUserId}</if>
+             <if test="isRecord != null  and isRecord != '' "> and udo.is_record = #{isRecord}</if>
+             <if test="integrityExaminationPeriod != null "> and udo.integrity_examination_period = #{integrityExaminationPeriod}</if>
+             <if test="integrityExaminationLevel != null  and integrityExaminationLevel != '' "> and udo.integrity_examination_level = #{integrityExaminationLevel}</if>
+             <if test="accurateNum != null  and accurateNum != '' "> and udo.accurate_num = #{accurateNum}</if>
+             <if test="transportationLine != null  and transportationLine != '' "> and udo.transportation_line = #{transportationLine}</if>
+             <if test="driverValidityPeriod != null "> and udo.driver_validity_period = #{driverValidityPeriod}</if>
+             <if test="isRisk != null  and isRisk != '' "> and udo.is_risk = #{isRisk}</if>
+             <if test="riskStandard != null  and riskStandard != '' "> and udo.risk_standard = #{riskStandard}</if>
+             <if test="riskAmt != null "> and udo.risk_amt = #{riskAmt}</if>
+             <if test="assessor != null  and assessor != '' "> and udo.assessor = #{assessor}</if>
+             <if test="assessorDate != null "> and udo.assessor_date = #{assessorDate}</if>
+             <if test="assessorInfo != null  and assessorInfo != '' "> and udo.assessor_info = #{assessorInfo}</if>
+             <if test="createTime != null "> and udo.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and udo.update_time = #{updateTime}</if>
+             <if test="userId != null "> and udo.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and udo.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and udo.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and udo.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserDriverOthersById" parameterType="String" resultMap="TUserDriverOthersResult">
+        <include refid="selectTUserDriverOthersVo"/>
+        where udo.id = #{id}
+    </select>
+        
+    <insert id="insertTUserDriverOthers" parameterType="TUserDriverOthers">
+        insert into t_user_driver_others
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="driverUserId != null  ">driver_user_id,</if>
+			<if test="isRecord != null  and isRecord != ''  ">is_record,</if>
+			<if test="integrityExaminationPeriod != null  ">integrity_examination_period,</if>
+			<if test="integrityExaminationLevel != null  and integrityExaminationLevel != ''  ">integrity_examination_level,</if>
+			<if test="accurateNum != null  and accurateNum != ''  ">accurate_num,</if>
+			<if test="transportationLine != null  and transportationLine != ''  ">transportation_line,</if>
+			<if test="driverValidityPeriod != null  ">driver_validity_period,</if>
+			<if test="isRisk != null  and isRisk != ''  ">is_risk,</if>
+			<if test="riskStandard != null  and riskStandard != ''  ">risk_standard,</if>
+			<if test="riskAmt != null  ">risk_amt,</if>
+			<if test="assessor != null  and assessor != ''  ">assessor,</if>
+			<if test="assessorDate != null  ">assessor_date,</if>
+			<if test="assessorInfo != null  and assessorInfo != ''  ">assessor_info,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="driverUserId != null  ">#{driverUserId},</if>
+			<if test="isRecord != null  and isRecord != ''  ">#{isRecord},</if>
+			<if test="integrityExaminationPeriod != null  ">#{integrityExaminationPeriod},</if>
+			<if test="integrityExaminationLevel != null  and integrityExaminationLevel != ''  ">#{integrityExaminationLevel},</if>
+			<if test="accurateNum != null  and accurateNum != ''  ">#{accurateNum},</if>
+			<if test="transportationLine != null  and transportationLine != ''  ">#{transportationLine},</if>
+			<if test="driverValidityPeriod != null  ">#{driverValidityPeriod},</if>
+			<if test="isRisk != null  and isRisk != ''  ">#{isRisk},</if>
+			<if test="riskStandard != null  and riskStandard != ''  ">#{riskStandard},</if>
+			<if test="riskAmt != null  ">#{riskAmt},</if>
+			<if test="assessor != null  and assessor != ''  ">#{assessor},</if>
+			<if test="assessorDate != null  ">#{assessorDate},</if>
+			<if test="assessorInfo != null  and assessorInfo != ''  ">#{assessorInfo},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserDriverOthers" parameterType="TUserDriverOthers">
+        update t_user_driver_others
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="driverUserId != null  ">driver_user_id = #{driverUserId},</if>
+            <if test="isRecord != null  and isRecord != ''  ">is_record = #{isRecord},</if>
+            <if test="integrityExaminationPeriod != null  ">integrity_examination_period = #{integrityExaminationPeriod},</if>
+            <if test="integrityExaminationLevel != null  and integrityExaminationLevel != ''  ">integrity_examination_level = #{integrityExaminationLevel},</if>
+            <if test="accurateNum != null  and accurateNum != ''  ">accurate_num = #{accurateNum},</if>
+            <if test="transportationLine != null  and transportationLine != ''  ">transportation_line = #{transportationLine},</if>
+            <if test="driverValidityPeriod != null  ">driver_validity_period = #{driverValidityPeriod},</if>
+            <if test="isRisk != null  and isRisk != ''  ">is_risk = #{isRisk},</if>
+            <if test="riskStandard != null  and riskStandard != ''  ">risk_standard = #{riskStandard},</if>
+            <if test="riskAmt != null  ">risk_amt = #{riskAmt},</if>
+            <if test="assessor != null  and assessor != ''  ">assessor = #{assessor},</if>
+            <if test="assessorDate != null  ">assessor_date = #{assessorDate},</if>
+            <if test="assessorInfo != null  and assessorInfo != ''  ">assessor_info = #{assessorInfo},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserDriverOthersById" parameterType="String">
+        delete from t_user_driver_others where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserDriverOthersByIds" parameterType="String">
+        delete from t_user_driver_others where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarChangeMapper">
+    
+    <resultMap type="com.project.web.domian.TCarChange" id="TCarChangeResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="changeDate"    column="change_date"    />
+        <result property="changeReason"    column="change_reason"    />
+        <result property="changeOption"    column="change_option"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCarChangebasicColums">
+        select cc.id, cc.car_id, cc.change_date, cc.change_reason, cc.change_option, cc.add_user_id, cc.create_date, cc.update_date, cc.update_user_id    </sql>
+	
+    <select id="selectTCarChangeList" parameterType="com.project.web.domian.TCarChange" resultMap="TCarChangeResult">
+        <include refid="selectTCarChangebasicColums"/>
+        from t_car_change cc
+        <where>  
+            <if test="id != null  and id != '' "> and cc.id = #{id}</if>
+             <if test="carId != null  and carId != '' "> and cc.car_id = #{carId}</if>
+             <if test="changeDate != null "> and cc.change_date = #{changeDate}</if>
+             <if test="changeReason != null  and changeReason != '' "> and cc.change_reason = #{changeReason}</if>
+             <if test="changeOption != null  and changeOption != '' "> and cc.change_option = #{changeOption}</if>
+             <if test="addUserId != null  and addUserId != '' "> and cc.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and cc.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and cc.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and cc.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarChangeById" parameterType="String" resultMap="TCarChangeResult">
+        <include refid="selectTCarChangebasicColums"/>
+        from t_car_change cc
+        where cc.id = #{id}
+    </select>
+        
+    <insert id="insertTCarChange" parameterType="com.project.web.domian.TCarChange">
+        insert into t_car_change
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carId != null  and carId != ''  ">car_id,</if>
+			<if test="changeDate != null  ">change_date,</if>
+			<if test="changeReason != null  and changeReason != ''  ">change_reason,</if>
+			<if test="changeOption != null  and changeOption != ''  ">change_option,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carId != null  and carId != ''  ">#{carId},</if>
+			<if test="changeDate != null  ">#{changeDate},</if>
+			<if test="changeReason != null  and changeReason != ''  ">#{changeReason},</if>
+			<if test="changeOption != null  and changeOption != ''  ">#{changeOption},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarChange" parameterType="com.project.web.domian.TCarChange">
+        update t_car_change
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null  and carId != ''  ">car_id = #{carId},</if>
+            <if test="changeDate != null  ">change_date = #{changeDate},</if>
+            <if test="changeReason != null  and changeReason != ''  ">change_reason = #{changeReason},</if>
+            <if test="changeOption != null  and changeOption != ''  ">change_option = #{changeOption},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarChangeById" parameterType="String">
+        delete from t_car_change where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarChangeByIds" parameterType="String">
+        delete from t_car_change where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDriverLogMapper">
+    
+    <resultMap type="com.project.web.domian.TDriverLog" id="TDriverLogResult">
+        <result property="id"    column="id"    />
+        <result property="writeTime"    column="write_time"    />
+        <result property="carNumber"    column="car_number"    />
+        <result property="idealTonnage"    column="ideal_tonnage"    />
+        <result property="actualTonnage"    column="actual_tonnage"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="type"    column="type"    />
+        <result property="transporAddress"    column="transpor_address"    />
+        <result property="goalAddress"    column="goal_address"    />
+        <result property="transportDate"    column="transport_date"    />
+        <result property="arriveDate"    column="arrive_date"    />
+        <result property="km"    column="km"    />
+        <result property="status"    column="status"    />
+        <result property="firstDriverId"    column="first_driver_id"    />
+        <result property="secondDriverId"    column="second_driver_id"    />
+        <result property="escortId"    column="escort_id"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="weather"    column="weather"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTDriverLogbasicColums">
+        select dl.id, dl.write_time, dl.car_number, dl.ideal_tonnage, dl.actual_tonnage, dl.goods_name, dl.type, dl.transpor_address, dl.goal_address, dl.transport_date, dl.arrive_date, dl.km, dl.status, dl.first_driver_id, dl.second_driver_id, dl.escort_id, dl.temperature, dl.weather, dl.add_user_id, dl.create_date, dl.update_date, dl.update_user_id    </sql>
+	
+    <select id="selectTDriverLogList" parameterType="com.project.web.domian.TDriverLog" resultMap="TDriverLogResult">
+        <include refid="selectTDriverLogbasicColums"/>
+        from t_driver_log dl
+        <where>  
+            <if test="id != null  and id != '' "> and dl.id = #{id}</if>
+             <if test="writeTime != null "> and dl.write_time = #{writeTime}</if>
+             <if test="carNumber != null  and carNumber != '' "> and dl.car_number = #{carNumber}</if>
+             <if test="idealTonnage != null  and idealTonnage != '' "> and dl.ideal_tonnage = #{idealTonnage}</if>
+             <if test="actualTonnage != null  and actualTonnage != '' "> and dl.actual_tonnage = #{actualTonnage}</if>
+             <if test="goodsName != null  and goodsName != '' "> and dl.goods_name = #{goodsName}</if>
+             <if test="type != null  and type != '' "> and dl.type = #{type}</if>
+             <if test="transporAddress != null  and transporAddress != '' "> and dl.transpor_address = #{transporAddress}</if>
+             <if test="goalAddress != null  and goalAddress != '' "> and dl.goal_address = #{goalAddress}</if>
+             <if test="transportDate != null "> and dl.transport_date = #{transportDate}</if>
+             <if test="arriveDate != null "> and dl.arrive_date = #{arriveDate}</if>
+             <if test="km != null  and km != '' "> and dl.km = #{km}</if>
+             <if test="status != null  and status != '' "> and dl.status = #{status}</if>
+             <if test="firstDriverId != null  and firstDriverId != '' "> and dl.first_driver_id = #{firstDriverId}</if>
+             <if test="secondDriverId != null  and secondDriverId != '' "> and dl.second_driver_id = #{secondDriverId}</if>
+             <if test="escortId != null  and escortId != '' "> and dl.escort_id = #{escortId}</if>
+             <if test="temperature != null  and temperature != '' "> and dl.temperature = #{temperature}</if>
+             <if test="weather != null  and weather != '' "> and dl.weather = #{weather}</if>
+             <if test="addUserId != null  and addUserId != '' "> and dl.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and dl.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and dl.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and dl.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDriverLogById" parameterType="String" resultMap="TDriverLogResult">
+        <include refid="selectTDriverLogbasicColums"/>
+        from t_driver_log dl
+        where dl.id = #{id}
+    </select>
+        
+    <insert id="insertTDriverLog" parameterType="com.project.web.domian.TDriverLog">
+        insert into t_driver_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="writeTime != null  ">write_time,</if>
+			<if test="carNumber != null  and carNumber != ''  ">car_number,</if>
+			<if test="idealTonnage != null  and idealTonnage != ''  ">ideal_tonnage,</if>
+			<if test="actualTonnage != null  and actualTonnage != ''  ">actual_tonnage,</if>
+			<if test="goodsName != null  and goodsName != ''  ">goods_name,</if>
+			<if test="type != null  and type != ''  ">type,</if>
+			<if test="transporAddress != null  and transporAddress != ''  ">transpor_address,</if>
+			<if test="goalAddress != null  and goalAddress != ''  ">goal_address,</if>
+			<if test="transportDate != null  ">transport_date,</if>
+			<if test="arriveDate != null  ">arrive_date,</if>
+			<if test="km != null  and km != ''  ">km,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="firstDriverId != null  and firstDriverId != ''  ">first_driver_id,</if>
+			<if test="secondDriverId != null  and secondDriverId != ''  ">second_driver_id,</if>
+			<if test="escortId != null  and escortId != ''  ">escort_id,</if>
+			<if test="temperature != null  and temperature != ''  ">temperature,</if>
+			<if test="weather != null  and weather != ''  ">weather,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="writeTime != null  ">#{writeTime},</if>
+			<if test="carNumber != null  and carNumber != ''  ">#{carNumber},</if>
+			<if test="idealTonnage != null  and idealTonnage != ''  ">#{idealTonnage},</if>
+			<if test="actualTonnage != null  and actualTonnage != ''  ">#{actualTonnage},</if>
+			<if test="goodsName != null  and goodsName != ''  ">#{goodsName},</if>
+			<if test="type != null  and type != ''  ">#{type},</if>
+			<if test="transporAddress != null  and transporAddress != ''  ">#{transporAddress},</if>
+			<if test="goalAddress != null  and goalAddress != ''  ">#{goalAddress},</if>
+			<if test="transportDate != null  ">#{transportDate},</if>
+			<if test="arriveDate != null  ">#{arriveDate},</if>
+			<if test="km != null  and km != ''  ">#{km},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="firstDriverId != null  and firstDriverId != ''  ">#{firstDriverId},</if>
+			<if test="secondDriverId != null  and secondDriverId != ''  ">#{secondDriverId},</if>
+			<if test="escortId != null  and escortId != ''  ">#{escortId},</if>
+			<if test="temperature != null  and temperature != ''  ">#{temperature},</if>
+			<if test="weather != null  and weather != ''  ">#{weather},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDriverLog" parameterType="com.project.web.domian.TDriverLog">
+        update t_driver_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="writeTime != null  ">write_time = #{writeTime},</if>
+            <if test="carNumber != null  and carNumber != ''  ">car_number = #{carNumber},</if>
+            <if test="idealTonnage != null  and idealTonnage != ''  ">ideal_tonnage = #{idealTonnage},</if>
+            <if test="actualTonnage != null  and actualTonnage != ''  ">actual_tonnage = #{actualTonnage},</if>
+            <if test="goodsName != null  and goodsName != ''  ">goods_name = #{goodsName},</if>
+            <if test="type != null  and type != ''  ">type = #{type},</if>
+            <if test="transporAddress != null  and transporAddress != ''  ">transpor_address = #{transporAddress},</if>
+            <if test="goalAddress != null  and goalAddress != ''  ">goal_address = #{goalAddress},</if>
+            <if test="transportDate != null  ">transport_date = #{transportDate},</if>
+            <if test="arriveDate != null  ">arrive_date = #{arriveDate},</if>
+            <if test="km != null  and km != ''  ">km = #{km},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="firstDriverId != null  and firstDriverId != ''  ">first_driver_id = #{firstDriverId},</if>
+            <if test="secondDriverId != null  and secondDriverId != ''  ">second_driver_id = #{secondDriverId},</if>
+            <if test="escortId != null  and escortId != ''  ">escort_id = #{escortId},</if>
+            <if test="temperature != null  and temperature != ''  ">temperature = #{temperature},</if>
+            <if test="weather != null  and weather != ''  ">weather = #{weather},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTDriverLogById" parameterType="String">
+        delete from t_driver_log where id = #{id}
+    </delete>
+	
+    <delete id="deleteTDriverLogByIds" parameterType="String">
+        delete from t_driver_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

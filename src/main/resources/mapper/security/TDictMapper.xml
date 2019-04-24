@@ -114,6 +114,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dictCode"    column="dict_code"    />
     </resultMap>
     
+    <resultMap type="com.project.security.domain.vo.TDictNode" id="TDictNodeResult">
+        <result property="id"    column="id"    />
+        <result property="dictName"    column="dict_name"    />
+        <result property="dictCode"    column="dict_code"    />
+    </resultMap>
+    
     <select id="selectTDictListByParentId" parameterType="java.lang.String" resultMap="TDictViewResult">
     	select d.id,d.dict_name,d.dict_code
         from t_dict d
@@ -139,4 +145,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from t_dict d
 		where d.parent_id in (select d1.id from t_dict d1 where d1.parent_id in (select id from t_dict where parent_id = #{dictId}))
     </select>
+    
+    <select id="selectTRiskLevelControlDict" parameterType="java.lang.String" resultMap="TDictViewResult">
+    	select rlc.id,rlc.risk_name dict_name
+    	from t_risk_level_control rlc 
+    	where rlc.business_id = #{businessId}
+    </select>
+    
+    <select id="selectTDictNodesBybusinessId" parameterType="java.util.Map" resultMap="TDictNodeResult">
+    	select d.id,d.dict_name,d.dict_code
+		from t_dict d
+		where d.parent_id = (select id from t_dict where parent_id = #{parentId} and business_id = #{businessId})
+    </select>
+    
+    <select id="selectTDictNodesByParentId" parameterType="java.lang.String" resultMap="TDictNodeResult">
+    	select d.id,d.dict_name,d.dict_code
+        from t_dict d
+        where d.parent_id = #{parentId}
+    </select>
+    
 </mapper>

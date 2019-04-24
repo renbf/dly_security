@@ -3,10 +3,14 @@ package ${package}.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
+import java.util.Date;
+import com.project.framework.util.ShiroUtils;
+import com.project.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ${package}.mapper.${className}Mapper;
-import ${package}.domain.${className};
+import ${package}.domian.${className};
 import ${package}.service.I${className}Service;
 import com.project.common.support.Convert;
 
@@ -21,6 +25,7 @@ public class ${className}ServiceImpl implements I${className}Service
 {
 	private static final Logger log = LoggerFactory.getLogger(${className}ServiceImpl.class);
 	@Autowired
+	@Qualifier("${classname}Mapper")
 	private ${className}Mapper ${classname}Mapper;
 
 	/**
@@ -56,6 +61,9 @@ public class ${className}ServiceImpl implements I${className}Service
 	@Override
 	public int insert${className}(${className} ${classname})
 	{
+		${classname}.setId(UUIDUtil.getUUID());
+		${classname}.setCreateDate(new Date());
+		${classname}.setAddUserId(ShiroUtils.getUserId().toString());
 	    return ${classname}Mapper.insert${className}(${classname});
 	}
 	

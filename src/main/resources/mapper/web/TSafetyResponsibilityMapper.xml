@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSafetyResponsibilityMapper">
+    
+    <resultMap type="TSafetyResponsibility" id="TSafetyResponsibilityResult">
+        <result property="id"    column="id"    />
+        <result property="responsibilityName"    column="responsibility_name"    />
+        <result property="responsibilityDate"    column="responsibility_date"    />
+        <result property="responsibilityType"    column="responsibility_type"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="responsibilityFilePath"    column="responsibility_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSafetyResponsibilityVo">
+        select sr.id, sr.responsibility_name, sr.responsibility_date, sr.responsibility_type, sr.dept_id, sr.responsibility_file_path, sr.create_time, sr.update_time, sr.user_id, sr.meno, sr.business_id, sr.update_user_id from t_safety_responsibility sr
+    </sql>
+	
+    <select id="selectTSafetyResponsibilityList" parameterType="TSafetyResponsibility" resultMap="TSafetyResponsibilityResult">
+        <include refid="selectTSafetyResponsibilityVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and sr.id = #{id}</if>
+             <if test="responsibilityName != null  and responsibilityName != '' "> and sr.responsibility_name = #{responsibilityName}</if>
+             <if test="responsibilityDate != null "> and sr.responsibility_date = #{responsibilityDate}</if>
+             <if test="responsibilityType != null  and responsibilityType != '' "> and sr.responsibility_type = #{responsibilityType}</if>
+             <if test="deptId != null  and deptId != '' "> and sr.dept_id = #{deptId}</if>
+             <if test="responsibilityFilePath != null  and responsibilityFilePath != '' "> and sr.responsibility_file_path = #{responsibilityFilePath}</if>
+             <if test="createTime != null "> and sr.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and sr.update_time = #{updateTime}</if>
+             <if test="userId != null "> and sr.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and sr.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and sr.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and sr.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSafetyResponsibilityById" parameterType="String" resultMap="TSafetyResponsibilityResult">
+        <include refid="selectTSafetyResponsibilityVo"/>
+        where sr.id = #{id}
+    </select>
+        
+    <insert id="insertTSafetyResponsibility" parameterType="TSafetyResponsibility">
+        insert into t_safety_responsibility
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="responsibilityName != null  and responsibilityName != ''  ">responsibility_name,</if>
+			<if test="responsibilityDate != null  ">responsibility_date,</if>
+			<if test="responsibilityType != null  and responsibilityType != ''  ">responsibility_type,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="responsibilityFilePath != null  and responsibilityFilePath != ''  ">responsibility_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="responsibilityName != null  and responsibilityName != ''  ">#{responsibilityName},</if>
+			<if test="responsibilityDate != null  ">#{responsibilityDate},</if>
+			<if test="responsibilityType != null  and responsibilityType != ''  ">#{responsibilityType},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="responsibilityFilePath != null  and responsibilityFilePath != ''  ">#{responsibilityFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSafetyResponsibility" parameterType="TSafetyResponsibility">
+        update t_safety_responsibility
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="responsibilityName != null  and responsibilityName != ''  ">responsibility_name = #{responsibilityName},</if>
+            <if test="responsibilityDate != null  ">responsibility_date = #{responsibilityDate},</if>
+            <if test="responsibilityType != null  and responsibilityType != ''  ">responsibility_type = #{responsibilityType},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="responsibilityFilePath != null  and responsibilityFilePath != ''  ">responsibility_file_path = #{responsibilityFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSafetyResponsibilityById" parameterType="String">
+        delete from t_safety_responsibility where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSafetyResponsibilityByIds" parameterType="String">
+        delete from t_safety_responsibility where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -343,4 +343,28 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptServiceImpl> impl
         });
         return newList;
     }
+    
+    //根据平台ID 查询其下属部门
+	@Override
+	public List<SysDept> queryDeptByBusinessId(String businessId) {
+		
+		return deptMapper.queryDeptByBusinessId(businessId);
+	}
+	@Override
+	public List<SysDept> queryDeptListByDate(SysDept dept) {
+		
+		return deptMapper.queryDeptforList(dept);
+	}
+	
+	@Override
+	public int updateDeptName(SysDept dept) {
+		
+		if(dept==null) {
+			return 0;
+		}
+		if(dept.getBusinessId() ==null || dept.getDeptName()==null) {
+			return 0;
+		}
+		return deptMapper.updateDept(dept);
+	}
 }

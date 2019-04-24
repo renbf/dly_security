@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarRepairMapper">
+    
+    <resultMap type="com.project.web.domian.TCarRepair" id="TCarRepairResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="repairDate"    column="repair_date"    />
+        <result property="totalKm"    column="total_km"    />
+        <result property="repairType"    column="repair_type"    />
+        <result property="certificateNum"    column="certificate_num"    />
+        <result property="repairContent"    column="repair_content"    />
+        <result property="repairUnit"    column="repair_unit"    />
+        <result property="remark"    column="remark"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCarRepairbasicColums">
+        select cr.id, cr.car_id, cr.repair_date, cr.total_km, cr.repair_type, cr.certificate_num, cr.repair_content, cr.repair_unit, cr.remark, cr.file_url, cr.add_user_id, cr.create_date, cr.update_date, cr.update_user_id    </sql>
+	
+    <select id="selectTCarRepairList" parameterType="com.project.web.domian.TCarRepair" resultMap="TCarRepairResult">
+        <include refid="selectTCarRepairbasicColums"/>
+        from t_car_repair cr
+        <where>  
+            <if test="id != null  and id != '' "> and cr.id = #{id}</if>
+             <if test="carId != null  and carId != '' "> and cr.car_id = #{carId}</if>
+             <if test="repairDate != null "> and cr.repair_date = #{repairDate}</if>
+             <if test="totalKm != null  and totalKm != '' "> and cr.total_km = #{totalKm}</if>
+             <if test="repairType != null  and repairType != '' "> and cr.repair_type = #{repairType}</if>
+             <if test="certificateNum != null  and certificateNum != '' "> and cr.certificate_num = #{certificateNum}</if>
+             <if test="repairContent != null  and repairContent != '' "> and cr.repair_content = #{repairContent}</if>
+             <if test="repairUnit != null  and repairUnit != '' "> and cr.repair_unit = #{repairUnit}</if>
+             <if test="remark != null  and remark != '' "> and cr.remark = #{remark}</if>
+             <if test="fileUrl != null  and fileUrl != '' "> and cr.file_url = #{fileUrl}</if>
+             <if test="addUserId != null  and addUserId != '' "> and cr.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and cr.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and cr.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and cr.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarRepairById" parameterType="String" resultMap="TCarRepairResult">
+        <include refid="selectTCarRepairbasicColums"/>
+        from t_car_repair cr
+        where cr.id = #{id}
+    </select>
+        
+    <insert id="insertTCarRepair" parameterType="com.project.web.domian.TCarRepair">
+        insert into t_car_repair
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carId != null  and carId != ''  ">car_id,</if>
+			<if test="repairDate != null  ">repair_date,</if>
+			<if test="totalKm != null  and totalKm != ''  ">total_km,</if>
+			<if test="repairType != null  and repairType != ''  ">repair_type,</if>
+			<if test="certificateNum != null  and certificateNum != ''  ">certificate_num,</if>
+			<if test="repairContent != null  and repairContent != ''  ">repair_content,</if>
+			<if test="repairUnit != null  and repairUnit != ''  ">repair_unit,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="fileUrl != null  and fileUrl != ''  ">file_url,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carId != null  and carId != ''  ">#{carId},</if>
+			<if test="repairDate != null  ">#{repairDate},</if>
+			<if test="totalKm != null  and totalKm != ''  ">#{totalKm},</if>
+			<if test="repairType != null  and repairType != ''  ">#{repairType},</if>
+			<if test="certificateNum != null  and certificateNum != ''  ">#{certificateNum},</if>
+			<if test="repairContent != null  and repairContent != ''  ">#{repairContent},</if>
+			<if test="repairUnit != null  and repairUnit != ''  ">#{repairUnit},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="fileUrl != null  and fileUrl != ''  ">#{fileUrl},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarRepair" parameterType="com.project.web.domian.TCarRepair">
+        update t_car_repair
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null  and carId != ''  ">car_id = #{carId},</if>
+            <if test="repairDate != null  ">repair_date = #{repairDate},</if>
+            <if test="totalKm != null  and totalKm != ''  ">total_km = #{totalKm},</if>
+            <if test="repairType != null  and repairType != ''  ">repair_type = #{repairType},</if>
+            <if test="certificateNum != null  and certificateNum != ''  ">certificate_num = #{certificateNum},</if>
+            <if test="repairContent != null  and repairContent != ''  ">repair_content = #{repairContent},</if>
+            <if test="repairUnit != null  and repairUnit != ''  ">repair_unit = #{repairUnit},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="fileUrl != null  and fileUrl != ''  ">file_url = #{fileUrl},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarRepairById" parameterType="String">
+        delete from t_car_repair where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarRepairByIds" parameterType="String">
+        delete from t_car_repair where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

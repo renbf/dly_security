@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSubjectOptionMapper">
+    
+    <resultMap type="com.project.web.domian.TSubjectOption" id="TSubjectOptionResult">
+        <result property="subjectId"    column="subject_id"    />
+        <result property="optionValue"    column="option_value"    />
+        <result property="content"    column="content"    />
+        <result property="isAnswer"    column="is_answer"    />
+        <result property="optionSort"    column="option_sort"    />
+    </resultMap>
+	
+	<sql id="selectTSubjectOptionbasicColums">
+        select so.subject_id, so.option_value, so.content, so.is_answer, so.option_sort    </sql>
+	
+    <select id="selectTSubjectOptionList" parameterType="com.project.web.domian.TSubjectOption" resultMap="TSubjectOptionResult">
+        <include refid="selectTSubjectOptionbasicColums"/>
+        from t_subject_option so
+        <where>  
+            <if test="subjectId != null  and subjectId != '' "> and so.subject_id = #{subjectId}</if>
+             <if test="optionValue != null  and optionValue != '' "> and so.option_value = #{optionValue}</if>
+             <if test="content != null  and content != '' "> and so.content = #{content}</if>
+             <if test="isAnswer != null  and isAnswer != '' "> and so.is_answer = #{isAnswer}</if>
+             <if test="optionSort != null "> and so.option_sort = #{optionSort}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSubjectOptionById" parameterType="String" resultMap="TSubjectOptionResult">
+        <include refid="selectTSubjectOptionbasicColums"/>
+        from t_subject_option so
+        where so.subject_id = #{subjectId}
+    </select>
+        
+    <insert id="insertTSubjectOption" parameterType="com.project.web.domian.TSubjectOption">
+        insert into t_subject_option
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="subjectId != null  and subjectId != ''  ">subject_id,</if>
+			<if test="optionValue != null  and optionValue != ''  ">option_value,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="isAnswer != null  and isAnswer != ''  ">is_answer,</if>
+			<if test="optionSort != null  ">option_sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="subjectId != null  and subjectId != ''  ">#{subjectId},</if>
+			<if test="optionValue != null  and optionValue != ''  ">#{optionValue},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="isAnswer != null  and isAnswer != ''  ">#{isAnswer},</if>
+			<if test="optionSort != null  ">#{optionSort},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSubjectOption" parameterType="com.project.web.domian.TSubjectOption">
+        update t_subject_option
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="optionValue != null  and optionValue != ''  ">option_value = #{optionValue},</if>
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="isAnswer != null  and isAnswer != ''  ">is_answer = #{isAnswer},</if>
+            <if test="optionSort != null  ">option_sort = #{optionSort},</if>
+        </trim>
+        where subject_id = #{subjectId}
+    </update>
+
+	<delete id="deleteTSubjectOptionById" parameterType="String">
+        delete from t_subject_option where subject_id = #{subjectId}
+    </delete>
+	
+    <delete id="deleteTSubjectOptionByIds" parameterType="String">
+        delete from t_subject_option where subject_id in 
+        <foreach item="subjectId" collection="array" open="(" separator="," close=")">
+            #{subjectId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

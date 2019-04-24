@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TBehaviorObservationMapper">
+    
+    <resultMap type="TBehaviorObservation" id="TBehaviorObservationResult">
+        <result property="id"    column="id"    />
+        <result property="observationDate"    column="observation_date"    />
+        <result property="observationPer"    column="observation_per"    />
+        <result property="observationRegion"    column="observation_region"    />
+        <result property="observationObj"    column="observation_obj"    />
+        <result property="observationName"    column="observation_name"    />
+        <result property="observationPerFy"    column="observation_per_fy"    />
+        <result property="observationPerPosition"    column="observation_per_position"    />
+        <result property="observationPerProtection"    column="observation_per_protection"    />
+        <result property="observationPerTool"    column="observation_per_tool"    />
+        <result property="observationPerProgram"    column="observation_per_program"    />
+        <result property="observationPerEffect"    column="observation_per_effect"    />
+        <result property="observationPerZx"    column="observation_per_zx"    />
+        <result property="observationDh"    column="observation_dh"    />
+        <result property="observationRectification"    column="observation_rectification"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTBehaviorObservationVo">
+        select bo.id, bo.observation_date, bo.observation_per, bo.observation_region, bo.observation_obj, bo.observation_name, bo.observation_per_fy, bo.observation_per_position, bo.observation_per_protection, bo.observation_per_tool, bo.observation_per_program, bo.observation_per_effect, bo.observation_per_zx, bo.observation_dh, bo.observation_rectification, bo.create_time, bo.update_time, bo.user_id, bo.meno, bo.business_id, bo.update_user_id from t_behavior_observation bo
+    </sql>
+	
+    <select id="selectTBehaviorObservationList" parameterType="TBehaviorObservation" resultMap="TBehaviorObservationResult">
+        <include refid="selectTBehaviorObservationVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and bo.id = #{id}</if>
+             <if test="observationDate != null "> and bo.observation_date = #{observationDate}</if>
+             <if test="observationPer != null  and observationPer != '' "> and bo.observation_per = #{observationPer}</if>
+             <if test="observationRegion != null  and observationRegion != '' "> and bo.observation_region = #{observationRegion}</if>
+             <if test="observationObj != null  and observationObj != '' "> and bo.observation_obj = #{observationObj}</if>
+             <if test="observationName != null  and observationName != '' "> and bo.observation_name = #{observationName}</if>
+             <if test="observationPerFy != null  and observationPerFy != '' "> and bo.observation_per_fy = #{observationPerFy}</if>
+             <if test="observationPerPosition != null  and observationPerPosition != '' "> and bo.observation_per_position = #{observationPerPosition}</if>
+             <if test="observationPerProtection != null  and observationPerProtection != '' "> and bo.observation_per_protection = #{observationPerProtection}</if>
+             <if test="observationPerTool != null  and observationPerTool != '' "> and bo.observation_per_tool = #{observationPerTool}</if>
+             <if test="observationPerProgram != null  and observationPerProgram != '' "> and bo.observation_per_program = #{observationPerProgram}</if>
+             <if test="observationPerEffect != null  and observationPerEffect != '' "> and bo.observation_per_effect = #{observationPerEffect}</if>
+             <if test="observationPerZx != null  and observationPerZx != '' "> and bo.observation_per_zx = #{observationPerZx}</if>
+             <if test="observationDh != null  and observationDh != '' "> and bo.observation_dh = #{observationDh}</if>
+             <if test="observationRectification != null  and observationRectification != '' "> and bo.observation_rectification = #{observationRectification}</if>
+             <if test="createTime != null "> and bo.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and bo.update_time = #{updateTime}</if>
+             <if test="userId != null "> and bo.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and bo.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and bo.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and bo.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTBehaviorObservationById" parameterType="String" resultMap="TBehaviorObservationResult">
+        <include refid="selectTBehaviorObservationVo"/>
+        where bo.id = #{id}
+    </select>
+        
+    <insert id="insertTBehaviorObservation" parameterType="TBehaviorObservation">
+        insert into t_behavior_observation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="observationDate != null  ">observation_date,</if>
+			<if test="observationPer != null  and observationPer != ''  ">observation_per,</if>
+			<if test="observationRegion != null  and observationRegion != ''  ">observation_region,</if>
+			<if test="observationObj != null  and observationObj != ''  ">observation_obj,</if>
+			<if test="observationName != null  and observationName != ''  ">observation_name,</if>
+			<if test="observationPerFy != null  and observationPerFy != ''  ">observation_per_fy,</if>
+			<if test="observationPerPosition != null  and observationPerPosition != ''  ">observation_per_position,</if>
+			<if test="observationPerProtection != null  and observationPerProtection != ''  ">observation_per_protection,</if>
+			<if test="observationPerTool != null  and observationPerTool != ''  ">observation_per_tool,</if>
+			<if test="observationPerProgram != null  and observationPerProgram != ''  ">observation_per_program,</if>
+			<if test="observationPerEffect != null  and observationPerEffect != ''  ">observation_per_effect,</if>
+			<if test="observationPerZx != null  and observationPerZx != ''  ">observation_per_zx,</if>
+			<if test="observationDh != null  and observationDh != ''  ">observation_dh,</if>
+			<if test="observationRectification != null  and observationRectification != ''  ">observation_rectification,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="observationDate != null  ">#{observationDate},</if>
+			<if test="observationPer != null  and observationPer != ''  ">#{observationPer},</if>
+			<if test="observationRegion != null  and observationRegion != ''  ">#{observationRegion},</if>
+			<if test="observationObj != null  and observationObj != ''  ">#{observationObj},</if>
+			<if test="observationName != null  and observationName != ''  ">#{observationName},</if>
+			<if test="observationPerFy != null  and observationPerFy != ''  ">#{observationPerFy},</if>
+			<if test="observationPerPosition != null  and observationPerPosition != ''  ">#{observationPerPosition},</if>
+			<if test="observationPerProtection != null  and observationPerProtection != ''  ">#{observationPerProtection},</if>
+			<if test="observationPerTool != null  and observationPerTool != ''  ">#{observationPerTool},</if>
+			<if test="observationPerProgram != null  and observationPerProgram != ''  ">#{observationPerProgram},</if>
+			<if test="observationPerEffect != null  and observationPerEffect != ''  ">#{observationPerEffect},</if>
+			<if test="observationPerZx != null  and observationPerZx != ''  ">#{observationPerZx},</if>
+			<if test="observationDh != null  and observationDh != ''  ">#{observationDh},</if>
+			<if test="observationRectification != null  and observationRectification != ''  ">#{observationRectification},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTBehaviorObservation" parameterType="TBehaviorObservation">
+        update t_behavior_observation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="observationDate != null  ">observation_date = #{observationDate},</if>
+            <if test="observationPer != null  and observationPer != ''  ">observation_per = #{observationPer},</if>
+            <if test="observationRegion != null  and observationRegion != ''  ">observation_region = #{observationRegion},</if>
+            <if test="observationObj != null  and observationObj != ''  ">observation_obj = #{observationObj},</if>
+            <if test="observationName != null  and observationName != ''  ">observation_name = #{observationName},</if>
+            <if test="observationPerFy != null  and observationPerFy != ''  ">observation_per_fy = #{observationPerFy},</if>
+            <if test="observationPerPosition != null  and observationPerPosition != ''  ">observation_per_position = #{observationPerPosition},</if>
+            <if test="observationPerProtection != null  and observationPerProtection != ''  ">observation_per_protection = #{observationPerProtection},</if>
+            <if test="observationPerTool != null  and observationPerTool != ''  ">observation_per_tool = #{observationPerTool},</if>
+            <if test="observationPerProgram != null  and observationPerProgram != ''  ">observation_per_program = #{observationPerProgram},</if>
+            <if test="observationPerEffect != null  and observationPerEffect != ''  ">observation_per_effect = #{observationPerEffect},</if>
+            <if test="observationPerZx != null  and observationPerZx != ''  ">observation_per_zx = #{observationPerZx},</if>
+            <if test="observationDh != null  and observationDh != ''  ">observation_dh = #{observationDh},</if>
+            <if test="observationRectification != null  and observationRectification != ''  ">observation_rectification = #{observationRectification},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTBehaviorObservationById" parameterType="String">
+        delete from t_behavior_observation where id = #{id}
+    </delete>
+	
+    <delete id="deleteTBehaviorObservationByIds" parameterType="String">
+        delete from t_behavior_observation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TEarlyWarningSettingsMapper">
+    
+    <resultMap type="TEarlyWarningSettings" id="TEarlyWarningSettingsResult">
+        <result property="id"    column="id"    />
+        <result property="dangerIniNum"    column="danger_ini_num"    />
+        <result property="riskIniNum"    column="risk_ini_num"    />
+        <result property="accidentResult"    column="accident_result"    />
+        <result property="accidentLevl"    column="accident_levl"    />
+        <result property="accidentRectificationRate"    column="accident_rectification_rate"    />
+        <result property="educationLevl"    column="education_levl"    />
+        <result property="educationProportion"    column="education_proportion"    />
+        <result property="drillLevl"    column="drill_levl"    />
+        <result property="drillInfluence"    column="drill_influence"    />
+        <result property="accidentEvent"    column="accident_event"    />
+        <result property="riskSourceResult"    column="risk_source_result"    />
+        <result property="riskSourceLevl"    column="risk_source_levl"    />
+        <result property="riskSourceControlRate"    column="risk_source_control_rate"    />
+        <result property="roadTransport"    column="road_transport"    />
+        <result property="travelCard"    column="travel_card"    />
+        <result property="driverAge"    column="driver_age"    />
+        <result property="rectificationLimitedDay"    column="rectification_limited_day"    />
+        <result property="securityResponsibility"    column="security_responsibility"    />
+        <result property="vehicleInsurance"    column="vehicle_insurance"    />
+        <result property="notLearn"    column="not_learn"    />
+        <result property="driverLicenseTime"    column="driver_license_time"    />
+        <result property="qualificationCertificate"    column="qualification_certificate"    />
+        <result property="monthNotCheck"    column="month_not_check"    />
+        <result property="yearNotCheck"    column="year_not_check"    />
+        <result property="driverComprehensiveCheck"    column="driver_comprehensive_check"    />
+        <result property="driverEducation"    column="driver_education"    />
+        <result property="mainResponsibleEducation"    column="main_responsible_education"    />
+        <result property="shipmentResponsibleDay"    column="shipment_responsible_day"    />
+        <result property="potCheck"    column="pot_check"    />
+        <result property="specialEquipmentCheck"    column="special_equipment_check"    />
+        <result property="clientLine"    column="client_line"    />
+        <result property="driverOutDay"    column="driver_out_day"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTEarlyWarningSettingsVo">
+        select ews.id, ews.danger_ini_num, ews.risk_ini_num, ews.accident_result, ews.accident_levl, ews.accident_rectification_rate, ews.education_levl, ews.education_proportion, ews.drill_levl, ews.drill_influence, ews.accident_event, ews.risk_source_result, ews.risk_source_levl, ews.risk_source_control_rate, ews.road_transport, ews.travel_card, ews.driver_age, ews.rectification_limited_day, ews.security_responsibility, ews.vehicle_insurance, ews.not_learn, ews.driver_license_time, ews.qualification_certificate, ews.month_not_check, ews.year_not_check, ews.driver_comprehensive_check, ews.driver_education, ews.main_responsible_education, ews.shipment_responsible_day, ews.pot_check, ews.special_equipment_check, ews.client_line, ews.driver_out_day, ews.create_time, ews.update_time, ews.user_id, ews.meno, ews.business_id, ews.update_user_id from t_early_warning_settings ews
+    </sql>
+	
+    <select id="selectTEarlyWarningSettingsList" parameterType="TEarlyWarningSettings" resultMap="TEarlyWarningSettingsResult">
+        <include refid="selectTEarlyWarningSettingsVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and ews.id = #{id}</if>
+             <if test="dangerIniNum != null "> and ews.danger_ini_num = #{dangerIniNum}</if>
+             <if test="riskIniNum != null "> and ews.risk_ini_num = #{riskIniNum}</if>
+             <if test="accidentResult != null  and accidentResult != '' "> and ews.accident_result = #{accidentResult}</if>
+             <if test="accidentLevl != null  and accidentLevl != '' "> and ews.accident_levl = #{accidentLevl}</if>
+             <if test="accidentRectificationRate != null  and accidentRectificationRate != '' "> and ews.accident_rectification_rate = #{accidentRectificationRate}</if>
+             <if test="educationLevl != null  and educationLevl != '' "> and ews.education_levl = #{educationLevl}</if>
+             <if test="educationProportion != null  and educationProportion != '' "> and ews.education_proportion = #{educationProportion}</if>
+             <if test="drillLevl != null  and drillLevl != '' "> and ews.drill_levl = #{drillLevl}</if>
+             <if test="drillInfluence != null  and drillInfluence != '' "> and ews.drill_influence = #{drillInfluence}</if>
+             <if test="accidentEvent != null  and accidentEvent != '' "> and ews.accident_event = #{accidentEvent}</if>
+             <if test="riskSourceResult != null  and riskSourceResult != '' "> and ews.risk_source_result = #{riskSourceResult}</if>
+             <if test="riskSourceLevl != null  and riskSourceLevl != '' "> and ews.risk_source_levl = #{riskSourceLevl}</if>
+             <if test="riskSourceControlRate != null  and riskSourceControlRate != '' "> and ews.risk_source_control_rate = #{riskSourceControlRate}</if>
+             <if test="roadTransport != null "> and ews.road_transport = #{roadTransport}</if>
+             <if test="travelCard != null "> and ews.travel_card = #{travelCard}</if>
+             <if test="driverAge != null "> and ews.driver_age = #{driverAge}</if>
+             <if test="rectificationLimitedDay != null "> and ews.rectification_limited_day = #{rectificationLimitedDay}</if>
+             <if test="securityResponsibility != null "> and ews.security_responsibility = #{securityResponsibility}</if>
+             <if test="vehicleInsurance != null "> and ews.vehicle_insurance = #{vehicleInsurance}</if>
+             <if test="notLearn != null "> and ews.not_learn = #{notLearn}</if>
+             <if test="driverLicenseTime != null "> and ews.driver_license_time = #{driverLicenseTime}</if>
+             <if test="qualificationCertificate != null "> and ews.qualification_certificate = #{qualificationCertificate}</if>
+             <if test="monthNotCheck != null "> and ews.month_not_check = #{monthNotCheck}</if>
+             <if test="yearNotCheck != null "> and ews.year_not_check = #{yearNotCheck}</if>
+             <if test="driverComprehensiveCheck != null "> and ews.driver_comprehensive_check = #{driverComprehensiveCheck}</if>
+             <if test="driverEducation != null "> and ews.driver_education = #{driverEducation}</if>
+             <if test="mainResponsibleEducation != null "> and ews.main_responsible_education = #{mainResponsibleEducation}</if>
+             <if test="shipmentResponsibleDay != null "> and ews.shipment_responsible_day = #{shipmentResponsibleDay}</if>
+             <if test="potCheck != null "> and ews.pot_check = #{potCheck}</if>
+             <if test="specialEquipmentCheck != null "> and ews.special_equipment_check = #{specialEquipmentCheck}</if>
+             <if test="clientLine != null "> and ews.client_line = #{clientLine}</if>
+             <if test="driverOutDay != null "> and ews.driver_out_day = #{driverOutDay}</if>
+             <if test="createTime != null "> and ews.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and ews.update_time = #{updateTime}</if>
+             <if test="userId != null "> and ews.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and ews.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and ews.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and ews.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTEarlyWarningSettingsById" parameterType="String" resultMap="TEarlyWarningSettingsResult">
+        <include refid="selectTEarlyWarningSettingsVo"/>
+        where ews.id = #{id}
+    </select>
+        
+    <insert id="insertTEarlyWarningSettings" parameterType="TEarlyWarningSettings">
+        insert into t_early_warning_settings
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="dangerIniNum != null  ">danger_ini_num,</if>
+			<if test="riskIniNum != null  ">risk_ini_num,</if>
+			<if test="accidentResult != null  and accidentResult != ''  ">accident_result,</if>
+			<if test="accidentLevl != null  and accidentLevl != ''  ">accident_levl,</if>
+			<if test="accidentRectificationRate != null  and accidentRectificationRate != ''  ">accident_rectification_rate,</if>
+			<if test="educationLevl != null  and educationLevl != ''  ">education_levl,</if>
+			<if test="educationProportion != null  and educationProportion != ''  ">education_proportion,</if>
+			<if test="drillLevl != null  and drillLevl != ''  ">drill_levl,</if>
+			<if test="drillInfluence != null  and drillInfluence != ''  ">drill_influence,</if>
+			<if test="accidentEvent != null  and accidentEvent != ''  ">accident_event,</if>
+			<if test="riskSourceResult != null  and riskSourceResult != ''  ">risk_source_result,</if>
+			<if test="riskSourceLevl != null  and riskSourceLevl != ''  ">risk_source_levl,</if>
+			<if test="riskSourceControlRate != null  and riskSourceControlRate != ''  ">risk_source_control_rate,</if>
+			<if test="roadTransport != null  ">road_transport,</if>
+			<if test="travelCard != null  ">travel_card,</if>
+			<if test="driverAge != null  ">driver_age,</if>
+			<if test="rectificationLimitedDay != null  ">rectification_limited_day,</if>
+			<if test="securityResponsibility != null  ">security_responsibility,</if>
+			<if test="vehicleInsurance != null  ">vehicle_insurance,</if>
+			<if test="notLearn != null  ">not_learn,</if>
+			<if test="driverLicenseTime != null  ">driver_license_time,</if>
+			<if test="qualificationCertificate != null  ">qualification_certificate,</if>
+			<if test="monthNotCheck != null  ">month_not_check,</if>
+			<if test="yearNotCheck != null  ">year_not_check,</if>
+			<if test="driverComprehensiveCheck != null  ">driver_comprehensive_check,</if>
+			<if test="driverEducation != null  ">driver_education,</if>
+			<if test="mainResponsibleEducation != null  ">main_responsible_education,</if>
+			<if test="shipmentResponsibleDay != null  ">shipment_responsible_day,</if>
+			<if test="potCheck != null  ">pot_check,</if>
+			<if test="specialEquipmentCheck != null  ">special_equipment_check,</if>
+			<if test="clientLine != null  ">client_line,</if>
+			<if test="driverOutDay != null  ">driver_out_day,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="dangerIniNum != null  ">#{dangerIniNum},</if>
+			<if test="riskIniNum != null  ">#{riskIniNum},</if>
+			<if test="accidentResult != null  and accidentResult != ''  ">#{accidentResult},</if>
+			<if test="accidentLevl != null  and accidentLevl != ''  ">#{accidentLevl},</if>
+			<if test="accidentRectificationRate != null  and accidentRectificationRate != ''  ">#{accidentRectificationRate},</if>
+			<if test="educationLevl != null  and educationLevl != ''  ">#{educationLevl},</if>
+			<if test="educationProportion != null  and educationProportion != ''  ">#{educationProportion},</if>
+			<if test="drillLevl != null  and drillLevl != ''  ">#{drillLevl},</if>
+			<if test="drillInfluence != null  and drillInfluence != ''  ">#{drillInfluence},</if>
+			<if test="accidentEvent != null  and accidentEvent != ''  ">#{accidentEvent},</if>
+			<if test="riskSourceResult != null  and riskSourceResult != ''  ">#{riskSourceResult},</if>
+			<if test="riskSourceLevl != null  and riskSourceLevl != ''  ">#{riskSourceLevl},</if>
+			<if test="riskSourceControlRate != null  and riskSourceControlRate != ''  ">#{riskSourceControlRate},</if>
+			<if test="roadTransport != null  ">#{roadTransport},</if>
+			<if test="travelCard != null  ">#{travelCard},</if>
+			<if test="driverAge != null  ">#{driverAge},</if>
+			<if test="rectificationLimitedDay != null  ">#{rectificationLimitedDay},</if>
+			<if test="securityResponsibility != null  ">#{securityResponsibility},</if>
+			<if test="vehicleInsurance != null  ">#{vehicleInsurance},</if>
+			<if test="notLearn != null  ">#{notLearn},</if>
+			<if test="driverLicenseTime != null  ">#{driverLicenseTime},</if>
+			<if test="qualificationCertificate != null  ">#{qualificationCertificate},</if>
+			<if test="monthNotCheck != null  ">#{monthNotCheck},</if>
+			<if test="yearNotCheck != null  ">#{yearNotCheck},</if>
+			<if test="driverComprehensiveCheck != null  ">#{driverComprehensiveCheck},</if>
+			<if test="driverEducation != null  ">#{driverEducation},</if>
+			<if test="mainResponsibleEducation != null  ">#{mainResponsibleEducation},</if>
+			<if test="shipmentResponsibleDay != null  ">#{shipmentResponsibleDay},</if>
+			<if test="potCheck != null  ">#{potCheck},</if>
+			<if test="specialEquipmentCheck != null  ">#{specialEquipmentCheck},</if>
+			<if test="clientLine != null  ">#{clientLine},</if>
+			<if test="driverOutDay != null  ">#{driverOutDay},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTEarlyWarningSettings" parameterType="TEarlyWarningSettings">
+        update t_early_warning_settings
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dangerIniNum != null  ">danger_ini_num = #{dangerIniNum},</if>
+            <if test="riskIniNum != null  ">risk_ini_num = #{riskIniNum},</if>
+            <if test="accidentResult != null  and accidentResult != ''  ">accident_result = #{accidentResult},</if>
+            <if test="accidentLevl != null  and accidentLevl != ''  ">accident_levl = #{accidentLevl},</if>
+            <if test="accidentRectificationRate != null  and accidentRectificationRate != ''  ">accident_rectification_rate = #{accidentRectificationRate},</if>
+            <if test="educationLevl != null  and educationLevl != ''  ">education_levl = #{educationLevl},</if>
+            <if test="educationProportion != null  and educationProportion != ''  ">education_proportion = #{educationProportion},</if>
+            <if test="drillLevl != null  and drillLevl != ''  ">drill_levl = #{drillLevl},</if>
+            <if test="drillInfluence != null  and drillInfluence != ''  ">drill_influence = #{drillInfluence},</if>
+            <if test="accidentEvent != null  and accidentEvent != ''  ">accident_event = #{accidentEvent},</if>
+            <if test="riskSourceResult != null  and riskSourceResult != ''  ">risk_source_result = #{riskSourceResult},</if>
+            <if test="riskSourceLevl != null  and riskSourceLevl != ''  ">risk_source_levl = #{riskSourceLevl},</if>
+            <if test="riskSourceControlRate != null  and riskSourceControlRate != ''  ">risk_source_control_rate = #{riskSourceControlRate},</if>
+            <if test="roadTransport != null  ">road_transport = #{roadTransport},</if>
+            <if test="travelCard != null  ">travel_card = #{travelCard},</if>
+            <if test="driverAge != null  ">driver_age = #{driverAge},</if>
+            <if test="rectificationLimitedDay != null  ">rectification_limited_day = #{rectificationLimitedDay},</if>
+            <if test="securityResponsibility != null  ">security_responsibility = #{securityResponsibility},</if>
+            <if test="vehicleInsurance != null  ">vehicle_insurance = #{vehicleInsurance},</if>
+            <if test="notLearn != null  ">not_learn = #{notLearn},</if>
+            <if test="driverLicenseTime != null  ">driver_license_time = #{driverLicenseTime},</if>
+            <if test="qualificationCertificate != null  ">qualification_certificate = #{qualificationCertificate},</if>
+            <if test="monthNotCheck != null  ">month_not_check = #{monthNotCheck},</if>
+            <if test="yearNotCheck != null  ">year_not_check = #{yearNotCheck},</if>
+            <if test="driverComprehensiveCheck != null  ">driver_comprehensive_check = #{driverComprehensiveCheck},</if>
+            <if test="driverEducation != null  ">driver_education = #{driverEducation},</if>
+            <if test="mainResponsibleEducation != null  ">main_responsible_education = #{mainResponsibleEducation},</if>
+            <if test="shipmentResponsibleDay != null  ">shipment_responsible_day = #{shipmentResponsibleDay},</if>
+            <if test="potCheck != null  ">pot_check = #{potCheck},</if>
+            <if test="specialEquipmentCheck != null  ">special_equipment_check = #{specialEquipmentCheck},</if>
+            <if test="clientLine != null  ">client_line = #{clientLine},</if>
+            <if test="driverOutDay != null  ">driver_out_day = #{driverOutDay},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTEarlyWarningSettingsById" parameterType="String">
+        delete from t_early_warning_settings where id = #{id}
+    </delete>
+	
+    <delete id="deleteTEarlyWarningSettingsByIds" parameterType="String">
+        delete from t_early_warning_settings where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

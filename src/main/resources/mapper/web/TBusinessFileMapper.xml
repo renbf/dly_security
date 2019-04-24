@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TBusinessFileMapper">
+    
+    <resultMap type="TBusinessFile" id="TBusinessFileResult">
+        <result property="id"    column="id"    />
+        <result property="businessFileName"    column="business_file_name"    />
+        <result property="businessFileCode"    column="business_file_code"    />
+        <result property="businessFileType"    column="business_file_type"    />
+        <result property="businessFileDate"    column="business_file_date"    />
+        <result property="operatingDeptId"    column="operating_dept_id"    />
+        <result property="isApply"    column="is_apply"    />
+        <result property="businessFilePath"    column="business_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTBusinessFileVo">
+        select bf.id, bf.business_file_name, bf.business_file_code, bf.business_file_type, bf.business_file_date, bf.operating_dept_id, bf.is_apply, bf.business_file_path, bf.create_time, bf.update_time, bf.user_id, bf.meno, bf.business_id, bf.update_user_id from t_business_file bf
+    </sql>
+	
+    <select id="selectTBusinessFileList" parameterType="TBusinessFile" resultMap="TBusinessFileResult">
+        <include refid="selectTBusinessFileVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and bf.id = #{id}</if>
+             <if test="businessFileName != null  and businessFileName != '' "> and bf.business_file_name = #{businessFileName}</if>
+             <if test="businessFileCode != null  and businessFileCode != '' "> and bf.business_file_code = #{businessFileCode}</if>
+             <if test="businessFileType != null  and businessFileType != '' "> and bf.business_file_type = #{businessFileType}</if>
+             <if test="businessFileDate != null "> and bf.business_file_date = #{businessFileDate}</if>
+             <if test="operatingDeptId != null  and operatingDeptId != '' "> and bf.operating_dept_id = #{operatingDeptId}</if>
+             <if test="isApply != null  and isApply != '' "> and bf.is_apply = #{isApply}</if>
+             <if test="businessFilePath != null  and businessFilePath != '' "> and bf.business_file_path = #{businessFilePath}</if>
+             <if test="createTime != null "> and bf.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and bf.update_time = #{updateTime}</if>
+             <if test="userId != null "> and bf.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and bf.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and bf.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and bf.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTBusinessFileById" parameterType="String" resultMap="TBusinessFileResult">
+        <include refid="selectTBusinessFileVo"/>
+        where bf.id = #{id}
+    </select>
+        
+    <insert id="insertTBusinessFile" parameterType="TBusinessFile">
+        insert into t_business_file
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="businessFileName != null  and businessFileName != ''  ">business_file_name,</if>
+			<if test="businessFileCode != null  and businessFileCode != ''  ">business_file_code,</if>
+			<if test="businessFileType != null  and businessFileType != ''  ">business_file_type,</if>
+			<if test="businessFileDate != null  ">business_file_date,</if>
+			<if test="operatingDeptId != null  and operatingDeptId != ''  ">operating_dept_id,</if>
+			<if test="isApply != null  and isApply != ''  ">is_apply,</if>
+			<if test="businessFilePath != null  and businessFilePath != ''  ">business_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="businessFileName != null  and businessFileName != ''  ">#{businessFileName},</if>
+			<if test="businessFileCode != null  and businessFileCode != ''  ">#{businessFileCode},</if>
+			<if test="businessFileType != null  and businessFileType != ''  ">#{businessFileType},</if>
+			<if test="businessFileDate != null  ">#{businessFileDate},</if>
+			<if test="operatingDeptId != null  and operatingDeptId != ''  ">#{operatingDeptId},</if>
+			<if test="isApply != null  and isApply != ''  ">#{isApply},</if>
+			<if test="businessFilePath != null  and businessFilePath != ''  ">#{businessFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTBusinessFile" parameterType="TBusinessFile">
+        update t_business_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="businessFileName != null  and businessFileName != ''  ">business_file_name = #{businessFileName},</if>
+            <if test="businessFileCode != null  and businessFileCode != ''  ">business_file_code = #{businessFileCode},</if>
+            <if test="businessFileType != null  and businessFileType != ''  ">business_file_type = #{businessFileType},</if>
+            <if test="businessFileDate != null  ">business_file_date = #{businessFileDate},</if>
+            <if test="operatingDeptId != null  and operatingDeptId != ''  ">operating_dept_id = #{operatingDeptId},</if>
+            <if test="isApply != null  and isApply != ''  ">is_apply = #{isApply},</if>
+            <if test="businessFilePath != null  and businessFilePath != ''  ">business_file_path = #{businessFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTBusinessFileById" parameterType="String">
+        delete from t_business_file where id = #{id}
+    </delete>
+	
+    <delete id="deleteTBusinessFileByIds" parameterType="String">
+        delete from t_business_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

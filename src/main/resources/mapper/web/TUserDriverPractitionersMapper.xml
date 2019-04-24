@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserDriverPractitionersMapper">
+    
+    <resultMap type="TUserDriverPractitioners" id="TUserDriverPractitionersResult">
+        <result property="id"    column="id"    />
+        <result property="driverUserId"    column="driver_user_id"    />
+        <result property="practitionersNum"    column="practitioners_num"    />
+        <result property="practitionersType"    column="practitioners_type"    />
+        <result property="practitionersInitialDate"    column="practitioners_initial_date"    />
+        <result property="annualValidityPeriod"    column="annual_validity_period"    />
+        <result property="certificateValidityPeriod"    column="certificate_validity_period"    />
+        <result property="isCertificate"    column="is_certificate"    />
+        <result property="aginEducationValidityPeriod"    column="agin_education_validity_period"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTUserDriverPractitionersVo">
+        select udp.id, udp.driver_user_id, udp.practitioners_num, udp.practitioners_type, udp.practitioners_initial_date, udp.annual_validity_period, udp.certificate_validity_period, udp.is_certificate, udp.agin_education_validity_period, udp.create_time, udp.update_time, udp.user_id, udp.meno, udp.business_id, udp.update_user_id from t_user_driver_practitioners udp
+    </sql>
+	
+    <select id="selectTUserDriverPractitionersList" parameterType="TUserDriverPractitioners" resultMap="TUserDriverPractitionersResult">
+        <include refid="selectTUserDriverPractitionersVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and udp.id = #{id}</if>
+             <if test="driverUserId != null "> and udp.driver_user_id = #{driverUserId}</if>
+             <if test="practitionersNum != null  and practitionersNum != '' "> and udp.practitioners_num = #{practitionersNum}</if>
+             <if test="practitionersType != null  and practitionersType != '' "> and udp.practitioners_type = #{practitionersType}</if>
+             <if test="practitionersInitialDate != null "> and udp.practitioners_initial_date = #{practitionersInitialDate}</if>
+             <if test="annualValidityPeriod != null "> and udp.annual_validity_period = #{annualValidityPeriod}</if>
+             <if test="certificateValidityPeriod != null "> and udp.certificate_validity_period = #{certificateValidityPeriod}</if>
+             <if test="isCertificate != null  and isCertificate != '' "> and udp.is_certificate = #{isCertificate}</if>
+             <if test="aginEducationValidityPeriod != null "> and udp.agin_education_validity_period = #{aginEducationValidityPeriod}</if>
+             <if test="createTime != null "> and udp.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and udp.update_time = #{updateTime}</if>
+             <if test="userId != null "> and udp.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and udp.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and udp.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and udp.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserDriverPractitionersById" parameterType="String" resultMap="TUserDriverPractitionersResult">
+        <include refid="selectTUserDriverPractitionersVo"/>
+        where udp.id = #{id}
+    </select>
+        
+    <insert id="insertTUserDriverPractitioners" parameterType="TUserDriverPractitioners">
+        insert into t_user_driver_practitioners
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="driverUserId != null  ">driver_user_id,</if>
+			<if test="practitionersNum != null  and practitionersNum != ''  ">practitioners_num,</if>
+			<if test="practitionersType != null  and practitionersType != ''  ">practitioners_type,</if>
+			<if test="practitionersInitialDate != null  ">practitioners_initial_date,</if>
+			<if test="annualValidityPeriod != null  ">annual_validity_period,</if>
+			<if test="certificateValidityPeriod != null  ">certificate_validity_period,</if>
+			<if test="isCertificate != null  and isCertificate != ''  ">is_certificate,</if>
+			<if test="aginEducationValidityPeriod != null  ">agin_education_validity_period,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="driverUserId != null  ">#{driverUserId},</if>
+			<if test="practitionersNum != null  and practitionersNum != ''  ">#{practitionersNum},</if>
+			<if test="practitionersType != null  and practitionersType != ''  ">#{practitionersType},</if>
+			<if test="practitionersInitialDate != null  ">#{practitionersInitialDate},</if>
+			<if test="annualValidityPeriod != null  ">#{annualValidityPeriod},</if>
+			<if test="certificateValidityPeriod != null  ">#{certificateValidityPeriod},</if>
+			<if test="isCertificate != null  and isCertificate != ''  ">#{isCertificate},</if>
+			<if test="aginEducationValidityPeriod != null  ">#{aginEducationValidityPeriod},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserDriverPractitioners" parameterType="TUserDriverPractitioners">
+        update t_user_driver_practitioners
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="driverUserId != null  ">driver_user_id = #{driverUserId},</if>
+            <if test="practitionersNum != null  and practitionersNum != ''  ">practitioners_num = #{practitionersNum},</if>
+            <if test="practitionersType != null  and practitionersType != ''  ">practitioners_type = #{practitionersType},</if>
+            <if test="practitionersInitialDate != null  ">practitioners_initial_date = #{practitionersInitialDate},</if>
+            <if test="annualValidityPeriod != null  ">annual_validity_period = #{annualValidityPeriod},</if>
+            <if test="certificateValidityPeriod != null  ">certificate_validity_period = #{certificateValidityPeriod},</if>
+            <if test="isCertificate != null  and isCertificate != ''  ">is_certificate = #{isCertificate},</if>
+            <if test="aginEducationValidityPeriod != null  ">agin_education_validity_period = #{aginEducationValidityPeriod},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserDriverPractitionersById" parameterType="String">
+        delete from t_user_driver_practitioners where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserDriverPractitionersByIds" parameterType="String">
+        delete from t_user_driver_practitioners where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

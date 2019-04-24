@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import com.project.system.domain.SysDept;
+import com.project.system.domain.SysLogininfor;
 
 /**
  * 部门管理 数据层
@@ -125,5 +126,20 @@ public interface SysDeptMapper {
      * @return
      */
     public int cleanJbdmUnderDeptId(Long deptId);
+    
+    
+    /**
+     	* 查询所有下级，不包含当前部门
+     * @param dept
+     * @return
+     */
+    public List<SysDept> queryDeptByBusinessId(String businessId);
+    
+    /**
+     * 	 条件查询部门进行
+     *
+     */
+    public List<SysDept> queryDeptforList(SysDept dept);
+
 
 }

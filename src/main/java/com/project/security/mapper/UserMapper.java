@@ -2,6 +2,8 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.project.security.domain.User;
 import com.project.system.domain.SysUser;	
 
@@ -11,6 +13,7 @@ import com.project.system.domain.SysUser;
  * @author rbf
  * @date 2019-04-15
  */
+@Repository("userMapper")
 public interface UserMapper 
 {
 	/**

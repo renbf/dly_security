@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarInfoMapper">
+    
+    <resultMap type="com.project.web.domian.TCarInfo" id="TCarInfoResult">
+        <result property="id"    column="id"    />
+        <result property="carNumber"    column="car_number"    />
+        <result property="carType"    column="car_type"    />
+        <result property="brandModel"    column="brand_model"    />
+        <result property="factoryName"    column="factory_name"    />
+        <result property="completeDate"    column="complete_date"    />
+        <result property="inOrOut"    column="in_or_out"    />
+        <result property="vinNumber"    column="vin_number"    />
+        <result property="chassisModel"    column="chassis_model"    />
+        <result property="outsideSize"    column="outside_size"    />
+        <result property="insideSize"    column="inside_size"    />
+        <result property="totalKg"    column="total_kg"    />
+        <result property="equipmentKg"    column="equipment_kg"    />
+        <result property="towKg"    column="tow_kg"    />
+        <result property="idealKg"    column="ideal_kg"    />
+        <result property="idealCount"    column="ideal_count"    />
+        <result property="motorModel"    column="motor_model"    />
+        <result property="motorNumber"    column="motor_number"    />
+        <result property="motorOutputVolume"    column="motor_output_volume"    />
+        <result property="motorCleanPower"    column="motor_clean_power"    />
+        <result property="dischargeStandard"    column="discharge_standard"    />
+        <result property="batteryType"    column="battery_type"    />
+        <result property="drivingMotorModel"    column="driving_motor_model"    />
+        <result property="motorPower"    column="motor_power"    />
+        <result property="powerType"    column="power_type"    />
+        <result property="axleNum"    column="axle_num"    />
+        <result property="axleDistance"    column="axle_distance"    />
+        <result property="tyreNum"    column="tyre_num"    />
+        <result property="brakingType"    column="braking_type"    />
+        <result property="isFrontWheel"    column="is_front_wheel"    />
+        <result property="isRearWheel"    column="is_rear_wheel"    />
+        <result property="isAbs"    column="is_abs"    />
+        <result property="transmissionType"    column="transmission_type"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCarInfobasicColums">
+        select ci.id, ci.car_number, ci.car_type, ci.brand_model, ci.factory_name, ci.complete_date, ci.in_or_out, ci.vin_number, ci.chassis_model, ci.outside_size, ci.inside_size, ci.total_kg, ci.equipment_kg, ci.tow_kg, ci.ideal_kg, ci.ideal_count, ci.motor_model, ci.motor_number, ci.motor_output_volume, ci.motor_clean_power, ci.discharge_standard, ci.battery_type, ci.driving_motor_model, ci.motor_power, ci.power_type, ci.axle_num, ci.axle_distance, ci.tyre_num, ci.braking_type, ci.is_front_wheel, ci.is_rear_wheel, ci.is_abs, ci.transmission_type, ci.add_user_id, ci.create_date, ci.update_date, ci.update_user_id    </sql>
+	
+    <select id="selectTCarInfoList" parameterType="com.project.web.domian.TCarInfo" resultMap="TCarInfoResult">
+        <include refid="selectTCarInfobasicColums"/>
+        from t_car_info ci
+        <where>  
+            <if test="id != null  and id != '' "> and ci.id = #{id}</if>
+             <if test="carNumber != null  and carNumber != '' "> and ci.car_number = #{carNumber}</if>
+             <if test="carType != null  and carType != '' "> and ci.car_type = #{carType}</if>
+             <if test="brandModel != null  and brandModel != '' "> and ci.brand_model = #{brandModel}</if>
+             <if test="factoryName != null  and factoryName != '' "> and ci.factory_name = #{factoryName}</if>
+             <if test="completeDate != null "> and ci.complete_date = #{completeDate}</if>
+             <if test="inOrOut != null  and inOrOut != '' "> and ci.in_or_out = #{inOrOut}</if>
+             <if test="vinNumber != null  and vinNumber != '' "> and ci.vin_number = #{vinNumber}</if>
+             <if test="chassisModel != null  and chassisModel != '' "> and ci.chassis_model = #{chassisModel}</if>
+             <if test="outsideSize != null  and outsideSize != '' "> and ci.outside_size = #{outsideSize}</if>
+             <if test="insideSize != null  and insideSize != '' "> and ci.inside_size = #{insideSize}</if>
+             <if test="totalKg != null  and totalKg != '' "> and ci.total_kg = #{totalKg}</if>
+             <if test="equipmentKg != null  and equipmentKg != '' "> and ci.equipment_kg = #{equipmentKg}</if>
+             <if test="towKg != null  and towKg != '' "> and ci.tow_kg = #{towKg}</if>
+             <if test="idealKg != null  and idealKg != '' "> and ci.ideal_kg = #{idealKg}</if>
+             <if test="idealCount != null  and idealCount != '' "> and ci.ideal_count = #{idealCount}</if>
+             <if test="motorModel != null  and motorModel != '' "> and ci.motor_model = #{motorModel}</if>
+             <if test="motorNumber != null  and motorNumber != '' "> and ci.motor_number = #{motorNumber}</if>
+             <if test="motorOutputVolume != null  and motorOutputVolume != '' "> and ci.motor_output_volume = #{motorOutputVolume}</if>
+             <if test="motorCleanPower != null  and motorCleanPower != '' "> and ci.motor_clean_power = #{motorCleanPower}</if>
+             <if test="dischargeStandard != null  and dischargeStandard != '' "> and ci.discharge_standard = #{dischargeStandard}</if>
+             <if test="batteryType != null  and batteryType != '' "> and ci.battery_type = #{batteryType}</if>
+             <if test="drivingMotorModel != null  and drivingMotorModel != '' "> and ci.driving_motor_model = #{drivingMotorModel}</if>
+             <if test="motorPower != null  and motorPower != '' "> and ci.motor_power = #{motorPower}</if>
+             <if test="powerType != null  and powerType != '' "> and ci.power_type = #{powerType}</if>
+             <if test="axleNum != null "> and ci.axle_num = #{axleNum}</if>
+             <if test="axleDistance != null  and axleDistance != '' "> and ci.axle_distance = #{axleDistance}</if>
+             <if test="tyreNum != null  and tyreNum != '' "> and ci.tyre_num = #{tyreNum}</if>
+             <if test="brakingType != null  and brakingType != '' "> and ci.braking_type = #{brakingType}</if>
+             <if test="isFrontWheel != null  and isFrontWheel != '' "> and ci.is_front_wheel = #{isFrontWheel}</if>
+             <if test="isRearWheel != null  and isRearWheel != '' "> and ci.is_rear_wheel = #{isRearWheel}</if>
+             <if test="isAbs != null  and isAbs != '' "> and ci.is_abs = #{isAbs}</if>
+             <if test="transmissionType != null  and transmissionType != '' "> and ci.transmission_type = #{transmissionType}</if>
+             <if test="addUserId != null  and addUserId != '' "> and ci.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and ci.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and ci.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and ci.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarInfoById" parameterType="String" resultMap="TCarInfoResult">
+        <include refid="selectTCarInfobasicColums"/>
+        from t_car_info ci
+        where ci.id = #{id}
+    </select>
+        
+    <insert id="insertTCarInfo" parameterType="com.project.web.domian.TCarInfo">
+        insert into t_car_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carNumber != null  and carNumber != ''  ">car_number,</if>
+			<if test="carType != null  and carType != ''  ">car_type,</if>
+			<if test="brandModel != null  and brandModel != ''  ">brand_model,</if>
+			<if test="factoryName != null  and factoryName != ''  ">factory_name,</if>
+			<if test="completeDate != null  ">complete_date,</if>
+			<if test="inOrOut != null  and inOrOut != ''  ">in_or_out,</if>
+			<if test="vinNumber != null  and vinNumber != ''  ">vin_number,</if>
+			<if test="chassisModel != null  and chassisModel != ''  ">chassis_model,</if>
+			<if test="outsideSize != null  and outsideSize != ''  ">outside_size,</if>
+			<if test="insideSize != null  and insideSize != ''  ">inside_size,</if>
+			<if test="totalKg != null  and totalKg != ''  ">total_kg,</if>
+			<if test="equipmentKg != null  and equipmentKg != ''  ">equipment_kg,</if>
+			<if test="towKg != null  and towKg != ''  ">tow_kg,</if>
+			<if test="idealKg != null  and idealKg != ''  ">ideal_kg,</if>
+			<if test="idealCount != null  and idealCount != ''  ">ideal_count,</if>
+			<if test="motorModel != null  and motorModel != ''  ">motor_model,</if>
+			<if test="motorNumber != null  and motorNumber != ''  ">motor_number,</if>
+			<if test="motorOutputVolume != null  and motorOutputVolume != ''  ">motor_output_volume,</if>
+			<if test="motorCleanPower != null  and motorCleanPower != ''  ">motor_clean_power,</if>
+			<if test="dischargeStandard != null  and dischargeStandard != ''  ">discharge_standard,</if>
+			<if test="batteryType != null  and batteryType != ''  ">battery_type,</if>
+			<if test="drivingMotorModel != null  and drivingMotorModel != ''  ">driving_motor_model,</if>
+			<if test="motorPower != null  and motorPower != ''  ">motor_power,</if>
+			<if test="powerType != null  and powerType != ''  ">power_type,</if>
+			<if test="axleNum != null  ">axle_num,</if>
+			<if test="axleDistance != null  and axleDistance != ''  ">axle_distance,</if>
+			<if test="tyreNum != null  and tyreNum != ''  ">tyre_num,</if>
+			<if test="brakingType != null  and brakingType != ''  ">braking_type,</if>
+			<if test="isFrontWheel != null  and isFrontWheel != ''  ">is_front_wheel,</if>
+			<if test="isRearWheel != null  and isRearWheel != ''  ">is_rear_wheel,</if>
+			<if test="isAbs != null  and isAbs != ''  ">is_abs,</if>
+			<if test="transmissionType != null  and transmissionType != ''  ">transmission_type,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carNumber != null  and carNumber != ''  ">#{carNumber},</if>
+			<if test="carType != null  and carType != ''  ">#{carType},</if>
+			<if test="brandModel != null  and brandModel != ''  ">#{brandModel},</if>
+			<if test="factoryName != null  and factoryName != ''  ">#{factoryName},</if>
+			<if test="completeDate != null  ">#{completeDate},</if>
+			<if test="inOrOut != null  and inOrOut != ''  ">#{inOrOut},</if>
+			<if test="vinNumber != null  and vinNumber != ''  ">#{vinNumber},</if>
+			<if test="chassisModel != null  and chassisModel != ''  ">#{chassisModel},</if>
+			<if test="outsideSize != null  and outsideSize != ''  ">#{outsideSize},</if>
+			<if test="insideSize != null  and insideSize != ''  ">#{insideSize},</if>
+			<if test="totalKg != null  and totalKg != ''  ">#{totalKg},</if>
+			<if test="equipmentKg != null  and equipmentKg != ''  ">#{equipmentKg},</if>
+			<if test="towKg != null  and towKg != ''  ">#{towKg},</if>
+			<if test="idealKg != null  and idealKg != ''  ">#{idealKg},</if>
+			<if test="idealCount != null  and idealCount != ''  ">#{idealCount},</if>
+			<if test="motorModel != null  and motorModel != ''  ">#{motorModel},</if>
+			<if test="motorNumber != null  and motorNumber != ''  ">#{motorNumber},</if>
+			<if test="motorOutputVolume != null  and motorOutputVolume != ''  ">#{motorOutputVolume},</if>
+			<if test="motorCleanPower != null  and motorCleanPower != ''  ">#{motorCleanPower},</if>
+			<if test="dischargeStandard != null  and dischargeStandard != ''  ">#{dischargeStandard},</if>
+			<if test="batteryType != null  and batteryType != ''  ">#{batteryType},</if>
+			<if test="drivingMotorModel != null  and drivingMotorModel != ''  ">#{drivingMotorModel},</if>
+			<if test="motorPower != null  and motorPower != ''  ">#{motorPower},</if>
+			<if test="powerType != null  and powerType != ''  ">#{powerType},</if>
+			<if test="axleNum != null  ">#{axleNum},</if>
+			<if test="axleDistance != null  and axleDistance != ''  ">#{axleDistance},</if>
+			<if test="tyreNum != null  and tyreNum != ''  ">#{tyreNum},</if>
+			<if test="brakingType != null  and brakingType != ''  ">#{brakingType},</if>
+			<if test="isFrontWheel != null  and isFrontWheel != ''  ">#{isFrontWheel},</if>
+			<if test="isRearWheel != null  and isRearWheel != ''  ">#{isRearWheel},</if>
+			<if test="isAbs != null  and isAbs != ''  ">#{isAbs},</if>
+			<if test="transmissionType != null  and transmissionType != ''  ">#{transmissionType},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarInfo" parameterType="com.project.web.domian.TCarInfo">
+        update t_car_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carNumber != null  and carNumber != ''  ">car_number = #{carNumber},</if>
+            <if test="carType != null  and carType != ''  ">car_type = #{carType},</if>
+            <if test="brandModel != null  and brandModel != ''  ">brand_model = #{brandModel},</if>
+            <if test="factoryName != null  and factoryName != ''  ">factory_name = #{factoryName},</if>
+            <if test="completeDate != null  ">complete_date = #{completeDate},</if>
+            <if test="inOrOut != null  and inOrOut != ''  ">in_or_out = #{inOrOut},</if>
+            <if test="vinNumber != null  and vinNumber != ''  ">vin_number = #{vinNumber},</if>
+            <if test="chassisModel != null  and chassisModel != ''  ">chassis_model = #{chassisModel},</if>
+            <if test="outsideSize != null  and outsideSize != ''  ">outside_size = #{outsideSize},</if>
+            <if test="insideSize != null  and insideSize != ''  ">inside_size = #{insideSize},</if>
+            <if test="totalKg != null  and totalKg != ''  ">total_kg = #{totalKg},</if>
+            <if test="equipmentKg != null  and equipmentKg != ''  ">equipment_kg = #{equipmentKg},</if>
+            <if test="towKg != null  and towKg != ''  ">tow_kg = #{towKg},</if>
+            <if test="idealKg != null  and idealKg != ''  ">ideal_kg = #{idealKg},</if>
+            <if test="idealCount != null  and idealCount != ''  ">ideal_count = #{idealCount},</if>
+            <if test="motorModel != null  and motorModel != ''  ">motor_model = #{motorModel},</if>
+            <if test="motorNumber != null  and motorNumber != ''  ">motor_number = #{motorNumber},</if>
+            <if test="motorOutputVolume != null  and motorOutputVolume != ''  ">motor_output_volume = #{motorOutputVolume},</if>
+            <if test="motorCleanPower != null  and motorCleanPower != ''  ">motor_clean_power = #{motorCleanPower},</if>
+            <if test="dischargeStandard != null  and dischargeStandard != ''  ">discharge_standard = #{dischargeStandard},</if>
+            <if test="batteryType != null  and batteryType != ''  ">battery_type = #{batteryType},</if>
+            <if test="drivingMotorModel != null  and drivingMotorModel != ''  ">driving_motor_model = #{drivingMotorModel},</if>
+            <if test="motorPower != null  and motorPower != ''  ">motor_power = #{motorPower},</if>
+            <if test="powerType != null  and powerType != ''  ">power_type = #{powerType},</if>
+            <if test="axleNum != null  ">axle_num = #{axleNum},</if>
+            <if test="axleDistance != null  and axleDistance != ''  ">axle_distance = #{axleDistance},</if>
+            <if test="tyreNum != null  and tyreNum != ''  ">tyre_num = #{tyreNum},</if>
+            <if test="brakingType != null  and brakingType != ''  ">braking_type = #{brakingType},</if>
+            <if test="isFrontWheel != null  and isFrontWheel != ''  ">is_front_wheel = #{isFrontWheel},</if>
+            <if test="isRearWheel != null  and isRearWheel != ''  ">is_rear_wheel = #{isRearWheel},</if>
+            <if test="isAbs != null  and isAbs != ''  ">is_abs = #{isAbs},</if>
+            <if test="transmissionType != null  and transmissionType != ''  ">transmission_type = #{transmissionType},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarInfoById" parameterType="String">
+        delete from t_car_info where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarInfoByIds" parameterType="String">
+        delete from t_car_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TRiskLevelControlMapper">
+    
+    <resultMap type="TRiskLevelControl" id="TRiskLevelControlResult">
+        <result property="id"    column="id"    />
+        <result property="riskPosition"    column="risk_position"    />
+        <result property="riskName"    column="risk_name"    />
+        <result property="riskLevel"    column="risk_level"    />
+        <result property="preventiveMeasures"    column="preventive_measures"    />
+        <result property="accidentType"    column="accident_type"    />
+        <result property="identificationDate"    column="identification_date"    />
+        <result property="basis"    column="basis"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="personLiable"    column="person_liable"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTRiskLevelControlVo">
+        select rlc.id, rlc.risk_position, rlc.risk_name, rlc.risk_level, rlc.preventive_measures, rlc.accident_type, rlc.identification_date, rlc.basis, rlc.dept_id, rlc.person_liable, rlc.file_path, rlc.create_time, rlc.update_time, rlc.user_id, rlc.meno, rlc.business_id, rlc.update_user_id from t_risk_level_control rlc
+    </sql>
+	
+    <select id="selectTRiskLevelControlList" parameterType="TRiskLevelControl" resultMap="TRiskLevelControlResult">
+        <include refid="selectTRiskLevelControlVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and rlc.id = #{id}</if>
+             <if test="riskPosition != null  and riskPosition != '' "> and rlc.risk_position = #{riskPosition}</if>
+             <if test="riskName != null  and riskName != '' "> and rlc.risk_name = #{riskName}</if>
+             <if test="riskLevel != null  and riskLevel != '' "> and rlc.risk_level = #{riskLevel}</if>
+             <if test="preventiveMeasures != null  and preventiveMeasures != '' "> and rlc.preventive_measures = #{preventiveMeasures}</if>
+             <if test="accidentType != null  and accidentType != '' "> and rlc.accident_type = #{accidentType}</if>
+             <if test="identificationDate != null "> and rlc.identification_date = #{identificationDate}</if>
+             <if test="basis != null  and basis != '' "> and rlc.basis = #{basis}</if>
+             <if test="deptId != null  and deptId != '' "> and rlc.dept_id = #{deptId}</if>
+             <if test="personLiable != null  and personLiable != '' "> and rlc.person_liable = #{personLiable}</if>
+             <if test="filePath != null  and filePath != '' "> and rlc.file_path = #{filePath}</if>
+             <if test="createTime != null "> and rlc.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and rlc.update_time = #{updateTime}</if>
+             <if test="userId != null "> and rlc.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and rlc.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and rlc.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and rlc.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTRiskLevelControlById" parameterType="String" resultMap="TRiskLevelControlResult">
+        <include refid="selectTRiskLevelControlVo"/>
+        where rlc.id = #{id}
+    </select>
+        
+    <insert id="insertTRiskLevelControl" parameterType="TRiskLevelControl">
+        insert into t_risk_level_control
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="riskPosition != null  and riskPosition != ''  ">risk_position,</if>
+			<if test="riskName != null  and riskName != ''  ">risk_name,</if>
+			<if test="riskLevel != null  and riskLevel != ''  ">risk_level,</if>
+			<if test="preventiveMeasures != null  and preventiveMeasures != ''  ">preventive_measures,</if>
+			<if test="accidentType != null  and accidentType != ''  ">accident_type,</if>
+			<if test="identificationDate != null  ">identification_date,</if>
+			<if test="basis != null  and basis != ''  ">basis,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="personLiable != null  and personLiable != ''  ">person_liable,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="riskPosition != null  and riskPosition != ''  ">#{riskPosition},</if>
+			<if test="riskName != null  and riskName != ''  ">#{riskName},</if>
+			<if test="riskLevel != null  and riskLevel != ''  ">#{riskLevel},</if>
+			<if test="preventiveMeasures != null  and preventiveMeasures != ''  ">#{preventiveMeasures},</if>
+			<if test="accidentType != null  and accidentType != ''  ">#{accidentType},</if>
+			<if test="identificationDate != null  ">#{identificationDate},</if>
+			<if test="basis != null  and basis != ''  ">#{basis},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="personLiable != null  and personLiable != ''  ">#{personLiable},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTRiskLevelControl" parameterType="TRiskLevelControl">
+        update t_risk_level_control
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="riskPosition != null  and riskPosition != ''  ">risk_position = #{riskPosition},</if>
+            <if test="riskName != null  and riskName != ''  ">risk_name = #{riskName},</if>
+            <if test="riskLevel != null  and riskLevel != ''  ">risk_level = #{riskLevel},</if>
+            <if test="preventiveMeasures != null  and preventiveMeasures != ''  ">preventive_measures = #{preventiveMeasures},</if>
+            <if test="accidentType != null  and accidentType != ''  ">accident_type = #{accidentType},</if>
+            <if test="identificationDate != null  ">identification_date = #{identificationDate},</if>
+            <if test="basis != null  and basis != ''  ">basis = #{basis},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="personLiable != null  and personLiable != ''  ">person_liable = #{personLiable},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTRiskLevelControlById" parameterType="String">
+        delete from t_risk_level_control where id = #{id}
+    </delete>
+	
+    <delete id="deleteTRiskLevelControlByIds" parameterType="String">
+        delete from t_risk_level_control where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -80,4 +80,13 @@ public interface SysPostMapper {
      * @return 结果
      */
     public SysPost checkPostCodeUnique(String postCode);
+    
+    
+    /**
+     * 	条件查询  
+     *
+     * @param post 岗位信息
+     * @return 岗位数据集合
+     */
+    public List<SysPost> selectPagePostList(SysPost post);
 }

@@ -3,6 +3,7 @@ package com.project.security.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.project.security.domain.TUserCourse;
 import com.project.security.domain.vo.TUserCourseVo;	
@@ -13,6 +14,7 @@ import com.project.security.domain.vo.TUserCourseVo;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("userCourseMapper")
 public interface TUserCourseMapper 
 {
 	/**

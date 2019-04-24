@@ -47,8 +47,37 @@ public class SysPost extends BaseEntity {
      * 用户是否存在此岗位标识 默认不存在
      */
     private boolean flag = false;
+    
+    /**
+     	* 岗位ID
+     */
+    private Long deptId;
+    
+    
+    /**
+     	* 岗位名称
+     */
+    private String deptName;
+    
 
-    public Long getPostId() {
+    
+    public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
+	public Long getPostId() {
         return postId;
     }
 

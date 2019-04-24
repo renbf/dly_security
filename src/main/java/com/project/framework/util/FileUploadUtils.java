@@ -31,9 +31,9 @@ public class FileUploadUtils {
     public static final int DEFAULT_FILE_NAME_LENGTH = 200;
 
     /**
-     * 默认文件类型jpg
+     * 允许图片类型
      */
-    public static final String IMAGE_JPG_EXTENSION = ".jpg";
+    public static final String IMAGE_JPG_EXTENSION = "jpg,gif,png,ico,bmp,jpeg";
 
     private static int counter = 0;
 
@@ -140,5 +140,42 @@ public class FileUploadUtils {
         if (DEFAULT_MAX_SIZE != -1 && size > DEFAULT_MAX_SIZE) {
             throw new FileSizeLimitExceededException("not allowed upload upload", size, DEFAULT_MAX_SIZE);
         }
+    }
+    /**
+     * 判断是否为允许的上传文件类型,true表示允许
+     */
+    public static boolean checkImgFile(MultipartFile file) {
+        try {
+			String fileName = file.getOriginalFilename();
+			// 获取文件后缀
+			String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+			if (IMAGE_JPG_EXTENSION.contains(suffix.trim().toLowerCase())) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+    }
+    /**
+     * 判断是否为允许的上传文件类型,true表示允许
+     */
+    public static boolean checkImgFiles(MultipartFile[] files) {
+        try {
+        	if(files != null && files.length > 0) {
+        		for(MultipartFile file:files) {
+        			String fileName = file.getOriginalFilename();
+        			// 获取文件后缀
+        			String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        			if (!IMAGE_JPG_EXTENSION.contains(suffix.trim().toLowerCase())) {
+        				return false;
+        			}
+        		}
+        		return true;
+        	}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
     }
 }

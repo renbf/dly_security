@@ -2,6 +2,8 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.project.security.domain.TDriverLog;
 import com.project.security.domain.vo.TDriverAfterLogVo;
 import com.project.security.domain.vo.TDriverBeforeLogVo;
@@ -13,6 +15,7 @@ import com.project.security.domain.vo.TDriverMiddleLogVo;
  * @author rbf
  * @date 2019-04-18
  */
+@Repository("driverLogMapper")
 public interface TDriverLogMapper 
 {
 	/**

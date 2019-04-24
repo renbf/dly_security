@@ -243,7 +243,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "anon,captchaValidate");
 //        filterChainDefinitionMap.put("/module/**","anon");
         filterChainDefinitionMap.put("/tool/gen/**","anon");
-        filterChainDefinitionMap.put("/safety/accountNumber/**","anon");
+        filterChainDefinitionMap.put("/safety/**","anon");
         // 系统权限列表
         // filterChainDefinitionMap.putAll(SpringUtils.getBean(IMenuService.class).selectPermsAll());
 

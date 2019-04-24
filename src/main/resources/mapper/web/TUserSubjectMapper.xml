@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserSubjectMapper">
+    
+    <resultMap type="com.project.web.domian.TUserSubject" id="TUserSubjectResult">
+        <result property="id"    column="id"    />
+        <result property="userPaperId"    column="user_paper_id"    />
+        <result property="subjectId"    column="subject_id"    />
+        <result property="userAnswer"    column="user_answer"    />
+        <result property="isTrue"    column="is_true"    />
+        <result property="isCollect"    column="is_collect"    />
+    </resultMap>
+	
+	<sql id="selectTUserSubjectbasicColums">
+        select us.id, us.user_paper_id, us.subject_id, us.user_answer, us.is_true, us.is_collect    </sql>
+	
+    <select id="selectTUserSubjectList" parameterType="com.project.web.domian.TUserSubject" resultMap="TUserSubjectResult">
+        <include refid="selectTUserSubjectbasicColums"/>
+        from t_user_subject us
+        <where>  
+            <if test="id != null  and id != '' "> and us.id = #{id}</if>
+             <if test="userPaperId != null  and userPaperId != '' "> and us.user_paper_id = #{userPaperId}</if>
+             <if test="subjectId != null  and subjectId != '' "> and us.subject_id = #{subjectId}</if>
+             <if test="userAnswer != null  and userAnswer != '' "> and us.user_answer = #{userAnswer}</if>
+             <if test="isTrue != null  and isTrue != '' "> and us.is_true = #{isTrue}</if>
+             <if test="isCollect != null  and isCollect != '' "> and us.is_collect = #{isCollect}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserSubjectById" parameterType="String" resultMap="TUserSubjectResult">
+        <include refid="selectTUserSubjectbasicColums"/>
+        from t_user_subject us
+        where us.id = #{id}
+    </select>
+        
+    <insert id="insertTUserSubject" parameterType="com.project.web.domian.TUserSubject">
+        insert into t_user_subject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="userPaperId != null  and userPaperId != ''  ">user_paper_id,</if>
+			<if test="subjectId != null  and subjectId != ''  ">subject_id,</if>
+			<if test="userAnswer != null  and userAnswer != ''  ">user_answer,</if>
+			<if test="isTrue != null  and isTrue != ''  ">is_true,</if>
+			<if test="isCollect != null  and isCollect != ''  ">is_collect,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="userPaperId != null  and userPaperId != ''  ">#{userPaperId},</if>
+			<if test="subjectId != null  and subjectId != ''  ">#{subjectId},</if>
+			<if test="userAnswer != null  and userAnswer != ''  ">#{userAnswer},</if>
+			<if test="isTrue != null  and isTrue != ''  ">#{isTrue},</if>
+			<if test="isCollect != null  and isCollect != ''  ">#{isCollect},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserSubject" parameterType="com.project.web.domian.TUserSubject">
+        update t_user_subject
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userPaperId != null  and userPaperId != ''  ">user_paper_id = #{userPaperId},</if>
+            <if test="subjectId != null  and subjectId != ''  ">subject_id = #{subjectId},</if>
+            <if test="userAnswer != null  and userAnswer != ''  ">user_answer = #{userAnswer},</if>
+            <if test="isTrue != null  and isTrue != ''  ">is_true = #{isTrue},</if>
+            <if test="isCollect != null  and isCollect != ''  ">is_collect = #{isCollect},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserSubjectById" parameterType="String">
+        delete from t_user_subject where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserSubjectByIds" parameterType="String">
+        delete from t_user_subject where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

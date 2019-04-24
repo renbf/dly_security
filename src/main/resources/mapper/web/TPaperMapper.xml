@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TPaperMapper">
+    
+    <resultMap type="com.project.web.domian.TPaper" id="TPaperResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="paperTimes"    column="paper_times"    />
+        <result property="paperType"    column="paper_type"    />
+        <result property="subjectNums"    column="subject_nums"    />
+        <result property="businessType"    column="business_type"    />
+        <result property="majorType"    column="major_type"    />
+        <result property="paperPrice"    column="paper_price"    />
+        <result property="passScore"    column="pass_score"    />
+        <result property="paperSource"    column="paper_source"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTPaperbasicColums">
+        select p.id, p.name, p.paper_times, p.paper_type, p.subject_nums, p.business_type, p.major_type, p.paper_price, p.pass_score, p.paper_source, p.business_id, p.add_user_id, p.create_date, p.update_date, p.update_user_id    </sql>
+	
+    <select id="selectTPaperList" parameterType="com.project.web.domian.TPaper" resultMap="TPaperResult">
+        <include refid="selectTPaperbasicColums"/>
+        from t_paper p
+        <where>  
+            <if test="id != null  and id != '' "> and p.id = #{id}</if>
+             <if test="name != null  and name != '' "> and p.name = #{name}</if>
+             <if test="paperTimes != null "> and p.paper_times = #{paperTimes}</if>
+             <if test="paperType != null  and paperType != '' "> and p.paper_type = #{paperType}</if>
+             <if test="subjectNums != null "> and p.subject_nums = #{subjectNums}</if>
+             <if test="businessType != null  and businessType != '' "> and p.business_type = #{businessType}</if>
+             <if test="majorType != null  and majorType != '' "> and p.major_type = #{majorType}</if>
+             <if test="paperPrice != null "> and p.paper_price = #{paperPrice}</if>
+             <if test="passScore != null "> and p.pass_score = #{passScore}</if>
+             <if test="paperSource != null  and paperSource != '' "> and p.paper_source = #{paperSource}</if>
+             <if test="businessId != null  and businessId != '' "> and p.business_id = #{businessId}</if>
+             <if test="addUserId != null  and addUserId != '' "> and p.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and p.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and p.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and p.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTPaperById" parameterType="String" resultMap="TPaperResult">
+        <include refid="selectTPaperbasicColums"/>
+        from t_paper p
+        where p.id = #{id}
+    </select>
+        
+    <insert id="insertTPaper" parameterType="com.project.web.domian.TPaper">
+        insert into t_paper
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="paperTimes != null  ">paper_times,</if>
+			<if test="paperType != null  and paperType != ''  ">paper_type,</if>
+			<if test="subjectNums != null  ">subject_nums,</if>
+			<if test="businessType != null  and businessType != ''  ">business_type,</if>
+			<if test="majorType != null  and majorType != ''  ">major_type,</if>
+			<if test="paperPrice != null  ">paper_price,</if>
+			<if test="passScore != null  ">pass_score,</if>
+			<if test="paperSource != null  and paperSource != ''  ">paper_source,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="paperTimes != null  ">#{paperTimes},</if>
+			<if test="paperType != null  and paperType != ''  ">#{paperType},</if>
+			<if test="subjectNums != null  ">#{subjectNums},</if>
+			<if test="businessType != null  and businessType != ''  ">#{businessType},</if>
+			<if test="majorType != null  and majorType != ''  ">#{majorType},</if>
+			<if test="paperPrice != null  ">#{paperPrice},</if>
+			<if test="passScore != null  ">#{passScore},</if>
+			<if test="paperSource != null  and paperSource != ''  ">#{paperSource},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTPaper" parameterType="com.project.web.domian.TPaper">
+        update t_paper
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="paperTimes != null  ">paper_times = #{paperTimes},</if>
+            <if test="paperType != null  and paperType != ''  ">paper_type = #{paperType},</if>
+            <if test="subjectNums != null  ">subject_nums = #{subjectNums},</if>
+            <if test="businessType != null  and businessType != ''  ">business_type = #{businessType},</if>
+            <if test="majorType != null  and majorType != ''  ">major_type = #{majorType},</if>
+            <if test="paperPrice != null  ">paper_price = #{paperPrice},</if>
+            <if test="passScore != null  ">pass_score = #{passScore},</if>
+            <if test="paperSource != null  and paperSource != ''  ">paper_source = #{paperSource},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTPaperById" parameterType="String">
+        delete from t_paper where id = #{id}
+    </delete>
+	
+    <delete id="deleteTPaperByIds" parameterType="String">
+        delete from t_paper where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

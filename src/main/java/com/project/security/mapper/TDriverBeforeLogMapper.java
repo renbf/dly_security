@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
 import com.project.security.domain.TDriverBeforeLog;
-import java.util.List;	
+import java.util.List;
+
+import org.springframework.stereotype.Repository;	
 
 /**
  * 行车前检查事项 数据层
@@ -9,6 +11,7 @@ import java.util.List;
  * @author rbf
  * @date 2019-04-18
  */
+@Repository("driverBeforeLogMapper")
 public interface TDriverBeforeLogMapper 
 {
 	/**

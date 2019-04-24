@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TPhysicalExaminationDetailMapper">
+    
+    <resultMap type="TPhysicalExaminationDetail" id="TPhysicalExaminationDetailResult">
+        <result property="id"    column="id"    />
+        <result property="examinationId"    column="examination_id"    />
+        <result property="examinationUserId"    column="examination_user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTPhysicalExaminationDetailVo">
+        select ped.id, ped.examination_id, ped.examination_user_id, ped.create_time, ped.update_time, ped.user_id, ped.business_id, ped.update_user_id from t_physical_examination_detail ped
+    </sql>
+	
+    <select id="selectTPhysicalExaminationDetailList" parameterType="TPhysicalExaminationDetail" resultMap="TPhysicalExaminationDetailResult">
+        <include refid="selectTPhysicalExaminationDetailVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and ped.id = #{id}</if>
+             <if test="examinationId != null "> and ped.examination_id = #{examinationId}</if>
+             <if test="examinationUserId != null "> and ped.examination_user_id = #{examinationUserId}</if>
+             <if test="createTime != null "> and ped.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and ped.update_time = #{updateTime}</if>
+             <if test="userId != null "> and ped.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and ped.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and ped.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTPhysicalExaminationDetailById" parameterType="String" resultMap="TPhysicalExaminationDetailResult">
+        <include refid="selectTPhysicalExaminationDetailVo"/>
+        where ped.id = #{id}
+    </select>
+        
+    <insert id="insertTPhysicalExaminationDetail" parameterType="TPhysicalExaminationDetail">
+        insert into t_physical_examination_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="examinationId != null  ">examination_id,</if>
+			<if test="examinationUserId != null  ">examination_user_id,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="examinationId != null  ">#{examinationId},</if>
+			<if test="examinationUserId != null  ">#{examinationUserId},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTPhysicalExaminationDetail" parameterType="TPhysicalExaminationDetail">
+        update t_physical_examination_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examinationId != null  ">examination_id = #{examinationId},</if>
+            <if test="examinationUserId != null  ">examination_user_id = #{examinationUserId},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTPhysicalExaminationDetailById" parameterType="String">
+        delete from t_physical_examination_detail where id = #{id}
+    </delete>
+	
+    <delete id="deleteTPhysicalExaminationDetailByIds" parameterType="String">
+        delete from t_physical_examination_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

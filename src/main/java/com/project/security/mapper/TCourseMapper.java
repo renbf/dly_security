@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.project.security.domain.TCourse;
 import com.project.security.domain.vo.TCourseVo;	
@@ -14,6 +15,7 @@ import com.project.security.domain.vo.TCourseVo;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("courseMapper")
 public interface TCourseMapper 
 {
 	/**

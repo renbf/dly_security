@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserDriverInfoMapper">
+    
+    <resultMap type="TUserDriverInfo" id="TUserDriverInfoResult">
+        <result property="id"    column="id"    />
+        <result property="driverUserId"    column="driver_user_id"    />
+        <result property="driverArchives"    column="driver_archives"    />
+        <result property="driverLicenseNumber"    column="driver_license_number"    />
+        <result property="initialDate"    column="initial_date"    />
+        <result property="driverAge"    column="driver_age"    />
+        <result property="certificateValidityPeriod"    column="certificate_validity_period"    />
+        <result property="physicalValidityPeriod"    column="physical_validity_period"    />
+        <result property="driverVehicleType"    column="driver_vehicle_type"    />
+        <result property="annualValidityPeriod"    column="annual_validity_period"    />
+        <result property="driverIllegalScore"    column="driver_illegal_score"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTUserDriverInfoVo">
+        select udi.id, udi.driver_user_id, udi.driver_archives, udi.driver_license_number, udi.initial_date, udi.driver_age, udi.certificate_validity_period, udi.physical_validity_period, udi.driver_vehicle_type, udi.annual_validity_period, udi.driver_illegal_score, udi.create_time, udi.update_time, udi.user_id, udi.meno, udi.business_id, udi.update_user_id from t_user_driver_info udi
+    </sql>
+	
+    <select id="selectTUserDriverInfoList" parameterType="TUserDriverInfo" resultMap="TUserDriverInfoResult">
+        <include refid="selectTUserDriverInfoVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and udi.id = #{id}</if>
+             <if test="driverUserId != null "> and udi.driver_user_id = #{driverUserId}</if>
+             <if test="driverArchives != null  and driverArchives != '' "> and udi.driver_archives = #{driverArchives}</if>
+             <if test="driverLicenseNumber != null  and driverLicenseNumber != '' "> and udi.driver_license_number = #{driverLicenseNumber}</if>
+             <if test="initialDate != null "> and udi.initial_date = #{initialDate}</if>
+             <if test="driverAge != null  and driverAge != '' "> and udi.driver_age = #{driverAge}</if>
+             <if test="certificateValidityPeriod != null "> and udi.certificate_validity_period = #{certificateValidityPeriod}</if>
+             <if test="physicalValidityPeriod != null "> and udi.physical_validity_period = #{physicalValidityPeriod}</if>
+             <if test="driverVehicleType != null  and driverVehicleType != '' "> and udi.driver_vehicle_type = #{driverVehicleType}</if>
+             <if test="annualValidityPeriod != null "> and udi.annual_validity_period = #{annualValidityPeriod}</if>
+             <if test="driverIllegalScore != null  and driverIllegalScore != '' "> and udi.driver_illegal_score = #{driverIllegalScore}</if>
+             <if test="createTime != null "> and udi.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and udi.update_time = #{updateTime}</if>
+             <if test="userId != null "> and udi.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and udi.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and udi.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and udi.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserDriverInfoById" parameterType="String" resultMap="TUserDriverInfoResult">
+        <include refid="selectTUserDriverInfoVo"/>
+        where udi.id = #{id}
+    </select>
+        
+    <insert id="insertTUserDriverInfo" parameterType="TUserDriverInfo">
+        insert into t_user_driver_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="driverUserId != null  ">driver_user_id,</if>
+			<if test="driverArchives != null  and driverArchives != ''  ">driver_archives,</if>
+			<if test="driverLicenseNumber != null  and driverLicenseNumber != ''  ">driver_license_number,</if>
+			<if test="initialDate != null  ">initial_date,</if>
+			<if test="driverAge != null  and driverAge != ''  ">driver_age,</if>
+			<if test="certificateValidityPeriod != null  ">certificate_validity_period,</if>
+			<if test="physicalValidityPeriod != null  ">physical_validity_period,</if>
+			<if test="driverVehicleType != null  and driverVehicleType != ''  ">driver_vehicle_type,</if>
+			<if test="annualValidityPeriod != null  ">annual_validity_period,</if>
+			<if test="driverIllegalScore != null  and driverIllegalScore != ''  ">driver_illegal_score,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="driverUserId != null  ">#{driverUserId},</if>
+			<if test="driverArchives != null  and driverArchives != ''  ">#{driverArchives},</if>
+			<if test="driverLicenseNumber != null  and driverLicenseNumber != ''  ">#{driverLicenseNumber},</if>
+			<if test="initialDate != null  ">#{initialDate},</if>
+			<if test="driverAge != null  and driverAge != ''  ">#{driverAge},</if>
+			<if test="certificateValidityPeriod != null  ">#{certificateValidityPeriod},</if>
+			<if test="physicalValidityPeriod != null  ">#{physicalValidityPeriod},</if>
+			<if test="driverVehicleType != null  and driverVehicleType != ''  ">#{driverVehicleType},</if>
+			<if test="annualValidityPeriod != null  ">#{annualValidityPeriod},</if>
+			<if test="driverIllegalScore != null  and driverIllegalScore != ''  ">#{driverIllegalScore},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserDriverInfo" parameterType="TUserDriverInfo">
+        update t_user_driver_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="driverUserId != null  ">driver_user_id = #{driverUserId},</if>
+            <if test="driverArchives != null  and driverArchives != ''  ">driver_archives = #{driverArchives},</if>
+            <if test="driverLicenseNumber != null  and driverLicenseNumber != ''  ">driver_license_number = #{driverLicenseNumber},</if>
+            <if test="initialDate != null  ">initial_date = #{initialDate},</if>
+            <if test="driverAge != null  and driverAge != ''  ">driver_age = #{driverAge},</if>
+            <if test="certificateValidityPeriod != null  ">certificate_validity_period = #{certificateValidityPeriod},</if>
+            <if test="physicalValidityPeriod != null  ">physical_validity_period = #{physicalValidityPeriod},</if>
+            <if test="driverVehicleType != null  and driverVehicleType != ''  ">driver_vehicle_type = #{driverVehicleType},</if>
+            <if test="annualValidityPeriod != null  ">annual_validity_period = #{annualValidityPeriod},</if>
+            <if test="driverIllegalScore != null  and driverIllegalScore != ''  ">driver_illegal_score = #{driverIllegalScore},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTUserDriverInfoById" parameterType="String">
+        delete from t_user_driver_info where id = #{id}
+    </delete>
+	
+    <delete id="deleteTUserDriverInfoByIds" parameterType="String">
+        delete from t_user_driver_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

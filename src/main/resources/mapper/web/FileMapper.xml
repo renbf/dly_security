@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.FileMapper">
+    
+    <resultMap type="com.project.web.domian.File" id="FileResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createrUserId"    column="creater_user_id"    />
+        <result property="memo"    column="memo"    />
+        <result property="sourceType"    column="source_type"    />
+        <result property="sourceId"    column="source_id"    />
+    </resultMap>
+	
+	<sql id="selectFileVo">
+        select file_id, file_name, file_path, state, create_time, creater_user_id, memo, source_type, source_id from t_file
+    </sql>
+	
+    <select id="selectFileList" parameterType="com.project.web.domian.File" resultMap="FileResult">
+        <include refid="selectFileVo"/>
+      where state!=9
+            <if test="fileId != null  and fileId != '' "> and file_id = #{fileId}</if>
+             <if test="fileName != null  and fileName != '' "> and file_name = #{fileName}</if>
+             <if test="filePath != null  and filePath != '' "> and file_path = #{filePath}</if>
+             <if test="state != null "> and state = #{state}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="createrUserId != null  and createrUserId != '' "> and creater_user_id = #{createrUserId}</if>
+             <if test="memo != null  and memo != '' "> and memo = #{memo}</if>
+             <if test="sourceType != null "> and source_type = #{sourceType}</if>
+             <if test="sourceId != null  and sourceId != '' "> and source_id = #{sourceId}</if>
+             order by create_time desc
+    </select>
+    
+    <select id="selectFileById" parameterType="String" resultMap="FileResult">
+        <include refid="selectFileVo"/>
+        where file_id = #{fileId} and state!=9
+    </select>
+        
+    <insert id="insertFile" parameterType="com.project.web.domian.File">
+        insert into t_file
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fileId != null  and fileId != ''  ">file_id,</if>
+			<if test="fileName != null  and fileName != ''  ">file_name,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="state != null  ">state,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="createrUserId != null  and createrUserId != ''  ">creater_user_id,</if>
+			<if test="memo != null  and memo != ''  ">memo,</if>
+			<if test="sourceType != null  ">source_type,</if>
+			<if test="sourceId != null  and sourceId != ''  ">source_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fileId != null  and fileId != ''  ">#{fileId},</if>
+			<if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="state != null  ">#{state},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="createrUserId != null  and createrUserId != ''  ">#{createrUserId},</if>
+			<if test="memo != null  and memo != ''  ">#{memo},</if>
+			<if test="sourceType != null  ">#{sourceType},</if>
+			<if test="sourceId != null  and sourceId != ''  ">#{sourceId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateFile" parameterType="com.project.web.domian.File">
+        update t_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null  and fileName != ''  ">file_name = #{fileName},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="state != null  ">state = #{state},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createrUserId != null  and createrUserId != ''  ">creater_user_id = #{createrUserId},</if>
+            <if test="memo != null  and memo != ''  ">memo = #{memo},</if>
+            <if test="sourceType != null  ">source_type = #{sourceType},</if>
+            <if test="sourceId != null  and sourceId != ''  ">source_id = #{sourceId},</if>
+        </trim>
+        where file_id = #{fileId}
+    </update>
+
+	<delete id="deleteFileById" parameterType="String">
+       update t_file set state=9 where file_id = #{fileId}
+    </delete>
+	
+    <delete id="deleteFileByIds" parameterType="String">
+        update t_file set state=9 where file_id in
+        <foreach item="fileId" collection="array" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
+    
+</mapper>

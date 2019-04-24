@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSubjectMapper">
+    
+    <resultMap type="com.project.web.domian.TSubject" id="TSubjectResult">
+        <result property="id"    column="id"    />
+        <result property="subject"    column="subject"    />
+        <result property="annotation"    column="annotation"    />
+        <result property="subjectType"    column="subject_type"    />
+        <result property="businessType"    column="business_type"    />
+        <result property="majorType"    column="major_type"    />
+        <result property="trueAnswer"    column="true_answer"    />
+        <result property="subjectSource"    column="subject_source"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSubjectbasicColums">
+        select s.id, s.subject, s.annotation, s.subject_type, s.business_type, s.major_type, s.true_answer, s.subject_source, s.business_id, s.add_user_id, s.create_date, s.update_date, s.update_user_id    </sql>
+	
+    <select id="selectTSubjectList" parameterType="com.project.web.domian.TSubject" resultMap="TSubjectResult">
+        <include refid="selectTSubjectbasicColums"/>
+        from t_subject s
+        <where>  
+            <if test="id != null  and id != '' "> and s.id = #{id}</if>
+             <if test="subject != null  and subject != '' "> and s.subject = #{subject}</if>
+             <if test="annotation != null  and annotation != '' "> and s.annotation = #{annotation}</if>
+             <if test="subjectType != null  and subjectType != '' "> and s.subject_type = #{subjectType}</if>
+             <if test="businessType != null  and businessType != '' "> and s.business_type = #{businessType}</if>
+             <if test="majorType != null  and majorType != '' "> and s.major_type = #{majorType}</if>
+             <if test="trueAnswer != null  and trueAnswer != '' "> and s.true_answer = #{trueAnswer}</if>
+             <if test="subjectSource != null  and subjectSource != '' "> and s.subject_source = #{subjectSource}</if>
+             <if test="businessId != null  and businessId != '' "> and s.business_id = #{businessId}</if>
+             <if test="addUserId != null  and addUserId != '' "> and s.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and s.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and s.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and s.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSubjectById" parameterType="String" resultMap="TSubjectResult">
+        <include refid="selectTSubjectbasicColums"/>
+        from t_subject s
+        where s.id = #{id}
+    </select>
+        
+    <insert id="insertTSubject" parameterType="com.project.web.domian.TSubject">
+        insert into t_subject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="subject != null  and subject != ''  ">subject,</if>
+			<if test="annotation != null  and annotation != ''  ">annotation,</if>
+			<if test="subjectType != null  and subjectType != ''  ">subject_type,</if>
+			<if test="businessType != null  and businessType != ''  ">business_type,</if>
+			<if test="majorType != null  and majorType != ''  ">major_type,</if>
+			<if test="trueAnswer != null  and trueAnswer != ''  ">true_answer,</if>
+			<if test="subjectSource != null  and subjectSource != ''  ">subject_source,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="subject != null  and subject != ''  ">#{subject},</if>
+			<if test="annotation != null  and annotation != ''  ">#{annotation},</if>
+			<if test="subjectType != null  and subjectType != ''  ">#{subjectType},</if>
+			<if test="businessType != null  and businessType != ''  ">#{businessType},</if>
+			<if test="majorType != null  and majorType != ''  ">#{majorType},</if>
+			<if test="trueAnswer != null  and trueAnswer != ''  ">#{trueAnswer},</if>
+			<if test="subjectSource != null  and subjectSource != ''  ">#{subjectSource},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSubject" parameterType="com.project.web.domian.TSubject">
+        update t_subject
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subject != null  and subject != ''  ">subject = #{subject},</if>
+            <if test="annotation != null  and annotation != ''  ">annotation = #{annotation},</if>
+            <if test="subjectType != null  and subjectType != ''  ">subject_type = #{subjectType},</if>
+            <if test="businessType != null  and businessType != ''  ">business_type = #{businessType},</if>
+            <if test="majorType != null  and majorType != ''  ">major_type = #{majorType},</if>
+            <if test="trueAnswer != null  and trueAnswer != ''  ">true_answer = #{trueAnswer},</if>
+            <if test="subjectSource != null  and subjectSource != ''  ">subject_source = #{subjectSource},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSubjectById" parameterType="String">
+        delete from t_subject where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSubjectByIds" parameterType="String">
+        delete from t_subject where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

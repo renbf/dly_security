@@ -1,6 +1,9 @@
 package com.project.security.domain.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 课程安排表 t_user_course
@@ -23,11 +26,17 @@ public class TUserCourseVo implements Serializable
 	/** 部门名称 */
 	private String deptName;
 	/** 已观看秒数 */
+	@JsonIgnore
 	private Long progress;
 	/** 已观看总秒数 */
+	@JsonIgnore
 	private Long proSum;
 	/** 排名 */
 	private Integer rank;
+	/** 观看课时 */
+	private BigDecimal classHour;
+	/** 观看总课时 */
+	private BigDecimal classHourSum;
 	public String getId() {
 		return id;
 	}
@@ -75,6 +84,18 @@ public class TUserCourseVo implements Serializable
 	}
 	public void setRank(Integer rank) {
 		this.rank = rank;
+	}
+	public BigDecimal getClassHour() {
+		return classHour;
+	}
+	public void setClassHour(BigDecimal classHour) {
+		this.classHour = classHour;
+	}
+	public BigDecimal getClassHourSum() {
+		return classHourSum;
+	}
+	public void setClassHourSum(BigDecimal classHourSum) {
+		this.classHourSum = classHourSum;
 	}
 	
 	

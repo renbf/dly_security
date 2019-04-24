@@ -1,5 +1,6 @@
 package com.project.security.service.impl;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.project.framework.manager.AsyncManager;
 import com.project.framework.manager.factory.AsyncFactory;
 import com.project.framework.shiro.service.LoginService;
 import com.project.framework.shiro.service.PasswordService;
+import com.project.framework.util.FileUploadUtils;
 import com.project.framework.util.MessageUtils;
 import com.project.security.mapper.UserMapper;
 import com.project.security.service.IFileSystemService;
@@ -53,6 +55,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
 				result.setStatus(Result.FAILED);
 				return result;
 			}
+			passWord = new String(Base64.getDecoder().decode(passWord),"UTF-8");
 			// 密码如果不在指定范围内 错误
 			if (passWord.length() < UserConstants.PASSWORD_MIN_LENGTH
 					|| passWord.length() > UserConstants.PASSWORD_MAX_LENGTH) {
@@ -106,7 +109,8 @@ public class UserInfoServiceImpl implements IUserInfoService {
 					MessageUtils.message("user.login.success")));
 			loginService.recordLoginInfo(user);
 			Map<String, Object> mapResult = new HashMap<>();
-			mapResult.put("userId", user.getUserId());
+			mapResult.put("userId", user.getUserId().toString());
+			mapResult.put("businessId", user.getBusinessId());
 			mapResult.put("isAuth", user.getIsAuth());
 			result.setResult(mapResult);
 			result.setMessage("登陆成功");
@@ -122,6 +126,12 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	public DataResult uploadAuthUrl(String userId, MultipartFile authImg) {
 		DataResult result = new DataResult();
 		try {
+			boolean fileType = FileUploadUtils.checkImgFile(authImg);
+			if(!fileType) {
+				result.setMessage("上传图片类型错误");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
 			String authUrl = fileSystemService.uploadFile(authImg);
 			if(StringUtils.isEmpty(authUrl)) {
 				result.setMessage("上传图片失败");

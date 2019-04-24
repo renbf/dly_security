@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TInspectRecordMapper">
+    
+    <resultMap type="com.project.web.domian.TInspectRecord" id="TInspectRecordResult">
+        <result property="id"    column="id"    />
+        <result property="inspectPlanId"    column="inspect_plan_id"    />
+        <result property="checkUserId"    column="check_user_id"    />
+        <result property="checkObj"    column="check_obj"    />
+        <result property="checkResult"    column="check_result"    />
+        <result property="checkDate"    column="check_date"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="userSignUrl"    column="user_sign_url"    />
+    </resultMap>
+	
+	<sql id="selectTInspectRecordbasicColums">
+        select ir.id, ir.inspect_plan_id, ir.check_user_id, ir.check_obj, ir.check_result, ir.check_date, ir.check_type, ir.user_sign_url    </sql>
+	
+    <select id="selectTInspectRecordList" parameterType="com.project.web.domian.TInspectRecord" resultMap="TInspectRecordResult">
+        <include refid="selectTInspectRecordbasicColums"/>
+        from t_inspect_record ir
+        <where>  
+            <if test="id != null  and id != '' "> and ir.id = #{id}</if>
+             <if test="inspectPlanId != null  and inspectPlanId != '' "> and ir.inspect_plan_id = #{inspectPlanId}</if>
+             <if test="checkUserId != null  and checkUserId != '' "> and ir.check_user_id = #{checkUserId}</if>
+             <if test="checkObj != null  and checkObj != '' "> and ir.check_obj = #{checkObj}</if>
+             <if test="checkResult != null  and checkResult != '' "> and ir.check_result = #{checkResult}</if>
+             <if test="checkDate != null "> and ir.check_date = #{checkDate}</if>
+             <if test="checkType != null  and checkType != '' "> and ir.check_type = #{checkType}</if>
+             <if test="userSignUrl != null  and userSignUrl != '' "> and ir.user_sign_url = #{userSignUrl}</if>
+         </where>
+    </select>
+    
+    <select id="selectTInspectRecordById" parameterType="String" resultMap="TInspectRecordResult">
+        <include refid="selectTInspectRecordbasicColums"/>
+        from t_inspect_record ir
+        where ir.id = #{id}
+    </select>
+        
+    <insert id="insertTInspectRecord" parameterType="com.project.web.domian.TInspectRecord">
+        insert into t_inspect_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="inspectPlanId != null  and inspectPlanId != ''  ">inspect_plan_id,</if>
+			<if test="checkUserId != null  and checkUserId != ''  ">check_user_id,</if>
+			<if test="checkObj != null  and checkObj != ''  ">check_obj,</if>
+			<if test="checkResult != null  and checkResult != ''  ">check_result,</if>
+			<if test="checkDate != null  ">check_date,</if>
+			<if test="checkType != null  and checkType != ''  ">check_type,</if>
+			<if test="userSignUrl != null  and userSignUrl != ''  ">user_sign_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="inspectPlanId != null  and inspectPlanId != ''  ">#{inspectPlanId},</if>
+			<if test="checkUserId != null  and checkUserId != ''  ">#{checkUserId},</if>
+			<if test="checkObj != null  and checkObj != ''  ">#{checkObj},</if>
+			<if test="checkResult != null  and checkResult != ''  ">#{checkResult},</if>
+			<if test="checkDate != null  ">#{checkDate},</if>
+			<if test="checkType != null  and checkType != ''  ">#{checkType},</if>
+			<if test="userSignUrl != null  and userSignUrl != ''  ">#{userSignUrl},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTInspectRecord" parameterType="com.project.web.domian.TInspectRecord">
+        update t_inspect_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inspectPlanId != null  and inspectPlanId != ''  ">inspect_plan_id = #{inspectPlanId},</if>
+            <if test="checkUserId != null  and checkUserId != ''  ">check_user_id = #{checkUserId},</if>
+            <if test="checkObj != null  and checkObj != ''  ">check_obj = #{checkObj},</if>
+            <if test="checkResult != null  and checkResult != ''  ">check_result = #{checkResult},</if>
+            <if test="checkDate != null  ">check_date = #{checkDate},</if>
+            <if test="checkType != null  and checkType != ''  ">check_type = #{checkType},</if>
+            <if test="userSignUrl != null  and userSignUrl != ''  ">user_sign_url = #{userSignUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTInspectRecordById" parameterType="String">
+        delete from t_inspect_record where id = #{id}
+    </delete>
+	
+    <delete id="deleteTInspectRecordByIds" parameterType="String">
+        delete from t_inspect_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

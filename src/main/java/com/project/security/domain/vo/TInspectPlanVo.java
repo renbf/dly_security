@@ -50,12 +50,11 @@ public class TInspectPlanVo implements Serializable
 	private String updateUserId;
 	/** 类型名称 */
 	private String checkTypeName;
-	/** 检查项目名称 */
-	private String checkName;
 	/** 检查项目id */
 	private String checkTeam;
 	/** 检查项目名称 */
 	private String checkTeamName;
+	/** 检查项目列表 */
 	private List<Map<String,Object>> checkProjects;
 	public void setId(String id) 
 	{
@@ -191,14 +190,6 @@ public class TInspectPlanVo implements Serializable
 	public String getUpdateUserId() 
 	{
 		return updateUserId;
-	}
-
-    public String getCheckName() {
-		return checkName;
-	}
-
-	public void setCheckName(String checkName) {
-		this.checkName = checkName;
 	}
 
 	public String getCheckTeam() {

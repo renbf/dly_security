@@ -2,6 +2,8 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.project.security.domain.TInspectPlan;
 import com.project.security.domain.vo.TInspectPlanVo;	
 
@@ -11,6 +13,7 @@ import com.project.security.domain.vo.TInspectPlanVo;
  * @author rbf
  * @date 2019-04-17
  */
+@Repository("inspectPlanMapper")
 public interface TInspectPlanMapper 
 {
 	/**

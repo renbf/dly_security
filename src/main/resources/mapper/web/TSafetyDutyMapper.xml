@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSafetyDutyMapper">
+    
+    <resultMap type="TSafetyDuty" id="TSafetyDutyResult">
+        <result property="id"    column="id"    />
+        <result property="dutyType"    column="duty_type"    />
+        <result property="dutyPerson"    column="duty_person"    />
+        <result property="dutyDate"    column="duty_date"    />
+        <result property="registerDate"    column="register_date"    />
+        <result property="dutyRecord"    column="duty_record"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSafetyDutyVo">
+        select sd.id, sd.duty_type, sd.duty_person, sd.duty_date, sd.register_date, sd.duty_record, sd.dept_id, sd.create_time, sd.update_time, sd.user_id, sd.meno, sd.business_id, sd.update_user_id from t_safety_duty sd
+    </sql>
+	
+    <select id="selectTSafetyDutyList" parameterType="TSafetyDuty" resultMap="TSafetyDutyResult">
+        <include refid="selectTSafetyDutyVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and sd.id = #{id}</if>
+             <if test="dutyType != null  and dutyType != '' "> and sd.duty_type = #{dutyType}</if>
+             <if test="dutyPerson != null  and dutyPerson != '' "> and sd.duty_person = #{dutyPerson}</if>
+             <if test="dutyDate != null "> and sd.duty_date = #{dutyDate}</if>
+             <if test="registerDate != null "> and sd.register_date = #{registerDate}</if>
+             <if test="dutyRecord != null  and dutyRecord != '' "> and sd.duty_record = #{dutyRecord}</if>
+             <if test="deptId != null  and deptId != '' "> and sd.dept_id = #{deptId}</if>
+             <if test="createTime != null "> and sd.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and sd.update_time = #{updateTime}</if>
+             <if test="userId != null "> and sd.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and sd.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and sd.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and sd.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSafetyDutyById" parameterType="String" resultMap="TSafetyDutyResult">
+        <include refid="selectTSafetyDutyVo"/>
+        where sd.id = #{id}
+    </select>
+        
+    <insert id="insertTSafetyDuty" parameterType="TSafetyDuty">
+        insert into t_safety_duty
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="dutyType != null  and dutyType != ''  ">duty_type,</if>
+			<if test="dutyPerson != null  and dutyPerson != ''  ">duty_person,</if>
+			<if test="dutyDate != null  ">duty_date,</if>
+			<if test="registerDate != null  ">register_date,</if>
+			<if test="dutyRecord != null  and dutyRecord != ''  ">duty_record,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="dutyType != null  and dutyType != ''  ">#{dutyType},</if>
+			<if test="dutyPerson != null  and dutyPerson != ''  ">#{dutyPerson},</if>
+			<if test="dutyDate != null  ">#{dutyDate},</if>
+			<if test="registerDate != null  ">#{registerDate},</if>
+			<if test="dutyRecord != null  and dutyRecord != ''  ">#{dutyRecord},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSafetyDuty" parameterType="TSafetyDuty">
+        update t_safety_duty
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dutyType != null  and dutyType != ''  ">duty_type = #{dutyType},</if>
+            <if test="dutyPerson != null  and dutyPerson != ''  ">duty_person = #{dutyPerson},</if>
+            <if test="dutyDate != null  ">duty_date = #{dutyDate},</if>
+            <if test="registerDate != null  ">register_date = #{registerDate},</if>
+            <if test="dutyRecord != null  and dutyRecord != ''  ">duty_record = #{dutyRecord},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSafetyDutyById" parameterType="String">
+        delete from t_safety_duty where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSafetyDutyByIds" parameterType="String">
+        delete from t_safety_duty where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

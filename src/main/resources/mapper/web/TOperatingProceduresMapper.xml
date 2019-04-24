@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TOperatingProceduresMapper">
+    
+    <resultMap type="TOperatingProcedures" id="TOperatingProceduresResult">
+        <result property="id"    column="id"    />
+        <result property="operatingName"    column="operating_name"    />
+        <result property="operatingUnit"    column="operating_unit"    />
+        <result property="operatingDate"    column="operating_date"    />
+        <result property="operatingDeptId"    column="operating_dept_id"    />
+        <result property="isApply"    column="is_apply"    />
+        <result property="operatingFilePath"    column="operating_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTOperatingProceduresVo">
+        select op.id, op.operating_name, op.operating_unit, op.operating_date, op.operating_dept_id, op.is_apply, op.operating_file_path, op.create_time, op.update_time, op.user_id, op.meno, op.business_id, op.update_user_id from t_operating_procedures op
+    </sql>
+	
+    <select id="selectTOperatingProceduresList" parameterType="TOperatingProcedures" resultMap="TOperatingProceduresResult">
+        <include refid="selectTOperatingProceduresVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and op.id = #{id}</if>
+             <if test="operatingName != null  and operatingName != '' "> and op.operating_name = #{operatingName}</if>
+             <if test="operatingUnit != null  and operatingUnit != '' "> and op.operating_unit = #{operatingUnit}</if>
+             <if test="operatingDate != null "> and op.operating_date = #{operatingDate}</if>
+             <if test="operatingDeptId != null  and operatingDeptId != '' "> and op.operating_dept_id = #{operatingDeptId}</if>
+             <if test="isApply != null  and isApply != '' "> and op.is_apply = #{isApply}</if>
+             <if test="operatingFilePath != null  and operatingFilePath != '' "> and op.operating_file_path = #{operatingFilePath}</if>
+             <if test="createTime != null "> and op.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and op.update_time = #{updateTime}</if>
+             <if test="userId != null "> and op.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and op.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and op.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and op.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTOperatingProceduresById" parameterType="String" resultMap="TOperatingProceduresResult">
+        <include refid="selectTOperatingProceduresVo"/>
+        where op.id = #{id}
+    </select>
+        
+    <insert id="insertTOperatingProcedures" parameterType="TOperatingProcedures">
+        insert into t_operating_procedures
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="operatingName != null  and operatingName != ''  ">operating_name,</if>
+			<if test="operatingUnit != null  and operatingUnit != ''  ">operating_unit,</if>
+			<if test="operatingDate != null  ">operating_date,</if>
+			<if test="operatingDeptId != null  and operatingDeptId != ''  ">operating_dept_id,</if>
+			<if test="isApply != null  and isApply != ''  ">is_apply,</if>
+			<if test="operatingFilePath != null  and operatingFilePath != ''  ">operating_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="operatingName != null  and operatingName != ''  ">#{operatingName},</if>
+			<if test="operatingUnit != null  and operatingUnit != ''  ">#{operatingUnit},</if>
+			<if test="operatingDate != null  ">#{operatingDate},</if>
+			<if test="operatingDeptId != null  and operatingDeptId != ''  ">#{operatingDeptId},</if>
+			<if test="isApply != null  and isApply != ''  ">#{isApply},</if>
+			<if test="operatingFilePath != null  and operatingFilePath != ''  ">#{operatingFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTOperatingProcedures" parameterType="TOperatingProcedures">
+        update t_operating_procedures
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="operatingName != null  and operatingName != ''  ">operating_name = #{operatingName},</if>
+            <if test="operatingUnit != null  and operatingUnit != ''  ">operating_unit = #{operatingUnit},</if>
+            <if test="operatingDate != null  ">operating_date = #{operatingDate},</if>
+            <if test="operatingDeptId != null  and operatingDeptId != ''  ">operating_dept_id = #{operatingDeptId},</if>
+            <if test="isApply != null  and isApply != ''  ">is_apply = #{isApply},</if>
+            <if test="operatingFilePath != null  and operatingFilePath != ''  ">operating_file_path = #{operatingFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTOperatingProceduresById" parameterType="String">
+        delete from t_operating_procedures where id = #{id}
+    </delete>
+	
+    <delete id="deleteTOperatingProceduresByIds" parameterType="String">
+        delete from t_operating_procedures where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

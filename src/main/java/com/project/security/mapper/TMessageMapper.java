@@ -2,13 +2,14 @@ package com.project.security.mapper;
 
 import com.project.security.domain.TMessage;
 import java.util.List;	
-
+import org.springframework.stereotype.Repository;
 /**
  * 消息 数据层
  * 
  * @author rbf
- * @date 2019-04-16
+ * @date 2019-04-24
  */
+ @Repository("messageMapper")
 public interface TMessageMapper 
 {
 	/**

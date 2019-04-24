@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
 import com.project.security.domain.TUserSubject;
-import java.util.List;	
+import java.util.List;
+
+import org.springframework.stereotype.Repository;	
 
 /**
  * 用户答题记录 数据层
@@ -9,6 +11,7 @@ import java.util.List;
  * @author rbf
  * @date 2019-04-16
  */
+@Repository("userSubjectMapper")
 public interface TUserSubjectMapper 
 {
 	/**

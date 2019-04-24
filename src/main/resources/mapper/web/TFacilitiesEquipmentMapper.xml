@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TFacilitiesEquipmentMapper">
+    
+    <resultMap type="TFacilitiesEquipment" id="TFacilitiesEquipmentResult">
+        <result property="id"    column="id"    />
+        <result property="responsibleUserId"    column="responsible_user_id"    />
+        <result property="equipmentName"    column="equipment_name"    />
+        <result property="equipmentType"    column="equipment_type"    />
+        <result property="equipmentAddr"    column="equipment_addr"    />
+        <result property="equipmentStatus"    column="equipment_status"    />
+        <result property="scrapDate"    column="scrap_date"    />
+        <result property="checkDate"    column="check_date"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="responsibleUserName"    column="responsible_user_name"    />
+    </resultMap>
+	
+	<sql id="selectTFacilitiesEquipmentVo">
+        select fe.id, fe.responsible_user_id, fe.equipment_name, fe.equipment_type, fe.equipment_addr, fe.equipment_status,
+        DATE_FORMAT(fe.scrap_date,'%Y-%m-%d') scrapDateStr, 
+        DATE_FORMAT(fe.check_date,'%Y-%m-%d') checkDateStr, fe.file_path, fe.remark, fe.create_time, fe.update_time, fe.user_id, fe.meno, fe.business_id, fe.update_user_id,fe.responsible_user_name from t_facilities_equipment fe
+    </sql>
+	
+    <select id="selectTFacilitiesEquipmentList" parameterType="TFacilitiesEquipment" resultMap="TFacilitiesEquipmentResult">
+        <include refid="selectTFacilitiesEquipmentVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and fe.id = #{id}</if>
+             <if test="responsibleUserId != null "> and fe.responsible_user_id = #{responsibleUserId}</if>
+             <if test="equipmentName != null  and equipmentName != '' "> and fe.equipment_name = #{equipmentName}</if>
+             <if test="equipmentType != null  and equipmentType != '' "> and fe.equipment_type = #{equipmentType}</if>
+             <if test="equipmentAddr != null  and equipmentAddr != '' "> and fe.equipment_addr = #{equipmentAddr}</if>
+             <if test="equipmentStatus != null  and equipmentStatus != '' "> and fe.equipment_status = #{equipmentStatus}</if>
+             <if test="scrapDate != null "> and fe.scrap_date = #{scrapDate}</if>
+             <if test="checkDate != null "> and fe.check_date = #{checkDate}</if>
+             <if test="filePath != null  and filePath != '' "> and fe.file_path = #{filePath}</if>
+             <if test="remark != null  and remark != '' "> and fe.remark = #{remark}</if>
+             <if test="createTime != null "> and fe.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and fe.update_time = #{updateTime}</if>
+             <if test="userId != null "> and fe.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and fe.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and fe.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and fe.update_user_id = #{updateUserId}</if>
+             <if test="responsibleUserName != null and responsibleUserName !='' "> and fe.responsible_user_name = #{responsibleUserName}</if>
+         </where>
+    </select>
+    
+    <select id="selectTFacilitiesEquipmentById" parameterType="String" resultMap="TFacilitiesEquipmentResult">
+        <include refid="selectTFacilitiesEquipmentVo"/>
+        where fe.id = #{id}
+    </select>
+        
+    <insert id="insertTFacilitiesEquipment" parameterType="TFacilitiesEquipment">
+        insert into t_facilities_equipment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="responsibleUserId != null  ">responsible_user_id,</if>
+			<if test="equipmentName != null  and equipmentName != ''  ">equipment_name,</if>
+			<if test="equipmentType != null  and equipmentType != ''  ">equipment_type,</if>
+			<if test="equipmentAddr != null  and equipmentAddr != ''  ">equipment_addr,</if>
+			<if test="equipmentStatus != null  and equipmentStatus != ''  ">equipment_status,</if>
+			<if test="scrapDate != null  ">scrap_date,</if>
+			<if test="checkDate != null  ">check_date,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+			<if test="responsibleUserName != null and responsibleUserName !=''  ">responsible_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="responsibleUserId != null  ">#{responsibleUserId},</if>
+			<if test="equipmentName != null  and equipmentName != ''  ">#{equipmentName},</if>
+			<if test="equipmentType != null  and equipmentType != ''  ">#{equipmentType},</if>
+			<if test="equipmentAddr != null  and equipmentAddr != ''  ">#{equipmentAddr},</if>
+			<if test="equipmentStatus != null  and equipmentStatus != ''  ">#{equipmentStatus},</if>
+			<if test="scrapDate != null  ">#{scrapDate},</if>
+			<if test="checkDate != null  ">#{checkDate},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+			<if test="responsibleUserName != null and responsibleUserName !='' ">#{responsibleUserName},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTFacilitiesEquipment" parameterType="TFacilitiesEquipment">
+        update t_facilities_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="responsibleUserId != null  ">responsible_user_id = #{responsibleUserId},</if>
+            <if test="equipmentName != null  and equipmentName != ''  ">equipment_name = #{equipmentName},</if>
+            <if test="equipmentType != null  and equipmentType != ''  ">equipment_type = #{equipmentType},</if>
+            <if test="equipmentAddr != null  and equipmentAddr != ''  ">equipment_addr = #{equipmentAddr},</if>
+            <if test="equipmentStatus != null  and equipmentStatus != ''  ">equipment_status = #{equipmentStatus},</if>
+            <if test="scrapDate != null  ">scrap_date = #{scrapDate},</if>
+            <if test="checkDate != null  ">check_date = #{checkDate},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+            <if test="responsibleUserName != null and responsibleUserName !=''  ">responsible_user_name = #{responsibleUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTFacilitiesEquipmentById" parameterType="String">
+        delete from t_facilities_equipment where id = #{id}
+    </delete>
+	
+    <delete id="deleteTFacilitiesEquipmentByIds" parameterType="String">
+        delete from t_facilities_equipment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

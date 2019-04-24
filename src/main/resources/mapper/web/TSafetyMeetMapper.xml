@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSafetyMeetMapper">
+    
+    <resultMap type="TSafetyMeet" id="TSafetyMeetResult">
+        <result property="id"    column="id"    />
+        <result property="meetType"    column="meet_type"    />
+        <result property="meetName"    column="meet_name"    />
+        <result property="meetShouldNum"    column="meet_should_num"    />
+        <result property="meetActNum"    column="meet_act_num"    />
+        <result property="meetDate"    column="meet_date"    />
+        <result property="meetPlace"    column="meet_place"    />
+        <result property="meetForm"    column="meet_form"    />
+        <result property="meetDeptId"    column="meet_dept_id"    />
+        <result property="hostPer"    column="host_per"    />
+        <result property="tagging"    column="tagging"    />
+        <result property="noteTaker"    column="note_taker"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="meetInfo"    column="meet_info"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSafetyMeetVo">
+        select sm.id, sm.meet_type, sm.meet_name, sm.meet_should_num, sm.meet_act_num, sm.meet_date, sm.meet_place, sm.meet_form, sm.meet_dept_id, sm.host_per, sm.tagging, sm.note_taker, sm.file_path, sm.meet_info, sm.create_time, sm.update_time, sm.user_id, sm.meno, sm.business_id, sm.update_user_id from t_safety_meet sm
+    </sql>
+	
+    <select id="selectTSafetyMeetList" parameterType="TSafetyMeet" resultMap="TSafetyMeetResult">
+        <include refid="selectTSafetyMeetVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and sm.id = #{id}</if>
+             <if test="meetType != null  and meetType != '' "> and sm.meet_type = #{meetType}</if>
+             <if test="meetName != null  and meetName != '' "> and sm.meet_name = #{meetName}</if>
+             <if test="meetShouldNum != null "> and sm.meet_should_num = #{meetShouldNum}</if>
+             <if test="meetActNum != null "> and sm.meet_act_num = #{meetActNum}</if>
+             <if test="meetDate != null "> and sm.meet_date = #{meetDate}</if>
+             <if test="meetPlace != null  and meetPlace != '' "> and sm.meet_place = #{meetPlace}</if>
+             <if test="meetForm != null  and meetForm != '' "> and sm.meet_form = #{meetForm}</if>
+             <if test="meetDeptId != null  and meetDeptId != '' "> and sm.meet_dept_id = #{meetDeptId}</if>
+             <if test="hostPer != null  and hostPer != '' "> and sm.host_per = #{hostPer}</if>
+             <if test="tagging != null  and tagging != '' "> and sm.tagging = #{tagging}</if>
+             <if test="noteTaker != null  and noteTaker != '' "> and sm.note_taker = #{noteTaker}</if>
+             <if test="filePath != null  and filePath != '' "> and sm.file_path = #{filePath}</if>
+             <if test="meetInfo != null  and meetInfo != '' "> and sm.meet_info = #{meetInfo}</if>
+             <if test="createTime != null "> and sm.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and sm.update_time = #{updateTime}</if>
+             <if test="userId != null "> and sm.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and sm.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and sm.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and sm.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSafetyMeetById" parameterType="String" resultMap="TSafetyMeetResult">
+        <include refid="selectTSafetyMeetVo"/>
+        where sm.id = #{id}
+    </select>
+        
+    <insert id="insertTSafetyMeet" parameterType="TSafetyMeet">
+        insert into t_safety_meet
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="meetType != null  and meetType != ''  ">meet_type,</if>
+			<if test="meetName != null  and meetName != ''  ">meet_name,</if>
+			<if test="meetShouldNum != null  ">meet_should_num,</if>
+			<if test="meetActNum != null  ">meet_act_num,</if>
+			<if test="meetDate != null  ">meet_date,</if>
+			<if test="meetPlace != null  and meetPlace != ''  ">meet_place,</if>
+			<if test="meetForm != null  and meetForm != ''  ">meet_form,</if>
+			<if test="meetDeptId != null  and meetDeptId != ''  ">meet_dept_id,</if>
+			<if test="hostPer != null  and hostPer != ''  ">host_per,</if>
+			<if test="tagging != null  and tagging != ''  ">tagging,</if>
+			<if test="noteTaker != null  and noteTaker != ''  ">note_taker,</if>
+			<if test="filePath != null  and filePath != ''  ">file_path,</if>
+			<if test="meetInfo != null  and meetInfo != ''  ">meet_info,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="meetType != null  and meetType != ''  ">#{meetType},</if>
+			<if test="meetName != null  and meetName != ''  ">#{meetName},</if>
+			<if test="meetShouldNum != null  ">#{meetShouldNum},</if>
+			<if test="meetActNum != null  ">#{meetActNum},</if>
+			<if test="meetDate != null  ">#{meetDate},</if>
+			<if test="meetPlace != null  and meetPlace != ''  ">#{meetPlace},</if>
+			<if test="meetForm != null  and meetForm != ''  ">#{meetForm},</if>
+			<if test="meetDeptId != null  and meetDeptId != ''  ">#{meetDeptId},</if>
+			<if test="hostPer != null  and hostPer != ''  ">#{hostPer},</if>
+			<if test="tagging != null  and tagging != ''  ">#{tagging},</if>
+			<if test="noteTaker != null  and noteTaker != ''  ">#{noteTaker},</if>
+			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+			<if test="meetInfo != null  and meetInfo != ''  ">#{meetInfo},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSafetyMeet" parameterType="TSafetyMeet">
+        update t_safety_meet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="meetType != null  and meetType != ''  ">meet_type = #{meetType},</if>
+            <if test="meetName != null  and meetName != ''  ">meet_name = #{meetName},</if>
+            <if test="meetShouldNum != null  ">meet_should_num = #{meetShouldNum},</if>
+            <if test="meetActNum != null  ">meet_act_num = #{meetActNum},</if>
+            <if test="meetDate != null  ">meet_date = #{meetDate},</if>
+            <if test="meetPlace != null  and meetPlace != ''  ">meet_place = #{meetPlace},</if>
+            <if test="meetForm != null  and meetForm != ''  ">meet_form = #{meetForm},</if>
+            <if test="meetDeptId != null  and meetDeptId != ''  ">meet_dept_id = #{meetDeptId},</if>
+            <if test="hostPer != null  and hostPer != ''  ">host_per = #{hostPer},</if>
+            <if test="tagging != null  and tagging != ''  ">tagging = #{tagging},</if>
+            <if test="noteTaker != null  and noteTaker != ''  ">note_taker = #{noteTaker},</if>
+            <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>
+            <if test="meetInfo != null  and meetInfo != ''  ">meet_info = #{meetInfo},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSafetyMeetById" parameterType="String">
+        delete from t_safety_meet where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSafetyMeetByIds" parameterType="String">
+        delete from t_safety_meet where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,16 +1,15 @@
 package com.project.security.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 消息表 t_message
  * 
  * @author rbf
- * @date 2019-04-16
+ * @date 2019-04-24
  */
 public class TMessage implements Serializable
 {
@@ -22,6 +21,10 @@ public class TMessage implements Serializable
 	private String title;
 	/** 消息内容 */
 	private String context;
+	/** 链接url */
+	private String linkUrl;
+	/** logo链接url */
+	private String logoUrl;
 	/** 消息类型 */
 	private String messageType;
 	/** 创建人id */
@@ -59,6 +62,24 @@ public class TMessage implements Serializable
 	public String getContext() 
 	{
 		return context;
+	}
+	public void setLinkUrl(String linkUrl) 
+	{
+		this.linkUrl = linkUrl;
+	}
+
+	public String getLinkUrl() 
+	{
+		return linkUrl;
+	}
+	public void setLogoUrl(String logoUrl) 
+	{
+		this.logoUrl = logoUrl;
+	}
+
+	public String getLogoUrl() 
+	{
+		return logoUrl;
 	}
 	public void setMessageType(String messageType) 
 	{
@@ -111,6 +132,8 @@ public class TMessage implements Serializable
             .append("id", getId())
             .append("title", getTitle())
             .append("context", getContext())
+            .append("linkUrl", getLinkUrl())
+            .append("logoUrl", getLogoUrl())
             .append("messageType", getMessageType())
             .append("addUserId", getAddUserId())
             .append("createDate", getCreateDate())

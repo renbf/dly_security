@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.THiddenTroubleInvestigationMapper">
+    
+    <resultMap type="THiddenTroubleInvestigation" id="THiddenTroubleInvestigationResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="riskPosition"    column="risk_position"    />
+        <result property="riskName"    column="risk_name"    />
+        <result property="riskMeasures"    column="risk_measures"    />
+        <result property="riskNotControl"    column="risk_not_control"    />
+        <result property="riskLevel"    column="risk_level"    />
+        <result property="derelictionDeptId"    column="dereliction_dept_id"    />
+        <result property="derelictionPer"    column="dereliction_per"    />
+        <result property="derelictionPerName"    column="dereliction_per_name"    />
+        <result property="troubleshootDeptId"    column="troubleshoot_dept_id"    />
+        <result property="troubleshootPer"    column="troubleshoot_per"    />
+        <result property="troubleshootPerName"    column="troubleshoot_per_name"    />
+        <result property="troubleshootStatus"    column="troubleshoot_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTHiddenTroubleInvestigationVo">
+        select hti.id, hti.dept_id, hti.risk_position, hti.risk_name, hti.risk_measures, hti.risk_not_control, hti.risk_level, hti.dereliction_dept_id, hti.dereliction_per, hti.dereliction_per_name, hti.troubleshoot_dept_id, hti.troubleshoot_per, hti.troubleshoot_per_name, hti.troubleshoot_status, hti.create_time, hti.update_time, hti.user_id, hti.meno, hti.business_id, hti.update_user_id from t_hidden_trouble_investigation hti
+    </sql>
+	
+    <select id="selectTHiddenTroubleInvestigationList" parameterType="THiddenTroubleInvestigation" resultMap="THiddenTroubleInvestigationResult">
+        <include refid="selectTHiddenTroubleInvestigationVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and hti.id = #{id}</if>
+             <if test="deptId != null  and deptId != '' "> and hti.dept_id = #{deptId}</if>
+             <if test="riskPosition != null  and riskPosition != '' "> and hti.risk_position = #{riskPosition}</if>
+             <if test="riskName != null  and riskName != '' "> and hti.risk_name = #{riskName}</if>
+             <if test="riskMeasures != null  and riskMeasures != '' "> and hti.risk_measures = #{riskMeasures}</if>
+             <if test="riskNotControl != null  and riskNotControl != '' "> and hti.risk_not_control = #{riskNotControl}</if>
+             <if test="riskLevel != null  and riskLevel != '' "> and hti.risk_level = #{riskLevel}</if>
+             <if test="derelictionDeptId != null  and derelictionDeptId != '' "> and hti.dereliction_dept_id = #{derelictionDeptId}</if>
+             <if test="derelictionPer != null "> and hti.dereliction_per = #{derelictionPer}</if>
+             <if test="derelictionPerName != null  and derelictionPerName != '' "> and hti.dereliction_per_name = #{derelictionPerName}</if>
+             <if test="troubleshootDeptId != null  and troubleshootDeptId != '' "> and hti.troubleshoot_dept_id = #{troubleshootDeptId}</if>
+             <if test="troubleshootPer != null "> and hti.troubleshoot_per = #{troubleshootPer}</if>
+             <if test="troubleshootPerName != null  and troubleshootPerName != '' "> and hti.troubleshoot_per_name = #{troubleshootPerName}</if>
+             <if test="troubleshootStatus != null  and troubleshootStatus != '' "> and hti.troubleshoot_status = #{troubleshootStatus}</if>
+             <if test="createTime != null "> and hti.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and hti.update_time = #{updateTime}</if>
+             <if test="userId != null "> and hti.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and hti.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and hti.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and hti.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTHiddenTroubleInvestigationById" parameterType="String" resultMap="THiddenTroubleInvestigationResult">
+        <include refid="selectTHiddenTroubleInvestigationVo"/>
+        where hti.id = #{id}
+    </select>
+        
+    <insert id="insertTHiddenTroubleInvestigation" parameterType="THiddenTroubleInvestigation">
+        insert into t_hidden_trouble_investigation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="riskPosition != null  and riskPosition != ''  ">risk_position,</if>
+			<if test="riskName != null  and riskName != ''  ">risk_name,</if>
+			<if test="riskMeasures != null  and riskMeasures != ''  ">risk_measures,</if>
+			<if test="riskNotControl != null  and riskNotControl != ''  ">risk_not_control,</if>
+			<if test="riskLevel != null  and riskLevel != ''  ">risk_level,</if>
+			<if test="derelictionDeptId != null  and derelictionDeptId != ''  ">dereliction_dept_id,</if>
+			<if test="derelictionPer != null  ">dereliction_per,</if>
+			<if test="derelictionPerName != null  and derelictionPerName != ''  ">dereliction_per_name,</if>
+			<if test="troubleshootDeptId != null  and troubleshootDeptId != ''  ">troubleshoot_dept_id,</if>
+			<if test="troubleshootPer != null  ">troubleshoot_per,</if>
+			<if test="troubleshootPerName != null  and troubleshootPerName != ''  ">troubleshoot_per_name,</if>
+			<if test="troubleshootStatus != null  and troubleshootStatus != ''  ">troubleshoot_status,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="riskPosition != null  and riskPosition != ''  ">#{riskPosition},</if>
+			<if test="riskName != null  and riskName != ''  ">#{riskName},</if>
+			<if test="riskMeasures != null  and riskMeasures != ''  ">#{riskMeasures},</if>
+			<if test="riskNotControl != null  and riskNotControl != ''  ">#{riskNotControl},</if>
+			<if test="riskLevel != null  and riskLevel != ''  ">#{riskLevel},</if>
+			<if test="derelictionDeptId != null  and derelictionDeptId != ''  ">#{derelictionDeptId},</if>
+			<if test="derelictionPer != null  ">#{derelictionPer},</if>
+			<if test="derelictionPerName != null  and derelictionPerName != ''  ">#{derelictionPerName},</if>
+			<if test="troubleshootDeptId != null  and troubleshootDeptId != ''  ">#{troubleshootDeptId},</if>
+			<if test="troubleshootPer != null  ">#{troubleshootPer},</if>
+			<if test="troubleshootPerName != null  and troubleshootPerName != ''  ">#{troubleshootPerName},</if>
+			<if test="troubleshootStatus != null  and troubleshootStatus != ''  ">#{troubleshootStatus},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTHiddenTroubleInvestigation" parameterType="THiddenTroubleInvestigation">
+        update t_hidden_trouble_investigation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="riskPosition != null  and riskPosition != ''  ">risk_position = #{riskPosition},</if>
+            <if test="riskName != null  and riskName != ''  ">risk_name = #{riskName},</if>
+            <if test="riskMeasures != null  and riskMeasures != ''  ">risk_measures = #{riskMeasures},</if>
+            <if test="riskNotControl != null  and riskNotControl != ''  ">risk_not_control = #{riskNotControl},</if>
+            <if test="riskLevel != null  and riskLevel != ''  ">risk_level = #{riskLevel},</if>
+            <if test="derelictionDeptId != null  and derelictionDeptId != ''  ">dereliction_dept_id = #{derelictionDeptId},</if>
+            <if test="derelictionPer != null  ">dereliction_per = #{derelictionPer},</if>
+            <if test="derelictionPerName != null  and derelictionPerName != ''  ">dereliction_per_name = #{derelictionPerName},</if>
+            <if test="troubleshootDeptId != null  and troubleshootDeptId != ''  ">troubleshoot_dept_id = #{troubleshootDeptId},</if>
+            <if test="troubleshootPer != null  ">troubleshoot_per = #{troubleshootPer},</if>
+            <if test="troubleshootPerName != null  and troubleshootPerName != ''  ">troubleshoot_per_name = #{troubleshootPerName},</if>
+            <if test="troubleshootStatus != null  and troubleshootStatus != ''  ">troubleshoot_status = #{troubleshootStatus},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTHiddenTroubleInvestigationById" parameterType="String">
+        delete from t_hidden_trouble_investigation where id = #{id}
+    </delete>
+	
+    <delete id="deleteTHiddenTroubleInvestigationByIds" parameterType="String">
+        delete from t_hidden_trouble_investigation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

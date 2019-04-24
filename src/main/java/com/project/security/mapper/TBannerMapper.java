@@ -1,7 +1,9 @@
 package com.project.security.mapper;
 
 import com.project.security.domain.TBanner;
-import java.util.List;	
+import java.util.List;
+
+import org.springframework.stereotype.Repository;	
 
 /**
  * 轮播图 数据层
@@ -9,6 +11,7 @@ import java.util.List;
  * @author rbf
  * @date 2019-04-15
  */
+@Repository("bannerMapper")
 public interface TBannerMapper 
 {
 	/**

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TOutNewspaperClassVehicleMapper">
+    
+    <resultMap type="TOutNewspaperClassVehicle" id="TOutNewspaperClassVehicleResult">
+        <result property="id"    column="id"    />
+        <result property="vehicleLicence"    column="vehicle_licence"    />
+        <result property="lastShiftsNum"    column="last_shifts_num"    />
+        <result property="lastShiftsType"    column="last_shifts_type"    />
+        <result property="lastDriver"    column="last_driver"    />
+        <result property="lastShiftsDate"    column="last_shifts_date"    />
+        <result property="lastNewspaperClassDate"    column="last_newspaper_class_date"    />
+        <result property="distanceDay"    column="distance_day"    />
+        <result property="lastLineName"    column="last_line_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTOutNewspaperClassVehicleVo">
+        select oncv.id, oncv.vehicle_licence, oncv.last_shifts_num, oncv.last_shifts_type, oncv.last_driver, oncv.last_shifts_date, oncv.last_newspaper_class_date, oncv.distance_day, oncv.last_line_name, oncv.dept_id, oncv.create_time, oncv.update_time, oncv.user_id, oncv.business_id, oncv.update_user_id from t_out_newspaper_class_vehicle oncv
+    </sql>
+	
+    <select id="selectTOutNewspaperClassVehicleList" parameterType="TOutNewspaperClassVehicle" resultMap="TOutNewspaperClassVehicleResult">
+        <include refid="selectTOutNewspaperClassVehicleVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and oncv.id = #{id}</if>
+             <if test="vehicleLicence != null  and vehicleLicence != '' "> and oncv.vehicle_licence = #{vehicleLicence}</if>
+             <if test="lastShiftsNum != null  and lastShiftsNum != '' "> and oncv.last_shifts_num = #{lastShiftsNum}</if>
+             <if test="lastShiftsType != null  and lastShiftsType != '' "> and oncv.last_shifts_type = #{lastShiftsType}</if>
+             <if test="lastDriver != null  and lastDriver != '' "> and oncv.last_driver = #{lastDriver}</if>
+             <if test="lastShiftsDate != null "> and oncv.last_shifts_date = #{lastShiftsDate}</if>
+             <if test="lastNewspaperClassDate != null "> and oncv.last_newspaper_class_date = #{lastNewspaperClassDate}</if>
+             <if test="distanceDay != null  and distanceDay != '' "> and oncv.distance_day = #{distanceDay}</if>
+             <if test="lastLineName != null  and lastLineName != '' "> and oncv.last_line_name = #{lastLineName}</if>
+             <if test="deptId != null  and deptId != '' "> and oncv.dept_id = #{deptId}</if>
+             <if test="createTime != null "> and oncv.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and oncv.update_time = #{updateTime}</if>
+             <if test="userId != null "> and oncv.user_id = #{userId}</if>
+             <if test="businessId != null  and businessId != '' "> and oncv.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and oncv.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTOutNewspaperClassVehicleById" parameterType="String" resultMap="TOutNewspaperClassVehicleResult">
+        <include refid="selectTOutNewspaperClassVehicleVo"/>
+        where oncv.id = #{id}
+    </select>
+        
+    <insert id="insertTOutNewspaperClassVehicle" parameterType="TOutNewspaperClassVehicle">
+        insert into t_out_newspaper_class_vehicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence,</if>
+			<if test="lastShiftsNum != null  and lastShiftsNum != ''  ">last_shifts_num,</if>
+			<if test="lastShiftsType != null  and lastShiftsType != ''  ">last_shifts_type,</if>
+			<if test="lastDriver != null  and lastDriver != ''  ">last_driver,</if>
+			<if test="lastShiftsDate != null  ">last_shifts_date,</if>
+			<if test="lastNewspaperClassDate != null  ">last_newspaper_class_date,</if>
+			<if test="distanceDay != null  and distanceDay != ''  ">distance_day,</if>
+			<if test="lastLineName != null  and lastLineName != ''  ">last_line_name,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="vehicleLicence != null  and vehicleLicence != ''  ">#{vehicleLicence},</if>
+			<if test="lastShiftsNum != null  and lastShiftsNum != ''  ">#{lastShiftsNum},</if>
+			<if test="lastShiftsType != null  and lastShiftsType != ''  ">#{lastShiftsType},</if>
+			<if test="lastDriver != null  and lastDriver != ''  ">#{lastDriver},</if>
+			<if test="lastShiftsDate != null  ">#{lastShiftsDate},</if>
+			<if test="lastNewspaperClassDate != null  ">#{lastNewspaperClassDate},</if>
+			<if test="distanceDay != null  and distanceDay != ''  ">#{distanceDay},</if>
+			<if test="lastLineName != null  and lastLineName != ''  ">#{lastLineName},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTOutNewspaperClassVehicle" parameterType="TOutNewspaperClassVehicle">
+        update t_out_newspaper_class_vehicle
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence = #{vehicleLicence},</if>
+            <if test="lastShiftsNum != null  and lastShiftsNum != ''  ">last_shifts_num = #{lastShiftsNum},</if>
+            <if test="lastShiftsType != null  and lastShiftsType != ''  ">last_shifts_type = #{lastShiftsType},</if>
+            <if test="lastDriver != null  and lastDriver != ''  ">last_driver = #{lastDriver},</if>
+            <if test="lastShiftsDate != null  ">last_shifts_date = #{lastShiftsDate},</if>
+            <if test="lastNewspaperClassDate != null  ">last_newspaper_class_date = #{lastNewspaperClassDate},</if>
+            <if test="distanceDay != null  and distanceDay != ''  ">distance_day = #{distanceDay},</if>
+            <if test="lastLineName != null  and lastLineName != ''  ">last_line_name = #{lastLineName},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTOutNewspaperClassVehicleById" parameterType="String">
+        delete from t_out_newspaper_class_vehicle where id = #{id}
+    </delete>
+	
+    <delete id="deleteTOutNewspaperClassVehicleByIds" parameterType="String">
+        delete from t_out_newspaper_class_vehicle where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

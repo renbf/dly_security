@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TUserSubjectCollectMapper">
+    
+    <resultMap type="com.project.web.domian.TUserSubjectCollect" id="TUserSubjectCollectResult">
+        <result property="userId"    column="user_id"    />
+        <result property="subjectId"    column="subject_id"    />
+        <result property="isCollect"    column="is_collect"    />
+    </resultMap>
+	
+	<sql id="selectTUserSubjectCollectbasicColums">
+        select usc.user_id, usc.subject_id, usc.is_collect    </sql>
+	
+    <select id="selectTUserSubjectCollectList" parameterType="com.project.web.domian.TUserSubjectCollect" resultMap="TUserSubjectCollectResult">
+        <include refid="selectTUserSubjectCollectbasicColums"/>
+        from t_user_subject_collect usc
+        <where>  
+            <if test="userId != null  and userId != '' "> and usc.user_id = #{userId}</if>
+             <if test="subjectId != null  and subjectId != '' "> and usc.subject_id = #{subjectId}</if>
+             <if test="isCollect != null  and isCollect != '' "> and usc.is_collect = #{isCollect}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserSubjectCollectById" parameterType="String" resultMap="TUserSubjectCollectResult">
+        <include refid="selectTUserSubjectCollectbasicColums"/>
+        from t_user_subject_collect usc
+        where usc.user_id = #{userId}
+    </select>
+        
+    <insert id="insertTUserSubjectCollect" parameterType="com.project.web.domian.TUserSubjectCollect">
+        insert into t_user_subject_collect
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null  and userId != ''  ">user_id,</if>
+			<if test="subjectId != null  and subjectId != ''  ">subject_id,</if>
+			<if test="isCollect != null  and isCollect != ''  ">is_collect,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null  and userId != ''  ">#{userId},</if>
+			<if test="subjectId != null  and subjectId != ''  ">#{subjectId},</if>
+			<if test="isCollect != null  and isCollect != ''  ">#{isCollect},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserSubjectCollect" parameterType="com.project.web.domian.TUserSubjectCollect">
+        update t_user_subject_collect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subjectId != null  and subjectId != ''  ">subject_id = #{subjectId},</if>
+            <if test="isCollect != null  and isCollect != ''  ">is_collect = #{isCollect},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+	<delete id="deleteTUserSubjectCollectById" parameterType="String">
+        delete from t_user_subject_collect where user_id = #{userId}
+    </delete>
+	
+    <delete id="deleteTUserSubjectCollectByIds" parameterType="String">
+        delete from t_user_subject_collect where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

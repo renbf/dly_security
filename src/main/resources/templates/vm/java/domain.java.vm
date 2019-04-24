@@ -1,8 +1,8 @@
-package ${package}.domain;
+package ${package}.domian;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import java.io.Serializable;
+import com.project.common.base.BaseEntity;
 #foreach ($column in $columns)
 #if($column.attrType == 'Date')
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.Date;
  * @author ${author}
  * @date ${datetime}
  */
-public class ${className} implements Serializable
+public class ${className} extends BaseEntity
 {
 	private static final long serialVersionUID = 1L;
 	

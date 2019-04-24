@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCarTestingEvaluateMapper">
+    
+    <resultMap type="com.project.web.domian.TCarTestingEvaluate" id="TCarTestingEvaluateResult">
+        <result property="id"    column="id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="testingType"    column="testing_type"    />
+        <result property="testingUnit"    column="testing_unit"    />
+        <result property="testingDate"    column="testing_date"    />
+        <result property="testingValidity"    column="testing_validity"    />
+        <result property="reportNumber"    column="report_number"    />
+        <result property="remark"    column="remark"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCarTestingEvaluatebasicColums">
+        select cte.id, cte.car_id, cte.testing_type, cte.testing_unit, cte.testing_date, cte.testing_validity, cte.report_number, cte.remark, cte.file_url, cte.add_user_id, cte.create_date, cte.update_date, cte.update_user_id    </sql>
+	
+    <select id="selectTCarTestingEvaluateList" parameterType="com.project.web.domian.TCarTestingEvaluate" resultMap="TCarTestingEvaluateResult">
+        <include refid="selectTCarTestingEvaluatebasicColums"/>
+        from t_car_testing_evaluate cte
+        <where>  
+            <if test="id != null  and id != '' "> and cte.id = #{id}</if>
+             <if test="carId != null  and carId != '' "> and cte.car_id = #{carId}</if>
+             <if test="testingType != null  and testingType != '' "> and cte.testing_type = #{testingType}</if>
+             <if test="testingUnit != null  and testingUnit != '' "> and cte.testing_unit = #{testingUnit}</if>
+             <if test="testingDate != null "> and cte.testing_date = #{testingDate}</if>
+             <if test="testingValidity != null "> and cte.testing_validity = #{testingValidity}</if>
+             <if test="reportNumber != null  and reportNumber != '' "> and cte.report_number = #{reportNumber}</if>
+             <if test="remark != null  and remark != '' "> and cte.remark = #{remark}</if>
+             <if test="fileUrl != null  and fileUrl != '' "> and cte.file_url = #{fileUrl}</if>
+             <if test="addUserId != null  and addUserId != '' "> and cte.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and cte.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and cte.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and cte.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTCarTestingEvaluateById" parameterType="String" resultMap="TCarTestingEvaluateResult">
+        <include refid="selectTCarTestingEvaluatebasicColums"/>
+        from t_car_testing_evaluate cte
+        where cte.id = #{id}
+    </select>
+        
+    <insert id="insertTCarTestingEvaluate" parameterType="com.project.web.domian.TCarTestingEvaluate">
+        insert into t_car_testing_evaluate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="carId != null  and carId != ''  ">car_id,</if>
+			<if test="testingType != null  and testingType != ''  ">testing_type,</if>
+			<if test="testingUnit != null  and testingUnit != ''  ">testing_unit,</if>
+			<if test="testingDate != null  ">testing_date,</if>
+			<if test="testingValidity != null  ">testing_validity,</if>
+			<if test="reportNumber != null  and reportNumber != ''  ">report_number,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="fileUrl != null  and fileUrl != ''  ">file_url,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="carId != null  and carId != ''  ">#{carId},</if>
+			<if test="testingType != null  and testingType != ''  ">#{testingType},</if>
+			<if test="testingUnit != null  and testingUnit != ''  ">#{testingUnit},</if>
+			<if test="testingDate != null  ">#{testingDate},</if>
+			<if test="testingValidity != null  ">#{testingValidity},</if>
+			<if test="reportNumber != null  and reportNumber != ''  ">#{reportNumber},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="fileUrl != null  and fileUrl != ''  ">#{fileUrl},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCarTestingEvaluate" parameterType="com.project.web.domian.TCarTestingEvaluate">
+        update t_car_testing_evaluate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null  and carId != ''  ">car_id = #{carId},</if>
+            <if test="testingType != null  and testingType != ''  ">testing_type = #{testingType},</if>
+            <if test="testingUnit != null  and testingUnit != ''  ">testing_unit = #{testingUnit},</if>
+            <if test="testingDate != null  ">testing_date = #{testingDate},</if>
+            <if test="testingValidity != null  ">testing_validity = #{testingValidity},</if>
+            <if test="reportNumber != null  and reportNumber != ''  ">report_number = #{reportNumber},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="fileUrl != null  and fileUrl != ''  ">file_url = #{fileUrl},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCarTestingEvaluateById" parameterType="String">
+        delete from t_car_testing_evaluate where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCarTestingEvaluateByIds" parameterType="String">
+        delete from t_car_testing_evaluate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

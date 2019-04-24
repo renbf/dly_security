@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDangerMapper">
+    
+    <resultMap type="com.project.web.domian.TDanger" id="TDangerResult">
+        <result property="id"    column="id"    />
+        <result property="inspectDeptId"    column="inspect_dept_id"    />
+        <result property="inspectObj"    column="inspect_obj"    />
+        <result property="checkUserId"    column="check_user_id"    />
+        <result property="checkDate"    column="check_date"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="dangerPosition"    column="danger_position"    />
+        <result property="dangerDeptId"    column="danger_dept_id"    />
+        <result property="dangerType"    column="danger_type"    />
+        <result property="dangerLevel"    column="danger_level"    />
+        <result property="riskResource"    column="risk_resource"    />
+        <result property="maybeResult"    column="maybe_result"    />
+        <result property="dangerUrl"    column="danger_url"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="dochangeUserId"    column="dochange_user_id"    />
+        <result property="dochangeDeptId"    column="dochange_dept_id"    />
+        <result property="dochangeStep"    column="dochange_step"    />
+        <result property="dochangeCapital"    column="dochange_capital"    />
+        <result property="dochangePicture"    column="dochange_picture"    />
+        <result property="dochangeDate"    column="dochange_date"    />
+        <result property="dochangeType"    column="dochange_type"    />
+        <result property="refuseText"    column="refuse_text"    />
+        <result property="checkAcceptUserId"    column="check_accept_user_id"    />
+        <result property="checkAcceptDeptId"    column="check_accept_dept_id"    />
+        <result property="checkAcceptDate"    column="check_accept_date"    />
+        <result property="checkAcceptResult"    column="check_accept_result"    />
+        <result property="checkAcceptUrl"    column="check_accept_url"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTDangerbasicColums">
+        select d.id, d.inspect_dept_id, d.inspect_obj, d.check_user_id, d.check_date, d.check_type, d.danger_position, d.danger_dept_id, d.danger_type, d.danger_level, d.risk_resource, d.maybe_result, d.danger_url, d.remark, d.status, d.end_date, d.dochange_user_id, d.dochange_dept_id, d.dochange_step, d.dochange_capital, d.dochange_picture, d.dochange_date, d.dochange_type, d.refuse_text, d.check_accept_user_id, d.check_accept_dept_id, d.check_accept_date, d.check_accept_result, d.check_accept_url, d.add_user_id, d.create_date, d.update_date, d.update_user_id    </sql>
+	
+    <select id="selectTDangerList" parameterType="com.project.web.domian.TDanger" resultMap="TDangerResult">
+        <include refid="selectTDangerbasicColums"/>
+        from t_danger d
+        <where>  
+            <if test="id != null  and id != '' "> and d.id = #{id}</if>
+             <if test="inspectDeptId != null "> and d.inspect_dept_id = #{inspectDeptId}</if>
+             <if test="inspectObj != null  and inspectObj != '' "> and d.inspect_obj = #{inspectObj}</if>
+             <if test="checkUserId != null  and checkUserId != '' "> and d.check_user_id = #{checkUserId}</if>
+             <if test="checkDate != null "> and d.check_date = #{checkDate}</if>
+             <if test="checkType != null  and checkType != '' "> and d.check_type = #{checkType}</if>
+             <if test="dangerPosition != null  and dangerPosition != '' "> and d.danger_position = #{dangerPosition}</if>
+             <if test="dangerDeptId != null "> and d.danger_dept_id = #{dangerDeptId}</if>
+             <if test="dangerType != null  and dangerType != '' "> and d.danger_type = #{dangerType}</if>
+             <if test="dangerLevel != null  and dangerLevel != '' "> and d.danger_level = #{dangerLevel}</if>
+             <if test="riskResource != null  and riskResource != '' "> and d.risk_resource = #{riskResource}</if>
+             <if test="maybeResult != null  and maybeResult != '' "> and d.maybe_result = #{maybeResult}</if>
+             <if test="dangerUrl != null  and dangerUrl != '' "> and d.danger_url = #{dangerUrl}</if>
+             <if test="remark != null  and remark != '' "> and d.remark = #{remark}</if>
+             <if test="status != null  and status != '' "> and d.status = #{status}</if>
+             <if test="endDate != null "> and d.end_date = #{endDate}</if>
+             <if test="dochangeUserId != null  and dochangeUserId != '' "> and d.dochange_user_id = #{dochangeUserId}</if>
+             <if test="dochangeDeptId != null "> and d.dochange_dept_id = #{dochangeDeptId}</if>
+             <if test="dochangeStep != null  and dochangeStep != '' "> and d.dochange_step = #{dochangeStep}</if>
+             <if test="dochangeCapital != null  and dochangeCapital != '' "> and d.dochange_capital = #{dochangeCapital}</if>
+             <if test="dochangePicture != null  and dochangePicture != '' "> and d.dochange_picture = #{dochangePicture}</if>
+             <if test="dochangeDate != null "> and d.dochange_date = #{dochangeDate}</if>
+             <if test="dochangeType != null  and dochangeType != '' "> and d.dochange_type = #{dochangeType}</if>
+             <if test="refuseText != null  and refuseText != '' "> and d.refuse_text = #{refuseText}</if>
+             <if test="checkAcceptUserId != null  and checkAcceptUserId != '' "> and d.check_accept_user_id = #{checkAcceptUserId}</if>
+             <if test="checkAcceptDeptId != null "> and d.check_accept_dept_id = #{checkAcceptDeptId}</if>
+             <if test="checkAcceptDate != null "> and d.check_accept_date = #{checkAcceptDate}</if>
+             <if test="checkAcceptResult != null  and checkAcceptResult != '' "> and d.check_accept_result = #{checkAcceptResult}</if>
+             <if test="checkAcceptUrl != null  and checkAcceptUrl != '' "> and d.check_accept_url = #{checkAcceptUrl}</if>
+             <if test="addUserId != null  and addUserId != '' "> and d.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and d.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and d.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and d.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDangerById" parameterType="String" resultMap="TDangerResult">
+        <include refid="selectTDangerbasicColums"/>
+        from t_danger d
+        where d.id = #{id}
+    </select>
+        
+    <insert id="insertTDanger" parameterType="com.project.web.domian.TDanger">
+        insert into t_danger
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="inspectDeptId != null  ">inspect_dept_id,</if>
+			<if test="inspectObj != null  and inspectObj != ''  ">inspect_obj,</if>
+			<if test="checkUserId != null  and checkUserId != ''  ">check_user_id,</if>
+			<if test="checkDate != null  ">check_date,</if>
+			<if test="checkType != null  and checkType != ''  ">check_type,</if>
+			<if test="dangerPosition != null  and dangerPosition != ''  ">danger_position,</if>
+			<if test="dangerDeptId != null  ">danger_dept_id,</if>
+			<if test="dangerType != null  and dangerType != ''  ">danger_type,</if>
+			<if test="dangerLevel != null  and dangerLevel != ''  ">danger_level,</if>
+			<if test="riskResource != null  and riskResource != ''  ">risk_resource,</if>
+			<if test="maybeResult != null  and maybeResult != ''  ">maybe_result,</if>
+			<if test="dangerUrl != null  and dangerUrl != ''  ">danger_url,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="endDate != null  ">end_date,</if>
+			<if test="dochangeUserId != null  and dochangeUserId != ''  ">dochange_user_id,</if>
+			<if test="dochangeDeptId != null  ">dochange_dept_id,</if>
+			<if test="dochangeStep != null  and dochangeStep != ''  ">dochange_step,</if>
+			<if test="dochangeCapital != null  and dochangeCapital != ''  ">dochange_capital,</if>
+			<if test="dochangePicture != null  and dochangePicture != ''  ">dochange_picture,</if>
+			<if test="dochangeDate != null  ">dochange_date,</if>
+			<if test="dochangeType != null  and dochangeType != ''  ">dochange_type,</if>
+			<if test="refuseText != null  and refuseText != ''  ">refuse_text,</if>
+			<if test="checkAcceptUserId != null  and checkAcceptUserId != ''  ">check_accept_user_id,</if>
+			<if test="checkAcceptDeptId != null  ">check_accept_dept_id,</if>
+			<if test="checkAcceptDate != null  ">check_accept_date,</if>
+			<if test="checkAcceptResult != null  and checkAcceptResult != ''  ">check_accept_result,</if>
+			<if test="checkAcceptUrl != null  and checkAcceptUrl != ''  ">check_accept_url,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="inspectDeptId != null  ">#{inspectDeptId},</if>
+			<if test="inspectObj != null  and inspectObj != ''  ">#{inspectObj},</if>
+			<if test="checkUserId != null  and checkUserId != ''  ">#{checkUserId},</if>
+			<if test="checkDate != null  ">#{checkDate},</if>
+			<if test="checkType != null  and checkType != ''  ">#{checkType},</if>
+			<if test="dangerPosition != null  and dangerPosition != ''  ">#{dangerPosition},</if>
+			<if test="dangerDeptId != null  ">#{dangerDeptId},</if>
+			<if test="dangerType != null  and dangerType != ''  ">#{dangerType},</if>
+			<if test="dangerLevel != null  and dangerLevel != ''  ">#{dangerLevel},</if>
+			<if test="riskResource != null  and riskResource != ''  ">#{riskResource},</if>
+			<if test="maybeResult != null  and maybeResult != ''  ">#{maybeResult},</if>
+			<if test="dangerUrl != null  and dangerUrl != ''  ">#{dangerUrl},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="endDate != null  ">#{endDate},</if>
+			<if test="dochangeUserId != null  and dochangeUserId != ''  ">#{dochangeUserId},</if>
+			<if test="dochangeDeptId != null  ">#{dochangeDeptId},</if>
+			<if test="dochangeStep != null  and dochangeStep != ''  ">#{dochangeStep},</if>
+			<if test="dochangeCapital != null  and dochangeCapital != ''  ">#{dochangeCapital},</if>
+			<if test="dochangePicture != null  and dochangePicture != ''  ">#{dochangePicture},</if>
+			<if test="dochangeDate != null  ">#{dochangeDate},</if>
+			<if test="dochangeType != null  and dochangeType != ''  ">#{dochangeType},</if>
+			<if test="refuseText != null  and refuseText != ''  ">#{refuseText},</if>
+			<if test="checkAcceptUserId != null  and checkAcceptUserId != ''  ">#{checkAcceptUserId},</if>
+			<if test="checkAcceptDeptId != null  ">#{checkAcceptDeptId},</if>
+			<if test="checkAcceptDate != null  ">#{checkAcceptDate},</if>
+			<if test="checkAcceptResult != null  and checkAcceptResult != ''  ">#{checkAcceptResult},</if>
+			<if test="checkAcceptUrl != null  and checkAcceptUrl != ''  ">#{checkAcceptUrl},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDanger" parameterType="com.project.web.domian.TDanger">
+        update t_danger
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inspectDeptId != null  ">inspect_dept_id = #{inspectDeptId},</if>
+            <if test="inspectObj != null  and inspectObj != ''  ">inspect_obj = #{inspectObj},</if>
+            <if test="checkUserId != null  and checkUserId != ''  ">check_user_id = #{checkUserId},</if>
+            <if test="checkDate != null  ">check_date = #{checkDate},</if>
+            <if test="checkType != null  and checkType != ''  ">check_type = #{checkType},</if>
+            <if test="dangerPosition != null  and dangerPosition != ''  ">danger_position = #{dangerPosition},</if>
+            <if test="dangerDeptId != null  ">danger_dept_id = #{dangerDeptId},</if>
+            <if test="dangerType != null  and dangerType != ''  ">danger_type = #{dangerType},</if>
+            <if test="dangerLevel != null  and dangerLevel != ''  ">danger_level = #{dangerLevel},</if>
+            <if test="riskResource != null  and riskResource != ''  ">risk_resource = #{riskResource},</if>
+            <if test="maybeResult != null  and maybeResult != ''  ">maybe_result = #{maybeResult},</if>
+            <if test="dangerUrl != null  and dangerUrl != ''  ">danger_url = #{dangerUrl},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="endDate != null  ">end_date = #{endDate},</if>
+            <if test="dochangeUserId != null  and dochangeUserId != ''  ">dochange_user_id = #{dochangeUserId},</if>
+            <if test="dochangeDeptId != null  ">dochange_dept_id = #{dochangeDeptId},</if>
+            <if test="dochangeStep != null  and dochangeStep != ''  ">dochange_step = #{dochangeStep},</if>
+            <if test="dochangeCapital != null  and dochangeCapital != ''  ">dochange_capital = #{dochangeCapital},</if>
+            <if test="dochangePicture != null  and dochangePicture != ''  ">dochange_picture = #{dochangePicture},</if>
+            <if test="dochangeDate != null  ">dochange_date = #{dochangeDate},</if>
+            <if test="dochangeType != null  and dochangeType != ''  ">dochange_type = #{dochangeType},</if>
+            <if test="refuseText != null  and refuseText != ''  ">refuse_text = #{refuseText},</if>
+            <if test="checkAcceptUserId != null  and checkAcceptUserId != ''  ">check_accept_user_id = #{checkAcceptUserId},</if>
+            <if test="checkAcceptDeptId != null  ">check_accept_dept_id = #{checkAcceptDeptId},</if>
+            <if test="checkAcceptDate != null  ">check_accept_date = #{checkAcceptDate},</if>
+            <if test="checkAcceptResult != null  and checkAcceptResult != ''  ">check_accept_result = #{checkAcceptResult},</if>
+            <if test="checkAcceptUrl != null  and checkAcceptUrl != ''  ">check_accept_url = #{checkAcceptUrl},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTDangerById" parameterType="String">
+        delete from t_danger where id = #{id}
+    </delete>
+	
+    <delete id="deleteTDangerByIds" parameterType="String">
+        delete from t_danger where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TDriverMiddleLogMapper">
+    
+    <resultMap type="com.project.web.domian.TDriverMiddleLog" id="TDriverMiddleLogResult">
+        <result property="driverLogId"    column="driver_log_id"    />
+        <result property="writeTime"    column="write_time"    />
+        <result property="carCheckProject"    column="car_check_project"    />
+        <result property="changeAddress"    column="change_address"    />
+        <result property="stopCarTime"    column="stop_car_time"    />
+        <result property="startCarTime"    column="start_car_time"    />
+        <result property="troubleShooting"    column="trouble_shooting"    />
+        <result property="drivingPhoto"    column="driving_photo"    />
+        <result property="autograph"    column="autograph"    />
+        <result property="remark"    column="remark"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTDriverMiddleLogbasicColums">
+        select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id    </sql>
+	
+    <select id="selectTDriverMiddleLogList" parameterType="com.project.web.domian.TDriverMiddleLog" resultMap="TDriverMiddleLogResult">
+        <include refid="selectTDriverMiddleLogbasicColums"/>
+        from t_driver_middle_log dml
+        <where>  
+            <if test="driverLogId != null  and driverLogId != '' "> and dml.driver_log_id = #{driverLogId}</if>
+             <if test="writeTime != null "> and dml.write_time = #{writeTime}</if>
+             <if test="carCheckProject != null  and carCheckProject != '' "> and dml.car_check_project = #{carCheckProject}</if>
+             <if test="changeAddress != null  and changeAddress != '' "> and dml.change_address = #{changeAddress}</if>
+             <if test="stopCarTime != null "> and dml.stop_car_time = #{stopCarTime}</if>
+             <if test="startCarTime != null "> and dml.start_car_time = #{startCarTime}</if>
+             <if test="troubleShooting != null  and troubleShooting != '' "> and dml.trouble_shooting = #{troubleShooting}</if>
+             <if test="drivingPhoto != null  and drivingPhoto != '' "> and dml.driving_photo = #{drivingPhoto}</if>
+             <if test="autograph != null  and autograph != '' "> and dml.autograph = #{autograph}</if>
+             <if test="remark != null  and remark != '' "> and dml.remark = #{remark}</if>
+             <if test="addUserId != null  and addUserId != '' "> and dml.add_user_id = #{addUserId}</if>
+             <if test="createDate != null "> and dml.create_date = #{createDate}</if>
+             <if test="updateDate != null "> and dml.update_date = #{updateDate}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and dml.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTDriverMiddleLogById" parameterType="String" resultMap="TDriverMiddleLogResult">
+        <include refid="selectTDriverMiddleLogbasicColums"/>
+        from t_driver_middle_log dml
+        where dml.driver_log_id = #{driverLogId}
+    </select>
+        
+    <insert id="insertTDriverMiddleLog" parameterType="com.project.web.domian.TDriverMiddleLog">
+        insert into t_driver_middle_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="driverLogId != null  and driverLogId != ''  ">driver_log_id,</if>
+			<if test="writeTime != null  ">write_time,</if>
+			<if test="carCheckProject != null  and carCheckProject != ''  ">car_check_project,</if>
+			<if test="changeAddress != null  and changeAddress != ''  ">change_address,</if>
+			<if test="stopCarTime != null  ">stop_car_time,</if>
+			<if test="startCarTime != null  ">start_car_time,</if>
+			<if test="troubleShooting != null  and troubleShooting != ''  ">trouble_shooting,</if>
+			<if test="drivingPhoto != null  and drivingPhoto != ''  ">driving_photo,</if>
+			<if test="autograph != null  and autograph != ''  ">autograph,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="driverLogId != null  and driverLogId != ''  ">#{driverLogId},</if>
+			<if test="writeTime != null  ">#{writeTime},</if>
+			<if test="carCheckProject != null  and carCheckProject != ''  ">#{carCheckProject},</if>
+			<if test="changeAddress != null  and changeAddress != ''  ">#{changeAddress},</if>
+			<if test="stopCarTime != null  ">#{stopCarTime},</if>
+			<if test="startCarTime != null  ">#{startCarTime},</if>
+			<if test="troubleShooting != null  and troubleShooting != ''  ">#{troubleShooting},</if>
+			<if test="drivingPhoto != null  and drivingPhoto != ''  ">#{drivingPhoto},</if>
+			<if test="autograph != null  and autograph != ''  ">#{autograph},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTDriverMiddleLog" parameterType="com.project.web.domian.TDriverMiddleLog">
+        update t_driver_middle_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="writeTime != null  ">write_time = #{writeTime},</if>
+            <if test="carCheckProject != null  and carCheckProject != ''  ">car_check_project = #{carCheckProject},</if>
+            <if test="changeAddress != null  and changeAddress != ''  ">change_address = #{changeAddress},</if>
+            <if test="stopCarTime != null  ">stop_car_time = #{stopCarTime},</if>
+            <if test="startCarTime != null  ">start_car_time = #{startCarTime},</if>
+            <if test="troubleShooting != null  and troubleShooting != ''  ">trouble_shooting = #{troubleShooting},</if>
+            <if test="drivingPhoto != null  and drivingPhoto != ''  ">driving_photo = #{drivingPhoto},</if>
+            <if test="autograph != null  and autograph != ''  ">autograph = #{autograph},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where driver_log_id = #{driverLogId}
+    </update>
+
+	<delete id="deleteTDriverMiddleLogById" parameterType="String">
+        delete from t_driver_middle_log where driver_log_id = #{driverLogId}
+    </delete>
+	
+    <delete id="deleteTDriverMiddleLogByIds" parameterType="String">
+        delete from t_driver_middle_log where driver_log_id in 
+        <foreach item="driverLogId" collection="array" open="(" separator="," close=")">
+            #{driverLogId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>
