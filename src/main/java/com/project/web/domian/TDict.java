@@ -1,9 +1,14 @@
 package com.project.web.domian;
 
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.project.common.base.BaseEntity;
-import java.util.Date;
 
 /**
  * 字典表 t_dict
@@ -39,6 +44,39 @@ public class TDict extends BaseEntity
 	private String updateUserId;
 	/** 备注 */
 	private String remark;
+	
+    private String[] array;
+    //子类型一级
+    private List<TDict> childOneList;
+    //子类型二级
+    private List<TDict> childTwoList;
+    
+    
+    
+
+	public List<TDict> getChildOneList() {
+		return childOneList;
+	}
+
+	public void setChildOneList(List<TDict> childOneList) {
+		this.childOneList = childOneList;
+	}
+
+	public List<TDict> getChildTwoList() {
+		return childTwoList;
+	}
+
+	public void setChildTwoList(List<TDict> childTwoList) {
+		this.childTwoList = childTwoList;
+	}
+
+	public String[] getArray() {
+		return array;
+	}
+
+	public void setArray(String[] array) {
+		this.array = array;
+	}
 
 	public void setId(String id) 
 	{

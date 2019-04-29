@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
@@ -70,9 +72,9 @@ public class TBusinessFileController extends BaseController
 	@Log(title = "企业文件", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TBusinessFile tBusinessFile)
+	public AjaxResult addSave(TBusinessFile tBusinessFile,@RequestParam(name = "businessFile",required = false) MultipartFile businessFile)
 	{		
-		return toAjax(tBusinessFileService.insertTBusinessFile(tBusinessFile));
+		return toAjax(tBusinessFileService.insertTBusinessFile(tBusinessFile,businessFile));
 	}
 
 	/**
@@ -93,9 +95,9 @@ public class TBusinessFileController extends BaseController
 	@Log(title = "企业文件", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TBusinessFile tBusinessFile)
+	public AjaxResult editSave(TBusinessFile tBusinessFile,@RequestParam(name = "businessFile",required = false) MultipartFile businessFile)
 	{		
-		return toAjax(tBusinessFileService.updateTBusinessFile(tBusinessFile));
+		return toAjax(tBusinessFileService.updateTBusinessFile(tBusinessFile,businessFile));
 	}
 	
 	/**

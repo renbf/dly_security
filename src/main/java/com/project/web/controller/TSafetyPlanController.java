@@ -17,6 +17,7 @@ import com.project.framework.web.page.TableDataInfo;
 import com.project.system.core.base.BaseController;
 import com.project.web.domian.TSafetyPlan;
 import com.project.web.service.ITSafetyPlanService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全计划 信息操作处理
@@ -43,7 +44,7 @@ public class TSafetyPlanController extends BaseController
 	/**
 	 * 查询安全计划列表
 	 */
-	@RequiresPermissions("system:tSafetyPlan:list")
+	//@RequiresPermissions("system:tSafetyPlan:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSafetyPlan tSafetyPlan)
@@ -65,13 +66,13 @@ public class TSafetyPlanController extends BaseController
 	/**
 	 * 新增保存安全计划
 	 */
-	@RequiresPermissions("system:tSafetyPlan:add")
+	//@RequiresPermissions("system:tSafetyPlan:add")
 	@Log(title = "安全计划", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TSafetyPlan tSafetyPlan)
+	public AjaxResult addSave(TSafetyPlan tSafetyPlan, MultipartFile planFile)
 	{		
-		return toAjax(tSafetyPlanService.insertTSafetyPlan(tSafetyPlan));
+		return tSafetyPlanService.insertTSafetyPlan(tSafetyPlan,planFile);
 	}
 
 	/**
@@ -88,19 +89,19 @@ public class TSafetyPlanController extends BaseController
 	/**
 	 * 修改保存安全计划
 	 */
-	@RequiresPermissions("system:tSafetyPlan:edit")
+	//@RequiresPermissions("system:tSafetyPlan:edit")
 	@Log(title = "安全计划", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TSafetyPlan tSafetyPlan)
+	public AjaxResult editSave(TSafetyPlan tSafetyPlan,MultipartFile planFile)
 	{		
-		return toAjax(tSafetyPlanService.updateTSafetyPlan(tSafetyPlan));
+		return tSafetyPlanService.updateTSafetyPlan(tSafetyPlan,planFile);
 	}
 	
 	/**
 	 * 删除安全计划
 	 */
-	@RequiresPermissions("system:tSafetyPlan:remove")
+	//@RequiresPermissions("system:tSafetyPlan:remove")
 	@Log(title = "安全计划", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

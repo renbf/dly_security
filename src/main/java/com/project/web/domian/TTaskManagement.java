@@ -25,6 +25,10 @@ public class TTaskManagement extends BaseEntity
 	private String checkUnit;
 	/** 违章日期 */
 	private Date regulationsDate;
+	/** 违章日期 */
+	private Date regulationsDateEnd;
+	/** 违章日期 字符串*/
+	private String regulationsDateStr;
 	/** 检查人员 */
 	private String checkPersonnel;
 	/** 扣分 */
@@ -44,7 +48,7 @@ public class TTaskManagement extends BaseEntity
 	/** 是否学习 0:未学习   1:已学习 */
 	private String isLearn;
 	/** 所属部门 */
-	private String deptId;
+	private Long deptId;
 	/** 违法描述 */
 	private String illegalInfo;
 	/** 处理情况 */
@@ -177,15 +181,31 @@ public class TTaskManagement extends BaseEntity
 	{
 		return isLearn;
 	}
-	public void setDeptId(String deptId) 
-	{
+	
+	public Date getRegulationsDateEnd() {
+		return regulationsDateEnd;
+	}
+
+	public void setRegulationsDateEnd(Date regulationsDateEnd) {
+		this.regulationsDateEnd = regulationsDateEnd;
+	}
+
+	public String getRegulationsDateStr() {
+		return regulationsDateStr;
+	}
+
+	public void setRegulationsDateStr(String regulationsDateStr) {
+		this.regulationsDateStr = regulationsDateStr;
+	}
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 
-	public String getDeptId() 
-	{
-		return deptId;
-	}
 	public void setIllegalInfo(String illegalInfo) 
 	{
 		this.illegalInfo = illegalInfo;

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
@@ -71,9 +73,9 @@ public class TLabourGoodsController extends BaseController
 	@Log(title = "劳动防护物品", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TLabourGoods tLabourGoods)
+	public AjaxResult addSave(TLabourGoods tLabourGoods,@RequestParam(name = "labourGoodsFile",required = false) MultipartFile labourGoodsFile)
 	{		
-		return toAjax(tLabourGoodsService.insertTLabourGoods(tLabourGoods));
+		return tLabourGoodsService.insertTLabourGoods(tLabourGoods,labourGoodsFile);
 	}
 
 	/**
@@ -90,19 +92,19 @@ public class TLabourGoodsController extends BaseController
 	/**
 	 * 修改保存劳动防护物品
 	 */
-	@RequiresPermissions("system:tLabourGoods:edit")
+//	@RequiresPermissions("system:tLabourGoods:edit")
 	@Log(title = "劳动防护物品", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TLabourGoods tLabourGoods)
+	public AjaxResult editSave(TLabourGoods tLabourGoods,@RequestParam(name = "labourGoodsFile",required = false) MultipartFile labourGoodsFile)
 	{		
-		return toAjax(tLabourGoodsService.updateTLabourGoods(tLabourGoods));
+		return tLabourGoodsService.updateTLabourGoods(tLabourGoods,labourGoodsFile);
 	}
 	
 	/**
 	 * 删除劳动防护物品
 	 */
-	@RequiresPermissions("system:tLabourGoods:remove")
+//	@RequiresPermissions("system:tLabourGoods:remove")
 	@Log(title = "劳动防护物品", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
@@ -112,3 +114,4 @@ public class TLabourGoodsController extends BaseController
 	}
 	
 }
+

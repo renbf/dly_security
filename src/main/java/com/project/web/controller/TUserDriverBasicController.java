@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -65,13 +68,26 @@ public class TUserDriverBasicController extends BaseController
 	/**
 	 * 新增保存驾驶员台账基础
 	 */
-	@RequiresPermissions("system:tUserDriverBasic:add")
+//	@RequiresPermissions("system:tUserDriverBasic:add")
 	@Log(title = "驾驶员台账基础", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TUserDriverBasic tUserDriverBasic)
+	public AjaxResult addSave(TUserDriverBasic tUserDriverBasic,
+			@RequestParam(name = "headImg",required = false) MultipartFile headImg, //头像图片
+			@RequestParam(name = "personalImg",required = false) MultipartFile personalImg,//个人照片
+			@RequestParam(name = "idCardCopyImg",required = false) MultipartFile idCardCopyImg,//身份证复印件照片
+			@RequestParam(name = "certificateCopyImg",required = false) MultipartFile certificateCopyImg, //驾驶证复印件照片
+			@RequestParam(name = "practitionersCopyImg",required = false) MultipartFile practitionersCopyImg,//从业资格证复印件照片
+			@RequestParam(name = "examinationPaperImg",required = false) MultipartFile examinationPaperImg,//考试试卷正
+			@RequestParam(name = "examinationPaperSecondImg",required = false) MultipartFile examinationPaperSecondImg,//考试试卷第二页
+			@RequestParam(name = "examinationPaperThirdImg",required = false) MultipartFile examinationPaperThirdImg,//考试试卷第三页
+			@RequestParam(name = "examinationPaperFourImg",required = false) MultipartFile examinationPaperFourImg,//考试试卷第四页
+			@RequestParam(name = "threeNotAccidentImg",required = false) MultipartFile threeNotAccidentImg,//三年无重大事故
+			@RequestParam(name = "oneYearIllegalRecordImg",required = false) MultipartFile oneYearIllegalRecordImg)//一年违法记录查询 
 	{		
-		return toAjax(tUserDriverBasicService.insertTUserDriverBasic(tUserDriverBasic));
+		return tUserDriverBasicService.insertTUserDriverBasic(tUserDriverBasic,headImg,personalImg,idCardCopyImg,
+				certificateCopyImg,practitionersCopyImg,examinationPaperImg,examinationPaperSecondImg,examinationPaperThirdImg,
+				examinationPaperFourImg,threeNotAccidentImg,oneYearIllegalRecordImg);
 	}
 
 	/**
@@ -92,9 +108,22 @@ public class TUserDriverBasicController extends BaseController
 	@Log(title = "驾驶员台账基础", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TUserDriverBasic tUserDriverBasic)
+	public AjaxResult editSave(TUserDriverBasic tUserDriverBasic,
+			@RequestParam(name = "headImg",required = false) MultipartFile headImg, //头像图片
+			@RequestParam(name = "personalImg",required = false) MultipartFile personalImg,//个人照片
+			@RequestParam(name = "idCardCopyImg",required = false) MultipartFile idCardCopyImg,//身份证复印件照片
+			@RequestParam(name = "certificateCopyImg",required = false) MultipartFile certificateCopyImg, //驾驶证复印件照片
+			@RequestParam(name = "practitionersCopyImg",required = false) MultipartFile practitionersCopyImg,//从业资格证复印件照片
+			@RequestParam(name = "examinationPaperImg",required = false) MultipartFile examinationPaperImg,//考试试卷正
+			@RequestParam(name = "examinationPaperSecondImg",required = false) MultipartFile examinationPaperSecondImg,//考试试卷第二页
+			@RequestParam(name = "examinationPaperThirdImg",required = false) MultipartFile examinationPaperThirdImg,//考试试卷第三页
+			@RequestParam(name = "examinationPaperFourImg",required = false) MultipartFile examinationPaperFourImg,//考试试卷第四页
+			@RequestParam(name = "threeNotAccidentImg",required = false) MultipartFile threeNotAccidentImg,//三年无重大事故
+			@RequestParam(name = "oneYearIllegalRecordImg",required = false) MultipartFile oneYearIllegalRecordImg)//一年违法记录查询)
 	{		
-		return toAjax(tUserDriverBasicService.updateTUserDriverBasic(tUserDriverBasic));
+		return tUserDriverBasicService.updateTUserDriverBasic(tUserDriverBasic,headImg,personalImg,idCardCopyImg,
+				certificateCopyImg,practitionersCopyImg,examinationPaperImg,examinationPaperSecondImg,examinationPaperThirdImg,
+				examinationPaperFourImg,threeNotAccidentImg,oneYearIllegalRecordImg);
 	}
 	
 	/**

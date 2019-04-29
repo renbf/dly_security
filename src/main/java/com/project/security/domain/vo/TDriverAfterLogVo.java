@@ -2,6 +2,9 @@ package com.project.security.domain.vo;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,7 @@ public class TDriverAfterLogVo implements Serializable
 	/** 行车日志ID */
 	private String driverLogId;
 	/** 填报日期 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date writeTime;
 	/** 检查事项 */
 	private String carCheckProject;

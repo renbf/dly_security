@@ -20,11 +20,12 @@ import com.project.web.service.ITSafetyMeetDetailService;
 
 /**
  * 安全会议详细 信息操作处理
- * 
+ *
  * @author rbf
  * @date 2019-04-18
  */
-@Controller
+//注释了以下注解,该类废除,功能合并到安全会议的控制器中, TSafetyMeetController
+//@Controller
 @RequestMapping("/system/tSafetyMeetDetail")
 public class TSafetyMeetDetailController extends BaseController
 {

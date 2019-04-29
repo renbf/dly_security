@@ -33,15 +33,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTBusinessFileVo"/>
         <where>  
             <if test="id != null  and id != '' "> and bf.id = #{id}</if>
-             <if test="businessFileName != null  and businessFileName != '' "> and bf.business_file_name = #{businessFileName}</if>
+             <if test="businessFileName != null  and businessFileName != '' "> and bf.business_file_name  like CONCAT('%',#{businessFileName},'%')</if>
              <if test="businessFileCode != null  and businessFileCode != '' "> and bf.business_file_code = #{businessFileCode}</if>
              <if test="businessFileType != null  and businessFileType != '' "> and bf.business_file_type = #{businessFileType}</if>
-             <if test="businessFileDate != null "> and bf.business_file_date = #{businessFileDate}</if>
+              <if test="(businessFileDate != null  ) and businessFileDateEnd == null "> 
+             	and DATE_FORMAT(bf.business_file_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{businessFileDate},'%Y-%m-%d')
+             </if>
+             <if test="(businessFileDateEnd != null ) and businessFileDate == null  "> 
+            	 and DATE_FORMAT(bf.business_file_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{businessFileDateEnd},'%Y-%m-%d')
+             </if>
+               <if test="(businessFileDateEnd != null  ) and businessFileDate != null "> 
+               		 and DATE_FORMAT(bf.business_file_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{businessFileDate},'%Y-%m-%d')
+                     and DATE_FORMAT(bf.business_file_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{businessFileDateEnd},'%Y-%m-%d')                    
+             </if>             
+             
              <if test="operatingDeptId != null  and operatingDeptId != '' "> and bf.operating_dept_id = #{operatingDeptId}</if>
              <if test="isApply != null  and isApply != '' "> and bf.is_apply = #{isApply}</if>
              <if test="businessFilePath != null  and businessFilePath != '' "> and bf.business_file_path = #{businessFilePath}</if>
-             <if test="createTime != null "> and bf.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and bf.update_time = #{updateTime}</if>
+              <if test="(createTime != null  ) and createTimeEnd == null "> 
+             	and DATE_FORMAT(bf.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+             </if>
+             <if test="(createTimeEnd != null ) and createTime == null  "> 
+            	 and DATE_FORMAT(bf.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')
+             </if>
+               <if test="(createTimeEnd != null  ) and createTime != null "> 
+               		 and DATE_FORMAT(bf.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+                     and DATE_FORMAT(bf.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')                    
+             </if>
+	          <if test="updateTime != null "> and bf.update_time = #{updateTime}</if>
              <if test="userId != null "> and bf.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and bf.meno = #{meno}</if>
              <if test="businessId != null  and businessId != '' "> and bf.business_id = #{businessId}</if>

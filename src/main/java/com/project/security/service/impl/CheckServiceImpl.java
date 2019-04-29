@@ -25,7 +25,6 @@ import com.project.common.result.Result;
 import com.project.framework.util.FileUploadUtils;
 import com.project.security.domain.Dept;
 import com.project.security.domain.TDanger;
-import com.project.security.domain.TDict;
 import com.project.security.domain.TInspectPlan;
 import com.project.security.domain.TInspectRecord;
 import com.project.security.domain.TInspectTeamProject;
@@ -164,15 +163,16 @@ public class CheckServiceImpl implements ICheckService {
 	
 	@Override
 	@Transactional
-	public DataResult completeCheck(String inspectRecordJson,MultipartFile file) {
+	public DataResult completeCheck(String checkId,String checkObj,MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	TInspectRecord tInspectRecord = JSON.parseObject(inspectRecordJson, TInspectRecord.class);
-        	if(tInspectRecord == null) {
-        		result.setMessage("完成检查计划参数错误");
-    			result.setStatus(Result.FAILED);
-    			return result;
-        	}
+//        	TInspectRecord tInspectRecord = JSON.parseObject(inspectRecordJson, TInspectRecord.class);
+        	TInspectRecord tInspectRecord = new TInspectRecord();
+//        	if(tInspectRecord == null) {
+//        		result.setMessage("完成检查计划参数错误");
+//    			result.setStatus(Result.FAILED);
+//    			return result;
+//        	}
         	String userSignUrl = null;
         	if(file != null) {
         		boolean fileType = FileUploadUtils.checkImgFile(file);
@@ -190,8 +190,10 @@ public class CheckServiceImpl implements ICheckService {
         	}
 			tInspectRecord.setUserSignUrl(userSignUrl);
         	TInspectPlan tInspectPlan = new TInspectPlan();
-        	tInspectPlan.setId(tInspectRecord.getInspectPlanId());
+        	tInspectPlan.setId(checkId);
         	tInspectPlan.setCheckStatus("1");
+        	tInspectRecord.setCheckObj(checkObj);
+        	tInspectRecord.setId(UUIDUtil.getUUID());
         	inspectPlanMapper.updateTInspectPlan(tInspectPlan);
         	inspectRecordMapper.insertTInspectRecord(tInspectRecord);
 			result.setMessage("完成检查计划成功");
@@ -310,11 +312,8 @@ public class CheckServiceImpl implements ICheckService {
         	if(Result.SUCCESS.equals(pageResult.getStatus())) {
     			return pageResult;
         	}
-        	TDanger tDanger = new TDanger();
-        	tDanger.setDochangeUserId(userId);
-        	tDanger.setStatus("1");
-        	List<TDanger> dangerList = dangerMapper.selectTDangerList(tDanger);
-    		TableDataView<TDanger> tableDataView = PageInfoUtil.addPageInfo(dangerList);
+        	List<TDangerVo> dangerList = dangerMapper.rectification(userId,"1");
+    		TableDataView<TDangerVo> tableDataView = PageInfoUtil.addPageInfo(dangerList);
 			result.setResult(tableDataView);
 			result.setMessage("隐患整改成功");
 			result.setStatus(Result.SUCCESS);
@@ -326,25 +325,28 @@ public class CheckServiceImpl implements ICheckService {
 	}
 	
 	@Override
-	public DataResult rectificationDetail(String dangerJson, MultipartFile file) {
+	public DataResult rectificationDetail(String dangerId,String dochangeStep,String dochangeCapital, MultipartFile[] files) {
 		DataResult result = new DataResult();
         try {
         	String dochangePicture = null;
-        	if(file != null) {
-        		boolean fileType = FileUploadUtils.checkImgFile(file);
+        	if(files != null) {
+        		boolean fileType = FileUploadUtils.checkImgFiles(files);
     			if(!fileType) {
     				result.setMessage("上传图片类型错误");
     				result.setStatus(Result.FAILED);
     				return result;
     			}
-            	dochangePicture = fileSystemService.uploadFile(file);
+            	dochangePicture = fileSystemService.uploadFiles(files);
     			if(StringUtils.isEmpty(dochangePicture)) {
     				result.setMessage("上传图片失败");
     				result.setStatus(Result.FAILED);
     				return result;
     			}
         	}
-        	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
+        	TDanger danger = new TDanger();
+        	danger.setId(dangerId);
+        	danger.setDochangeStep(dochangeStep);
+        	danger.setDochangeCapital(dochangeCapital);
         	danger.setStatus("2");
         	danger.setDochangePicture(dochangePicture);
         	dangerMapper.updateTDanger(danger);
@@ -383,11 +385,8 @@ public class CheckServiceImpl implements ICheckService {
         	if(Result.SUCCESS.equals(pageResult.getStatus())) {
     			return pageResult;
         	}
-        	TDanger tDanger = new TDanger();
-        	tDanger.setCheckAcceptUserId(userId);
-        	tDanger.setStatus("2");
-        	List<TDanger> dangerList = dangerMapper.selectTDangerList(tDanger);
-    		TableDataView<TDanger> tableDataView = PageInfoUtil.addPageInfo(dangerList);
+        	List<TDangerVo> dangerList = dangerMapper.rectificationCheck(userId,"2");
+    		TableDataView<TDangerVo> tableDataView = PageInfoUtil.addPageInfo(dangerList);
 			result.setResult(tableDataView);
 			result.setMessage("隐患验收成功");
 			result.setStatus(Result.SUCCESS);
@@ -399,25 +398,31 @@ public class CheckServiceImpl implements ICheckService {
 	}
 	
 	@Override
-	public DataResult rectificationClose(String dangerJson, MultipartFile file) {
+	public DataResult rectificationClose(String dangerId,Date checkAcceptDate,String checkAcceptResult,String remark, MultipartFile[] files) {
 		DataResult result = new DataResult();
         try {
         	String checkAcceptUrl = null;
-        	if(file != null) {
-        		boolean fileType = FileUploadUtils.checkImgFile(file);
+        	if(files != null) {
+        		boolean fileType = FileUploadUtils.checkImgFiles(files);
     			if(!fileType) {
     				result.setMessage("上传图片类型错误");
     				result.setStatus(Result.FAILED);
     				return result;
     			}
-            	checkAcceptUrl = fileSystemService.uploadFile(file);
+            	checkAcceptUrl = fileSystemService.uploadFiles(files);
     			if(StringUtils.isEmpty(checkAcceptUrl)) {
     				result.setMessage("上传图片失败");
     				result.setStatus(Result.FAILED);
     				return result;
     			}
         	}
-        	TDanger danger = JSON.parseObject(dangerJson, TDanger.class);
+        	TDanger danger = new TDanger();
+        	danger.setId(dangerId);
+        	danger.setCheckAcceptDate(checkAcceptDate);
+        	danger.setCheckAcceptResult(checkAcceptResult);
+        	if(StringUtils.isNotEmpty(remark)) {
+        		danger.setRemark(remark);
+        	}
         	danger.setStatus("3");
         	danger.setCheckAcceptUrl(checkAcceptUrl);
         	dangerMapper.updateTDanger(danger);

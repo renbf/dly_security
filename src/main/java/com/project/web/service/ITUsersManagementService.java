@@ -2,6 +2,7 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TUsersManagement;
 
 /**
@@ -29,12 +30,20 @@ public interface ITUsersManagementService
 	public List<TUsersManagement> selectTUsersManagementList(TUsersManagement tUsersManagement);
 	
 	/**
+     * 根据岗位查询人员信息
+     * 
+     * @param tUsersManagement 根据岗位查询人员信息
+     * @return 人员台账集合
+     */
+	public List<TUsersManagement> selectTUsersManagementListByPostId(TUsersManagement tUsersManagement);
+	
+	/**
      * 新增人员台账
      * 
      * @param tUsersManagement 人员台账信息
      * @return 结果
      */
-	public int insertTUsersManagement(TUsersManagement tUsersManagement);
+	public AjaxResult insertTUsersManagement(TUsersManagement tUsersManagement);
 	
 	/**
      * 修改人员台账
@@ -53,3 +62,4 @@ public interface ITUsersManagementService
 	public int deleteTUsersManagementByIds(String ids);
 	
 }
+

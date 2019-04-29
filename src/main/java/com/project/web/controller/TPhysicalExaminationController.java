@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
@@ -45,7 +47,7 @@ public class TPhysicalExaminationController extends BaseController
 	/**
 	 * 查询体检记录列表
 	 */
-	@RequiresPermissions("system:tPhysicalExamination:list")
+//	@RequiresPermissions("system:tPhysicalExamination:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TPhysicalExamination tPhysicalExamination)
@@ -67,13 +69,13 @@ public class TPhysicalExaminationController extends BaseController
 	/**
 	 * 新增保存体检记录
 	 */
-	@RequiresPermissions("system:tPhysicalExamination:add")
+//	@RequiresPermissions("system:tPhysicalExamination:add")
 	@Log(title = "体检记录", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TPhysicalExamination tPhysicalExamination)
+	public AjaxResult addSave(TPhysicalExamination tPhysicalExamination,@RequestParam(name = "physicalFile",required = false) MultipartFile physicalFile)
 	{		
-		return toAjax(tPhysicalExaminationService.insertTPhysicalExamination(tPhysicalExamination));
+		return tPhysicalExaminationService.insertTPhysicalExamination(tPhysicalExamination,physicalFile);
 	}
 
 	/**
@@ -90,19 +92,19 @@ public class TPhysicalExaminationController extends BaseController
 	/**
 	 * 修改保存体检记录
 	 */
-	@RequiresPermissions("system:tPhysicalExamination:edit")
+//	@RequiresPermissions("system:tPhysicalExamination:edit")
 	@Log(title = "体检记录", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TPhysicalExamination tPhysicalExamination)
+	public AjaxResult editSave(TPhysicalExamination tPhysicalExamination,@RequestParam(name = "physicalFile",required = false) MultipartFile physicalFile)
 	{		
-		return toAjax(tPhysicalExaminationService.updateTPhysicalExamination(tPhysicalExamination));
+		return tPhysicalExaminationService.updateTPhysicalExamination(tPhysicalExamination,physicalFile);
 	}
 	
 	/**
 	 * 删除体检记录
 	 */
-	@RequiresPermissions("system:tPhysicalExamination:remove")
+//	@RequiresPermissions("system:tPhysicalExamination:remove")
 	@Log(title = "体检记录", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

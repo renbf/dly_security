@@ -1,15 +1,13 @@
 package com.project.web.controller;
 
 import java.util.List;
+
+import com.project.web.domian.TSafetyMeetDetail;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -17,6 +15,7 @@ import com.project.framework.web.page.TableDataInfo;
 import com.project.system.core.base.BaseController;
 import com.project.web.domian.TSafetyMeet;
 import com.project.web.service.ITSafetyMeetService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全会议 信息操作处理
@@ -43,7 +42,7 @@ public class TSafetyMeetController extends BaseController
 	/**
 	 * 查询安全会议列表
 	 */
-	@RequiresPermissions("system:tSafetyMeet:list")
+	//@RequiresPermissions("system:tSafetyMeet:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSafetyMeet tSafetyMeet)
@@ -65,13 +64,19 @@ public class TSafetyMeetController extends BaseController
 	/**
 	 * 新增保存安全会议
 	 */
-	@RequiresPermissions("system:tSafetyMeet:add")
+	//@RequiresPermissions("system:tSafetyMeet:add")
 	@Log(title = "安全会议", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TSafetyMeet tSafetyMeet)
-	{		
-		return toAjax(tSafetyMeetService.insertTSafetyMeet(tSafetyMeet));
+	public AjaxResult addSave( TSafetyMeet tSafetyMeet, MultipartFile meetFile)
+	{
+		try {
+			return tSafetyMeetService.insertTSafetyMeet(tSafetyMeet, meetFile);
+		} catch (RuntimeException e) {
+			//回滚了.....
+			e.printStackTrace();
+			return AjaxResult.error(2, "操作失败");
+		}
 	}
 
 	/**
@@ -88,25 +93,36 @@ public class TSafetyMeetController extends BaseController
 	/**
 	 * 修改保存安全会议
 	 */
-	@RequiresPermissions("system:tSafetyMeet:edit")
+	//@RequiresPermissions("system:tSafetyMeet:edit")
 	@Log(title = "安全会议", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TSafetyMeet tSafetyMeet)
-	{		
-		return toAjax(tSafetyMeetService.updateTSafetyMeet(tSafetyMeet));
+	public AjaxResult editSave(TSafetyMeet tSafetyMeet,MultipartFile meetFile)
+	{
+		try {
+			return tSafetyMeetService.updateTSafetyMeet(tSafetyMeet, meetFile);
+		} catch (RuntimeException e) {
+			//回滚了
+			e.printStackTrace();
+			return AjaxResult.error(2, "操作失败");
+		}
 	}
 	
 	/**
 	 * 删除安全会议
 	 */
-	@RequiresPermissions("system:tSafetyMeet:remove")
+	//@RequiresPermissions("system:tSafetyMeet:remove")
 	@Log(title = "安全会议", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
-		return toAjax(tSafetyMeetService.deleteTSafetyMeetByIds(ids));
+	{
+		try {
+			return toAjax(tSafetyMeetService.deleteTSafetyMeetByIds(ids));
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return AjaxResult.error(2, "操作失败");
+		}
 	}
 	
 }

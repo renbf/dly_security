@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -69,9 +72,9 @@ public class TLegalProvisionsController extends BaseController
 	@Log(title = "法律法规", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TLegalProvisions tLegalProvisions)
+	public AjaxResult addSave(TLegalProvisions tLegalProvisions,@RequestParam(name = "legalFile",required = false) MultipartFile legalFile)
 	{		
-		return toAjax(tLegalProvisionsService.insertTLegalProvisions(tLegalProvisions));
+		return tLegalProvisionsService.insertTLegalProvisions(tLegalProvisions,legalFile);
 	}
 
 	/**
@@ -92,9 +95,9 @@ public class TLegalProvisionsController extends BaseController
 	@Log(title = "法律法规", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TLegalProvisions tLegalProvisions)
+	public AjaxResult editSave(TLegalProvisions tLegalProvisions,@RequestParam(name = "legalFile",required = false) MultipartFile legalFile)
 	{		
-		return toAjax(tLegalProvisionsService.updateTLegalProvisions(tLegalProvisions));
+		return tLegalProvisionsService.updateTLegalProvisions(tLegalProvisions,legalFile);
 	}
 	
 	/**

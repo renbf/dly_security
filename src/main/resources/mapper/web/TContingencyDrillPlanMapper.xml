@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TContingencyDrillPlanMapper">
+    
+    <resultMap type="TContingencyDrillPlan" id="TContingencyDrillPlanResult">
+        <result property="id"    column="id"    />
+        <result property="drillPlanName"    column="drill_plan_name"    />
+        <result property="drillPlanDate"    column="drill_plan_date"    />
+        <result property="drillPlanLocation"    column="drill_plan_location"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="drillPlanFilePath"    column="drill_plan_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTContingencyDrillPlanVo">
+        select cdp.id, cdp.drill_plan_name, cdp.drill_plan_date, cdp.drill_plan_location, cdp.dept_id, cdp.drill_plan_file_path,
+        cdp.create_time, cdp.update_time, cdp.user_id, cdp.meno, cdp.business_id, cdp.update_user_id ,
+        DATE_FORMAT(cdp.drill_plan_date,'%Y-%m-%d') as drillPlanDateStr
+        from t_contingency_drill_plan cdp
+    </sql>
+	
+    <select id="selectTContingencyDrillPlanList" parameterType="TContingencyDrillPlan" resultMap="TContingencyDrillPlanResult">
+        <include refid="selectTContingencyDrillPlanVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and cdp.id = #{id}</if>
+            
+             <if test="drillPlanName != null  and drillPlanName != '' "> and cdp.drill_plan_name like concat('%',#{drillPlanName},'%')</if>
+
+            <if test="drillPlanDate != null  and drillPlanDate1 == null "> and DATE_FORMAT(cdp.drill_plan_date,'%Y%m%d') &gt;= DATE_FORMAT(#{drillPlanDate},'%Y%m%d')</if>
+            <if test="drillPlanDate1 != null  and drillPlanDate == null "> and DATE_FORMAT(cdp.drill_plan_date,'%Y%m%d') &lt;= DATE_FORMAT(#{drillPlanDate1},'%Y%m%d')</if>
+            <if test="drillPlanDate1 != null  and drillPlanDate != null "> and DATE_FORMAT(cdp.drill_plan_date,'%Y%m%d') &gt;= DATE_FORMAT(#{drillPlanDate},'%Y%m%d')
+                and DATE_FORMAT(cdp.drill_plan_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{drillPlanDate1},'%Y%m%d')
+            </if>
+
+             <if test="drillPlanLocation != null  and drillPlanLocation != '' "> and cdp.drill_plan_location like concat('%',#{drillPlanLocation},'%')</if>
+
+             <if test="deptId != null  and deptId != '' "> and cdp.dept_id = #{deptId}</if>
+             <if test="drillPlanFilePath != null  and drillPlanFilePath != '' "> and cdp.drill_plan_file_path = #{drillPlanFilePath}</if>
+             <if test="createTime != null "> and cdp.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and cdp.update_time = #{updateTime}</if>
+             <if test="userId != null "> and cdp.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and cdp.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and cdp.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and cdp.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTContingencyDrillPlanById" parameterType="String" resultMap="TContingencyDrillPlanResult">
+        <include refid="selectTContingencyDrillPlanVo"/>
+        where cdp.id = #{id}
+    </select>
+        
+    <insert id="insertTContingencyDrillPlan" parameterType="TContingencyDrillPlan">
+        insert into t_contingency_drill_plan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="drillPlanName != null  and drillPlanName != ''  ">drill_plan_name,</if>
+			<if test="drillPlanDate != null  ">drill_plan_date,</if>
+			<if test="drillPlanLocation != null  and drillPlanLocation != ''  ">drill_plan_location,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="drillPlanFilePath != null  and drillPlanFilePath != ''  ">drill_plan_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="drillPlanName != null  and drillPlanName != ''  ">#{drillPlanName},</if>
+			<if test="drillPlanDate != null  ">#{drillPlanDate},</if>
+			<if test="drillPlanLocation != null  and drillPlanLocation != ''  ">#{drillPlanLocation},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="drillPlanFilePath != null  and drillPlanFilePath != ''  ">#{drillPlanFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTContingencyDrillPlan" parameterType="TContingencyDrillPlan">
+        update t_contingency_drill_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="drillPlanName != null  and drillPlanName != ''  ">drill_plan_name = #{drillPlanName},</if>
+            <if test="drillPlanDate != null  ">drill_plan_date = #{drillPlanDate},</if>
+            <if test="drillPlanLocation != null  and drillPlanLocation != ''  ">drill_plan_location = #{drillPlanLocation},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="drillPlanFilePath != null  and drillPlanFilePath != ''  ">drill_plan_file_path = #{drillPlanFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTContingencyDrillPlanById" parameterType="String">
+        delete from t_contingency_drill_plan where id = #{id}
+    </delete>
+	
+    <delete id="deleteTContingencyDrillPlanByIds" parameterType="String">
+        delete from t_contingency_drill_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

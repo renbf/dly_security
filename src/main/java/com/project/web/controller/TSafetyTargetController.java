@@ -17,6 +17,7 @@ import com.project.framework.web.page.TableDataInfo;
 import com.project.system.core.base.BaseController;
 import com.project.web.domian.TSafetyTarget;
 import com.project.web.service.ITSafetyTargetService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全目标 信息操作处理
@@ -43,7 +44,7 @@ public class TSafetyTargetController extends BaseController
 	/**
 	 * 查询安全目标列表
 	 */
-	@RequiresPermissions("system:tSafetyTarget:list")
+	//@RequiresPermissions("system:tSafetyTarget:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSafetyTarget tSafetyTarget)
@@ -65,13 +66,13 @@ public class TSafetyTargetController extends BaseController
 	/**
 	 * 新增保存安全目标
 	 */
-	@RequiresPermissions("system:tSafetyTarget:add")
+	//@RequiresPermissions("system:tSafetyTarget:add")
 	@Log(title = "安全目标", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TSafetyTarget tSafetyTarget)
+	public AjaxResult addSave(TSafetyTarget tSafetyTarget, MultipartFile targetFile)
 	{		
-		return toAjax(tSafetyTargetService.insertTSafetyTarget(tSafetyTarget));
+		return toAjax(tSafetyTargetService.insertTSafetyTarget(tSafetyTarget,targetFile));
 	}
 
 	/**
@@ -88,19 +89,19 @@ public class TSafetyTargetController extends BaseController
 	/**
 	 * 修改保存安全目标
 	 */
-	@RequiresPermissions("system:tSafetyTarget:edit")
+	//@RequiresPermissions("system:tSafetyTarget:edit")
 	@Log(title = "安全目标", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TSafetyTarget tSafetyTarget)
+	public AjaxResult editSave(TSafetyTarget tSafetyTarget,MultipartFile targetFile)
 	{		
-		return toAjax(tSafetyTargetService.updateTSafetyTarget(tSafetyTarget));
+		return toAjax(tSafetyTargetService.updateTSafetyTarget(tSafetyTarget,targetFile));
 	}
 	
 	/**
 	 * 删除安全目标
 	 */
-	@RequiresPermissions("system:tSafetyTarget:remove")
+	//@RequiresPermissions("system:tSafetyTarget:remove")
 	@Log(title = "安全目标", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

@@ -21,20 +21,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTSafetyPlanVo">
-        select sp.id, sp.paln_name, sp.plan_date, sp.plan_enacting_person, sp.dept_id, sp.plan_status, sp.plan_file_path, sp.create_time, sp.update_time, sp.user_id, sp.meno, sp.business_id, sp.update_user_id from t_safety_plan sp
+        select sp.id, sp.paln_name, sp.plan_date, sp.plan_enacting_person, sp.dept_id,
+        sp.plan_status, sp.plan_file_path, sp.create_time, sp.update_time, sp.user_id, sp.meno,
+         sp.business_id, sp.update_user_id ,
+         DATE_FORMAT(sp.plan_date,'%Y-%m-%d') as planDateStr,
+         DATE_FORMAT(sp.create_time,'%Y-%m-%d') as createTimeStr
+         from t_safety_plan sp
     </sql>
 	
     <select id="selectTSafetyPlanList" parameterType="TSafetyPlan" resultMap="TSafetyPlanResult">
         <include refid="selectTSafetyPlanVo"/>
         <where>  
             <if test="id != null  and id != '' "> and sp.id = #{id}</if>
-             <if test="palnName != null  and palnName != '' "> and sp.paln_name = #{palnName}</if>
-             <if test="planDate != null "> and sp.plan_date = #{planDate}</if>
-             <if test="planEnactingPerson != null  and planEnactingPerson != '' "> and sp.plan_enacting_person = #{planEnactingPerson}</if>
+
+             <if test="palnName != null  and palnName != '' "> and sp.paln_name like concat('%',#{palnName},'%')</if>
+
+
+            <if test="planDate != null  and planDate1 == null "> and DATE_FORMAT(sp.plan_date,'%Y%m%d') &gt;= DATE_FORMAT(#{planDate},'%Y%m%d')</if>
+            <if test="planDate1 != null  and planDate == null "> and DATE_FORMAT(sp.plan_date,'%Y%m%d') &lt;= DATE_FORMAT(#{planDate1},'%Y%m%d')</if>
+            <if test="planDate1 != null  and planDate != null "> and DATE_FORMAT(sp.plan_date,'%Y%m%d') &gt;= DATE_FORMAT(#{planDate},'%Y%m%d')
+                and   DATE_FORMAT(sp.plan_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{planDate1},'%Y%m%d')
+            </if>
+            
+            
+             <if test="planEnactingPerson != null  and planEnactingPerson != '' "> and sp.plan_enacting_person like concat('%',#{planEnactingPerson},'%')</if>
+            
              <if test="deptId != null  and deptId != '' "> and sp.dept_id = #{deptId}</if>
              <if test="planStatus != null "> and sp.plan_status = #{planStatus}</if>
              <if test="planFilePath != null  and planFilePath != '' "> and sp.plan_file_path = #{planFilePath}</if>
-             <if test="createTime != null "> and sp.create_time = #{createTime}</if>
+
+
+            <if test="createTime != null  and createTime1 == null "> and DATE_FORMAT(sp.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime == null "> and DATE_FORMAT(sp.create_time,'%Y%m%d') &lt;= DATE_FORMAT(#{createTime1},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime != null "> and DATE_FORMAT(sp.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')
+                and   DATE_FORMAT(sp.create_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{createTime1},'%Y%m%d')
+            </if>
+            
+            
              <if test="updateTime != null "> and sp.update_time = #{updateTime}</if>
              <if test="userId != null "> and sp.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and sp.meno = #{meno}</if>

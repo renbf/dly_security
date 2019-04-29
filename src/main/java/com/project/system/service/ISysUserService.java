@@ -74,6 +74,9 @@ public interface ISysUserService {
      * @return 结果
      */
     public int insertUser(SysUser user);
+    
+    //新增人员台账时 保存用户信息
+    public int insertUserByManagement(SysUser user,long uuid);
 
     /**
      * 保存用户信息

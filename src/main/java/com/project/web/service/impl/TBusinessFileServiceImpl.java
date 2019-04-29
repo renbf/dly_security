@@ -2,14 +2,19 @@ package com.project.web.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.support.Convert;
+import com.project.common.utils.StringUtils;
 import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
 import com.project.web.domian.TBusinessFile;
 import com.project.web.mapper.TBusinessFileMapper;
+import com.project.web.service.IFileService;
 import com.project.web.service.ITBusinessFileService;
 
 /**
@@ -23,6 +28,8 @@ public class TBusinessFileServiceImpl implements ITBusinessFileService
 {
 	@Autowired
 	private TBusinessFileMapper tBusinessFileMapper;
+	@Autowired
+	private IFileService fileService;
 
 	/**
      * 查询企业文件信息
@@ -55,11 +62,21 @@ public class TBusinessFileServiceImpl implements ITBusinessFileService
      * @return 结果
      */
 	@Override
-	public int insertTBusinessFile(TBusinessFile tBusinessFile)
+	public int insertTBusinessFile(TBusinessFile tBusinessFile,MultipartFile businessFile)
 	{
-		tBusinessFile.setId(UUIDUtil.getUUID());
+		String uuid= UUIDUtil.getUUID();
+		tBusinessFile.setId(uuid);
 		tBusinessFile.setCreateTime(new Date());
 		tBusinessFile.setUserId(ShiroUtils.getUserId());
+		try {			
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(businessFile)&&StringUtils.isNotEmpty(businessFile.getOriginalFilename())){
+				String Str = fileService.upolad("qiyewenjian",uuid,"企业文件附件",businessFile,0);
+				tBusinessFile.setBusinessFilePath(Str);
+			}	
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
 		return tBusinessFileMapper.insertTBusinessFile(tBusinessFile);
 	}
 	
@@ -70,9 +87,20 @@ public class TBusinessFileServiceImpl implements ITBusinessFileService
      * @return 结果
      */
 	@Override
-	public int updateTBusinessFile(TBusinessFile tBusinessFile)
+	public int updateTBusinessFile(TBusinessFile tBusinessFile,MultipartFile businessFile)
 	{
-	    return tBusinessFileMapper.updateTBusinessFile(tBusinessFile);
+		try {			
+			tBusinessFile.setUpdateTime(new Date());
+			tBusinessFile.setUpdateUserId(ShiroUtils.getUserId());
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(businessFile)&&StringUtils.isNotEmpty(businessFile.getOriginalFilename())){
+				String Str = fileService.upolad("qiyewenjian",tBusinessFile.getId(),"企业文件附件",businessFile,0);
+				tBusinessFile.setBusinessFilePath(Str);
+			}	
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return tBusinessFileMapper.updateTBusinessFile(tBusinessFile);
 	}
 
 	/**

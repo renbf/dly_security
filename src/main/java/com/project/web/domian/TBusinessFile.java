@@ -27,6 +27,10 @@ public class TBusinessFile extends BaseEntity
 	private String businessFileType;
 	/** 实施日期 */
 	private Date businessFileDate;
+	/** 实施日期字符串 */
+	private String businessFileStr;
+	/** 实施日期 */
+	private Date businessFileDateEnd;
 	/** 适用部门 */
 	private String operatingDeptId;
 	/** 是否适用 1:适用 0:不适用 */
@@ -35,6 +39,8 @@ public class TBusinessFile extends BaseEntity
 	private String businessFilePath;
 	/** 创建日期 */
 	private Date createTime;
+	/** 创建日期 */
+	private Date createTimeEnd;
 	/** 更新时间 */
 	private Date updateTime;
 	/** 创建人id */
@@ -55,6 +61,31 @@ public class TBusinessFile extends BaseEntity
 	{
 		return id;
 	}
+	
+	public String getBusinessFileStr() {
+		return businessFileStr;
+	}
+
+	public void setBusinessFileStr(String businessFileStr) {
+		this.businessFileStr = businessFileStr;
+	}
+
+	public Date getBusinessFileDateEnd() {
+		return businessFileDateEnd;
+	}
+
+	public void setBusinessFileDateEnd(Date businessFileDateEnd) {
+		this.businessFileDateEnd = businessFileDateEnd;
+	}
+
+	public Date getCreateTimeEnd() {
+		return createTimeEnd;
+	}
+
+	public void setCreateTimeEnd(Date createTimeEnd) {
+		this.createTimeEnd = createTimeEnd;
+	}
+
 	public void setBusinessFileName(String businessFileName) 
 	{
 		this.businessFileName = businessFileName;

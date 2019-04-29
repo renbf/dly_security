@@ -22,7 +22,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTLegalProvisionsVo">
-        select lp.id, lp.legal_name, lp.legal_type, lp.legal_unit, lp.legal_date, lp.legal_dept_id, lp.legal_evaluate, lp.legal_file_path, lp.create_time, lp.update_time, lp.user_id, lp.meno, lp.business_id, lp.update_user_id from t_legal_provisions lp
+        select lp.id, lp.legal_name, lp.legal_type, lp.legal_unit, 
+        
+        DATE_FORMAT(lp.legal_date,'%Y-%m-%d') as legalDateStr,
+        lp.legal_dept_id, lp.legal_evaluate, lp.legal_file_path, 
+        DATE_FORMAT(lp.create_time,'%Y-%m-%d') as startCreateTime, 
+        lp.update_time, lp.user_id, lp.meno, lp.business_id, lp.update_user_id from t_legal_provisions lp
     </sql>
 	
     <select id="selectTLegalProvisionsList" parameterType="TLegalProvisions" resultMap="TLegalProvisionsResult">
@@ -32,11 +37,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="legalName != null  and legalName != '' "> and lp.legal_name = #{legalName}</if>
              <if test="legalType != null  and legalType != '' "> and lp.legal_type = #{legalType}</if>
              <if test="legalUnit != null  and legalUnit != '' "> and lp.legal_unit = #{legalUnit}</if>
-             <if test="legalDate != null "> and lp.legal_date = #{legalDate}</if>
+              <if test="(legalDate != null  ) and legalDateEnd == null "> 
+             	and DATE_FORMAT(lp.legal_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{legalDate},'%Y-%m-%d')
+             </if>
+             <if test="(legalDateEnd != null ) and legalDate == null  "> 
+            	 and DATE_FORMAT(lp.legal_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{legalDateEnd},'%Y-%m-%d')
+             </if>
+               <if test="(legalDateEnd != null  ) and legalDate != null "> 
+               		 and DATE_FORMAT(lp.legal_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{legalDate},'%Y-%m-%d')
+                     and DATE_FORMAT(lp.legal_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{legalDateEnd},'%Y-%m-%d')                    
+             </if>                    
              <if test="legalDeptId != null  and legalDeptId != '' "> and lp.legal_dept_id = #{legalDeptId}</if>
              <if test="legalEvaluate != null  and legalEvaluate != '' "> and lp.legal_evaluate = #{legalEvaluate}</if>
              <if test="legalFilePath != null  and legalFilePath != '' "> and lp.legal_file_path = #{legalFilePath}</if>
-             <if test="createTime != null "> and lp.create_time = #{createTime}</if>
+             <if test="(createTime != null  ) and createTimeEnd == null "> 
+             	and DATE_FORMAT(lp.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+             </if>
+             <if test="(createTimeEnd != null ) and createTime == null  "> 
+            	 and DATE_FORMAT(lp.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')
+             </if>
+               <if test="(createTimeEnd != null  ) and createTime != null "> 
+               		 and DATE_FORMAT(lp.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+                     and DATE_FORMAT(lp.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')                    
+             </if>
+             
+             
              <if test="updateTime != null "> and lp.update_time = #{updateTime}</if>
              <if test="userId != null "> and lp.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and lp.meno = #{meno}</if>

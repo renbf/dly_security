@@ -2,9 +2,11 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.project.security.domain.User;
+import com.project.security.domain.vo.TDictView;
+import com.project.security.domain.vo.UserVo;
 import com.project.system.domain.SysUser;	
 
 /**
@@ -83,20 +85,20 @@ public interface UserMapper
      * @param businessId
      * @return
      */
-    public List<SysUser> selectUserByDriver(String businessId);
+    public List<TDictView> selectUserByDriver(@Param("businessId")String businessId,@Param("postName")String postName);
     
     /**
      * 查询驾驶员
      * @param userId
      * @return
      */
-    public SysUser selectDriverUser(String userId);
+    public UserVo selectDriverUser(String userId);
     /**
      * 查询用户信息
      * 
      * @param userId 用户ID
      * @return 用户信息
      */
-	public User selectUserByUserId(Long userId);
+	public UserVo selectUserByUserId(Long userId);
     
 }

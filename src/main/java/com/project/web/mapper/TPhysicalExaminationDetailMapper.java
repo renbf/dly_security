@@ -29,6 +29,15 @@ public interface TPhysicalExaminationDetailMapper
 	public List<TPhysicalExaminationDetail> selectTPhysicalExaminationDetailList(TPhysicalExaminationDetail tPhysicalExaminationDetail);
 	
 	/**
+     * 	根据体检ID查询体检记录明细列表
+     * 
+     * @param tPhysicalExaminationDetail 体检记录明细信息
+     * @return 体检记录明细集合
+     */
+	public List<TPhysicalExaminationDetail> selectTPhysicalExaminationDetailListById(TPhysicalExaminationDetail tPhysicalExaminationDetail);
+	
+	
+	/**
      * 新增体检记录明细
      * 
      * @param tPhysicalExaminationDetail 体检记录明细信息
@@ -60,4 +69,13 @@ public interface TPhysicalExaminationDetailMapper
      */
 	public int deleteTPhysicalExaminationDetailByIds(String[] ids);
 	
+	/**
+     * 批量删除体检记录明细
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+	public int deleteTPhysicalExaminationDetailByexaminationIds(String examinationId);
+	
 }
+	

@@ -2,12 +2,17 @@ package com.project.security.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.common.result.DataResult;
@@ -31,9 +36,9 @@ public class TrainController {
 	@RequestMapping(value="/courseArrange",method=RequestMethod.GET)
 	@ApiOperation(value="课程安排接口",notes="课程安排接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result courseArrange(HttpServletRequest request,
-			@ApiParam(name="pageNumber",value="第几页",required=true) Integer pageNumber,
+			@ApiParam(name="pageNumber",value="第几页",required=true) @RequestParam(value="pageNumber",required=true) Integer pageNumber,
 			@ApiParam(name="total",value="总行数",required=false) Long total,
-			@ApiParam(name="userId",value="用户id",required=true) String userId
+			@ApiParam(name="userId",value="用户id",required=true) @RequestParam(value="userId",required=true) String userId
 	){
 		DataResult result=new DataResult();
 		try {
@@ -51,13 +56,12 @@ public class TrainController {
 	@RequestMapping(value="/uploadVideoProgress",method=RequestMethod.POST)
 	@ApiOperation(value="上传视频进度接口",notes="上传视频进度接口",httpMethod="POST",response=Result.class)
 	public @ResponseBody Result uploadVideoProgress(HttpServletRequest request,
-			@ApiParam(name="courseId",value="课程id",required=true) String courseId,
-			@ApiParam(name="progress",value="进度",required=true) Long progress,
-			@ApiParam(name="userId",value="用户id",required=true) String userId
+			@ApiParam(name="userCourseId",value="用户课程id",required=true) @RequestParam(value="userCourseId",required=true) String userCourseId,
+			@ApiParam(name="progress",value="进度",required=true) @RequestParam(value="progress",required=true) Long progress
 	){
 		DataResult result=new DataResult();
 		try {
-			result = trainService.uploadVideoProgress(courseId,userId,progress);
+			result = trainService.uploadVideoProgress(userCourseId,progress);
 			return result;
 		} catch (Exception e) {
 			log.error("上传视频进度接口失败",e);
@@ -70,9 +74,9 @@ public class TrainController {
 	@RequestMapping(value="/examPaper",method=RequestMethod.GET)
 	@ApiOperation(value="考试试卷接口",notes="考试试卷接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result examPaper(HttpServletRequest request,
-			@ApiParam(name="pageNumber",value="第几页",required=true) Integer pageNumber,
+			@ApiParam(name="pageNumber",value="第几页",required=true) @RequestParam(value="pageNumber",required=true) Integer pageNumber,
 			@ApiParam(name="total",value="总行数",required=false) Long total,
-			@ApiParam(name="userId",value="用户id",required=true) String userId
+			@ApiParam(name="userId",value="用户id",required=true) @RequestParam(value="userId",required=true) String userId
 	){
 		DataResult result=new DataResult();
 		try {
@@ -89,7 +93,7 @@ public class TrainController {
 	@RequestMapping(value="/examPaperDetail",method=RequestMethod.GET)
 	@ApiOperation(value="考试试卷详情接口",notes="考试试卷详情接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result examPaperDetail(HttpServletRequest request,
-			@ApiParam(name="userPaperId",value="用户考卷id",required=true) String userPaperId
+			@ApiParam(name="userPaperId",value="用户考卷id",required=true) @RequestParam(value="userPaperId",required=true) String userPaperId
 	){
 		DataResult result=new DataResult();
 		try {
@@ -103,10 +107,27 @@ public class TrainController {
 		}
 	}
 	
+	@RequestMapping(value="/queryExamPaperDetail",method=RequestMethod.GET)
+	@ApiOperation(value="查询考试试卷详情接口",notes="查询考试试卷详情接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryExamPaperDetail(HttpServletRequest request,
+			@ApiParam(name="userPaperId",value="用户考卷id",required=true) @RequestParam(value="userPaperId",required=true) String userPaperId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = trainService.queryExamPaperDetail(userPaperId);
+			return result;
+		} catch (Exception e) {
+			log.error("查询考试试卷详情接口失败",e);
+			result.setMessage("查询考试试卷详情接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
 	@RequestMapping(value="/submitSubject",method=RequestMethod.POST)
 	@ApiOperation(value="提交题目接口",notes="提交题目接口",httpMethod="POST",response=Result.class)
 	public @ResponseBody Result submitSubject(HttpServletRequest request,
-			@ApiParam(name="userSubjectJson",value="用户考题json字符串",required=true) String userSubjectJson
+			@ApiParam(name="userSubjectJson",value="用户考题json字符串",required=true) @RequestParam(value="userSubjectJson",required=true) String userSubjectJson
 	){
 		DataResult result=new DataResult();
 		try {
@@ -123,7 +144,7 @@ public class TrainController {
 	@RequestMapping(value="/submitPaper",method=RequestMethod.POST)
 	@ApiOperation(value="提交考卷接口",notes="提交考卷接口",httpMethod="POST",response=Result.class)
 	public @ResponseBody Result submitPaper(HttpServletRequest request,
-			@ApiParam(name="userPaperId",value="用户考卷id",required=true) String userPaperId
+			@ApiParam(name="userPaperId",value="用户考卷id",required=true) @RequestParam(value="userPaperId",required=true) String userPaperId
 	){
 		DataResult result=new DataResult();
 		try {
@@ -140,7 +161,7 @@ public class TrainController {
 	@RequestMapping(value="/courseRanking",method=RequestMethod.GET)
 	@ApiOperation(value="课时排名接口",notes="课时排名接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result courseRanking(HttpServletRequest request,
-			@ApiParam(name="userId",value="用户id",required=true) String userId
+			@ApiParam(name="userId",value="用户id",required=true) @RequestParam(value="userId",required=true) String userId
 	){
 		DataResult result=new DataResult();
 		try {
@@ -157,13 +178,12 @@ public class TrainController {
 	@RequestMapping(value="/videoCollection",method=RequestMethod.GET)
 	@ApiOperation(value="收藏视频接口",notes="收藏视频接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result videoCollection(HttpServletRequest request,
-			@ApiParam(name="userId",value="用户id",required=true) String userId,
-			@ApiParam(name="isCollect",value="是否收藏",required=true) String isCollect,
-			@ApiParam(name="courseId",value="课程id",required=true) String courseId
+			@ApiParam(name="userCourseId",value="用户课程id",required=true) @RequestParam(value="userCourseId",required=true) String userCourseId,
+			@ApiParam(name="isCollect",value="是否收藏",required=true) @RequestParam(value="isCollect",required=true) String isCollect
 	){
 		DataResult result=new DataResult();
 		try {
-			result = trainService.videoCollection(userId,courseId,isCollect);
+			result = trainService.videoCollection(userCourseId,isCollect);
 			return result;
 		} catch (Exception e) {
 			log.error("收藏视频接口失败",e);
@@ -176,9 +196,9 @@ public class TrainController {
 	@RequestMapping(value="/subjectCollection",method=RequestMethod.GET)
 	@ApiOperation(value="收藏题目接口",notes="收藏题目接口",httpMethod="GET",response=Result.class)
 	public @ResponseBody Result subjectCollection(HttpServletRequest request,
-			@ApiParam(name="userId",value="用户id",required=true) String userId,
-			@ApiParam(name="isCollect",value="是否收藏",required=true) String isCollect,
-			@ApiParam(name="subjectId",value="题目id",required=true) String subjectId
+			@ApiParam(name="userId",value="用户id",required=true) @RequestParam(value="userId",required=true) String userId,
+			@ApiParam(name="isCollect",value="是否收藏",required=true) @RequestParam(value="isCollect",required=true) String isCollect,
+			@ApiParam(name="subjectId",value="题目id",required=true) @RequestParam(value="subjectId",required=true) String subjectId
 	){
 		DataResult result=new DataResult();
 		try {
@@ -192,4 +212,13 @@ public class TrainController {
 		}
 	}
 	
+	@GetMapping("/introductionUrl/{courseId}")
+	public String introductionUrl(@PathVariable("courseId") String courseId,ModelMap mmap)
+	{
+		String introduction = trainService.introductionUrl(courseId);
+		if(StringUtils.isNotEmpty(introduction)) {
+			mmap.put("introduction", introduction);
+		}
+	    return "web/tUserInfo/add";
+	}
 }

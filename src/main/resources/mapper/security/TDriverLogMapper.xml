@@ -203,6 +203,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="writeTime"    column="write_time"    />
         <result property="carCheckProject"    column="car_check_project"    />
         <result property="changeAddress"    column="change_address"    />
+        <result property="restAddress"    column="rest_address"    />
         <result property="stopCarTime"    column="stop_car_time"    />
         <result property="startCarTime"    column="start_car_time"    />
         <result property="troubleShooting"    column="trouble_shooting"    />
@@ -213,6 +214,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="exchangeRemark"    column="exchange_remark"    />
     </resultMap>
     
     <resultMap type="com.project.security.domain.vo.TDriverAfterLogVo" id="TDriverAfterLogVoResult">
@@ -253,8 +255,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="queryLogMiddleDetail" parameterType="java.lang.String" resultMap="TDriverMiddleLogVoResult">
-    	select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id
+    	select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id,dml.rest_address,
+    	dbl.exchange_remark,dbl.update_date
     	from t_driver_middle_log dml
+    	join t_driver_before_log dbl on dml.driver_log_id = dbl.driver_log_id
         where dml.driver_log_id = #{driverLogId}
     </select>
     
@@ -268,5 +272,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	<include refid="selectTDriverLogbasicColums"/>
         from t_driver_log dl
         where (dl.first_driver_id = #{userId} or dl.second_driver_id = #{userId})
+        order by dl.create_date desc
     </select>
 </mapper>

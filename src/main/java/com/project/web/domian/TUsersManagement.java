@@ -37,12 +37,16 @@ public class TUsersManagement extends BaseEntity
 	private String managementEducation;
 	/** 出生日期 */
 	private Date managementBirth;
+	/** 入职日期 */
+	private Date entryDate;
+	/** 入职日期字符串 */
+	private String entryDateStr;
 	/** 地址 */
 	private String managementAddr;
 	/** 部门 */
-	private String managementDeptId;
+	private Long managementDeptId;
 	/** 岗位 */
-	private String managementPost;
+	private Long managementPost;
 	/** 工号 */
 	private String managementNum;
 	/** 创建日期 */
@@ -67,6 +71,8 @@ public class TUsersManagement extends BaseEntity
 	{
 		return id;
 	}
+	
+	
 	public void setManagementUserId(Long managementUserId) 
 	{
 		this.managementUserId = managementUserId;
@@ -157,24 +163,41 @@ public class TUsersManagement extends BaseEntity
 	{
 		return managementAddr;
 	}
-	public void setManagementDeptId(String managementDeptId) 
-	{
+
+	public Date getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
+
+	
+
+	public String getEntryDateStr() {
+		return entryDateStr;
+	}
+
+	public void setEntryDateStr(String entryDateStr) {
+		this.entryDateStr = entryDateStr;
+	}
+
+	public Long getManagementDeptId() {
+		return managementDeptId;
+	}
+
+	public void setManagementDeptId(Long managementDeptId) {
 		this.managementDeptId = managementDeptId;
 	}
 
-	public String getManagementDeptId() 
-	{
-		return managementDeptId;
+	public Long getManagementPost() {
+		return managementPost;
 	}
-	public void setManagementPost(String managementPost) 
-	{
+
+	public void setManagementPost(Long managementPost) {
 		this.managementPost = managementPost;
 	}
 
-	public String getManagementPost() 
-	{
-		return managementPost;
-	}
 	public void setManagementNum(String managementNum) 
 	{
 		this.managementNum = managementNum;
@@ -264,3 +287,4 @@ public class TUsersManagement extends BaseEntity
             .toString();
     }
 }
+

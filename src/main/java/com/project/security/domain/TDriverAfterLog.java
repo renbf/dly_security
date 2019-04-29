@@ -2,8 +2,12 @@ package com.project.security.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.project.security.domain.vo.TDictView;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 行车后检查事项表 t_driver_after_log
@@ -43,7 +47,8 @@ public class TDriverAfterLog implements Serializable
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
-
+	/** 检查事项 */
+	private List<TDictView> carCheckProjectList;
 	public void setDriverLogId(String driverLogId) 
 	{
 		this.driverLogId = driverLogId;
@@ -171,7 +176,15 @@ public class TDriverAfterLog implements Serializable
 		return updateUserId;
 	}
 
-    public String toString() {
+    public List<TDictView> getCarCheckProjectList() {
+		return carCheckProjectList;
+	}
+
+	public void setCarCheckProjectList(List<TDictView> carCheckProjectList) {
+		this.carCheckProjectList = carCheckProjectList;
+	}
+
+	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("driverLogId", getDriverLogId())
             .append("writeTime", getWriteTime())

@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TTaskManagement;
 
 /**
@@ -34,7 +37,7 @@ public interface ITTaskManagementService
      * @param tTaskManagement 作业管理信息
      * @return 结果
      */
-	public int insertTTaskManagement(TTaskManagement tTaskManagement);
+	public AjaxResult insertTTaskManagement(TTaskManagement tTaskManagement,MultipartFile tasklFile);
 	
 	/**
      * 修改作业管理
@@ -42,7 +45,7 @@ public interface ITTaskManagementService
      * @param tTaskManagement 作业管理信息
      * @return 结果
      */
-	public int updateTTaskManagement(TTaskManagement tTaskManagement);
+	public AjaxResult updateTTaskManagement(TTaskManagement tTaskManagement,MultipartFile tasklFile);
 		
 	/**
      * 删除作业管理信息

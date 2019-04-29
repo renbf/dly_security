@@ -27,19 +27,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTDrillRecordVo">
-        select dr.id, dr.contingency_plan, dr.exercise_content, dr.exercise_name, dr.effect_evaluation, dr.exercise_date, dr.commanding_officer, dr.exercise_type, dr.participants_num, dr.participants_levl, dr.check_in_num, dr.exercise_place, dr.exercise_file_path, dr.create_time, dr.update_time, dr.user_id, dr.meno, dr.business_id, dr.update_user_id from t_drill_record dr
+        select dr.id, dr.contingency_plan, dr.exercise_content, dr.exercise_name, dr.effect_evaluation,
+        dr.exercise_date, dr.commanding_officer, dr.exercise_type, dr.participants_num, dr.participants_levl,
+        dr.check_in_num, dr.exercise_place, dr.exercise_file_path, dr.create_time, dr.update_time, dr.user_id,
+        dr.meno, dr.business_id, dr.update_user_id ,
+        DATE_FORMAT(dr.exercise_date,'%Y-%m-%d') as exerciseDateStr,
+        DATE_FORMAT(dr.create_time,'%Y-%m-%d') as createTimeStr,
+        dic.dict_name as exerciseTypeName,
+        dic1.dict_name as participantsLevlName
+        from t_drill_record dr  left join t_dict dic on (dic.id = dr.exercise_type and dic.dict_code = 'emergency_exercise_type')
+                                left join t_dict dic1 on (dic1.id = dr.participants_levl and dic1.dict_code = 'emergency_participants_levl')
     </sql>
 	
     <select id="selectTDrillRecordList" parameterType="TDrillRecord" resultMap="TDrillRecordResult">
         <include refid="selectTDrillRecordVo"/>
         <where>  
             <if test="id != null  and id != '' "> and dr.id = #{id}</if>
-             <if test="contingencyPlan != null  and contingencyPlan != '' "> and dr.contingency_plan = #{contingencyPlan}</if>
+             <if test="contingencyPlan != null  and contingencyPlan != '' "> and dr.contingency_plan like concat('%',#{contingencyPlan},'%')</if>
+
              <if test="exerciseContent != null  and exerciseContent != '' "> and dr.exercise_content = #{exerciseContent}</if>
-             <if test="exerciseName != null  and exerciseName != '' "> and dr.exercise_name = #{exerciseName}</if>
+             <if test="exerciseName != null  and exerciseName != '' "> and dr.exercise_name like concat('%',#{exerciseName},'%')</if>
+
              <if test="effectEvaluation != null  and effectEvaluation != '' "> and dr.effect_evaluation = #{effectEvaluation}</if>
              <if test="exerciseDate != null "> and dr.exercise_date = #{exerciseDate}</if>
-             <if test="commandingOfficer != null  and commandingOfficer != '' "> and dr.commanding_officer = #{commandingOfficer}</if>
+             <if test="commandingOfficer != null  and commandingOfficer != '' "> and dr.commanding_officer like concat('%',#{commandingOfficer},'%')</if>
+
              <if test="exerciseType != null  and exerciseType != '' "> and dr.exercise_type = #{exerciseType}</if>
              <if test="participantsNum != null "> and dr.participants_num = #{participantsNum}</if>
              <if test="participantsLevl != null  and participantsLevl != '' "> and dr.participants_levl = #{participantsLevl}</if>

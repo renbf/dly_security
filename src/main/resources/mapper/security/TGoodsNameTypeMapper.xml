@@ -98,5 +98,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
+    <resultMap type="com.project.security.domain.vo.TGoodsNameTypeVo" id="TGoodsNameTypeVoResult">
+        <result property="id"    column="id"    />
+        <result property="typeItem"    column="type_item"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="typeItemName"    column="type_item_name"    />
+    </resultMap>
     
+    <select id="selectTGoodsNameTypeDicts" parameterType="java.lang.String" resultMap="TGoodsNameTypeVoResult">
+    	select gnt.id, gnt.type_item, gnt.goods_name,d.dict_name type_item_name
+    	from t_goods_name_type gnt
+    	left join t_dict d on gnt.type_item = d.id
+    	where gnt.business_id = #{businessId}
+    </select>
 </mapper>

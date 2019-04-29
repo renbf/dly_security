@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 行车日志基础表 t_driver_log
  * 
@@ -17,6 +20,7 @@ public class TDriverBeforeLogVo implements Serializable
 	/** ID */
 	private String id;
 	/** 填报日期 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date writeTime;
 	/** 车牌号 */
 	private String carNumber;
@@ -33,8 +37,10 @@ public class TDriverBeforeLogVo implements Serializable
 	/** 目的地 */
 	private String goalAddress;
 	/** 启运日期 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date transportDate;
 	/** 到达日期 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date arriveDate;
 	/** 里程 */
 	private String km;
@@ -51,12 +57,16 @@ public class TDriverBeforeLogVo implements Serializable
 	/** 天气 */
 	private String weather;
 	/** 创建人id */
+	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
+	@JsonIgnore
 	private Date createDate;
 	/** 修改时间 */
+	@JsonIgnore
 	private Date updateDate;
 	/** 修改人id */
+	@JsonIgnore
 	private String updateUserId;
 
 	/** 检查事项 */

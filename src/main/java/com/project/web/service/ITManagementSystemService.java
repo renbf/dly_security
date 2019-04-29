@@ -2,6 +2,8 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.web.domian.TManagementSystem;
 
 /**
@@ -34,7 +36,7 @@ public interface ITManagementSystemService
      * @param tManagementSystem 管理制度信息
      * @return 结果
      */
-	public int insertTManagementSystem(TManagementSystem tManagementSystem);
+	public int insertTManagementSystem(TManagementSystem tManagementSystem,MultipartFile managementFile);
 	
 	/**
      * 修改管理制度
@@ -42,7 +44,7 @@ public interface ITManagementSystemService
      * @param tManagementSystem 管理制度信息
      * @return 结果
      */
-	public int updateTManagementSystem(TManagementSystem tManagementSystem);
+	public int updateTManagementSystem(TManagementSystem tManagementSystem,MultipartFile managementFile);
 		
 	/**
      * 删除管理制度信息

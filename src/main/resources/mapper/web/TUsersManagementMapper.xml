@@ -25,10 +25,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="meno"    column="meno"    />
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="entryDate"    column="entry_date"    />
     </resultMap>
 	
 	<sql id="selectTUsersManagementVo">
-        select um.id, um.management_user_id, um.management_name, um.management_sex, um.management_phone, um.is_incumbency, um.management_email, um.management_id_num, um.management_education, um.management_birth, um.management_addr, um.management_dept_id, um.management_post, um.management_num, um.create_time, um.update_time, um.user_id, um.meno, um.business_id, um.update_user_id from t_users_management um
+        select um.id, um.management_user_id, um.management_name, um.management_sex, um.management_phone, um.is_incumbency, um.management_email, um.management_id_num, um.management_education, um.management_birth, um.management_addr, um.management_dept_id, um.management_post, um.management_num, um.create_time, um.update_time, um.user_id, um.meno, um.business_id, um.update_user_id,      
+         DATE_FORMAT(um.entry_date ,'%Y-%m-%d') as entryDateStr 
+        from t_users_management um
     </sql>
 	
     <select id="selectTUsersManagementList" parameterType="TUsersManagement" resultMap="TUsersManagementResult">
@@ -147,5 +150,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    
+    <select id="selectTUsersManagementListByPostId" parameterType="TUsersManagement" resultMap="TUsersManagementResult">
+        select um.management_user_id, um.management_name, um.management_sex, um.management_phone,      
+         DATE_FORMAT(um.entry_date ,'%Y-%m-%d') as entryDateStr 
+        from t_users_management um     
+        <where>  
+             <if test="managementDeptId != null   "> and um.management_dept_id = #{managementDeptId}</if>
+             <if test="managementPost != null  "> and um.management_post = #{managementPost}</if>
+             <if test="businessId != null  "> and um.business_id = #{businessId}</if>
+         </where>
+         order by um.create_time desc
+    </select>
+     
     
 </mapper>

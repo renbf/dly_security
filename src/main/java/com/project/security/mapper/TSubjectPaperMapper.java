@@ -3,6 +3,7 @@ package com.project.security.mapper;
 import com.project.security.domain.TSubjectPaper;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;	
 
 /**
@@ -62,4 +63,6 @@ public interface TSubjectPaperMapper
      */
 	public int deleteTSubjectPaperByIds(String[] paperIds);
 	//以上自动生成的尽量别动
+	
+	public TSubjectPaper selectTSubjectPaperByKey(@Param("paperId")String paperId,@Param("subjectId")String subjectId);
 }

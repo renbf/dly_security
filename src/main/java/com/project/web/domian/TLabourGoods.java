@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.project.common.base.BaseEntity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 劳动防护物品表 t_labour_goods
@@ -21,6 +22,10 @@ public class TLabourGoods extends BaseEntity
 	private String id;
 	/** 发放日期 */
 	private Date grantDate;
+	/** 发放日期 */
+	private Date grantDateEnd;
+	/** 发放日期字符串 */
+	private Date grantDateStr;
 	/** 领取人 */
 	private String receivePer;
 	/** 领取人的user_id */
@@ -39,6 +44,46 @@ public class TLabourGoods extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	//发放物品名称
+	private String goodsName;
+	
+	private List<TLabourGoodsDetail> labourGoodDetailList;
+	
+	
+
+	
+
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+	public Date getGrantDateEnd() {
+		return grantDateEnd;
+	}
+
+	public void setGrantDateEnd(Date grantDateEnd) {
+		this.grantDateEnd = grantDateEnd;
+	}
+
+	public Date getGrantDateStr() {
+		return grantDateStr;
+	}
+
+	public void setGrantDateStr(Date grantDateStr) {
+		this.grantDateStr = grantDateStr;
+	}
+
+	public List<TLabourGoodsDetail> getLabourGoodDetailList() {
+		return labourGoodDetailList;
+	}
+
+	public void setLabourGoodDetailList(List<TLabourGoodsDetail> labourGoodDetailList) {
+		this.labourGoodDetailList = labourGoodDetailList;
+	}
 
 	public void setId(String id) 
 	{
@@ -156,3 +201,4 @@ public class TLabourGoods extends BaseEntity
             .toString();
     }
 }
+

@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TUserDriverBasic;
 
 /**
@@ -34,7 +37,18 @@ public interface ITUserDriverBasicService
      * @param tUserDriverBasic 驾驶员台账基础信息
      * @return 结果
      */
-	public int insertTUserDriverBasic(TUserDriverBasic tUserDriverBasic);
+	public AjaxResult insertTUserDriverBasic(TUserDriverBasic tUserDriverBasic,MultipartFile headImg, //头像图片
+			 MultipartFile personalImg,//个人照片
+			 MultipartFile idCardCopyImg,//身份证复印件照片
+			MultipartFile certificateCopyImg, //驾驶证复印件照片
+			MultipartFile practitionersCopyImg,//从业资格证复印件照片
+			 MultipartFile examinationPaperImg,//考试试卷正
+			 MultipartFile examinationPaperSecondImg,//考试试卷第二页
+			 MultipartFile examinationPaperThirdImg,//考试试卷第三页
+			MultipartFile examinationPaperFourImg,//考试试卷第四页
+			MultipartFile threeNotAccidentImg,//三年无重大事故
+			MultipartFile oneYearIllegalRecordImg//一年违法记录查询 
+);
 	
 	/**
      * 修改驾驶员台账基础
@@ -42,7 +56,17 @@ public interface ITUserDriverBasicService
      * @param tUserDriverBasic 驾驶员台账基础信息
      * @return 结果
      */
-	public int updateTUserDriverBasic(TUserDriverBasic tUserDriverBasic);
+	public AjaxResult updateTUserDriverBasic(TUserDriverBasic tUserDriverBasic,MultipartFile headImg, //头像图片
+			 MultipartFile personalImg,//个人照片
+			 MultipartFile idCardCopyImg,//身份证复印件照片
+			MultipartFile certificateCopyImg, //驾驶证复印件照片
+			MultipartFile practitionersCopyImg,//从业资格证复印件照片
+			 MultipartFile examinationPaperImg,//考试试卷正
+			 MultipartFile examinationPaperSecondImg,//考试试卷第二页
+			 MultipartFile examinationPaperThirdImg,//考试试卷第三页
+			MultipartFile examinationPaperFourImg,//考试试卷第四页
+			MultipartFile threeNotAccidentImg,//三年无重大事故
+			MultipartFile oneYearIllegalRecordImg);//一年违法记录查询 
 		
 	/**
      * 删除驾驶员台账基础信息

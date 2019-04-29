@@ -10,8 +10,28 @@ import com.project.common.result.DataResult;
  *
  */
 public interface IUserInfoService {
-	
+	/**
+	 * 登录接口
+	 * @param userName
+	 * @param passWord
+	 * @return
+	 */
 	public DataResult login(String userName,String passWord);
-	
+	/**
+	 * 上传认证接口
+	 * @param userId
+	 * @param authImg
+	 * @return
+	 */
 	public DataResult uploadAuthUrl(String userId,MultipartFile authImg);
+	
+	/**
+	 * 修改密码
+	 * @param userId
+	 * @param oldPassword
+	 * @param newPassword
+	 * @param confirmPassword
+	 * @return
+	 */
+	public DataResult changePassword(String userId,String oldPassword,String newPassword,String confirmPassword);
 }

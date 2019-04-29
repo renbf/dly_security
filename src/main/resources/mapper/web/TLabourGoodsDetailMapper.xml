@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TLabourGoodsDetailMapper">
+    
+    <resultMap type="TLabourGoodsDetail" id="TLabourGoodsDetailResult">
+        <result property="id"    column="id"    />
+        <result property="labourGoodsId"    column="labour_goods_id"    />
+        <result property="receivePer"    column="receive_per"    />
+        <result property="receiveUserId"    column="receive_user_id"    />
+        <result property="phone"    column="phone"    />
+        <result property="entryDate"    column="entry_date"    />
+         <result property="sex"    column="sex"    />
+    </resultMap>
+	
+	<sql id="selectTLabourGoodsDetailVo">
+        select lgd.id, lgd.labour_goods_id, lgd.receive_per, lgd.receive_user_id, lgd.phone, lgd.entry_date,lgd.sex from t_labour_goods_detail lgd
+    </sql>
+	
+    <select id="selectTLabourGoodsDetailList" parameterType="TLabourGoodsDetail" resultMap="TLabourGoodsDetailResult">
+        <include refid="selectTLabourGoodsDetailVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and lgd.id = #{id}</if>
+             <if test="labourGoodsId != null  and labourGoodsId != '' "> and lgd.labour_goods_id = #{labourGoodsId}</if>
+             <if test="receivePer != null  and receivePer != '' "> and lgd.receive_per = #{receivePer}</if>
+             <if test="receiveUserId != null "> and lgd.receive_user_id = #{receiveUserId}</if>
+             <if test="phone != null  and phone != '' "> and lgd.phone = #{phone}</if>
+             <if test="entryDate != null "> and lgd.entry_date = #{entryDate}</if>
+         </where>
+    </select>
+    
+    <select id="selectTLabourGoodsDetailById" parameterType="String" resultMap="TLabourGoodsDetailResult">
+        <include refid="selectTLabourGoodsDetailVo"/>
+        where lgd.id = #{id}
+    </select>
+        
+    <insert id="insertTLabourGoodsDetail" parameterType="TLabourGoodsDetail">
+        insert into t_labour_goods_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="labourGoodsId != null  and labourGoodsId != ''  ">labour_goods_id,</if>
+			<if test="receivePer != null  and receivePer != ''  ">receive_per,</if>
+			<if test="receiveUserId != null  ">receive_user_id,</if>
+			<if test="phone != null  and phone != ''  ">phone,</if>
+			<if test="entryDate != null  ">entry_date,</if>
+			<if test="sex != null and sex != '' ">sex,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="labourGoodsId != null  and labourGoodsId != ''  ">#{labourGoodsId},</if>
+			<if test="receivePer != null  and receivePer != ''  ">#{receivePer},</if>
+			<if test="receiveUserId != null  ">#{receiveUserId},</if>
+			<if test="phone != null  and phone != ''  ">#{phone},</if>
+			<if test="entryDate != null  ">#{entryDate},</if>
+			<if test="sex != null and sex != '' ">#{sex},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTLabourGoodsDetail" parameterType="TLabourGoodsDetail">
+        update t_labour_goods_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="labourGoodsId != null  and labourGoodsId != ''  ">labour_goods_id = #{labourGoodsId},</if>
+            <if test="receivePer != null  and receivePer != ''  ">receive_per = #{receivePer},</if>
+            <if test="receiveUserId != null  ">receive_user_id = #{receiveUserId},</if>
+            <if test="phone != null  and phone != ''  ">phone = #{phone},</if>
+            <if test="entryDate != null  ">entry_date = #{entryDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTLabourGoodsDetailById" parameterType="String">
+        delete from t_labour_goods_detail where id = #{id}
+    </delete>
+    
+   <delete id="deleteTLabourGoodsDetailByGoodsId" parameterType="String">
+        delete from t_labour_goods_detail where labour_goods_id = #{labourGoodsId}
+    </delete>
+	
+    <delete id="deleteTLabourGoodsDetailByIds" parameterType="String">
+        delete from t_labour_goods_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

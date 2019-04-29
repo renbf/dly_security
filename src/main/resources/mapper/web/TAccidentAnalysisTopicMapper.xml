@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TAccidentAnalysisTopicMapper">
-    
-    <resultMap type="com.project.web.domian.TAccidentAnalysisTopic" id="TAccidentAnalysisTopicResult">
+
+    <resultMap type="TAccidentAnalysisTopic" id="TAccidentAnalysisTopicResult">
         <result property="id"    column="id"    />
         <result property="accidentBasiscId"    column="accident_basisc_id"    />
         <result property="topicName"    column="topic_name"    />
@@ -29,109 +29,119 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userId"    column="user_id"    />
         <result property="meno"    column="meno"    />
         <result property="businessId"    column="business_id"    />
+        <result property="systemType"    column="system_type"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTAccidentAnalysisTopicVo">
-        select aat.id, aat.accident_basisc_id, aat.topic_name, aat.topic_code, aat.topic_type, aat.topic_date, aat.topic_host, aat.topic_note_taker, aat.should_num, aat.act_num, aat.dept_id, aat.dept_name, aat.topic_place, aat.topic_info, aat.accident_reason, aat.enterprise_problem, aat.rectification_preventive_measures, aat.remark, aat.file_path, aat.create_time, aat.update_time, aat.user_id, aat.meno, aat.business_id, aat.update_user_id from t_accident_analysis_topic aat
+
+    <sql id="selectTAccidentAnalysisTopicVo">
+        select aat.id, aat.accident_basisc_id, aat.topic_name, aat.topic_code, aat.topic_type, aat.topic_date,
+         aat.topic_host, aat.topic_note_taker, aat.should_num, aat.act_num, aat.dept_id, aat.dept_name, aat.topic_place,
+         aat.topic_info, aat.accident_reason, aat.enterprise_problem, aat.rectification_preventive_measures, aat.remark,
+         aat.file_path, aat.create_time, aat.update_time, aat.user_id, aat.meno, aat.business_id, aat.system_type,
+         aat.update_user_id ,
+    	DATE_FORMAT(aat.topic_date,'%Y-%m-%d') as topicDateStr,
+        DATE_FORMAT(aat.create_time,'%Y-%m-%d') as createTimeStr
+         from t_accident_analysis_topic aat
     </sql>
-	
-    <select id="selectTAccidentAnalysisTopicList" parameterType="com.project.web.domian.TAccidentAnalysisTopic" resultMap="TAccidentAnalysisTopicResult">
+
+    <select id="selectTAccidentAnalysisTopicList" parameterType="TAccidentAnalysisTopic" resultMap="TAccidentAnalysisTopicResult">
         <include refid="selectTAccidentAnalysisTopicVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and aat.id = #{id}</if>
-             <if test="accidentBasiscId != null  and accidentBasiscId != '' "> and aat.accident_basisc_id = #{accidentBasiscId}</if>
-             <if test="topicName != null  and topicName != '' "> and aat.topic_name = #{topicName}</if>
-             <if test="topicCode != null  and topicCode != '' "> and aat.topic_code = #{topicCode}</if>
-             <if test="topicType != null  and topicType != '' "> and aat.topic_type = #{topicType}</if>
-             <if test="topicDate != null "> and aat.topic_date = #{topicDate}</if>
-             <if test="topicHost != null  and topicHost != '' "> and aat.topic_host = #{topicHost}</if>
-             <if test="topicNoteTaker != null "> and aat.topic_note_taker = #{topicNoteTaker}</if>
-             <if test="shouldNum != null "> and aat.should_num = #{shouldNum}</if>
-             <if test="actNum != null "> and aat.act_num = #{actNum}</if>
-             <if test="deptId != null  and deptId != '' "> and aat.dept_id = #{deptId}</if>
-             <if test="deptName != null  and deptName != '' "> and aat.dept_name = #{deptName}</if>
-             <if test="topicPlace != null  and topicPlace != '' "> and aat.topic_place = #{topicPlace}</if>
-             <if test="topicInfo != null  and topicInfo != '' "> and aat.topic_info = #{topicInfo}</if>
-             <if test="accidentReason != null  and accidentReason != '' "> and aat.accident_reason = #{accidentReason}</if>
-             <if test="enterpriseProblem != null  and enterpriseProblem != '' "> and aat.enterprise_problem = #{enterpriseProblem}</if>
-             <if test="rectificationPreventiveMeasures != null  and rectificationPreventiveMeasures != '' "> and aat.rectification_preventive_measures = #{rectificationPreventiveMeasures}</if>
-             <if test="remark != null  and remark != '' "> and aat.remark = #{remark}</if>
-             <if test="filePath != null  and filePath != '' "> and aat.file_path = #{filePath}</if>
-             <if test="createTime != null "> and aat.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and aat.update_time = #{updateTime}</if>
-             <if test="userId != null "> and aat.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and aat.meno = #{meno}</if>
-             <if test="businessId != null  and businessId != '' "> and aat.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and aat.update_user_id = #{updateUserId}</if>
-         </where>
-           order by aat.create_time desc
+            <if test="accidentBasiscId != null  and accidentBasiscId != '' "> and aat.accident_basisc_id = #{accidentBasiscId}</if>
+            <if test="topicName != null  and topicName != '' "> and aat.topic_name = #{topicName}</if>
+            <if test="topicCode != null  and topicCode != '' "> and aat.topic_code = #{topicCode}</if>
+            <if test="topicType != null  and topicType != '' "> and aat.topic_type = #{topicType}</if>
+            <if test="topicDate != null "> and aat.topic_date = #{topicDate}</if>
+            <if test="topicHost != null  and topicHost != '' "> and aat.topic_host = #{topicHost}</if>
+            <if test="topicNoteTaker != null  and topicNoteTaker != '' "> and aat.topic_note_taker = #{topicNoteTaker}</if>
+            <if test="shouldNum != null "> and aat.should_num = #{shouldNum}</if>
+            <if test="actNum != null "> and aat.act_num = #{actNum}</if>
+            <if test="deptId != null "> and aat.dept_id = #{deptId}</if>
+            <if test="deptName != null  and deptName != '' "> and aat.dept_name = #{deptName}</if>
+            <if test="topicPlace != null  and topicPlace != '' "> and aat.topic_place = #{topicPlace}</if>
+            <if test="topicInfo != null  and topicInfo != '' "> and aat.topic_info = #{topicInfo}</if>
+            <if test="accidentReason != null  and accidentReason != '' "> and aat.accident_reason = #{accidentReason}</if>
+            <if test="enterpriseProblem != null  and enterpriseProblem != '' "> and aat.enterprise_problem = #{enterpriseProblem}</if>
+            <if test="rectificationPreventiveMeasures != null  and rectificationPreventiveMeasures != '' "> and aat.rectification_preventive_measures = #{rectificationPreventiveMeasures}</if>
+            <if test="remark != null  and remark != '' "> and aat.remark = #{remark}</if>
+            <if test="filePath != null  and filePath != '' "> and aat.file_path = #{filePath}</if>
+            <if test="createTime != null "> and aat.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and aat.update_time = #{updateTime}</if>
+            <if test="userId != null "> and aat.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and aat.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and aat.business_id = #{businessId}</if>
+            <if test="systemType != null  and systemType != '' "> and aat.system_type = #{systemType}</if>
+            <if test="updateUserId != null "> and aat.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTAccidentAnalysisTopicById" parameterType="String" resultMap="TAccidentAnalysisTopicResult">
         <include refid="selectTAccidentAnalysisTopicVo"/>
         where aat.id = #{id}
     </select>
-        
-    <insert id="insertTAccidentAnalysisTopic" parameterType="com.project.web.domian.TAccidentAnalysisTopic">
+
+    <insert id="insertTAccidentAnalysisTopic" parameterType="TAccidentAnalysisTopic">
         insert into t_accident_analysis_topic
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id,</if>
-			<if test="topicName != null  and topicName != ''  ">topic_name,</if>
-			<if test="topicCode != null  and topicCode != ''  ">topic_code,</if>
-			<if test="topicType != null  and topicType != ''  ">topic_type,</if>
-			<if test="topicDate != null  ">topic_date,</if>
-			<if test="topicHost != null  and topicHost != ''  ">topic_host,</if>
-			<if test="topicNoteTaker != null  ">topic_note_taker,</if>
-			<if test="shouldNum != null  ">should_num,</if>
-			<if test="actNum != null  ">act_num,</if>
-			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
-			<if test="deptName != null  and deptName != ''  ">dept_name,</if>
-			<if test="topicPlace != null  and topicPlace != ''  ">topic_place,</if>
-			<if test="topicInfo != null  and topicInfo != ''  ">topic_info,</if>
-			<if test="accidentReason != null  and accidentReason != ''  ">accident_reason,</if>
-			<if test="enterpriseProblem != null  and enterpriseProblem != ''  ">enterprise_problem,</if>
-			<if test="rectificationPreventiveMeasures != null  and rectificationPreventiveMeasures != ''  ">rectification_preventive_measures,</if>
-			<if test="remark != null  and remark != ''  ">remark,</if>
-			<if test="filePath != null  and filePath != ''  ">file_path,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="meno != null  and meno != ''  ">meno,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id,</if>
+            <if test="topicName != null  and topicName != ''  ">topic_name,</if>
+            <if test="topicCode != null  and topicCode != ''  ">topic_code,</if>
+            <if test="topicType != null  and topicType != ''  ">topic_type,</if>
+            <if test="topicDate != null  ">topic_date,</if>
+            <if test="topicHost != null  and topicHost != ''  ">topic_host,</if>
+            <if test="topicNoteTaker != null  and topicNoteTaker != ''  ">topic_note_taker,</if>
+            <if test="shouldNum != null  ">should_num,</if>
+            <if test="actNum != null  ">act_num,</if>
+            <if test="deptId != null  ">dept_id,</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name,</if>
+            <if test="topicPlace != null  and topicPlace != ''  ">topic_place,</if>
+            <if test="topicInfo != null  and topicInfo != ''  ">topic_info,</if>
+            <if test="accidentReason != null  and accidentReason != ''  ">accident_reason,</if>
+            <if test="enterpriseProblem != null  and enterpriseProblem != ''  ">enterprise_problem,</if>
+            <if test="rectificationPreventiveMeasures != null  and rectificationPreventiveMeasures != ''  ">rectification_preventive_measures,</if>
+            <if test="remark != null  and remark != ''  ">remark,</if>
+            <if test="filePath != null  and filePath != ''  ">file_path,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="systemType != null  and systemType != ''  ">system_type,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="accidentBasiscId != null  and accidentBasiscId != ''  ">#{accidentBasiscId},</if>
-			<if test="topicName != null  and topicName != ''  ">#{topicName},</if>
-			<if test="topicCode != null  and topicCode != ''  ">#{topicCode},</if>
-			<if test="topicType != null  and topicType != ''  ">#{topicType},</if>
-			<if test="topicDate != null  ">#{topicDate},</if>
-			<if test="topicHost != null  and topicHost != ''  ">#{topicHost},</if>
-			<if test="topicNoteTaker != null  ">#{topicNoteTaker},</if>
-			<if test="shouldNum != null  ">#{shouldNum},</if>
-			<if test="actNum != null  ">#{actNum},</if>
-			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
-			<if test="deptName != null  and deptName != ''  ">#{deptName},</if>
-			<if test="topicPlace != null  and topicPlace != ''  ">#{topicPlace},</if>
-			<if test="topicInfo != null  and topicInfo != ''  ">#{topicInfo},</if>
-			<if test="accidentReason != null  and accidentReason != ''  ">#{accidentReason},</if>
-			<if test="enterpriseProblem != null  and enterpriseProblem != ''  ">#{enterpriseProblem},</if>
-			<if test="rectificationPreventiveMeasures != null  and rectificationPreventiveMeasures != ''  ">#{rectificationPreventiveMeasures},</if>
-			<if test="remark != null  and remark != ''  ">#{remark},</if>
-			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="meno != null  and meno != ''  ">#{meno},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">#{accidentBasiscId},</if>
+            <if test="topicName != null  and topicName != ''  ">#{topicName},</if>
+            <if test="topicCode != null  and topicCode != ''  ">#{topicCode},</if>
+            <if test="topicType != null  and topicType != ''  ">#{topicType},</if>
+            <if test="topicDate != null  ">#{topicDate},</if>
+            <if test="topicHost != null  and topicHost != ''  ">#{topicHost},</if>
+            <if test="topicNoteTaker != null  and topicNoteTaker != ''  ">#{topicNoteTaker},</if>
+            <if test="shouldNum != null  ">#{shouldNum},</if>
+            <if test="actNum != null  ">#{actNum},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="deptName != null  and deptName != ''  ">#{deptName},</if>
+            <if test="topicPlace != null  and topicPlace != ''  ">#{topicPlace},</if>
+            <if test="topicInfo != null  and topicInfo != ''  ">#{topicInfo},</if>
+            <if test="accidentReason != null  and accidentReason != ''  ">#{accidentReason},</if>
+            <if test="enterpriseProblem != null  and enterpriseProblem != ''  ">#{enterpriseProblem},</if>
+            <if test="rectificationPreventiveMeasures != null  and rectificationPreventiveMeasures != ''  ">#{rectificationPreventiveMeasures},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="systemType != null  and systemType != ''  ">#{systemType},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTAccidentAnalysisTopic" parameterType="com.project.web.domian.TAccidentAnalysisTopic">
+
+    <update id="updateTAccidentAnalysisTopic" parameterType="TAccidentAnalysisTopic">
         update t_accident_analysis_topic
         <trim prefix="SET" suffixOverrides=",">
             <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id = #{accidentBasiscId},</if>
@@ -140,10 +150,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="topicType != null  and topicType != ''  ">topic_type = #{topicType},</if>
             <if test="topicDate != null  ">topic_date = #{topicDate},</if>
             <if test="topicHost != null  and topicHost != ''  ">topic_host = #{topicHost},</if>
-            <if test="topicNoteTaker != null  ">topic_note_taker = #{topicNoteTaker},</if>
+            <if test="topicNoteTaker != null  and topicNoteTaker != ''  ">topic_note_taker = #{topicNoteTaker},</if>
             <if test="shouldNum != null  ">should_num = #{shouldNum},</if>
             <if test="actNum != null  ">act_num = #{actNum},</if>
-            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
             <if test="deptName != null  and deptName != ''  ">dept_name = #{deptName},</if>
             <if test="topicPlace != null  and topicPlace != ''  ">topic_place = #{topicPlace},</if>
             <if test="topicInfo != null  and topicInfo != ''  ">topic_info = #{topicInfo},</if>
@@ -157,20 +167,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null  ">user_id = #{userId},</if>
             <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="systemType != null  and systemType != ''  ">system_type = #{systemType},</if>
             <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTAccidentAnalysisTopicById" parameterType="String">
+    <delete id="deleteTAccidentAnalysisTopicById" parameterType="String">
         delete from t_accident_analysis_topic where id = #{id}
     </delete>
-	
+
     <delete id="deleteTAccidentAnalysisTopicByIds" parameterType="String">
-        delete from t_accident_analysis_topic where id in 
+        delete from t_accident_analysis_topic where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

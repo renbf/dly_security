@@ -13,7 +13,7 @@ public interface ITrainService {
 	 * 上传视频进度接口
 	 * @return
 	 */
-	public DataResult uploadVideoProgress(String courseId,String userId,Long progress);
+	public DataResult uploadVideoProgress(String userCourseId,Long progress);
 	
 	/**
 	 * 考试试卷接口
@@ -25,6 +25,11 @@ public interface ITrainService {
 	 * @return
 	 */
 	public DataResult examPaperDetail(String userPaperId);
+	/**
+	 * 考试试卷详情接口
+	 * @return
+	 */
+	public DataResult queryExamPaperDetail(String userPaperId);
 	
 	/**
 	 * 提交题目接口
@@ -47,11 +52,17 @@ public interface ITrainService {
 	 * 收藏视频接口
 	 * @return
 	 */
-	public DataResult videoCollection(String userId,String courseId,String isCollect);
+	public DataResult videoCollection(String userCourseId,String isCollect);
 	
 	/**
 	 * 收藏试题接口
 	 * @return
 	 */
 	public DataResult subjectCollection(String userId,String subjectId,String isCollect);
+	/**
+	 * 课程简介h5
+	 * @param courseId
+	 * @return
+	 */
+	public String introductionUrl(String courseId);
 }

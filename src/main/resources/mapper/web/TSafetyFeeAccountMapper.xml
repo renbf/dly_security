@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TSafetyFeeAccountMapper">
-    
+
     <resultMap type="TSafetyFeeAccount" id="TSafetyFeeAccountResult">
         <result property="id"    column="id"    />
         <result property="investmentType"    column="investment_type"    />
@@ -22,79 +22,103 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTSafetyFeeAccountVo">
-        select sfa.id, sfa.investment_type, sfa.charge_person, sfa.use_date, sfa.amt, sfa.investment_dept_id, sfa.fee_purpose, sfa.dept_id, sfa.note_taker, sfa.fee_file_path, sfa.create_time, sfa.update_time, sfa.user_id, sfa.meno, sfa.business_id, sfa.update_user_id from t_safety_fee_account sfa
+
+    <sql id="selectTSafetyFeeAccountVo">
+        select sfa.id, sfa.investment_type, sfa.charge_person, sfa.use_date, sfa.amt,
+        sfa.investment_dept_id, sfa.fee_purpose, sfa.dept_id, sfa.note_taker, sfa.fee_file_path,
+        sfa.create_time, sfa.update_time, sfa.user_id, sfa.meno, sfa.business_id, sfa.update_user_id ,
+        DATE_FORMAT(sfa.use_date,'%Y-%m-%d') as useDateStr,
+        DATE_FORMAT(sfa.create_time,'%Y-%m-%d') as createTimeStr
+        from t_safety_fee_account sfa
     </sql>
-	
+
     <select id="selectTSafetyFeeAccountList" parameterType="TSafetyFeeAccount" resultMap="TSafetyFeeAccountResult">
         <include refid="selectTSafetyFeeAccountVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and sfa.id = #{id}</if>
-             <if test="investmentType != null  and investmentType != '' "> and sfa.investment_type = #{investmentType}</if>
-             <if test="chargePerson != null  and chargePerson != '' "> and sfa.charge_person = #{chargePerson}</if>
-             <if test="useDate != null "> and sfa.use_date = #{useDate}</if>
-             <if test="amt != null "> and sfa.amt = #{amt}</if>
-             <if test="investmentDeptId != null  and investmentDeptId != '' "> and sfa.investment_dept_id = #{investmentDeptId}</if>
-             <if test="feePurpose != null  and feePurpose != '' "> and sfa.fee_purpose = #{feePurpose}</if>
-             <if test="deptId != null  and deptId != '' "> and sfa.dept_id = #{deptId}</if>
-             <if test="noteTaker != null  and noteTaker != '' "> and sfa.note_taker = #{noteTaker}</if>
-             <if test="feeFilePath != null  and feeFilePath != '' "> and sfa.fee_file_path = #{feeFilePath}</if>
-             <if test="createTime != null "> and sfa.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and sfa.update_time = #{updateTime}</if>
-             <if test="userId != null "> and sfa.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and sfa.meno = #{meno}</if>
-             <if test="businessId != null  and businessId != '' "> and sfa.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and sfa.update_user_id = #{updateUserId}</if>
-         </where>
-         order by sfa.create_time desc
+
+            <if test="investmentType != null  and investmentType != '' "> and sfa.investment_type like concat('%',#{investmentType},'%')</if>
+
+            <if test="chargePerson != null  and chargePerson != '' "> and sfa.charge_person like concat('%',#{chargePerson},'%')</if>
+
+
+            <if test="useDate != null  and useDate1 == null "> and DATE_FORMAT(sfa.use_date,'%Y%m%d') &gt;= DATE_FORMAT(#{useDate},'%Y%m%d')</if>
+            <if test="useDate1 != null  and useDate == null "> and DATE_FORMAT(sfa.use_date,'%Y%m%d') &lt;= DATE_FORMAT(#{useDate1},'%Y%m%d')</if>
+            <if test="useDate1 != null  and useDate != null "> and DATE_FORMAT(sfa.use_date,'%Y%m%d') &gt;= DATE_FORMAT(#{useDate},'%Y%m%d')
+                and   DATE_FORMAT(sfa.use_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{useDate1},'%Y%m%d')
+            </if>
+
+
+            <if test="amt != null "> and sfa.amt = #{amt}</if>
+            <if test="investmentDeptId != null  and investmentDeptId != '' "> and sfa.investment_dept_id = #{investmentDeptId}</if>
+
+            <if test="feePurpose != null  and feePurpose != '' "> and sfa.fee_purpose like concat('%',#{feePurpose},'%')</if>
+
+            <if test="deptId != null  and deptId != '' "> and sfa.dept_id = #{deptId}</if>
+            <if test="noteTaker != null  and noteTaker != '' "> and sfa.note_taker = #{noteTaker}</if>
+            <if test="feeFilePath != null  and feeFilePath != '' "> and sfa.fee_file_path = #{feeFilePath}</if>
+            
+
+            <if test="createTime != null  and createTime1 == null "> and DATE_FORMAT(sfa.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime == null "> and DATE_FORMAT(sfa.create_time,'%Y%m%d') &lt;= DATE_FORMAT(#{createTime1},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime != null "> and DATE_FORMAT(sfa.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')
+                and   DATE_FORMAT(sfa.create_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{createTime1},'%Y%m%d')
+            </if>
+            
+            
+            <if test="updateTime != null "> and sfa.update_time = #{updateTime}</if>
+            <if test="userId != null "> and sfa.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and sfa.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and sfa.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and sfa.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTSafetyFeeAccountById" parameterType="String" resultMap="TSafetyFeeAccountResult">
         <include refid="selectTSafetyFeeAccountVo"/>
         where sfa.id = #{id}
     </select>
-        
+
     <insert id="insertTSafetyFeeAccount" parameterType="TSafetyFeeAccount">
         insert into t_safety_fee_account
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="investmentType != null  and investmentType != ''  ">investment_type,</if>
-			<if test="chargePerson != null  and chargePerson != ''  ">charge_person,</if>
-			<if test="useDate != null  ">use_date,</if>
-			<if test="amt != null  ">amt,</if>
-			<if test="investmentDeptId != null  and investmentDeptId != ''  ">investment_dept_id,</if>
-			<if test="feePurpose != null  and feePurpose != ''  ">fee_purpose,</if>
-			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
-			<if test="noteTaker != null  and noteTaker != ''  ">note_taker,</if>
-			<if test="feeFilePath != null  and feeFilePath != ''  ">fee_file_path,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="meno != null  and meno != ''  ">meno,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="investmentType != null  and investmentType != ''  ">investment_type,</if>
+            <if test="chargePerson != null  and chargePerson != ''  ">charge_person,</if>
+            <if test="useDate != null  ">use_date,</if>
+            <if test="amt != null  ">amt,</if>
+            <if test="investmentDeptId != null  and investmentDeptId != ''  ">investment_dept_id,</if>
+            <if test="feePurpose != null  and feePurpose != ''  ">fee_purpose,</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id,</if>
+            <if test="noteTaker != null  and noteTaker != ''  ">note_taker,</if>
+            <if test="feeFilePath != null  and feeFilePath != ''  ">fee_file_path,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="investmentType != null  and investmentType != ''  ">#{investmentType},</if>
-			<if test="chargePerson != null  and chargePerson != ''  ">#{chargePerson},</if>
-			<if test="useDate != null  ">#{useDate},</if>
-			<if test="amt != null  ">#{amt},</if>
-			<if test="investmentDeptId != null  and investmentDeptId != ''  ">#{investmentDeptId},</if>
-			<if test="feePurpose != null  and feePurpose != ''  ">#{feePurpose},</if>
-			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
-			<if test="noteTaker != null  and noteTaker != ''  ">#{noteTaker},</if>
-			<if test="feeFilePath != null  and feeFilePath != ''  ">#{feeFilePath},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="meno != null  and meno != ''  ">#{meno},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="investmentType != null  and investmentType != ''  ">#{investmentType},</if>
+            <if test="chargePerson != null  and chargePerson != ''  ">#{chargePerson},</if>
+            <if test="useDate != null  ">#{useDate},</if>
+            <if test="amt != null  ">#{amt},</if>
+            <if test="investmentDeptId != null  and investmentDeptId != ''  ">#{investmentDeptId},</if>
+            <if test="feePurpose != null  and feePurpose != ''  ">#{feePurpose},</if>
+            <if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+            <if test="noteTaker != null  and noteTaker != ''  ">#{noteTaker},</if>
+            <if test="feeFilePath != null  and feeFilePath != ''  ">#{feeFilePath},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
+
     <update id="updateTSafetyFeeAccount" parameterType="TSafetyFeeAccount">
         update t_safety_fee_account
         <trim prefix="SET" suffixOverrides=",">
@@ -117,15 +141,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-	<delete id="deleteTSafetyFeeAccountById" parameterType="String">
+    <delete id="deleteTSafetyFeeAccountById" parameterType="String">
         delete from t_safety_fee_account where id = #{id}
     </delete>
-	
+
     <delete id="deleteTSafetyFeeAccountByIds" parameterType="String">
-        delete from t_safety_fee_account where id in 
+        delete from t_safety_fee_account where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

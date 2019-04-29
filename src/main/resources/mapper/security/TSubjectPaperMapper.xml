@@ -69,4 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
     
+    <select id="selectTSubjectPaperByKey" parameterType="java.util.Map" resultMap="TSubjectPaperResult">
+    	<include refid="selectTSubjectPaperbasicColums"/>
+        from t_subject_paper sp
+        where sp.paper_id = #{paperId} and sp.subject_id = #{subjectId}
+    </select>
 </mapper>

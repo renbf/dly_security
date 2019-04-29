@@ -96,15 +96,17 @@ public class TDangerVo implements Serializable
 	/** 验收责任人 */
 	private String checkAcceptUserName;
 	/** 检查类型 */
-	private String checkType_name;
+	private String checkTypeName;
 	/** 隐患类型 */
-	private String dangerType_name;
+	private String dangerTypeName;
 	/** 隐患等级 */
-	private String dangerLevel_name;
+	private String dangerLevelName;
 	/** 可能后果 */
-	private String maybeResult_name;
+	private String maybeResultName;
 	/** 整改类型 */
-	private String dochangeType_name;
+	private String dochangeTypeName;
+	/** 风险源名称 */
+	private String riskResourceName;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -450,44 +452,44 @@ public class TDangerVo implements Serializable
 		this.checkAcceptUserName = checkAcceptUserName;
 	}
 
-	public String getCheckType_name() {
-		return checkType_name;
+	public String getCheckTypeName() {
+		return checkTypeName;
 	}
 
-	public void setCheckType_name(String checkType_name) {
-		this.checkType_name = checkType_name;
+	public void setCheckTypeName(String checkTypeName) {
+		this.checkTypeName = checkTypeName;
 	}
 
-	public String getDangerType_name() {
-		return dangerType_name;
+	public String getDangerTypeName() {
+		return dangerTypeName;
 	}
 
-	public void setDangerType_name(String dangerType_name) {
-		this.dangerType_name = dangerType_name;
+	public void setDangerTypeName(String dangerTypeName) {
+		this.dangerTypeName = dangerTypeName;
 	}
 
-	public String getDangerLevel_name() {
-		return dangerLevel_name;
+	public String getDangerLevelName() {
+		return dangerLevelName;
 	}
 
-	public void setDangerLevel_name(String dangerLevel_name) {
-		this.dangerLevel_name = dangerLevel_name;
+	public void setDangerLevelName(String dangerLevelName) {
+		this.dangerLevelName = dangerLevelName;
 	}
 
-	public String getMaybeResult_name() {
-		return maybeResult_name;
+	public String getMaybeResultName() {
+		return maybeResultName;
 	}
 
-	public void setMaybeResult_name(String maybeResult_name) {
-		this.maybeResult_name = maybeResult_name;
+	public void setMaybeResultName(String maybeResultName) {
+		this.maybeResultName = maybeResultName;
 	}
 
-	public String getDochangeType_name() {
-		return dochangeType_name;
+	public String getDochangeTypeName() {
+		return dochangeTypeName;
 	}
 
-	public void setDochangeType_name(String dochangeType_name) {
-		this.dochangeType_name = dochangeType_name;
+	public void setDochangeTypeName(String dochangeTypeName) {
+		this.dochangeTypeName = dochangeTypeName;
 	}
 
 	public String getCheckAcceptUrl() {
@@ -496,6 +498,14 @@ public class TDangerVo implements Serializable
 
 	public void setCheckAcceptUrl(String checkAcceptUrl) {
 		this.checkAcceptUrl = checkAcceptUrl;
+	}
+
+	public String getRiskResourceName() {
+		return riskResourceName;
+	}
+
+	public void setRiskResourceName(String riskResourceName) {
+		this.riskResourceName = riskResourceName;
 	}
 
 	public String toString() {

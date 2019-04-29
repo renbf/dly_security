@@ -29,7 +29,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTTaskManagementVo">
-        select tm.id, tm.event_name, tm.check_unit, tm.regulations_date, tm.check_personnel, tm.deduction, tm.is_handle, tm.driver, tm.handle_date, tm.plate_num, tm.inside_handle, tm.violation_type, tm.is_learn, tm.dept_id, tm.Illegal_info, tm.handle_info, tm.create_time, tm.user_id, tm.remark, tm.business_id, tm.update_user_id from t_task_management tm
+        select tm.id, tm.event_name, tm.check_unit,         
+        DATE_FORMAT(tm.regulations_date,'%Y-%m-%d') as regulationsDateStr,
+       	tm.regulations_date,
+        tm.check_personnel, tm.deduction, tm.is_handle, tm.driver, tm.handle_date, tm.plate_num, tm.inside_handle, tm.violation_type, tm.is_learn, tm.dept_id, tm.Illegal_info, tm.handle_info, tm.create_time, tm.user_id, tm.remark, tm.business_id, tm.update_user_id from t_task_management tm
     </sql>
 	
     <select id="selectTTaskManagementList" parameterType="TTaskManagement" resultMap="TTaskManagementResult">
@@ -38,7 +41,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null  and id != '' "> and tm.id = #{id}</if>
              <if test="eventName != null  and eventName != '' "> and tm.event_name = #{eventName}</if>
              <if test="checkUnit != null  and checkUnit != '' "> and tm.check_unit = #{checkUnit}</if>
-             <if test="regulationsDate != null "> and tm.regulations_date = #{regulationsDate}</if>
+             <if test="(regulationsDate != null  ) and regulationsDateEnd == null "> 
+             	and DATE_FORMAT(tm.regulations_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{regulationsDate},'%Y-%m-%d')
+             </if>
+             <if test="(regulationsDateEnd != null ) and palnCheckDate == null  "> 
+             	and DATE_FORMAT(tm.regulations_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{regulationsDateEnd},'%Y-%m-%d')
+             </if>
+             <if test="(regulationsDate != null  ) and palnCheckDate != null   "> 
+             		 and DATE_FORMAT(tm.regulations_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{regulationsDate},'%Y-%m-%d')
+                     and DATE_FORMAT(tm.regulations_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{regulationsDateEnd},'%Y-%m-%d')                    
+             </if>
              <if test="checkPersonnel != null  and checkPersonnel != '' "> and tm.check_personnel = #{checkPersonnel}</if>
              <if test="deduction != null  and deduction != '' "> and tm.deduction = #{deduction}</if>
              <if test="isHandle != null  and isHandle != '' "> and tm.is_handle = #{isHandle}</if>

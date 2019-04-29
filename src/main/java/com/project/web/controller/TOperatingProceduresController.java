@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -69,9 +72,9 @@ public class TOperatingProceduresController extends BaseController
 	@Log(title = "操作规程", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TOperatingProcedures tOperatingProcedures)
+	public AjaxResult addSave(TOperatingProcedures tOperatingProcedures,@RequestParam(name = "operatingFile",required = false) MultipartFile operatingFile)
 	{		
-		return toAjax(tOperatingProceduresService.insertTOperatingProcedures(tOperatingProcedures));
+		return toAjax(tOperatingProceduresService.insertTOperatingProcedures(tOperatingProcedures,operatingFile));
 	}
 
 	/**
@@ -92,9 +95,9 @@ public class TOperatingProceduresController extends BaseController
 	@Log(title = "操作规程", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TOperatingProcedures tOperatingProcedures)
+	public AjaxResult editSave(TOperatingProcedures tOperatingProcedures,@RequestParam(name = "operatingFile",required = false) MultipartFile operatingFile)
 	{		
-		return toAjax(tOperatingProceduresService.updateTOperatingProcedures(tOperatingProcedures));
+		return toAjax(tOperatingProceduresService.updateTOperatingProcedures(tOperatingProcedures,operatingFile));
 	}
 	
 	/**

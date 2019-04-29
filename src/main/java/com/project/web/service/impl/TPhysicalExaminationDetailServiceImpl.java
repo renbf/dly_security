@@ -83,5 +83,18 @@ public class TPhysicalExaminationDetailServiceImpl implements ITPhysicalExaminat
 	{
 		return tPhysicalExaminationDetailMapper.deleteTPhysicalExaminationDetailByIds(Convert.toStrArray(ids));
 	}
+
+	@Override
+	public int deleteTPhysicalExaminationDetailByexaminationIds(String examinationId) {
+		return tPhysicalExaminationDetailMapper.deleteTPhysicalExaminationDetailByexaminationIds(examinationId);
+	}
+
+	@Override
+	public List<TPhysicalExaminationDetail> selectTPhysicalExaminationDetailListById(
+			TPhysicalExaminationDetail tPhysicalExaminationDetail) {
+		
+		return tPhysicalExaminationDetailMapper.selectTPhysicalExaminationDetailListById(tPhysicalExaminationDetail);
+	}
 	
 }
+

@@ -2,8 +2,12 @@ package com.project.security.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.project.security.domain.vo.TDictView;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 行车中检查事项表 t_driver_middle_log
@@ -23,6 +27,8 @@ public class TDriverMiddleLog implements Serializable
 	private String carCheckProject;
 	/** 换驾休息地点 */
 	private String changeAddress;
+	/** 休息地点 */
+	private String restAddress;
 	/** 停车时间 */
 	private Date stopCarTime;
 	/** 发车时间 */
@@ -44,6 +50,9 @@ public class TDriverMiddleLog implements Serializable
 	/** 修改人id */
 	private String updateUserId;
 
+	/** 检查事项 */
+	private List<TDictView> carCheckProjectList;
+	
 	public void setDriverLogId(String driverLogId) 
 	{
 		this.driverLogId = driverLogId;
@@ -79,6 +88,15 @@ public class TDriverMiddleLog implements Serializable
 	public String getChangeAddress() 
 	{
 		return changeAddress;
+	}
+	public void setRestAddress(String restAddress) 
+	{
+		this.restAddress = restAddress;
+	}
+
+	public String getRestAddress() 
+	{
+		return restAddress;
 	}
 	public void setStopCarTime(Date stopCarTime) 
 	{
@@ -171,12 +189,21 @@ public class TDriverMiddleLog implements Serializable
 		return updateUserId;
 	}
 
-    public String toString() {
+    public List<TDictView> getCarCheckProjectList() {
+		return carCheckProjectList;
+	}
+
+	public void setCarCheckProjectList(List<TDictView> carCheckProjectList) {
+		this.carCheckProjectList = carCheckProjectList;
+	}
+
+	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("driverLogId", getDriverLogId())
             .append("writeTime", getWriteTime())
             .append("carCheckProject", getCarCheckProject())
             .append("changeAddress", getChangeAddress())
+            .append("restAddress", getRestAddress())
             .append("stopCarTime", getStopCarTime())
             .append("startCarTime", getStartCarTime())
             .append("troubleShooting", getTroubleShooting())

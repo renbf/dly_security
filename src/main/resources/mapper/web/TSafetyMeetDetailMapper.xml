@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TSafetyMeetDetailMapper">
-    
+
     <resultMap type="TSafetyMeetDetail" id="TSafetyMeetDetailResult">
         <result property="id"    column="id"    />
         <result property="meetId"    column="meet_id"    />
@@ -17,70 +17,69 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTSafetyMeetDetailVo">
+
+    <sql id="selectTSafetyMeetDetailVo">
         select smd.id, smd.meet_id, smd.participate_dept_id, smd.participate_post, smd.participate_user, smd.create_time, smd.update_time, smd.user_id, smd.meno, smd.business_id, smd.update_user_id from t_safety_meet_detail smd
     </sql>
-	
+
     <select id="selectTSafetyMeetDetailList" parameterType="TSafetyMeetDetail" resultMap="TSafetyMeetDetailResult">
         <include refid="selectTSafetyMeetDetailVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and smd.id = #{id}</if>
-             <if test="meetId != null  and meetId != '' "> and smd.meet_id = #{meetId}</if>
-             <if test="participateDeptId != null  and participateDeptId != '' "> and smd.participate_dept_id = #{participateDeptId}</if>
-             <if test="participatePost != null  and participatePost != '' "> and smd.participate_post = #{participatePost}</if>
-             <if test="participateUser != null "> and smd.participate_user = #{participateUser}</if>
-             <if test="createTime != null "> and smd.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and smd.update_time = #{updateTime}</if>
-             <if test="userId != null "> and smd.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and smd.meno = #{meno}</if>
-             <if test="businessId != null  and businessId != '' "> and smd.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and smd.update_user_id = #{updateUserId}</if>
-         </where>
-         order by smd.create_time desc
+            <if test="meetId != null  and meetId != '' "> and smd.meet_id = #{meetId}</if>
+            <if test="participateDeptId != null "> and smd.participate_dept_id = #{participateDeptId}</if>
+            <if test="participatePost != null "> and smd.participate_post = #{participatePost}</if>
+            <if test="participateUser != null "> and smd.participate_user = #{participateUser}</if>
+            <if test="createTime != null "> and smd.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and smd.update_time = #{updateTime}</if>
+            <if test="userId != null "> and smd.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and smd.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and smd.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and smd.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTSafetyMeetDetailById" parameterType="String" resultMap="TSafetyMeetDetailResult">
         <include refid="selectTSafetyMeetDetailVo"/>
         where smd.id = #{id}
     </select>
-        
+
     <insert id="insertTSafetyMeetDetail" parameterType="TSafetyMeetDetail">
         insert into t_safety_meet_detail
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="meetId != null  and meetId != ''  ">meet_id,</if>
-			<if test="participateDeptId != null  and participateDeptId != ''  ">participate_dept_id,</if>
-			<if test="participatePost != null  and participatePost != ''  ">participate_post,</if>
-			<if test="participateUser != null  ">participate_user,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="meno != null  and meno != ''  ">meno,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="meetId != null  and meetId != ''  ">meet_id,</if>
+            <if test="participateDeptId != null  ">participate_dept_id,</if>
+            <if test="participatePost != null  ">participate_post,</if>
+            <if test="participateUser != null  ">participate_user,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="meetId != null  and meetId != ''  ">#{meetId},</if>
-			<if test="participateDeptId != null  and participateDeptId != ''  ">#{participateDeptId},</if>
-			<if test="participatePost != null  and participatePost != ''  ">#{participatePost},</if>
-			<if test="participateUser != null  ">#{participateUser},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="meno != null  and meno != ''  ">#{meno},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="meetId != null  and meetId != ''  ">#{meetId},</if>
+            <if test="participateDeptId != null  ">#{participateDeptId},</if>
+            <if test="participatePost != null  ">#{participatePost},</if>
+            <if test="participateUser != null  ">#{participateUser},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
+
     <update id="updateTSafetyMeetDetail" parameterType="TSafetyMeetDetail">
         update t_safety_meet_detail
         <trim prefix="SET" suffixOverrides=",">
             <if test="meetId != null  and meetId != ''  ">meet_id = #{meetId},</if>
-            <if test="participateDeptId != null  and participateDeptId != ''  ">participate_dept_id = #{participateDeptId},</if>
-            <if test="participatePost != null  and participatePost != ''  ">participate_post = #{participatePost},</if>
+            <if test="participateDeptId != null  ">participate_dept_id = #{participateDeptId},</if>
+            <if test="participatePost != null  ">participate_post = #{participatePost},</if>
             <if test="participateUser != null  ">participate_user = #{participateUser},</if>
             <if test="createTime != null  ">create_time = #{createTime},</if>
             <if test="updateTime != null  ">update_time = #{updateTime},</if>
@@ -92,15 +91,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-	<delete id="deleteTSafetyMeetDetailById" parameterType="String">
+    <delete id="deleteTSafetyMeetDetailById" parameterType="String">
         delete from t_safety_meet_detail where id = #{id}
     </delete>
-	
+
     <delete id="deleteTSafetyMeetDetailByIds" parameterType="String">
-        delete from t_safety_meet_detail where id in 
+        delete from t_safety_meet_detail where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
+
+    <delete id="deleteTSafetyMeetDetailByMeetIds" parameterType="String">
+        delete from t_safety_meet_detail where meet_id in
+        <foreach item="meetId" collection="array" open="(" separator="," close=")">
+            #{meetId}
+        </foreach>
+    </delete>
+
+
+    <select id="selectTSafetyMeetDetailListByMeetIds" parameterType="String" resultMap="TSafetyMeetDetailResult">
+        <include refid="selectTSafetyMeetDetailVo"/>
+        where smd.meet_id in
+            <foreach item="meetId" collection="list" open="(" separator="," close=")">
+                #{meetId}
+            </foreach>
+    </select>
+
+
+
 </mapper>

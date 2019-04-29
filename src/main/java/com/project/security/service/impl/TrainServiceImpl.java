@@ -6,18 +6,29 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.framework.config.ServerConfig;
+import com.project.framework.util.SpringUtils;
+import com.project.security.domain.TCourse;
+import com.project.security.domain.TSubject;
+import com.project.security.domain.TSubjectPaper;
 import com.project.security.domain.TUserCourse;
 import com.project.security.domain.TUserPaper;
 import com.project.security.domain.TUserSubject;
@@ -28,6 +39,8 @@ import com.project.security.domain.vo.TUserPaperVo;
 import com.project.security.domain.vo.UserPaperDetailVo;
 import com.project.security.mapper.TCourseMapper;
 import com.project.security.mapper.TDictMapper;
+import com.project.security.mapper.TSubjectMapper;
+import com.project.security.mapper.TSubjectPaperMapper;
 import com.project.security.mapper.TUserCourseMapper;
 import com.project.security.mapper.TUserPaperMapper;
 import com.project.security.mapper.TUserSubjectCollectMapper;
@@ -36,7 +49,9 @@ import com.project.security.mapper.UserMapper;
 import com.project.security.service.ITrainService;
 import com.project.security.utils.page.PageInfoUtil;
 import com.project.security.utils.page.TableDataView;
+import com.project.system.domain.CostTime;
 import com.project.system.domain.SysUser;
+import com.project.system.service.ICostTimeService;
 import com.project.util.UUIDUtil;
 /**
  * 
@@ -68,6 +83,14 @@ public class TrainServiceImpl implements ITrainService {
 	@Autowired
 	@Qualifier("userSubjectCollectMapper")
 	private TUserSubjectCollectMapper userSubjectCollectMapper;
+	@Autowired
+	@Qualifier("subjectMapper")
+	private TSubjectMapper subjectMapper;
+	@Autowired
+	@Qualifier("subjectPaperMapper")
+	private TSubjectPaperMapper subjectPaperMapper;
+	@Autowired
+	private ServerConfig serverConfig;
 	
 	@Override
 	public DataResult courseArrange(Integer pageNumber,Long total,String userId) {
@@ -83,6 +106,12 @@ public class TrainServiceImpl implements ITrainService {
     			return pageResult;
         	}
     		List<TCourseVo> courseList = courseMapper.courseArrange(userId);
+    		if(CollectionUtils.isNotEmpty(courseList)) {
+    			String serverUrl = serverConfig.getUrl();
+    			for(TCourseVo courseVo :courseList) {
+    				courseVo.setWebUrl(serverUrl+"/safety/train/introductionUrl/"+courseVo.getId());
+    			}
+    		}
     		TableDataView<TCourseVo> tableDataView = PageInfoUtil.addPageInfo(courseList);
 			result.setResult(tableDataView);
 			result.setMessage("课程安排成功");
@@ -95,15 +124,31 @@ public class TrainServiceImpl implements ITrainService {
 	}
 	
 	@Override
-	public DataResult uploadVideoProgress(String courseId, String userId,Long progress) {
+	public DataResult uploadVideoProgress(String userCourseId,Long progress) {
 		DataResult result = new DataResult();
         try {
-        	TUserCourse tUserCourse = new TUserCourse();
-        	tUserCourse.setUserId(userId);
-        	tUserCourse.setCourseId(courseId);
-        	tUserCourse.setProgress(progress);
-        	userCourseMapper.updateTUserCourseByUser(tUserCourse);
-			result.setMessage("上传视频进度成功");
+        	TUserCourse userCourse = userCourseMapper.selectTUserCourseById(userCourseId);
+        	TCourse course = courseMapper.selectTCourseById(userCourse.getCourseId());
+        	Long totalTimes = course.getTotalTimes();
+        	if(totalTimes == null) {
+        		result.setMessage("视频总时长为空");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	String status = userCourse.getStatus();
+        	if(!"2".equals(status)) {
+        		TUserCourse tUserCourse = new TUserCourse();
+        		if("0".equals(status)) {
+        			tUserCourse.setStatus("1");
+        		}
+            	tUserCourse.setId(userCourseId);
+            	tUserCourse.setProgress(progress);
+            	if(progress != null && progress.longValue() >= (totalTimes.longValue() -2000)) {
+            		tUserCourse.setStatus("2");
+            	}
+            	userCourseMapper.updateTUserCourse(tUserCourse);
+        	}
+        	result.setMessage("上传视频进度成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
 		} catch (Exception e) {
@@ -148,13 +193,17 @@ public class TrainServiceImpl implements ITrainService {
         		tUserPaper.setStatus("1");
         		tUserPaper.setId(userPaperId);
         		userPaperMapper.updateTUserPaper(tUserPaper);
-        		userPaper.setRemainingTime(Long.valueOf(userPaper.getPaperTimes()));
+        		Long remainingTime = Long.valueOf(userPaper.getPaperTimes());
+        		userPaper.setRemainingTime(remainingTime);
+        		ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+        		executor.schedule(autoSsubmitPaper(userPaperId), remainingTime, TimeUnit.SECONDS);
         	}else {
         		if(userPaper.getRemainingTime().longValue() <= 0) {
             		if(userPaper.getCommitDate() == null) {
             			TUserPaper tUserPaper = new TUserPaper();
                 		tUserPaper.setCommitDate(new Date());
                 		tUserPaper.setId(userPaperId);
+                		userPaper.setStatus("2");
                 		userPaperMapper.updateTUserPaper(tUserPaper);
             		}
             		result.setMessage("考试时间已到");
@@ -201,19 +250,107 @@ public class TrainServiceImpl implements ITrainService {
 		}
 	}
 	
-	
+	@Override
+	public DataResult queryExamPaperDetail(String userPaperId) {
+		DataResult result = new DataResult();
+        try {
+        	TUserPaperVo userPaper = userPaperMapper.selectTUserPaperByUserPaperId(userPaperId);
+        	if(userPaper == null) {
+        		result.setMessage("没有查到试卷");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+    		List<UserPaperDetailVo> userPaperDetailVoList = userPaperMapper.examPaperDetail(userPaperId);
+    		Set<String> distinctSet = new HashSet<String>();
+    		List<UserPaperDetailVo> examQuestions = new ArrayList<UserPaperDetailVo>();
+    		for(UserPaperDetailVo userPaperDetailVo:userPaperDetailVoList) {
+    			String subjectId = userPaperDetailVo.getSubjectId();
+    			if(!distinctSet.contains(subjectId)) {
+    				List<Map<String,Object>> optionContents = new ArrayList<Map<String,Object>>();
+    				Map<String,Object> optionMap = new HashMap<String, Object>();
+    				optionMap.put("optionValue", userPaperDetailVo.getOptionValue());
+    				optionMap.put("content", userPaperDetailVo.getContent());
+    				optionMap.put("optionSort", userPaperDetailVo.getOptionSort());
+    				optionContents.add(optionMap);
+    				userPaperDetailVo.setOptionContents(optionContents);
+    				userPaperDetailVo.setOptionValue(null);
+    				userPaperDetailVo.setContent(null);
+    				userPaperDetailVo.setOptionSort(null);
+    				examQuestions.add(userPaperDetailVo);
+    				distinctSet.add(subjectId);
+    			}else {
+    				UserPaperDetailVo userPaperDetailVo2 = examQuestions.get(examQuestions.size() -1);
+    				List<Map<String,Object>> optionContents = userPaperDetailVo2.getOptionContents();
+    				Map<String,Object> optionMap = new HashMap<String, Object>();
+    				optionMap.put("optionValue", userPaperDetailVo.getOptionValue());
+    				optionMap.put("content", userPaperDetailVo.getContent());
+    				optionMap.put("optionSort", userPaperDetailVo.getOptionSort());
+    				optionContents.add(optionMap);
+    			}
+    		}
+    		userPaper.setExamQuestions(examQuestions);
+			result.setResult(userPaper);
+			result.setMessage("考试试卷详情成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("考试试卷详情接口异常",e);
+			throw new RuntimeException("考试试卷详情接口异常");
+		}
+	}
 	
 	@Override
+	@Transactional
 	public DataResult submitSubject(String userSubjectJson) {
 		DataResult result = new DataResult();
         try {
         	TUserSubject userSubject = JSON.parseObject(userSubjectJson, TUserSubject.class);
-        	if(StringUtils.isEmpty(userSubject.getId())) {
-        		userSubject.setId(UUIDUtil.getUUID());
-        		userSubjectMapper.insertTUserSubject(userSubject);
+        	TSubject subject = subjectMapper.selectTSubjectById(userSubject.getSubjectId());
+        	TUserPaper userPaper = userPaperMapper.selectTUserPaperById(userSubject.getUserPaperId());
+        	TSubjectPaper subjectPaper = subjectPaperMapper.selectTSubjectPaperByKey(userPaper.getPaperId(),userSubject.getSubjectId());
+        	//正确答案
+        	String trueAnswer = subject.getTrueAnswer();
+        	//用户答案
+        	String userAnswer = userSubject.getUserAnswer();
+        	//用户题目id
+        	String userSubjectId = userSubject.getId();
+        	//答案是否正确
+        	String isTrue = "0";
+        	if(StringUtils.isNotEmpty(userAnswer) && trueAnswer.equals(userAnswer)) {
+        		isTrue = "1";
+        		userSubject.setIsTrue(isTrue);
+        		Integer paperScore = userPaper.getPaperScore();
+            	if(paperScore == null) {
+            		paperScore = 0;
+            	}
+            	TUserPaper tUserPaper = new TUserPaper();
+            	tUserPaper.setId(userSubject.getUserPaperId());
+            	tUserPaper.setPaperScore(paperScore.intValue()+subjectPaper.getSubjectScore().intValue());
+            	userPaperMapper.updateTUserPaper(tUserPaper);
+        	}else {
+        		userSubject.setIsTrue(isTrue);
+        	}
+        	if(StringUtils.isEmpty(userSubjectId)) {
+        		TUserSubject tUserSubject = new TUserSubject();
+        		tUserSubject.setSubjectId(userSubject.getSubjectId());
+        		tUserSubject.setUserPaperId(userSubject.getUserPaperId());
+        		List<TUserSubject> userSubjectList = userSubjectMapper.selectTUserSubjectList(tUserSubject);
+        		if(CollectionUtils.isNotEmpty(userSubjectList)) {
+        			userSubjectId = userSubjectList.get(0).getId();
+        			userSubject.setId(userSubjectId);
+        			userSubjectMapper.updateTUserSubject(userSubject);
+        		}else {
+        			String id = UUIDUtil.getUUID();
+            		userSubject.setId(id);
+            		userSubjectMapper.insertTUserSubject(userSubject);
+            		userSubjectId = id;
+        		}
         	}else {
         		userSubjectMapper.updateTUserSubject(userSubject);
         	}
+        	Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("userSubjectId", userSubjectId);
+    		result.setResult(mapResult);
 			result.setMessage("提交题目成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -228,10 +365,15 @@ public class TrainServiceImpl implements ITrainService {
 	public DataResult submitPaper(String userPaperId) {
 		DataResult result = new DataResult();
         try {
+        	TUserPaper tUserPaper = userPaperMapper.selectTUserPaperById(userPaperId);
         	TUserPaper userPaper = new TUserPaper();
         	userPaper.setId(userPaperId);
         	userPaper.setCommitDate(new Date());
+        	userPaper.setStatus("2");
         	userPaperMapper.updateTUserPaper(userPaper);
+        	Map<String, Object> mapResult = new HashMap<>();
+			mapResult.put("paperScore", tUserPaper.getPaperScore());
+    		result.setResult(mapResult);
 			result.setMessage("提交考卷成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -262,12 +404,11 @@ public class TrainServiceImpl implements ITrainService {
 	}
 	
 	@Override
-	public DataResult videoCollection(String userId, String courseId,String isCollect) {
+	public DataResult videoCollection(String userCourseId,String isCollect) {
 		DataResult result = new DataResult();
         try {
         	TUserCourse tUserCourse = new TUserCourse();
-        	tUserCourse.setUserId(userId);
-        	tUserCourse.setCourseId(courseId);
+        	tUserCourse.setId(userCourseId);
         	tUserCourse.setIsCollect(isCollect);
         	userCourseMapper.updateTUserCourse(tUserCourse);
         	if("1".equals(isCollect)) {
@@ -305,4 +446,30 @@ public class TrainServiceImpl implements ITrainService {
 			throw new RuntimeException("收藏题目接口异常");
 		}
 	}
+	
+	
+	@Override
+	public String introductionUrl(String courseId) {
+		TCourse tCourse = courseMapper.selectTCourseById(courseId);
+		if(Objects.nonNull(tCourse)) {
+			return tCourse.getIntroduction();
+		}
+		return null;
+	}
+
+	/**
+     * 记录响应时间
+     *
+     * @param costTime 消耗时间
+     * @return 任务task
+     */
+    private TimerTask autoSsubmitPaper(final String userPaperId) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                // 远程查询操作地点
+                SpringUtils.getBean(TrainServiceImpl.class).submitPaper(userPaperId);
+            }
+        };
+    }
 }

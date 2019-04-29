@@ -2,6 +2,7 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TThreeProducts;
 
 /**
@@ -34,7 +35,7 @@ public interface ITThreeProductsService
      * @param tThreeProducts 三品查处记录信息
      * @return 结果
      */
-	public int insertTThreeProducts(TThreeProducts tThreeProducts);
+	public AjaxResult insertTThreeProducts(TThreeProducts tThreeProducts);
 	
 	/**
      * 修改三品查处记录
@@ -42,7 +43,7 @@ public interface ITThreeProductsService
      * @param tThreeProducts 三品查处记录信息
      * @return 结果
      */
-	public int updateTThreeProducts(TThreeProducts tThreeProducts);
+	public AjaxResult updateTThreeProducts(TThreeProducts tThreeProducts);
 		
 	/**
      * 删除三品查处记录信息

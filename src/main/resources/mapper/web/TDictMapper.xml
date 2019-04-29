@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="createDate != null "> and d.create_date = #{createDate}</if>
              <if test="updateDate != null "> and d.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and d.update_user_id = #{updateUserId}</if>
-             <if test="remark != null  and remark != '' "> and d.remark = #{remark}</if>
+             <if test="remark != null  and remark != '' "> and d.parent_id != '0' </if>
          </where>
          ORDER BY d.parent_id asc
     </select>

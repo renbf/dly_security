@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TRelevantMessage;
 
 /**
@@ -34,7 +37,7 @@ public interface ITRelevantMessageService
      * @param tRelevantMessage 相关方信息
      * @return 结果
      */
-	public int insertTRelevantMessage(TRelevantMessage tRelevantMessage);
+	public AjaxResult insertTRelevantMessage(TRelevantMessage tRelevantMessage,MultipartFile relevantlFile);
 	
 	/**
      * 修改相关方
@@ -42,7 +45,7 @@ public interface ITRelevantMessageService
      * @param tRelevantMessage 相关方信息
      * @return 结果
      */
-	public int updateTRelevantMessage(TRelevantMessage tRelevantMessage);
+	public int updateTRelevantMessage(TRelevantMessage tRelevantMessage,MultipartFile relevantlFile);
 		
 	/**
      * 删除相关方信息

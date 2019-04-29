@@ -62,13 +62,6 @@ public class User implements Serializable
 	/** 认证图片url */
 	private String authUrl;
 
-	/** 部门名称 */
-	private String deptName;
-	/** 岗位名称 */
-	private String postName;
-	/** 企业名称 */
-	private String businessName;
-	
 	public void setUserId(Long userId) 
 	{
 		this.userId = userId;
@@ -275,30 +268,6 @@ public class User implements Serializable
 	public String getAuthUrl() 
 	{
 		return authUrl;
-	}
-
-    public String getDeptName() {
-		return deptName;
-	}
-
-	public void setDeptName(String deptName) {
-		this.deptName = deptName;
-	}
-
-	public String getPostName() {
-		return postName;
-	}
-
-	public void setPostName(String postName) {
-		this.postName = postName;
-	}
-
-	public String getBusinessName() {
-		return businessName;
-	}
-
-	public void setBusinessName(String businessName) {
-		this.businessName = businessName;
 	}
 
 	public String toString() {

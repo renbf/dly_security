@@ -17,6 +17,7 @@ import com.project.framework.web.page.TableDataInfo;
 import com.project.system.core.base.BaseController;
 import com.project.web.domian.TSafetyDuty;
 import com.project.web.service.ITSafetyDutyService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全值班 信息操作处理
@@ -25,53 +26,53 @@ import com.project.web.service.ITSafetyDutyService;
  * @date 2019-04-18
  */
 @Controller
-@RequestMapping("/system/tSafetyDuty")
+@RequestMapping("/web/tSafetyDuty")
 public class TSafetyDutyController extends BaseController
 {
-    private String prefix = "system/tSafetyDuty";
-	
+	private String prefix = "web/tSafetyDuty";
+
 	@Autowired
 	private ITSafetyDutyService tSafetyDutyService;
-	
-	@RequiresPermissions("system:tSafetyDuty:view")
+
+	@RequiresPermissions("web:tSafetyDuty:view")
 	@GetMapping()
 	public String tSafetyDuty()
 	{
-	    return prefix + "/tSafetyDuty";
+		return prefix + "/tSafetyDuty";
 	}
-	
+
 	/**
 	 * 查询安全值班列表
 	 */
-	@RequiresPermissions("system:tSafetyDuty:list")
+	//@RequiresPermissions("web:tSafetyDuty:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSafetyDuty tSafetyDuty)
 	{
 		startPage();
-        List<TSafetyDuty> list = tSafetyDutyService.selectTSafetyDutyList(tSafetyDuty);
+		List<TSafetyDuty> list = tSafetyDutyService.selectTSafetyDutyList(tSafetyDuty);
 		return getDataTable(list);
 	}
-	
+
 	/**
 	 * 新增安全值班
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存安全值班
 	 */
-	@RequiresPermissions("system:tSafetyDuty:add")
+	//@RequiresPermissions("web:tSafetyDuty:add")
 	@Log(title = "安全值班", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TSafetyDuty tSafetyDuty)
-	{		
-		return toAjax(tSafetyDutyService.insertTSafetyDuty(tSafetyDuty));
+	public AjaxResult addSave(TSafetyDuty tSafetyDuty, MultipartFile dutyFile)
+	{
+		return tSafetyDutyService.insertTSafetyDuty(tSafetyDuty,dutyFile);
 	}
 
 	/**
@@ -82,31 +83,32 @@ public class TSafetyDutyController extends BaseController
 	{
 		TSafetyDuty tSafetyDuty = tSafetyDutyService.selectTSafetyDutyById(id);
 		mmap.put("tSafetyDuty", tSafetyDuty);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存安全值班
 	 */
-	@RequiresPermissions("system:tSafetyDuty:edit")
+	//@RequiresPermissions("web:tSafetyDuty:edit")
 	@Log(title = "安全值班", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TSafetyDuty tSafetyDuty)
-	{		
-		return toAjax(tSafetyDutyService.updateTSafetyDuty(tSafetyDuty));
+	public AjaxResult editSave(TSafetyDuty tSafetyDuty,MultipartFile dutyFile)
+	{
+		return tSafetyDutyService.updateTSafetyDuty(tSafetyDuty,dutyFile);
 	}
-	
+
 	/**
 	 * 删除安全值班
 	 */
-	@RequiresPermissions("system:tSafetyDuty:remove")
+	//@RequiresPermissions("web:tSafetyDuty:remove")
 	@Log(title = "安全值班", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(tSafetyDutyService.deleteTSafetyDutyByIds(ids));
 	}
-	
+
 }
+

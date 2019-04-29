@@ -2,6 +2,8 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.web.domian.TBusinessFile;
 
 /**
@@ -34,7 +36,7 @@ public interface ITBusinessFileService
      * @param tBusinessFile 企业文件信息
      * @return 结果
      */
-	public int insertTBusinessFile(TBusinessFile tBusinessFile);
+	public int insertTBusinessFile(TBusinessFile tBusinessFile,MultipartFile businessFile);
 	
 	/**
      * 修改企业文件
@@ -42,7 +44,7 @@ public interface ITBusinessFileService
      * @param tBusinessFile 企业文件信息
      * @return 结果
      */
-	public int updateTBusinessFile(TBusinessFile tBusinessFile);
+	public int updateTBusinessFile(TBusinessFile tBusinessFile,MultipartFile businessFile);
 		
 	/**
      * 删除企业文件信息

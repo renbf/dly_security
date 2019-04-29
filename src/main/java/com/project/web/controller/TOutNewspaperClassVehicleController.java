@@ -27,88 +27,88 @@ import com.project.web.service.ITOutNewspaperClassVehicleService;
  * @date 2019-04-16
  */
 @Controller
-@RequestMapping("/system/tOutNewspaperClassVehicle")
+@RequestMapping("/web/tOutNewspaperClassVehicle")
 public class TOutNewspaperClassVehicleController extends BaseController
 {
-    private String prefix = "system/tOutNewspaperClassVehicle";
-	
+	private String prefix = "web/tOutNewspaperClassVehicle";
+
 	@Autowired
 	private ITOutNewspaperClassVehicleService tOutNewspaperClassVehicleService;
-	
-	@RequiresPermissions("system:tOutNewspaperClassVehicle:view")
+
+	@RequiresPermissions("web:tOutNewspaperClassVehicle:view")
 	@GetMapping()
 	public String tOutNewspaperClassVehicle()
 	{
-	    return prefix + "/tOutNewspaperClassVehicle";
+		return prefix + "/tOutNewspaperClassVehicle";
 	}
-	
+
 	/**
 	 * 查询未报班车辆列表
 	 */
-	@RequiresPermissions("system:tOutNewspaperClassVehicle:list")
+	//@RequiresPermissions("web:tOutNewspaperClassVehicle:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TOutNewspaperClassVehicle tOutNewspaperClassVehicle)
 	{
 		startPage();
-        List<TOutNewspaperClassVehicle> list = tOutNewspaperClassVehicleService.selectTOutNewspaperClassVehicleList(tOutNewspaperClassVehicle);
+		List<TOutNewspaperClassVehicle> list = tOutNewspaperClassVehicleService.selectTOutNewspaperClassVehicleList(tOutNewspaperClassVehicle);
 		return getDataTable(list);
 	}
-	
+
 	/**
 	 * 新增未报班车辆
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存未报班车辆
 	 */
-	@RequiresPermissions("system:tOutNewspaperClassVehicle:add")
+	//@RequiresPermissions("web:tOutNewspaperClassVehicle:add")
 	@Log(title = "未报班车辆", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TOutNewspaperClassVehicle tOutNewspaperClassVehicle)
-	{		
-		return toAjax(tOutNewspaperClassVehicleService.insertTOutNewspaperClassVehicle(tOutNewspaperClassVehicle));
+	{
+		return tOutNewspaperClassVehicleService.insertTOutNewspaperClassVehicle(tOutNewspaperClassVehicle);
 	}
 
 	/**
 	 * 修改未报班车辆
 	 */
 	@GetMapping("/edit/{id}")
-	public String edit(@PathVariable("id") Long id, ModelMap mmap)
+	public String edit(@PathVariable("id") String id, ModelMap mmap)
 	{
 		TOutNewspaperClassVehicle tOutNewspaperClassVehicle = tOutNewspaperClassVehicleService.selectTOutNewspaperClassVehicleById(id);
 		mmap.put("tOutNewspaperClassVehicle", tOutNewspaperClassVehicle);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存未报班车辆
 	 */
-	@RequiresPermissions("system:tOutNewspaperClassVehicle:edit")
+	//@RequiresPermissions("web:tOutNewspaperClassVehicle:edit")
 	@Log(title = "未报班车辆", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(TOutNewspaperClassVehicle tOutNewspaperClassVehicle)
-	{		
-		return toAjax(tOutNewspaperClassVehicleService.updateTOutNewspaperClassVehicle(tOutNewspaperClassVehicle));
+	{
+		return tOutNewspaperClassVehicleService.updateTOutNewspaperClassVehicle(tOutNewspaperClassVehicle);
 	}
-	
+
 	/**
 	 * 删除未报班车辆
 	 */
-	@RequiresPermissions("system:tOutNewspaperClassVehicle:remove")
+	//@RequiresPermissions("web:tOutNewspaperClassVehicle:remove")
 	@Log(title = "未报班车辆", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(tOutNewspaperClassVehicleService.deleteTOutNewspaperClassVehicleByIds(ids));
 	}
-	
+
 }

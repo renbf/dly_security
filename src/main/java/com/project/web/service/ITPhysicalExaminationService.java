@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TPhysicalExamination;
 
 /**
@@ -34,7 +37,7 @@ public interface ITPhysicalExaminationService
      * @param tPhysicalExamination 体检记录信息
      * @return 结果
      */
-	public int insertTPhysicalExamination(TPhysicalExamination tPhysicalExamination);
+	public AjaxResult insertTPhysicalExamination(TPhysicalExamination tPhysicalExamination,MultipartFile physicalFile);
 	
 	/**
      * 修改体检记录
@@ -42,7 +45,7 @@ public interface ITPhysicalExaminationService
      * @param tPhysicalExamination 体检记录信息
      * @return 结果
      */
-	public int updateTPhysicalExamination(TPhysicalExamination tPhysicalExamination);
+	public AjaxResult updateTPhysicalExamination(TPhysicalExamination tPhysicalExamination,MultipartFile physicalFile);
 		
 	/**
      * 删除体检记录信息
@@ -53,3 +56,4 @@ public interface ITPhysicalExaminationService
 	public int deleteTPhysicalExaminationByIds(String ids);
 	
 }
+

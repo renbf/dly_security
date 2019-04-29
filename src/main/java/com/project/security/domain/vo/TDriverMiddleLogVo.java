@@ -2,6 +2,9 @@ package com.project.security.domain.vo;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,11 +22,14 @@ public class TDriverMiddleLogVo implements Serializable
 	/** 行车日志ID */
 	private String driverLogId;
 	/** 填报日期 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date writeTime;
 	/** 检查事项 */
 	private String carCheckProject;
 	/** 换驾休息地点 */
 	private String changeAddress;
+	/** 休息地点 */
+	private String restAddress;
 	/** 停车时间 */
 	private Date stopCarTime;
 	/** 发车时间 */
@@ -44,7 +50,8 @@ public class TDriverMiddleLogVo implements Serializable
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
-
+	/** 交接备注 */
+	private String exchangeRemark;
 	/** 检查事项列表 */
 	private List<TDictView> carCheckProjectList;
 	
@@ -182,6 +189,22 @@ public class TDriverMiddleLogVo implements Serializable
 
 	public void setCarCheckProjectList(List<TDictView> carCheckProjectList) {
 		this.carCheckProjectList = carCheckProjectList;
+	}
+
+	public String getRestAddress() {
+		return restAddress;
+	}
+
+	public void setRestAddress(String restAddress) {
+		this.restAddress = restAddress;
+	}
+
+	public String getExchangeRemark() {
+		return exchangeRemark;
+	}
+
+	public void setExchangeRemark(String exchangeRemark) {
+		this.exchangeRemark = exchangeRemark;
 	}
 
 	public String toString() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TAccidentReportMapper">
-    
+
     <resultMap type="TAccidentReport" id="TAccidentReportResult">
         <result property="id"    column="id"    />
         <result property="accidentBasiscId"    column="accident_basisc_id"    />
@@ -35,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="noteTaker"    column="note_taker"    />
         <result property="noteTakerUserId"    column="note_taker_user_id"    />
         <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
         <result property="casualtyInfo"    column="casualty_info"    />
         <result property="carLossInfo"    column="car_loss_info"    />
         <result property="accidentAfter"    column="accident_after"    />
@@ -47,155 +48,167 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTAccidentReportVo">
-        select ar.id, ar.accident_basisc_id, ar.accident_name, ar.accident_date, ar.accident_time, ar.accident_driver, ar.license_number, ar.transport_id, ar.accident_place, ar.accident_levl, ar.accident_reason, ar.speeding_proportion, ar.accident_type, ar.accident_responsibility, ar.actual_num, ar.actual_ton, ar.missing_num, ar.minor_wound_num, ar.serious_injury_num, ar.death_num, ar.compensate_proportion, ar.three_license_plate, ar.three_injured_num, ar.three_death_num, ar.economics_loss, ar.report_person, ar.report_phone, ar.note_taker, ar.note_taker_user_id, ar.dept_id, ar.casualty_info, ar.car_loss_info, ar.accident_after, ar.remark, ar.file_path, ar.create_time, ar.update_time, ar.user_id, ar.meno, ar.business_id, ar.update_user_id from t_accident_report ar
+
+    <sql id="selectTAccidentReportVo">
+        select ar.id, ar.accident_basisc_id, ar.accident_name, ar.accident_date, ar.accident_time, ar.accident_driver,
+         ar.license_number, ar.transport_id, ar.accident_place, ar.accident_levl, ar.accident_reason, ar.speeding_proportion,
+         ar.accident_type, ar.accident_responsibility, ar.actual_num, ar.actual_ton, ar.missing_num, ar.minor_wound_num,
+         ar.serious_injury_num, ar.death_num, ar.compensate_proportion, ar.three_license_plate, ar.three_injured_num,
+         ar.three_death_num, ar.economics_loss, ar.report_person, ar.report_phone, ar.note_taker, ar.note_taker_user_id,
+         ar.dept_id, ar.dept_name, ar.casualty_info, ar.car_loss_info, ar.accident_after, ar.remark, ar.file_path,
+         ar.create_time, ar.update_time, ar.user_id, ar.meno, ar.business_id, ar.update_user_id ,
+		DATE_FORMAT(ar.accident_date,'%Y-%m-%d') as accidentDateStr,
+        DATE_FORMAT(ar.accident_time,'%Y-%m-%d %H:%i:%s') as accidentTimeStr,
+        DATE_FORMAT(ar.create_time,'%Y-%m-%d') as createTimeStr
+         from t_accident_report ar
     </sql>
-	
-    <select id="selectTAccidentReportList" parameterType="com.project.web.domian.TAccidentReport" resultMap="TAccidentReportResult">
+
+    <select id="selectTAccidentReportList" parameterType="TAccidentReport" resultMap="TAccidentReportResult">
         <include refid="selectTAccidentReportVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and ar.id = #{id}</if>
-             <if test="accidentBasiscId != null  and accidentBasiscId != '' "> and ar.accident_basisc_id = #{accidentBasiscId}</if>
-             <if test="accidentName != null  and accidentName != '' "> and ar.accident_name = #{accidentName}</if>
-             <if test="accidentDate != null "> and ar.accident_date = #{accidentDate}</if>
-             <if test="accidentTime != null "> and ar.accident_time = #{accidentTime}</if>
-             <if test="accidentDriver != null  and accidentDriver != '' "> and ar.accident_driver = #{accidentDriver}</if>
-             <if test="licenseNumber != null  and licenseNumber != '' "> and ar.license_number = #{licenseNumber}</if>
-             <if test="transportId != null  and transportId != '' "> and ar.transport_id = #{transportId}</if>
-             <if test="accidentPlace != null  and accidentPlace != '' "> and ar.accident_place = #{accidentPlace}</if>
-             <if test="accidentLevl != null  and accidentLevl != '' "> and ar.accident_levl = #{accidentLevl}</if>
-             <if test="accidentReason != null  and accidentReason != '' "> and ar.accident_reason = #{accidentReason}</if>
-             <if test="speedingProportion != null  and speedingProportion != '' "> and ar.speeding_proportion = #{speedingProportion}</if>
-             <if test="accidentType != null  and accidentType != '' "> and ar.accident_type = #{accidentType}</if>
-             <if test="accidentResponsibility != null  and accidentResponsibility != '' "> and ar.accident_responsibility = #{accidentResponsibility}</if>
-             <if test="actualNum != null "> and ar.actual_num = #{actualNum}</if>
-             <if test="actualTon != null "> and ar.actual_ton = #{actualTon}</if>
-             <if test="missingNum != null "> and ar.missing_num = #{missingNum}</if>
-             <if test="minorWoundNum != null "> and ar.minor_wound_num = #{minorWoundNum}</if>
-             <if test="seriousInjuryNum != null "> and ar.serious_injury_num = #{seriousInjuryNum}</if>
-             <if test="deathNum != null "> and ar.death_num = #{deathNum}</if>
-             <if test="compensateProportion != null  and compensateProportion != '' "> and ar.compensate_proportion = #{compensateProportion}</if>
-             <if test="threeLicensePlate != null  and threeLicensePlate != '' "> and ar.three_license_plate = #{threeLicensePlate}</if>
-             <if test="threeInjuredNum != null "> and ar.three_injured_num = #{threeInjuredNum}</if>
-             <if test="threeDeathNum != null "> and ar.three_death_num = #{threeDeathNum}</if>
-             <if test="economicsLoss != null "> and ar.economics_loss = #{economicsLoss}</if>
-             <if test="reportPerson != null  and reportPerson != '' "> and ar.report_person = #{reportPerson}</if>
-             <if test="reportPhone != null  and reportPhone != '' "> and ar.report_phone = #{reportPhone}</if>
-             <if test="noteTaker != null  and noteTaker != '' "> and ar.note_taker = #{noteTaker}</if>
-             <if test="noteTakerUserId != null "> and ar.note_taker_user_id = #{noteTakerUserId}</if>
-             <if test="deptId != null  and deptId != '' "> and ar.dept_id = #{deptId}</if>
-             <if test="casualtyInfo != null  and casualtyInfo != '' "> and ar.casualty_info = #{casualtyInfo}</if>
-             <if test="carLossInfo != null  and carLossInfo != '' "> and ar.car_loss_info = #{carLossInfo}</if>
-             <if test="accidentAfter != null  and accidentAfter != '' "> and ar.accident_after = #{accidentAfter}</if>
-             <if test="remark != null  and remark != '' "> and ar.remark = #{remark}</if>
-             <if test="filePath != null  and filePath != '' "> and ar.file_path = #{filePath}</if>
-             <if test="createTime != null "> and ar.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and ar.update_time = #{updateTime}</if>
-             <if test="userId != null "> and ar.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and ar.meno = #{meno}</if>
-             <if test="businessId != null  and businessId != '' "> and ar.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and ar.update_user_id = #{updateUserId}</if>
-         </where>
-         order by ar.create_time desc
+            <if test="accidentBasiscId != null  and accidentBasiscId != '' "> and ar.accident_basisc_id = #{accidentBasiscId}</if>
+            <if test="accidentName != null  and accidentName != '' "> and ar.accident_name = #{accidentName}</if>
+            <if test="accidentDate != null "> and ar.accident_date = #{accidentDate}</if>
+            <if test="accidentTime != null "> and ar.accident_time = #{accidentTime}</if>
+            <if test="accidentDriver != null  and accidentDriver != '' "> and ar.accident_driver = #{accidentDriver}</if>
+            <if test="licenseNumber != null  and licenseNumber != '' "> and ar.license_number = #{licenseNumber}</if>
+            <if test="transportId != null  and transportId != '' "> and ar.transport_id = #{transportId}</if>
+            <if test="accidentPlace != null  and accidentPlace != '' "> and ar.accident_place = #{accidentPlace}</if>
+            <if test="accidentLevl != null  and accidentLevl != '' "> and ar.accident_levl = #{accidentLevl}</if>
+            <if test="accidentReason != null  and accidentReason != '' "> and ar.accident_reason = #{accidentReason}</if>
+            <if test="speedingProportion != null  and speedingProportion != '' "> and ar.speeding_proportion = #{speedingProportion}</if>
+            <if test="accidentType != null  and accidentType != '' "> and ar.accident_type = #{accidentType}</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != '' "> and ar.accident_responsibility = #{accidentResponsibility}</if>
+            <if test="actualNum != null "> and ar.actual_num = #{actualNum}</if>
+            <if test="actualTon != null "> and ar.actual_ton = #{actualTon}</if>
+            <if test="missingNum != null "> and ar.missing_num = #{missingNum}</if>
+            <if test="minorWoundNum != null "> and ar.minor_wound_num = #{minorWoundNum}</if>
+            <if test="seriousInjuryNum != null "> and ar.serious_injury_num = #{seriousInjuryNum}</if>
+            <if test="deathNum != null "> and ar.death_num = #{deathNum}</if>
+            <if test="compensateProportion != null  and compensateProportion != '' "> and ar.compensate_proportion = #{compensateProportion}</if>
+            <if test="threeLicensePlate != null  and threeLicensePlate != '' "> and ar.three_license_plate = #{threeLicensePlate}</if>
+            <if test="threeInjuredNum != null "> and ar.three_injured_num = #{threeInjuredNum}</if>
+            <if test="threeDeathNum != null "> and ar.three_death_num = #{threeDeathNum}</if>
+            <if test="economicsLoss != null "> and ar.economics_loss = #{economicsLoss}</if>
+            <if test="reportPerson != null  and reportPerson != '' "> and ar.report_person = #{reportPerson}</if>
+            <if test="reportPhone != null  and reportPhone != '' "> and ar.report_phone = #{reportPhone}</if>
+            <if test="noteTaker != null  and noteTaker != '' "> and ar.note_taker = #{noteTaker}</if>
+            <if test="noteTakerUserId != null "> and ar.note_taker_user_id = #{noteTakerUserId}</if>
+            <if test="deptId != null "> and ar.dept_id = #{deptId}</if>
+            <if test="deptName != null  and deptName != '' "> and ar.dept_name = #{deptName}</if>
+            <if test="casualtyInfo != null  and casualtyInfo != '' "> and ar.casualty_info = #{casualtyInfo}</if>
+            <if test="carLossInfo != null  and carLossInfo != '' "> and ar.car_loss_info = #{carLossInfo}</if>
+            <if test="accidentAfter != null  and accidentAfter != '' "> and ar.accident_after = #{accidentAfter}</if>
+            <if test="remark != null  and remark != '' "> and ar.remark = #{remark}</if>
+            <if test="filePath != null  and filePath != '' "> and ar.file_path = #{filePath}</if>
+            <if test="createTime != null "> and ar.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and ar.update_time = #{updateTime}</if>
+            <if test="userId != null "> and ar.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and ar.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and ar.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and ar.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTAccidentReportById" parameterType="String" resultMap="TAccidentReportResult">
         <include refid="selectTAccidentReportVo"/>
         where ar.id = #{id}
     </select>
-        
-    <insert id="insertTAccidentReport" parameterType="com.project.web.domian.TAccidentReport">
+
+    <insert id="insertTAccidentReport" parameterType="TAccidentReport">
         insert into t_accident_report
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id,</if>
-			<if test="accidentName != null  and accidentName != ''  ">accident_name,</if>
-			<if test="accidentDate != null  ">accident_date,</if>
-			<if test="accidentTime != null  ">accident_time,</if>
-			<if test="accidentDriver != null  and accidentDriver != ''  ">accident_driver,</if>
-			<if test="licenseNumber != null  and licenseNumber != ''  ">license_number,</if>
-			<if test="transportId != null  and transportId != ''  ">transport_id,</if>
-			<if test="accidentPlace != null  and accidentPlace != ''  ">accident_place,</if>
-			<if test="accidentLevl != null  and accidentLevl != ''  ">accident_levl,</if>
-			<if test="accidentReason != null  and accidentReason != ''  ">accident_reason,</if>
-			<if test="speedingProportion != null  and speedingProportion != ''  ">speeding_proportion,</if>
-			<if test="accidentType != null  and accidentType != ''  ">accident_type,</if>
-			<if test="accidentResponsibility != null  and accidentResponsibility != ''  ">accident_responsibility,</if>
-			<if test="actualNum != null  ">actual_num,</if>
-			<if test="actualTon != null  ">actual_ton,</if>
-			<if test="missingNum != null  ">missing_num,</if>
-			<if test="minorWoundNum != null  ">minor_wound_num,</if>
-			<if test="seriousInjuryNum != null  ">serious_injury_num,</if>
-			<if test="deathNum != null  ">death_num,</if>
-			<if test="compensateProportion != null  and compensateProportion != ''  ">compensate_proportion,</if>
-			<if test="threeLicensePlate != null  and threeLicensePlate != ''  ">three_license_plate,</if>
-			<if test="threeInjuredNum != null  ">three_injured_num,</if>
-			<if test="threeDeathNum != null  ">three_death_num,</if>
-			<if test="economicsLoss != null  ">economics_loss,</if>
-			<if test="reportPerson != null  and reportPerson != ''  ">report_person,</if>
-			<if test="reportPhone != null  and reportPhone != ''  ">report_phone,</if>
-			<if test="noteTaker != null  and noteTaker != ''  ">note_taker,</if>
-			<if test="noteTakerUserId != null  ">note_taker_user_id,</if>
-			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
-			<if test="casualtyInfo != null  and casualtyInfo != ''  ">casualty_info,</if>
-			<if test="carLossInfo != null  and carLossInfo != ''  ">car_loss_info,</if>
-			<if test="accidentAfter != null  and accidentAfter != ''  ">accident_after,</if>
-			<if test="remark != null  and remark != ''  ">remark,</if>
-			<if test="filePath != null  and filePath != ''  ">file_path,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="meno != null  and meno != ''  ">meno,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id,</if>
+            <if test="accidentName != null  and accidentName != ''  ">accident_name,</if>
+            <if test="accidentDate != null  ">accident_date,</if>
+            <if test="accidentTime != null  ">accident_time,</if>
+            <if test="accidentDriver != null  and accidentDriver != ''  ">accident_driver,</if>
+            <if test="licenseNumber != null  and licenseNumber != ''  ">license_number,</if>
+            <if test="transportId != null  and transportId != ''  ">transport_id,</if>
+            <if test="accidentPlace != null  and accidentPlace != ''  ">accident_place,</if>
+            <if test="accidentLevl != null  and accidentLevl != ''  ">accident_levl,</if>
+            <if test="accidentReason != null  and accidentReason != ''  ">accident_reason,</if>
+            <if test="speedingProportion != null  and speedingProportion != ''  ">speeding_proportion,</if>
+            <if test="accidentType != null  and accidentType != ''  ">accident_type,</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != ''  ">accident_responsibility,</if>
+            <if test="actualNum != null  ">actual_num,</if>
+            <if test="actualTon != null  ">actual_ton,</if>
+            <if test="missingNum != null  ">missing_num,</if>
+            <if test="minorWoundNum != null  ">minor_wound_num,</if>
+            <if test="seriousInjuryNum != null  ">serious_injury_num,</if>
+            <if test="deathNum != null  ">death_num,</if>
+            <if test="compensateProportion != null  and compensateProportion != ''  ">compensate_proportion,</if>
+            <if test="threeLicensePlate != null  and threeLicensePlate != ''  ">three_license_plate,</if>
+            <if test="threeInjuredNum != null  ">three_injured_num,</if>
+            <if test="threeDeathNum != null  ">three_death_num,</if>
+            <if test="economicsLoss != null  ">economics_loss,</if>
+            <if test="reportPerson != null  and reportPerson != ''  ">report_person,</if>
+            <if test="reportPhone != null  and reportPhone != ''  ">report_phone,</if>
+            <if test="noteTaker != null  and noteTaker != ''  ">note_taker,</if>
+            <if test="noteTakerUserId != null  ">note_taker_user_id,</if>
+            <if test="deptId != null  ">dept_id,</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name,</if>
+            <if test="casualtyInfo != null  and casualtyInfo != ''  ">casualty_info,</if>
+            <if test="carLossInfo != null  and carLossInfo != ''  ">car_loss_info,</if>
+            <if test="accidentAfter != null  and accidentAfter != ''  ">accident_after,</if>
+            <if test="remark != null  and remark != ''  ">remark,</if>
+            <if test="filePath != null  and filePath != ''  ">file_path,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="accidentBasiscId != null  and accidentBasiscId != ''  ">#{accidentBasiscId},</if>
-			<if test="accidentName != null  and accidentName != ''  ">#{accidentName},</if>
-			<if test="accidentDate != null  ">#{accidentDate},</if>
-			<if test="accidentTime != null  ">#{accidentTime},</if>
-			<if test="accidentDriver != null  and accidentDriver != ''  ">#{accidentDriver},</if>
-			<if test="licenseNumber != null  and licenseNumber != ''  ">#{licenseNumber},</if>
-			<if test="transportId != null  and transportId != ''  ">#{transportId},</if>
-			<if test="accidentPlace != null  and accidentPlace != ''  ">#{accidentPlace},</if>
-			<if test="accidentLevl != null  and accidentLevl != ''  ">#{accidentLevl},</if>
-			<if test="accidentReason != null  and accidentReason != ''  ">#{accidentReason},</if>
-			<if test="speedingProportion != null  and speedingProportion != ''  ">#{speedingProportion},</if>
-			<if test="accidentType != null  and accidentType != ''  ">#{accidentType},</if>
-			<if test="accidentResponsibility != null  and accidentResponsibility != ''  ">#{accidentResponsibility},</if>
-			<if test="actualNum != null  ">#{actualNum},</if>
-			<if test="actualTon != null  ">#{actualTon},</if>
-			<if test="missingNum != null  ">#{missingNum},</if>
-			<if test="minorWoundNum != null  ">#{minorWoundNum},</if>
-			<if test="seriousInjuryNum != null  ">#{seriousInjuryNum},</if>
-			<if test="deathNum != null  ">#{deathNum},</if>
-			<if test="compensateProportion != null  and compensateProportion != ''  ">#{compensateProportion},</if>
-			<if test="threeLicensePlate != null  and threeLicensePlate != ''  ">#{threeLicensePlate},</if>
-			<if test="threeInjuredNum != null  ">#{threeInjuredNum},</if>
-			<if test="threeDeathNum != null  ">#{threeDeathNum},</if>
-			<if test="economicsLoss != null  ">#{economicsLoss},</if>
-			<if test="reportPerson != null  and reportPerson != ''  ">#{reportPerson},</if>
-			<if test="reportPhone != null  and reportPhone != ''  ">#{reportPhone},</if>
-			<if test="noteTaker != null  and noteTaker != ''  ">#{noteTaker},</if>
-			<if test="noteTakerUserId != null  ">#{noteTakerUserId},</if>
-			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
-			<if test="casualtyInfo != null  and casualtyInfo != ''  ">#{casualtyInfo},</if>
-			<if test="carLossInfo != null  and carLossInfo != ''  ">#{carLossInfo},</if>
-			<if test="accidentAfter != null  and accidentAfter != ''  ">#{accidentAfter},</if>
-			<if test="remark != null  and remark != ''  ">#{remark},</if>
-			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="meno != null  and meno != ''  ">#{meno},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">#{accidentBasiscId},</if>
+            <if test="accidentName != null  and accidentName != ''  ">#{accidentName},</if>
+            <if test="accidentDate != null  ">#{accidentDate},</if>
+            <if test="accidentTime != null  ">#{accidentTime},</if>
+            <if test="accidentDriver != null  and accidentDriver != ''  ">#{accidentDriver},</if>
+            <if test="licenseNumber != null  and licenseNumber != ''  ">#{licenseNumber},</if>
+            <if test="transportId != null  and transportId != ''  ">#{transportId},</if>
+            <if test="accidentPlace != null  and accidentPlace != ''  ">#{accidentPlace},</if>
+            <if test="accidentLevl != null  and accidentLevl != ''  ">#{accidentLevl},</if>
+            <if test="accidentReason != null  and accidentReason != ''  ">#{accidentReason},</if>
+            <if test="speedingProportion != null  and speedingProportion != ''  ">#{speedingProportion},</if>
+            <if test="accidentType != null  and accidentType != ''  ">#{accidentType},</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != ''  ">#{accidentResponsibility},</if>
+            <if test="actualNum != null  ">#{actualNum},</if>
+            <if test="actualTon != null  ">#{actualTon},</if>
+            <if test="missingNum != null  ">#{missingNum},</if>
+            <if test="minorWoundNum != null  ">#{minorWoundNum},</if>
+            <if test="seriousInjuryNum != null  ">#{seriousInjuryNum},</if>
+            <if test="deathNum != null  ">#{deathNum},</if>
+            <if test="compensateProportion != null  and compensateProportion != ''  ">#{compensateProportion},</if>
+            <if test="threeLicensePlate != null  and threeLicensePlate != ''  ">#{threeLicensePlate},</if>
+            <if test="threeInjuredNum != null  ">#{threeInjuredNum},</if>
+            <if test="threeDeathNum != null  ">#{threeDeathNum},</if>
+            <if test="economicsLoss != null  ">#{economicsLoss},</if>
+            <if test="reportPerson != null  and reportPerson != ''  ">#{reportPerson},</if>
+            <if test="reportPhone != null  and reportPhone != ''  ">#{reportPhone},</if>
+            <if test="noteTaker != null  and noteTaker != ''  ">#{noteTaker},</if>
+            <if test="noteTakerUserId != null  ">#{noteTakerUserId},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="deptName != null  and deptName != ''  ">#{deptName},</if>
+            <if test="casualtyInfo != null  and casualtyInfo != ''  ">#{casualtyInfo},</if>
+            <if test="carLossInfo != null  and carLossInfo != ''  ">#{carLossInfo},</if>
+            <if test="accidentAfter != null  and accidentAfter != ''  ">#{accidentAfter},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTAccidentReport" parameterType="com.project.web.domian.TAccidentReport">
+
+    <update id="updateTAccidentReport" parameterType="TAccidentReport">
         update t_accident_report
         <trim prefix="SET" suffixOverrides=",">
             <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id = #{accidentBasiscId},</if>
@@ -226,7 +239,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="reportPhone != null  and reportPhone != ''  ">report_phone = #{reportPhone},</if>
             <if test="noteTaker != null  and noteTaker != ''  ">note_taker = #{noteTaker},</if>
             <if test="noteTakerUserId != null  ">note_taker_user_id = #{noteTakerUserId},</if>
-            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name = #{deptName},</if>
             <if test="casualtyInfo != null  and casualtyInfo != ''  ">casualty_info = #{casualtyInfo},</if>
             <if test="carLossInfo != null  and carLossInfo != ''  ">car_loss_info = #{carLossInfo},</if>
             <if test="accidentAfter != null  and accidentAfter != ''  ">accident_after = #{accidentAfter},</if>
@@ -242,15 +256,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-	<delete id="deleteTAccidentReportById" parameterType="String">
+    <delete id="deleteTAccidentReportById" parameterType="String">
         delete from t_accident_report where id = #{id}
     </delete>
-	
+
     <delete id="deleteTAccidentReportByIds" parameterType="String">
-        delete from t_accident_report where id in 
+        delete from t_accident_report where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

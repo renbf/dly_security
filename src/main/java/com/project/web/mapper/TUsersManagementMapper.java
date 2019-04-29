@@ -1,3 +1,4 @@
+
 package com.project.web.mapper;
 
 import java.util.List;
@@ -27,6 +28,14 @@ public interface TUsersManagementMapper
      * @return 人员台账集合
      */
 	public List<TUsersManagement> selectTUsersManagementList(TUsersManagement tUsersManagement);
+	
+	/**
+     * 根据岗位查询人员列表
+     * 
+     * @param tUsersManagement 根据岗位查询人员列表
+     * @return 人员台账集合
+     */
+	public List<TUsersManagement> selectTUsersManagementListByPostId(TUsersManagement tUsersManagement);
 	
 	/**
      * 新增人员台账

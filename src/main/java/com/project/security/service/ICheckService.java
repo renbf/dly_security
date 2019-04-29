@@ -1,5 +1,7 @@
 package com.project.security.service;
 
+import java.util.Date;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.result.DataResult;
@@ -26,7 +28,7 @@ public interface ICheckService {
 	 * 完成检查计划接口
 	 * @return
 	 */
-	public DataResult completeCheck(String inspectRecordJson,MultipartFile file);
+	public DataResult completeCheck(String checkId,String checkObj,MultipartFile file);
 	
 	/**
 	 * 上传隐患——查询部门等接口
@@ -56,7 +58,7 @@ public interface ICheckService {
 	 * 隐患整改提交接口
 	 * @return
 	 */
-	public DataResult rectificationDetail(String dangerJson,MultipartFile file);
+	public DataResult rectificationDetail(String dangerId,String dochangeStep,String dochangeCapital, MultipartFile[] files);
 	
 	/**
 	 * 拒绝整改接口
@@ -74,5 +76,5 @@ public interface ICheckService {
 	 * 提交隐患验收接口
 	 * @return
 	 */
-	public DataResult rectificationClose(String dangerJson,MultipartFile file);
+	public DataResult rectificationClose(String dangerId,Date checkAcceptDate,String checkAcceptResult,String remark,MultipartFile[] files);
 }

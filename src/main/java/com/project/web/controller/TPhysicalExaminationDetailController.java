@@ -43,7 +43,7 @@ public class TPhysicalExaminationDetailController extends BaseController
 	/**
 	 * 查询体检记录明细列表
 	 */
-	@RequiresPermissions("system:tPhysicalExaminationDetail:list")
+//	@RequiresPermissions("system:tPhysicalExaminationDetail:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TPhysicalExaminationDetail tPhysicalExaminationDetail)
@@ -52,7 +52,7 @@ public class TPhysicalExaminationDetailController extends BaseController
         List<TPhysicalExaminationDetail> list = tPhysicalExaminationDetailService.selectTPhysicalExaminationDetailList(tPhysicalExaminationDetail);
 		return getDataTable(list);
 	}
-	
+
 	/**
 	 * 新增体检记录明细
 	 */

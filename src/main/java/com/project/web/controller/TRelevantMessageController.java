@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
@@ -45,7 +47,7 @@ public class TRelevantMessageController extends BaseController
 	/**
 	 * 查询相关方列表
 	 */
-	@RequiresPermissions("system:tRelevantMessage:list")
+//	@RequiresPermissions("system:tRelevantMessage:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TRelevantMessage tRelevantMessage)
@@ -67,13 +69,13 @@ public class TRelevantMessageController extends BaseController
 	/**
 	 * 新增保存相关方
 	 */
-	@RequiresPermissions("system:tRelevantMessage:add")
+//	@RequiresPermissions("system:tRelevantMessage:add")
 	@Log(title = "相关方", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TRelevantMessage tRelevantMessage)
+	public AjaxResult addSave(TRelevantMessage tRelevantMessage,@RequestParam(name = "relevantlFile",required = false) MultipartFile relevantlFile)
 	{		
-		return toAjax(tRelevantMessageService.insertTRelevantMessage(tRelevantMessage));
+		return tRelevantMessageService.insertTRelevantMessage(tRelevantMessage,relevantlFile);
 	}
 
 	/**
@@ -90,19 +92,19 @@ public class TRelevantMessageController extends BaseController
 	/**
 	 * 修改保存相关方
 	 */
-	@RequiresPermissions("system:tRelevantMessage:edit")
+//	@RequiresPermissions("system:tRelevantMessage:edit")
 	@Log(title = "相关方", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TRelevantMessage tRelevantMessage)
+	public AjaxResult editSave(TRelevantMessage tRelevantMessage,@RequestParam(name = "relevantlFile",required = false) MultipartFile relevantlFile)
 	{		
-		return toAjax(tRelevantMessageService.updateTRelevantMessage(tRelevantMessage));
+		return toAjax(tRelevantMessageService.updateTRelevantMessage(tRelevantMessage,relevantlFile));
 	}
 	
 	/**
 	 * 删除相关方
 	 */
-	@RequiresPermissions("system:tRelevantMessage:remove")
+//	@RequiresPermissions("system:tRelevantMessage:remove")
 	@Log(title = "相关方", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

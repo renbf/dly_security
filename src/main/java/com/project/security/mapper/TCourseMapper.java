@@ -72,7 +72,7 @@ public interface TCourseMapper
 	 * @param courseType
 	 * @return
 	 */
-	public List<TCourseVo> littleKnowledge(@Param("userId") String userId,@Param("courseType") String courseType);
+	public List<TCourseVo> littleKnowledge(@Param("courseType") String courseType);
 	/**
 	 * 课程安排
 	 * @param userId

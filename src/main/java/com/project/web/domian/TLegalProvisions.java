@@ -27,14 +27,20 @@ public class TLegalProvisions extends BaseEntity
 	private String legalUnit;
 	/** 实时日期 */
 	private Date legalDate;
+	/** 实时日期 */
+	private Date legalDateEnd;
+	/** 实时日期字符串 */
+	private String legalDateStr;
 	/** 适用部门 */
-	private String legalDeptId;
+	private Long legalDeptId;
 	/** 合规性评价 */
 	private String legalEvaluate;
 	/** 文件路径 */
 	private String legalFilePath;
 	/** 创建日期 */
 	private Date createTime;
+	/** 创建日期 */
+	private Date createTimeEnd;
 	/** 更新时间 */
 	private Date updateTime;
 	/** 创建人id */
@@ -49,6 +55,30 @@ public class TLegalProvisions extends BaseEntity
 	public void setId(String id) 
 	{
 		this.id = id;
+	}
+
+	public Date getLegalDateEnd() {
+		return legalDateEnd;
+	}
+
+	public void setLegalDateEnd(Date legalDateEnd) {
+		this.legalDateEnd = legalDateEnd;
+	}
+
+	public String getLegalDateStr() {
+		return legalDateStr;
+	}
+
+	public void setLegalDateStr(String legalDateStr) {
+		this.legalDateStr = legalDateStr;
+	}
+
+	public Date getCreateTimeEnd() {
+		return createTimeEnd;
+	}
+
+	public void setCreateTimeEnd(Date createTimeEnd) {
+		this.createTimeEnd = createTimeEnd;
 	}
 
 	public String getId() 
@@ -91,15 +121,15 @@ public class TLegalProvisions extends BaseEntity
 	{
 		return legalDate;
 	}
-	public void setLegalDeptId(String legalDeptId) 
-	{
+	
+	public Long getLegalDeptId() {
+		return legalDeptId;
+	}
+
+	public void setLegalDeptId(Long legalDeptId) {
 		this.legalDeptId = legalDeptId;
 	}
 
-	public String getLegalDeptId() 
-	{
-		return legalDeptId;
-	}
 	public void setLegalEvaluate(String legalEvaluate) 
 	{
 		this.legalEvaluate = legalEvaluate;

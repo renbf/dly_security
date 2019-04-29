@@ -360,4 +360,17 @@ public class SysUserServiceImpl implements ISysUserService {
         }
         return idsStr.toString();
     }
+
+	@Override
+    @Transactional
+	public int insertUserByManagement(SysUser user, long uuid) {
+	     // 新增用户信息
+        user.setUserId(uuid);
+        int rows = userMapper.insertUser(user);
+//        // 新增用户岗位关联
+//        insertUserPost(user);
+//        // 新增用户与角色管理
+        insertUserRole(user);
+        return rows;
+	}
 }

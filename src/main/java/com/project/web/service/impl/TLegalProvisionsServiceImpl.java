@@ -2,13 +2,20 @@ package com.project.web.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.project.common.base.AjaxResult;
 import com.project.common.support.Convert;
+import com.project.common.utils.StringUtils;
+import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
 import com.project.web.domian.TLegalProvisions;
 import com.project.web.mapper.TLegalProvisionsMapper;
+import com.project.web.service.IFileService;
 import com.project.web.service.ITLegalProvisionsService;
 
 /**
@@ -22,6 +29,8 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
 {
 	@Autowired
 	private TLegalProvisionsMapper tLegalProvisionsMapper;
+	@Autowired
+	private IFileService fileService;
 
 	/**
      * 查询法律法规信息
@@ -54,11 +63,38 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
      * @return 结果
      */
 	@Override
-	public int insertTLegalProvisions(TLegalProvisions tLegalProvisions)
+	public AjaxResult insertTLegalProvisions(TLegalProvisions tLegalProvisions,MultipartFile legalFile)
 	{
-		tLegalProvisions.setId(UUIDUtil.getUUID());
-		tLegalProvisions.setCreateTime(new Date());
-		return tLegalProvisionsMapper.insertTLegalProvisions(tLegalProvisions);
+		if(tLegalProvisions==null || tLegalProvisions.getLegalName()==null || "".equals(tLegalProvisions.getLegalName())) {
+			return AjaxResult.error(2,"法规名称不允许为空");
+		}
+		if(tLegalProvisions.getLegalType() ==null || "".equals(tLegalProvisions.getLegalType())) {
+			return AjaxResult.error(2,"类别不允许为空");
+		}
+		if(tLegalProvisions.getLegalUnit() ==null || "".equals(tLegalProvisions.getLegalUnit())) {
+			return AjaxResult.error(2,"颁发单位不允许为空");
+		}
+		if(tLegalProvisions.getLegalDeptId() ==null ) {
+			return AjaxResult.error(2,"部门不允许为空");
+		}
+		try {
+			String uuid = UUIDUtil.getUUID();
+			tLegalProvisions.setId(uuid);
+			tLegalProvisions.setCreateTime(new Date());
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(legalFile)&&StringUtils.isNotEmpty(legalFile.getOriginalFilename())){
+				String Str = fileService.upolad("falvfagui",uuid,"法律法规文件",legalFile,0);
+				tLegalProvisions.setFilePath(Str);
+			}
+			int i = tLegalProvisionsMapper.insertTLegalProvisions(tLegalProvisions);
+			if(i==1) {
+				return AjaxResult.success();
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+	
+		return AjaxResult.error();
 	}
 	
 	/**
@@ -68,9 +104,24 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
      * @return 结果
      */
 	@Override
-	public int updateTLegalProvisions(TLegalProvisions tLegalProvisions)
+	public AjaxResult updateTLegalProvisions(TLegalProvisions tLegalProvisions,MultipartFile legalFile)
 	{
-	    return tLegalProvisionsMapper.updateTLegalProvisions(tLegalProvisions);
+		try {
+			tLegalProvisions.setUpdateTime(new Date());
+			tLegalProvisions.setUpdateUserId(ShiroUtils.getUserId());
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(legalFile)&&StringUtils.isNotEmpty(legalFile.getOriginalFilename())){
+				String Str = fileService.upolad("falvfagui",tLegalProvisions.getId(),"法律法规文件",legalFile,0);
+				tLegalProvisions.setFilePath(Str);
+			}
+			int i = tLegalProvisionsMapper.updateTLegalProvisions(tLegalProvisions);
+			if(i >=1) {
+				return AjaxResult.success();
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return AjaxResult.error();
 	}
 
 	/**
@@ -83,6 +134,13 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
 	public int deleteTLegalProvisionsByIds(String ids)
 	{
 		return tLegalProvisionsMapper.deleteTLegalProvisionsByIds(Convert.toStrArray(ids));
+	}
+	
+	private boolean regCheck(Object obj) {
+		if(obj==null || "".equals(obj)) {
+			return true;
+		}
+		return false;
 	}
 	
 }

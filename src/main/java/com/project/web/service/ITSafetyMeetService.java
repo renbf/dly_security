@@ -2,7 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TSafetyMeet;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全会议 服务层
@@ -34,7 +36,7 @@ public interface ITSafetyMeetService
      * @param tSafetyMeet 安全会议信息
      * @return 结果
      */
-	public int insertTSafetyMeet(TSafetyMeet tSafetyMeet);
+	public AjaxResult insertTSafetyMeet(TSafetyMeet tSafetyMeet, MultipartFile meetFile);
 	
 	/**
      * 修改安全会议
@@ -42,7 +44,7 @@ public interface ITSafetyMeetService
      * @param tSafetyMeet 安全会议信息
      * @return 结果
      */
-	public int updateTSafetyMeet(TSafetyMeet tSafetyMeet);
+	public AjaxResult updateTSafetyMeet(TSafetyMeet tSafetyMeet,MultipartFile meetFile);
 		
 	/**
      * 删除安全会议信息

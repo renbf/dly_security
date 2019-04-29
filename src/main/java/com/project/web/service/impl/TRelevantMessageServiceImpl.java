@@ -1,13 +1,23 @@
 package com.project.web.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.common.support.Convert;
+import com.project.common.utils.StringUtils;
+import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
+import com.project.web.domian.TLabourGoods;
 import com.project.web.domian.TRelevantMessage;
 import com.project.web.mapper.TRelevantMessageMapper;
+import com.project.web.service.IFileService;
 import com.project.web.service.ITRelevantMessageService;
 
 /**
@@ -21,6 +31,8 @@ public class TRelevantMessageServiceImpl implements ITRelevantMessageService
 {
 	@Autowired
 	private TRelevantMessageMapper tRelevantMessageMapper;
+	@Autowired
+	private IFileService fileService;
 
 	/**
      * 查询相关方信息
@@ -53,11 +65,43 @@ public class TRelevantMessageServiceImpl implements ITRelevantMessageService
      * @return 结果
      */
 	@Override
-	public int insertTRelevantMessage(TRelevantMessage tRelevantMessage)
+	public AjaxResult insertTRelevantMessage(TRelevantMessage tRelevantMessage,MultipartFile relevantlFile)
 	{
-		tRelevantMessage.setId(UUIDUtil.getUUID());
-		tRelevantMessage.setCreateTime(new Date());
-		return tRelevantMessageMapper.insertTRelevantMessage(tRelevantMessage);
+		if(tRelevantMessage.getRelevantType()==null || "".equals(tRelevantMessage.getRelevantType())) {
+			return AjaxResult.error(2,"类别不能为空");
+		}
+		if(tRelevantMessage.getRelevantName()==null || "".equals(tRelevantMessage.getRelevantName())) {
+			return AjaxResult.error(2,"名称不能为空");
+		}
+		if(tRelevantMessage.getRelevantContacts()==null || "".equals(tRelevantMessage.getRelevantContacts())) {
+			return AjaxResult.error(2,"联系人不能为空");
+		}	
+		if(tRelevantMessage.getRelevantPhone() ==null || "".equals(tRelevantMessage.getRelevantPhone())) {
+			return AjaxResult.error(2,"电话不能为空");
+		}
+		
+		try {
+			String uuid = UUIDUtil.getUUID();
+			tRelevantMessage.setId(uuid);
+			tRelevantMessage.setCreateTime(new Date());
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(relevantlFile)&&StringUtils.isNotEmpty(relevantlFile.getOriginalFilename())){
+				String Str = fileService.upolad("xiangguanfang",uuid,"相关方文件",relevantlFile,0);
+				tRelevantMessage.setFilePath(Str);
+				
+			}					
+			
+							
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
+		int i=tRelevantMessageMapper.insertTRelevantMessage(tRelevantMessage);
+		if(i==1) {
+			return AjaxResult.error(0, "操作成功");
+		}else {
+			return AjaxResult.error(2, "操作失败");
+		}
 	}
 	
 	/**
@@ -67,9 +111,24 @@ public class TRelevantMessageServiceImpl implements ITRelevantMessageService
      * @return 结果
      */
 	@Override
-	public int updateTRelevantMessage(TRelevantMessage tRelevantMessage)
+	public int updateTRelevantMessage(TRelevantMessage tRelevantMessage,MultipartFile relevantlFile)
 	{
-	    return tRelevantMessageMapper.updateTRelevantMessage(tRelevantMessage);
+		try {
+			tRelevantMessage.setUpdateUserId(ShiroUtils.getUserId());
+			tRelevantMessage.setUpdateTime(new Date());
+			
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(relevantlFile)&&StringUtils.isNotEmpty(relevantlFile.getOriginalFilename())){
+				String Str = fileService.upolad("xiangguanfang",tRelevantMessage.getId(),"相关方文件",relevantlFile,0);
+				tRelevantMessage.setFilePath(Str);
+				
+			}					
+			
+							
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return tRelevantMessageMapper.updateTRelevantMessage(tRelevantMessage);
 	}
 
 	/**

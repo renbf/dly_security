@@ -97,6 +97,13 @@ public interface TDictMapper
 	 * @param parentId
 	 * @return
 	 */
+	public List<TDictView> selectTDictListByDictCodebusinessId(@Param("dictCode") String dictCode,@Param("businessId") String businessId,@Param("dictSort") int dictSort);
+	
+	/**
+	 * 查询子节点
+	 * @param parentId
+	 * @return
+	 */
 	public List<TDictNode> selectTDictNodesByParentId(String parentId);
 	
 	/**

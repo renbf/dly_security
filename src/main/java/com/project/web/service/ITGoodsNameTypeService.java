@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TGoodsNameType;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface ITGoodsNameTypeService
      * @param tGoodsNameType 货物名称类项关系信息
      * @return 结果
      */
-	public int insertTGoodsNameType(TGoodsNameType tGoodsNameType);
+	public AjaxResult insertTGoodsNameType(TGoodsNameType tGoodsNameType);
 	
 	/**
      * 修改货物名称类项关系
@@ -41,7 +42,7 @@ public interface ITGoodsNameTypeService
      * @param tGoodsNameType 货物名称类项关系信息
      * @return 结果
      */
-	public int updateTGoodsNameType(TGoodsNameType tGoodsNameType);
+	public AjaxResult updateTGoodsNameType(TGoodsNameType tGoodsNameType);
 		
 	/**
      * 删除货物名称类项关系信息

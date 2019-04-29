@@ -1,15 +1,17 @@
 package com.project.web.controller;
 
 import java.util.List;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -33,7 +35,7 @@ public class TUsersManagementController extends BaseController
 	@Autowired
 	private ITUsersManagementService tUsersManagementService;
 	
-	@RequiresPermissions("system:tUsersManagement:view")
+//	@RequiresPermissions("system:tUsersManagement:view")
 	@GetMapping()
 	public String tUsersManagement()
 	{
@@ -43,7 +45,7 @@ public class TUsersManagementController extends BaseController
 	/**
 	 * 查询人员台账列表
 	 */
-	@RequiresPermissions("system:tUsersManagement:list")
+//	@RequiresPermissions("system:tUsersManagement:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TUsersManagement tUsersManagement)
@@ -52,6 +54,21 @@ public class TUsersManagementController extends BaseController
         List<TUsersManagement> list = tUsersManagementService.selectTUsersManagementList(tUsersManagement);
 		return getDataTable(list);
 	}
+	
+	/**
+	 *根据岗位查询 人员列表
+	 */
+//	@RequiresPermissions("system:tUsersManagement:list")
+	@PostMapping("/listByPost")
+	@ResponseBody
+	public AjaxResult listByPost(TUsersManagement tUsersManagement)
+	{
+		AjaxResult aj = AjaxResult.success();
+        List<TUsersManagement> list = tUsersManagementService.selectTUsersManagementListByPostId(tUsersManagement);
+		aj.put("data", list);
+        return aj;
+	}
+	
 	
 	/**
 	 * 新增人员台账
@@ -65,13 +82,14 @@ public class TUsersManagementController extends BaseController
 	/**
 	 * 新增保存人员台账
 	 */
-	@RequiresPermissions("system:tUsersManagement:add")
+//	@RequiresPermissions("system:tUsersManagement:add")
 	@Log(title = "人员台账", businessType = BusinessType.INSERT)
+    @Transactional(rollbackFor = Exception.class)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TUsersManagement tUsersManagement)
 	{		
-		return toAjax(tUsersManagementService.insertTUsersManagement(tUsersManagement));
+		return tUsersManagementService.insertTUsersManagement(tUsersManagement);
 	}
 
 	/**
@@ -88,7 +106,7 @@ public class TUsersManagementController extends BaseController
 	/**
 	 * 修改保存人员台账
 	 */
-	@RequiresPermissions("system:tUsersManagement:edit")
+//	@RequiresPermissions("system:tUsersManagement:edit")
 	@Log(title = "人员台账", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -100,7 +118,7 @@ public class TUsersManagementController extends BaseController
 	/**
 	 * 删除人员台账
 	 */
-	@RequiresPermissions("system:tUsersManagement:remove")
+//	@RequiresPermissions("system:tUsersManagement:remove")
 	@Log(title = "人员台账", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

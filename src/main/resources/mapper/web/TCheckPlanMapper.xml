@@ -25,20 +25,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCheckPlanVo">
-        select cp.id, cp.plan_title, cp.check_type, cp.check_year, cp.dept_id, cp.paln_check_date, cp.person_liable_id, cp.person_liable_name, cp.check_team, cp.check_status, cp.remark, cp.create_time, cp.update_time, cp.user_id, cp.meno, cp.business_id, cp.update_user_id from t_check_plan cp
+        select cp.id, cp.plan_title, cp.check_type, cp.check_year, cp.dept_id, 
+        DATE_FORMAT(cp.paln_check_date,'%Y-%m-%d') as palnCheckDateStr,
+        cp.person_liable_id, cp.person_liable_name, cp.check_team, cp.check_status, cp.remark, cp.create_time, cp.update_time, cp.user_id, cp.meno, cp.business_id, cp.update_user_id from t_check_plan cp
     </sql>
 	
     <select id="selectTCheckPlanList" parameterType="TCheckPlan" resultMap="TCheckPlanResult">
         <include refid="selectTCheckPlanVo"/>
         <where>  
             <if test="id != null  and id != '' "> and cp.id = #{id}</if>
-             <if test="planTitle != null  and planTitle != '' "> and cp.plan_title = #{planTitle}</if>
+             <if test="planTitle != null  and planTitle != '' "> and cp.plan_title like CONCAT('%',#{planTitle},'%')</if>
              <if test="checkType != null  and checkType != '' "> and cp.check_type = #{checkType}</if>
              <if test="checkYear != null  and checkYear != '' "> and cp.check_year = #{checkYear}</if>
              <if test="deptId != null  and deptId != '' "> and cp.dept_id = #{deptId}</if>
-             <if test="palnCheckDate != null "> and cp.paln_check_date = #{palnCheckDate}</if>
+             <!--  <if test="palnCheckDate != null "> and cp.paln_check_date = #{palnCheckDate}</if>-->
+             
+             <if test="(palnCheckDate != null  ) and palnCheckDateEnd == null "> 
+             	and DATE_FORMAT(cp.paln_check_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{palnCheckDate},'%Y-%m-%d')
+             </if>
+             <if test="(palnCheckDateEnd != null ) and palnCheckDate == null  "> 
+             	and DATE_FORMAT(cp.paln_check_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{palnCheckDateEnd},'%Y-%m-%d')
+             </if>
+             <if test="(palnCheckDateEnd != null  ) and palnCheckDate != null   "> 
+             		 and DATE_FORMAT(cp.paln_check_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{palnCheckDate},'%Y-%m-%d')
+                     and DATE_FORMAT(cp.paln_check_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{palnCheckDateEnd},'%Y-%m-%d')                    
+             </if>
              <if test="personLiableId != null "> and cp.person_liable_id = #{personLiableId}</if>
-             <if test="personLiableName != null  and personLiableName != '' "> and cp.person_liable_name = #{personLiableName}</if>
+             <if test="personLiableName != null  and personLiableName != '' "> and cp.person_liable_name like CONCAT('%',#{personLiableName},'%')</if>
              <if test="checkTeam != null  and checkTeam != '' "> and cp.check_team = #{checkTeam}</if>
              <if test="checkStatus != null  and checkStatus != '' "> and cp.check_status = #{checkStatus}</if>
              <if test="remark != null  and remark != '' "> and cp.remark = #{remark}</if>

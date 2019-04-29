@@ -148,6 +148,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="startDate"    column="start_date"    />
         <result property="commitDate"    column="commit_date"    />
         <result property="paperScore"    column="paper_score"    />
+        <result property="userSubjectId"    column="user_subject_id"    />
         <result property="userAnswer"    column="user_answer"    />
         <result property="isTrue"    column="is_true"    />
         <result property="isCollect"    column="is_collect"    />
@@ -194,7 +195,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		s.id subject_id,s.subject,s.annotation,s.true_answer,s.subject_type,sp.subject_score,sp.subject_sort,
 		so.option_value,so.content,so.option_sort,
 		up.id user_paper_id,up.status,up.start_date,up.commit_date,up.paper_score,
-		us.user_answer,us.is_true,usc.is_collect
+		us.id user_subject_id,us.user_answer,us.is_true,usc.is_collect
 		from t_user_paper up
 		join t_paper p on up.paper_id = p.id
 		join t_subject_paper sp on up.paper_id = sp.paper_id

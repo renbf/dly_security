@@ -19,19 +19,19 @@ public class TSafetyPlan extends BaseEntity
 	
 	/** 主键ID */
 	private String id;
-	/** 计划名称 */
+	/** #计划名称 */
 	private String palnName;
-	/** 计划日期 */
+	/** ##计划日期 */
 	private Date planDate;
-	/** 计划制定人 */
+	/** #计划制定人 */
 	private String planEnactingPerson;
-	/** 部门id */
+	/** #部门id */
 	private String deptId;
-	/** 状态 0:正常  1:已作废 */
+	/** #状态 0:正常  1:已作废 */
 	private Integer planStatus;
 	/** 附件文件路径 */
 	private String planFilePath;
-	/** 创建日期 */
+	/** ##创建日期 */
 	private Date createTime;
 	/** 更新时间 */
 	private Date updateTime;
@@ -44,7 +44,57 @@ public class TSafetyPlan extends BaseEntity
 	/** 修改人id */
 	private Long updateUserId;
 
-	public void setId(String id) 
+	/*查询中添加的字段*/
+	//计划日期
+	private Date planDate1;
+	//创建时间
+	private Date createTime1;
+
+
+	/*查询返回的时间str类型*/
+	//计划日期
+	private String planDateStr;
+	//创建时间
+	private String createTimeStr;
+
+
+	public Date getPlanDate1() {
+		return planDate1;
+	}
+
+	public TSafetyPlan setPlanDate1(Date planDate1) {
+		this.planDate1 = planDate1;
+		return this;
+	}
+
+	public Date getCreateTime1() {
+		return createTime1;
+	}
+
+	public TSafetyPlan setCreateTime1(Date createTime1) {
+		this.createTime1 = createTime1;
+		return this;
+	}
+
+	public String getPlanDateStr() {
+		return planDateStr;
+	}
+
+	public TSafetyPlan setPlanDateStr(String planDateStr) {
+		this.planDateStr = planDateStr;
+		return this;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public TSafetyPlan setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+		return this;
+	}
+
+	public void setId(String id)
 	{
 		this.id = id;
 	}

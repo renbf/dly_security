@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="isCharge"    column="is_charge"    />
         <result property="price"    column="price"    />
         <result property="previewTimes"    column="preview_times"    />
+        <result property="totalTimes"    column="total_times"    />
         <result property="watchTimes"    column="watch_times"    />
         <result property="introduction"    column="introduction"    />
         <result property="courseSource"    column="course_source"    />
@@ -27,10 +28,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="courseTitle"    column="course_title"    />
     </resultMap>
 	
 	<sql id="selectTCoursebasicColums">
-        select c.id, c.training_type, c.course_type, c.course_url, c.video_url, c.file_url, c.course_name, c.business_type, c.major_type, c.is_timing, c.is_charge, c.price, c.preview_times, c.watch_times, c.introduction, c.course_source, c.business_id, c.status, c.add_user_id, c.create_date, c.update_date, c.update_user_id    </sql>
+        select c.id, c.training_type, c.course_type, c.course_url, c.video_url, c.file_url, c.course_name, c.business_type, c.major_type, c.is_timing, c.is_charge, c.price, c.preview_times, c.total_times, c.watch_times, c.introduction, c.course_source, c.business_id, c.status, c.add_user_id, c.create_date, c.update_date, c.update_user_id, c.course_title    </sql>
 	
     <select id="selectTCourseList" parameterType="com.project.security.domain.TCourse" resultMap="TCourseResult">
         <include refid="selectTCoursebasicColums"/>
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="isCharge != null  and isCharge != '' "> and c.is_charge = #{isCharge}</if>
              <if test="price != null "> and c.price = #{price}</if>
              <if test="previewTimes != null "> and c.preview_times = #{previewTimes}</if>
+             <if test="totalTimes != null "> and c.total_times = #{totalTimes}</if>
              <if test="watchTimes != null "> and c.watch_times = #{watchTimes}</if>
              <if test="introduction != null  and introduction != '' "> and c.introduction = #{introduction}</if>
              <if test="courseSource != null  and courseSource != '' "> and c.course_source = #{courseSource}</if>
@@ -58,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="createDate != null "> and c.create_date = #{createDate}</if>
              <if test="updateDate != null "> and c.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and c.update_user_id = #{updateUserId}</if>
+             <if test="courseTitle != null  and courseTitle != '' "> and c.course_title = #{courseTitle}</if>
          </where>
     </select>
     
@@ -83,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isCharge != null  and isCharge != ''  ">is_charge,</if>
 			<if test="price != null  ">price,</if>
 			<if test="previewTimes != null  ">preview_times,</if>
+			<if test="totalTimes != null  ">total_times,</if>
 			<if test="watchTimes != null  ">watch_times,</if>
 			<if test="introduction != null  and introduction != ''  ">introduction,</if>
 			<if test="courseSource != null  and courseSource != ''  ">course_source,</if>
@@ -92,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">create_date,</if>
 			<if test="updateDate != null  ">update_date,</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+			<if test="courseTitle != null  and courseTitle != ''  ">course_title,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -107,6 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isCharge != null  and isCharge != ''  ">#{isCharge},</if>
 			<if test="price != null  ">#{price},</if>
 			<if test="previewTimes != null  ">#{previewTimes},</if>
+			<if test="totalTimes != null  ">#{totalTimes},</if>
 			<if test="watchTimes != null  ">#{watchTimes},</if>
 			<if test="introduction != null  and introduction != ''  ">#{introduction},</if>
 			<if test="courseSource != null  and courseSource != ''  ">#{courseSource},</if>
@@ -116,6 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">#{createDate},</if>
 			<if test="updateDate != null  ">#{updateDate},</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+			<if test="courseTitle != null  and courseTitle != ''  ">#{courseTitle},</if>
          </trim>
     </insert>
 	 
@@ -134,6 +142,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isCharge != null  and isCharge != ''  ">is_charge = #{isCharge},</if>
             <if test="price != null  ">price = #{price},</if>
             <if test="previewTimes != null  ">preview_times = #{previewTimes},</if>
+            <if test="totalTimes != null  ">total_times = #{totalTimes},</if>
             <if test="watchTimes != null  ">watch_times = #{watchTimes},</if>
             <if test="introduction != null  and introduction != ''  ">introduction = #{introduction},</if>
             <if test="courseSource != null  and courseSource != ''  ">course_source = #{courseSource},</if>
@@ -143,6 +152,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null  ">create_date = #{createDate},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
             <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+            <if test="courseTitle != null  and courseTitle != ''  ">course_title = #{courseTitle},</if>
         </trim>
         where id = #{id}
     </update>
@@ -172,6 +182,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="isCharge"    column="is_charge"    />
         <result property="price"    column="price"    />
         <result property="previewTimes"    column="preview_times"    />
+        <result property="totalTimes"    column="total_times"    />
         <result property="watchTimes"    column="watch_times"    />
         <result property="introduction"    column="introduction"    />
         <result property="courseSource"    column="course_source"    />
@@ -181,34 +192,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="courseTitle"    column="course_title"    />
         
+        <result property="userCourseId"    column="user_course_id"    />
         <result property="userId"    column="user_id"    />
         <result property="userCourseStatus"    column="user_course_status"    />
         <result property="progress"    column="progress"    />
+        <result property="percentage"    column="percentage"    />
         <result property="isCollect"    column="is_collect"    />
+        <result property="startDate"    column="start_date"    />
     </resultMap>
     
     <select id="littleKnowledge" parameterType="java.util.Map" resultMap="TCourseVoResult">
-    	<include refid="selectTCoursebasicColums"/>,
-    	uc.is_collect
+    	<include refid="selectTCoursebasicColums"/>
         from t_course c
-        left join t_user_course uc on uc.course_id = c.id and uc.user_id = #{userId}
         where c.course_type = #{courseType}
     </select>
     
     <select id="courseArrange" parameterType="java.util.Map" resultMap="TCourseVoResult">
     	<include refid="selectTCoursebasicColums"/>,
-    	uc.is_collect,uc.user_id,uc.status user_course_status,uc.progress
+    	uc.id user_course_id,uc.is_collect,uc.user_id,uc.status user_course_status,uc.progress,ifnull(round(uc.progress/c.total_times*100),0) percentage,uc.start_date
     	from t_course c
         join t_user_course uc on uc.course_id = c.id
         where uc.add_user_id is not null
-        and uc.user_id = #{userId}
+        and uc.user_id = #{userId} and uc.status in('0','1')
         order by uc.status
     </select>
     
     <select id="courseCollection" parameterType="java.util.Map" resultMap="TCourseVoResult">
     	<include refid="selectTCoursebasicColums"/>,
-    	uc.is_collect,uc.user_id,uc.status user_course_status,uc.progress
+    	uc.id user_course_id,uc.is_collect,uc.user_id,uc.status user_course_status,uc.progress,ifnull(round(uc.progress/c.total_times*100),0) percentage,uc.start_date
     	from t_course c
         join t_user_course uc on uc.course_id = c.id
         where uc.add_user_id is not null

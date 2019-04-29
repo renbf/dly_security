@@ -1,9 +1,11 @@
 package com.project.security.mapper;
 
-import com.project.security.domain.TGoodsNameType;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;	
+import org.springframework.stereotype.Repository;
+
+import com.project.security.domain.TGoodsNameType;
+import com.project.security.domain.vo.TGoodsNameTypeVo;	
 
 /**
  * 货物名称类项关系 数据层
@@ -62,4 +64,10 @@ public interface TGoodsNameTypeMapper
      */
 	public int deleteTGoodsNameTypeByIds(String[] ids);
 	//以上自动生成的尽量别动
+	/**
+	 * 货物名称字典
+	 * @param businessId
+	 * @return
+	 */
+	public List<TGoodsNameTypeVo> selectTGoodsNameTypeDicts(String businessId);
 }

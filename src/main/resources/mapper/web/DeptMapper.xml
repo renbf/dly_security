@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.DeptMapper">
+    
+    <resultMap type="com.project.web.domian.Dept" id="DeptResult">
+        <result property="deptId"    column="dept_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="jbdm"    column="jbdm"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="leader"    column="leader"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectDeptVo">
+        select d.dept_id, d.parent_id, d.jbdm, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by,         
+        DATE_FORMAT(d.create_time,'%Y-%m-%d') as startCreateTime,
+        d.update_by, d.business_id, d.update_time from sys_dept d
+    </sql>
+	
+    <select id="selectDeptList" parameterType="com.project.web.domian.Dept" resultMap="DeptResult">
+        <include refid="selectDeptVo"/>
+        <where>  
+            <if test="deptId != null "> and d.dept_id = #{deptId}</if>
+             <if test="parentId != null "> and d.parent_id = #{parentId}</if>
+             <if test="jbdm != null  and jbdm != '' "> and d.jbdm = #{jbdm}</if>
+             <if test="deptName != null  and deptName != '' "> and d.dept_name = #{deptName}</if>
+             <if test="deptNameLike != null  and deptNameLike != '' "> and d.dept_name like CONCAT('%',#{deptNameLike},'%')</if>           
+             <if test="orderNum != null "> and d.order_num = #{orderNum}</if>
+             <if test="leader != null  and leader != '' "> and d.leader = #{leader}</if>
+             <if test="phone != null  and phone != '' "> and d.phone = #{phone}</if>
+             <if test="email != null  and email != '' "> and d.email = #{email}</if>
+             <if test="status != null  and status != '' "> and d.status = #{status}</if>
+             <if test="delFlag != null  and delFlag != '' "> and d.del_flag = #{delFlag}</if>
+             <if test="createBy != null  and createBy != '' "> and d.create_by = #{createBy}</if>
+         <!--     <if test="createTime != null "> and d.create_time = #{createTime}</if> -->
+             <if test="(createTime != null  ) and createTimeEnd == null "> 
+                 	and DATE_FORMAT(d.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+             </if>
+             <if test="(createTimeEnd != null ) and createTime == null  "> 
+             		and DATE_FORMAT(d.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')
+             </if>
+             <if test="(createTimeEnd != null  ) and createTime != null  "> 
+             		 and DATE_FORMAT(d.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+                     and DATE_FORMAT(d.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')                    
+             </if>
+         
+             <if test="updateBy != null  and updateBy != '' "> and d.update_by = #{updateBy}</if>
+             <if test="businessId != null  and businessId != '' "> and d.business_id = #{businessId}</if>
+             <if test="updateTime != null "> and d.update_time = #{updateTime}</if>
+         </where>
+         order by d.create_time desc 
+    </select>
+    
+    <select id="selectDeptById" parameterType="Long" resultMap="DeptResult">
+        <include refid="selectDeptVo"/>
+        where d.dept_id = #{deptId}
+    </select>
+        
+    <insert id="insertDept" parameterType="Dept">
+        insert into sys_dept
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="deptId != null  ">dept_id,</if>
+			<if test="parentId != null  ">parent_id,</if>
+			<if test="jbdm != null  and jbdm != ''  ">jbdm,</if>
+			<if test="deptName != null  and deptName != ''  ">dept_name,</if>
+			<if test="orderNum != null  ">order_num,</if>
+			<if test="leader != null  and leader != ''  ">leader,</if>
+			<if test="phone != null  and phone != ''  ">phone,</if>
+			<if test="email != null  and email != ''  ">email,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="deptId != null  ">#{deptId},</if>
+			<if test="parentId != null  ">#{parentId},</if>
+			<if test="jbdm != null  and jbdm != ''  ">#{jbdm},</if>
+			<if test="deptName != null  and deptName != ''  ">#{deptName},</if>
+			<if test="orderNum != null  ">#{orderNum},</if>
+			<if test="leader != null  and leader != ''  ">#{leader},</if>
+			<if test="phone != null  and phone != ''  ">#{phone},</if>
+			<if test="email != null  and email != ''  ">#{email},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDept" parameterType="com.project.web.domian.Dept">
+        update sys_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null  ">parent_id = #{parentId},</if>
+            <if test="jbdm != null  and jbdm != ''  ">jbdm = #{jbdm},</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name = #{deptName},</if>
+            <if test="orderNum != null  ">order_num = #{orderNum},</if>
+            <if test="leader != null  and leader != ''  ">leader = #{leader},</if>
+            <if test="phone != null  and phone != ''  ">phone = #{phone},</if>
+            <if test="email != null  and email != ''  ">email = #{email},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where dept_id = #{deptId}
+    </update>
+
+	<delete id="deleteDeptById" parameterType="Long">
+        delete from sys_dept where dept_id = #{deptId}
+    </delete>
+	
+    <delete id="deleteDeptByIds" parameterType="String">
+        delete from sys_dept where dept_id in 
+        <foreach item="deptId" collection="array" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+    </delete>
+    
+      <select id="selectDeptListByBusiness" parameterType="com.project.web.domian.Dept" resultMap="DeptResult">
+        select dept_name,dept_id from sys_dept 
+        where 1=1 
+         <if test="businessId != null  and businessId != '' "> and business_id = #{businessId}</if>
+    </select>
+    
+    
+</mapper>

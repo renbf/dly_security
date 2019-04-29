@@ -28,13 +28,15 @@ public class TManagementSystem extends BaseEntity
 	/** 实时日期 */
 	private Date managementDate;
 	/** 适用部门 */
-	private String managementDeptId;
+	private Long managementDeptId;
 	/** 是否适用 1:适用 0:不适用 */
 	private String isApply;
 	/** 文件路径 */
 	private String managementFilePath;
 	/** 创建日期 */
 	private Date createTime;
+	/** 创建日期 */
+	private Date createTimeEnd;
 	/** 更新时间 */
 	private Date updateTime;
 	/** 创建人id */
@@ -55,6 +57,15 @@ public class TManagementSystem extends BaseEntity
 	{
 		return id;
 	}
+	
+	public Date getCreateTimeEnd() {
+		return createTimeEnd;
+	}
+
+	public void setCreateTimeEnd(Date createTimeEnd) {
+		this.createTimeEnd = createTimeEnd;
+	}
+
 	public void setManagementName(String managementName) 
 	{
 		this.managementName = managementName;
@@ -91,15 +102,15 @@ public class TManagementSystem extends BaseEntity
 	{
 		return managementDate;
 	}
-	public void setManagementDeptId(String managementDeptId) 
-	{
+
+	public Long getManagementDeptId() {
+		return managementDeptId;
+	}
+
+	public void setManagementDeptId(Long managementDeptId) {
 		this.managementDeptId = managementDeptId;
 	}
 
-	public String getManagementDeptId() 
-	{
-		return managementDeptId;
-	}
 	public void setIsApply(String isApply) 
 	{
 		this.isApply = isApply;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TDepartureCheckMapper">
-    
+
     <resultMap type="TDepartureCheck" id="TDepartureCheckResult">
         <result property="id"    column="id"    />
         <result property="vehicleLicence"    column="vehicle_licence"    />
@@ -18,91 +18,146 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="shiftsNum"    column="shifts_num"    />
         <result property="shiftsType"    column="shifts_type"    />
         <result property="weather"    column="weather"    />
+        <result property="checkResult"    column="check_result"    />
+        <result property="unqualifiedInfo"    column="unqualified_info"    />
+        <result property="outStationDate"    column="out_station_date"    />
+        <result property="outStationOperator"    column="out_station_operator"    />
+        <result property="lastSynchroDate"    column="last_synchro_date"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTDepartureCheckVo">
-        select dc.id, dc.vehicle_licence, dc.driver, dc.intimidate_date, dc.ticketing_seat_num, dc.actual_num, dc.half_ticket_num, dc.free_ticket_num, dc.line_name, dc.shifts_date, dc.shifts_num, dc.shifts_type, dc.weather, dc.create_time, dc.update_time, dc.user_id, dc.business_id, dc.update_user_id from t_departure_check dc
+
+    <sql id="selectTDepartureCheckVo">
+        select dc.id, dc.vehicle_licence, dc.driver, dc.intimidate_date, dc.ticketing_seat_num, dc.actual_num,
+        dc.half_ticket_num, dc.free_ticket_num, dc.line_name, dc.shifts_date, dc.shifts_num, dc.shifts_type,
+        dc.weather, dc.check_result, dc.unqualified_info, dc.out_station_date, dc.out_station_operator,
+        dc.last_synchro_date, dc.create_time, dc.update_time, dc.user_id, dc.meno, dc.business_id,
+        dc.update_user_id ,
+        DATE_FORMAT(dc.intimidate_date,'%Y-%m-%d') as intimidateDateStr,
+        DATE_FORMAT(dc.shifts_date,'%Y-%m-%d') as shiftsDateStr,
+        DATE_FORMAT(dc.out_station_date,'%Y-%m-%d') as outStationDateStr,
+        DATE_FORMAT(dc.last_synchro_date,'%Y-%m-%d') as lastSynchroDateStr,
+        DATE_FORMAT(dc.create_time,'%Y-%m-%d') as createTimeStr
+
+        from t_departure_check dc
     </sql>
-	
+
     <select id="selectTDepartureCheckList" parameterType="TDepartureCheck" resultMap="TDepartureCheckResult">
         <include refid="selectTDepartureCheckVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and dc.id = #{id}</if>
-             <if test="vehicleLicence != null  and vehicleLicence != '' "> and dc.vehicle_licence = #{vehicleLicence}</if>
-             <if test="driver != null  and driver != '' "> and dc.driver = #{driver}</if>
-             <if test="intimidateDate != null "> and dc.intimidate_date = #{intimidateDate}</if>
-             <if test="ticketingSeatNum != null "> and dc.ticketing_seat_num = #{ticketingSeatNum}</if>
-             <if test="actualNum != null "> and dc.actual_num = #{actualNum}</if>
-             <if test="halfTicketNum != null "> and dc.half_ticket_num = #{halfTicketNum}</if>
-             <if test="freeTicketNum != null "> and dc.free_ticket_num = #{freeTicketNum}</if>
-             <if test="lineName != null  and lineName != '' "> and dc.line_name = #{lineName}</if>
-             <if test="shiftsDate != null "> and dc.shifts_date = #{shiftsDate}</if>
-             <if test="shiftsNum != null  and shiftsNum != '' "> and dc.shifts_num = #{shiftsNum}</if>
-             <if test="shiftsType != null  and shiftsType != '' "> and dc.shifts_type = #{shiftsType}</if>
-             <if test="weather != null  and weather != '' "> and dc.weather = #{weather}</if>
-             <if test="createTime != null "> and dc.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and dc.update_time = #{updateTime}</if>
-             <if test="userId != null "> and dc.user_id = #{userId}</if>
-             <if test="businessId != null  and businessId != '' "> and dc.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and dc.update_user_id = #{updateUserId}</if>
-         </where>
-         order by dc.create_time desc
+
+            <if test="vehicleLicence != null  and vehicleLicence != '' "> and dc.vehicle_licence like concat('%',#{vehicleLicence},'%')</if>
+
+            <if test="driver != null  and driver != '' "> and dc.driver like concat('%',#{driver},'%')</if>
+
+
+            <if test="intimidateDate != null  and intimidateDate1 == null "> and DATE_FORMAT(dc.intimidate_date,'%Y%m%d') &gt;= DATE_FORMAT(#{intimidateDate},'%Y%m%d')</if>
+            <if test="intimidateDate1 != null  and intimidateDate == null "> and DATE_FORMAT(dc.intimidate_date,'%Y%m%d') &lt;= DATE_FORMAT(#{intimidateDate1},'%Y%m%d')</if>
+            <if test="intimidateDate1 != null  and intimidateDate != null "> and DATE_FORMAT(dc.intimidate_date,'%Y%m%d') &gt;= DATE_FORMAT(#{intimidateDate},'%Y%m%d')
+                and   DATE_FORMAT(dc.intimidate_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{intimidateDate1},'%Y%m%d')
+            </if>
+
+
+            <if test="ticketingSeatNum != null "> and dc.ticketing_seat_num = #{ticketingSeatNum}</if>
+            <if test="actualNum != null "> and dc.actual_num = #{actualNum}</if>
+            <if test="halfTicketNum != null "> and dc.half_ticket_num = #{halfTicketNum}</if>
+            <if test="freeTicketNum != null "> and dc.free_ticket_num = #{freeTicketNum}</if>
+
+            <if test="lineName != null  and lineName != '' "> and dc.line_name like concat('%',#{lineName},'%')</if>
+
+
+            <if test="shiftsDate != null  and shiftsDate1 == null "> and DATE_FORMAT(dc.shifts_date,'%Y%m%d') &gt;= DATE_FORMAT(#{shiftsDate},'%Y%m%d')</if>
+            <if test="shiftsDate1 != null  and shiftsDate == null "> and DATE_FORMAT(dc.shifts_date,'%Y%m%d') &lt;= DATE_FORMAT(#{shiftsDate1},'%Y%m%d')</if>
+            <if test="shiftsDate1 != null  and shiftsDate != null "> and DATE_FORMAT(dc.shifts_date,'%Y%m%d') &gt;= DATE_FORMAT(#{shiftsDate},'%Y%m%d')
+                and   DATE_FORMAT(dc.shifts_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{shiftsDate1},'%Y%m%d')
+            </if>
+            
+            
+            <if test="shiftsNum != null  and shiftsNum != '' "> and dc.shifts_num = #{shiftsNum}</if>
+            <if test="shiftsType != null  and shiftsType != '' "> and dc.shifts_type = #{shiftsType}</if>
+            <if test="weather != null  and weather != '' "> and dc.weather = #{weather}</if>
+            <if test="checkResult != null  and checkResult != '' "> and dc.check_result = #{checkResult}</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != '' "> and dc.unqualified_info = #{unqualifiedInfo}</if>
+            <if test="outStationDate != null "> and dc.out_station_date = #{outStationDate}</if>
+
+            <if test="outStationOperator != null  and outStationOperator != '' "> and dc.out_station_operator like concat('%',#{outStationOperator},'%')</if>
+
+            <if test="lastSynchroDate != null "> and dc.last_synchro_date = #{lastSynchroDate}</if>
+            <if test="createTime != null "> and dc.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and dc.update_time = #{updateTime}</if>
+            <if test="userId != null "> and dc.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and dc.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and dc.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and dc.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTDepartureCheckById" parameterType="String" resultMap="TDepartureCheckResult">
         <include refid="selectTDepartureCheckVo"/>
         where dc.id = #{id}
     </select>
-        
+
     <insert id="insertTDepartureCheck" parameterType="TDepartureCheck">
         insert into t_departure_check
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence,</if>
-			<if test="driver != null  and driver != ''  ">driver,</if>
-			<if test="intimidateDate != null  ">intimidate_date,</if>
-			<if test="ticketingSeatNum != null  ">ticketing_seat_num,</if>
-			<if test="actualNum != null  ">actual_num,</if>
-			<if test="halfTicketNum != null  ">half_ticket_num,</if>
-			<if test="freeTicketNum != null  ">free_ticket_num,</if>
-			<if test="lineName != null  and lineName != ''  ">line_name,</if>
-			<if test="shiftsDate != null  ">shifts_date,</if>
-			<if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num,</if>
-			<if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
-			<if test="weather != null  and weather != ''  ">weather,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence,</if>
+            <if test="driver != null  and driver != ''  ">driver,</if>
+            <if test="intimidateDate != null  ">intimidate_date,</if>
+            <if test="ticketingSeatNum != null  ">ticketing_seat_num,</if>
+            <if test="actualNum != null  ">actual_num,</if>
+            <if test="halfTicketNum != null  ">half_ticket_num,</if>
+            <if test="freeTicketNum != null  ">free_ticket_num,</if>
+            <if test="lineName != null  and lineName != ''  ">line_name,</if>
+            <if test="shiftsDate != null  ">shifts_date,</if>
+            <if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num,</if>
+            <if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
+            <if test="weather != null  and weather != ''  ">weather,</if>
+            <if test="checkResult != null  and checkResult != ''  ">check_result,</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">unqualified_info,</if>
+            <if test="outStationDate != null  ">out_station_date,</if>
+            <if test="outStationOperator != null  and outStationOperator != ''  ">out_station_operator,</if>
+            <if test="lastSynchroDate != null  ">last_synchro_date,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="vehicleLicence != null  and vehicleLicence != ''  ">#{vehicleLicence},</if>
-			<if test="driver != null  and driver != ''  ">#{driver},</if>
-			<if test="intimidateDate != null  ">#{intimidateDate},</if>
-			<if test="ticketingSeatNum != null  ">#{ticketingSeatNum},</if>
-			<if test="actualNum != null  ">#{actualNum},</if>
-			<if test="halfTicketNum != null  ">#{halfTicketNum},</if>
-			<if test="freeTicketNum != null  ">#{freeTicketNum},</if>
-			<if test="lineName != null  and lineName != ''  ">#{lineName},</if>
-			<if test="shiftsDate != null  ">#{shiftsDate},</if>
-			<if test="shiftsNum != null  and shiftsNum != ''  ">#{shiftsNum},</if>
-			<if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
-			<if test="weather != null  and weather != ''  ">#{weather},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="vehicleLicence != null  and vehicleLicence != ''  ">#{vehicleLicence},</if>
+            <if test="driver != null  and driver != ''  ">#{driver},</if>
+            <if test="intimidateDate != null  ">#{intimidateDate},</if>
+            <if test="ticketingSeatNum != null  ">#{ticketingSeatNum},</if>
+            <if test="actualNum != null  ">#{actualNum},</if>
+            <if test="halfTicketNum != null  ">#{halfTicketNum},</if>
+            <if test="freeTicketNum != null  ">#{freeTicketNum},</if>
+            <if test="lineName != null  and lineName != ''  ">#{lineName},</if>
+            <if test="shiftsDate != null  ">#{shiftsDate},</if>
+            <if test="shiftsNum != null  and shiftsNum != ''  ">#{shiftsNum},</if>
+            <if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
+            <if test="weather != null  and weather != ''  ">#{weather},</if>
+            <if test="checkResult != null  and checkResult != ''  ">#{checkResult},</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">#{unqualifiedInfo},</if>
+            <if test="outStationDate != null  ">#{outStationDate},</if>
+            <if test="outStationOperator != null  and outStationOperator != ''  ">#{outStationOperator},</if>
+            <if test="lastSynchroDate != null  ">#{lastSynchroDate},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
+
     <update id="updateTDepartureCheck" parameterType="TDepartureCheck">
         update t_departure_check
         <trim prefix="SET" suffixOverrides=",">
@@ -118,24 +173,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num = #{shiftsNum},</if>
             <if test="shiftsType != null  and shiftsType != ''  ">shifts_type = #{shiftsType},</if>
             <if test="weather != null  and weather != ''  ">weather = #{weather},</if>
+            <if test="checkResult != null  and checkResult != ''  ">check_result = #{checkResult},</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">unqualified_info = #{unqualifiedInfo},</if>
+            <if test="outStationDate != null  ">out_station_date = #{outStationDate},</if>
+            <if test="outStationOperator != null  and outStationOperator != ''  ">out_station_operator = #{outStationOperator},</if>
+            <if test="lastSynchroDate != null  ">last_synchro_date = #{lastSynchroDate},</if>
             <if test="createTime != null  ">create_time = #{createTime},</if>
             <if test="updateTime != null  ">update_time = #{updateTime},</if>
             <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
             <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTDepartureCheckById" parameterType="String">
+    <delete id="deleteTDepartureCheckById" parameterType="String">
         delete from t_departure_check where id = #{id}
     </delete>
-	
+
     <delete id="deleteTDepartureCheckByIds" parameterType="String">
-        delete from t_departure_check where id in 
+        delete from t_departure_check where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.project.system.tThreeProducts.mapper.TThreeProductsMapper">
+<mapper namespace="com.project.web.mapper.TThreeProductsMapper">
     
     <resultMap type="TThreeProducts" id="TThreeProductsResult">
         <result property="id"    column="id"    />
@@ -21,18 +21,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTThreeProductsVo">
-        select tp.id, tp.check_date, tp.goods_name, tp.goods_type, tp.check_personnel, tp.result_info, tp.remark, tp.create_time, tp.update_time, tp.user_id, tp.meno, tp.business_id, tp.update_user_id from t_three_products tp
+        select tp.id, tp.check_date, tp.goods_name, tp.goods_type, tp.check_personnel,
+        tp.result_info, tp.remark, tp.create_time, tp.update_time, tp.user_id, tp.meno,
+        tp.business_id, tp.update_user_id ,
+        DATE_FORMAT(tp.check_date,'%Y-%m-%d') as checkDateStr,
+        DATE_FORMAT(tp.create_time,'%Y-%m-%d') as createTimeStr,
+        td.dict_name as goodsTypeName
+        from t_three_products tp left join t_dict td on (tp.goods_type = td.id and td.dict_code = 'three_products_goods_type')
     </sql>
 	
     <select id="selectTThreeProductsList" parameterType="TThreeProducts" resultMap="TThreeProductsResult">
         <include refid="selectTThreeProductsVo"/>
         <where>  
             <if test="id != null  and id != '' "> and tp.id = #{id}</if>
-             <if test="checkDate != null "> and tp.check_date = #{checkDate}</if>
-             <if test="goodsName != null  and goodsName != '' "> and tp.goods_name = #{goodsName}</if>
+
+
+            <if test="checkDate != null  and checkDate1 == null "> and DATE_FORMAT(tp.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')</if>
+            <if test="checkDate1 != null  and checkDate == null "> and DATE_FORMAT(tp.check_date,'%Y%m%d') &lt;= DATE_FORMAT(#{checkDate1},'%Y%m%d')</if>
+            <if test="checkDate1 != null  and checkDate != null "> and DATE_FORMAT(tp.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+                and   DATE_FORMAT(tp.check_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{checkDate1},'%Y%m%d')
+            </if>
+            
+
+            <if test="goodsName != null  and goodsName != '' "> and tp.goods_name like concat('%',#{goodsName},'%')</if>
+
+
              <if test="goodsType != null  and goodsType != '' "> and tp.goods_type = #{goodsType}</if>
-             <if test="checkPersonnel != null  and checkPersonnel != '' "> and tp.check_personnel = #{checkPersonnel}</if>
-             <if test="resultInfo != null  and resultInfo != '' "> and tp.result_info = #{resultInfo}</if>
+
+             <if test="checkPersonnel != null  and checkPersonnel != '' "> and tp.check_personnel like concat('%',#{checkPersonnel},'%')</if>
+
+             <if test="resultInfo != null  and resultInfo != '' "> and tp.result_info like concat('%',#{resultInfo},'%')</if>
+
              <if test="remark != null  and remark != '' "> and tp.remark = #{remark}</if>
              <if test="createTime != null "> and tp.create_time = #{createTime}</if>
              <if test="updateTime != null "> and tp.update_time = #{updateTime}</if>

@@ -31,6 +31,8 @@ public class TUserDriverInfo extends BaseEntity
 	private String driverAge;
 	/** 证件有效期 */
 	private Date certificateValidityPeriod;
+	/** 证件有效期 */
+	private String certificateStr;
 	/** 体检有效期 */
 	private Date physicalValidityPeriod;
 	/** 准驾车型 */
@@ -61,6 +63,16 @@ public class TUserDriverInfo extends BaseEntity
 	{
 		return id;
 	}
+	
+	
+	public String getCertificateStr() {
+		return certificateStr;
+	}
+
+	public void setCertificateStr(String certificateStr) {
+		this.certificateStr = certificateStr;
+	}
+
 	public void setDriverUserId(Long driverUserId) 
 	{
 		this.driverUserId = driverUserId;

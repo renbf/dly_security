@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="writeTime"    column="write_time"    />
         <result property="carCheckProject"    column="car_check_project"    />
         <result property="changeAddress"    column="change_address"    />
+        <result property="restAddress"    column="rest_address"    />
         <result property="stopCarTime"    column="stop_car_time"    />
         <result property="startCarTime"    column="start_car_time"    />
         <result property="troubleShooting"    column="trouble_shooting"    />
@@ -22,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTDriverMiddleLogbasicColums">
-        select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id    </sql>
+        select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.rest_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id    </sql>
 	
     <select id="selectTDriverMiddleLogList" parameterType="com.project.security.domain.TDriverMiddleLog" resultMap="TDriverMiddleLogResult">
         <include refid="selectTDriverMiddleLogbasicColums"/>
@@ -32,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="writeTime != null "> and dml.write_time = #{writeTime}</if>
              <if test="carCheckProject != null  and carCheckProject != '' "> and dml.car_check_project = #{carCheckProject}</if>
              <if test="changeAddress != null  and changeAddress != '' "> and dml.change_address = #{changeAddress}</if>
+             <if test="restAddress != null  and restAddress != '' "> and dml.rest_address = #{restAddress}</if>
              <if test="stopCarTime != null "> and dml.stop_car_time = #{stopCarTime}</if>
              <if test="startCarTime != null "> and dml.start_car_time = #{startCarTime}</if>
              <if test="troubleShooting != null  and troubleShooting != '' "> and dml.trouble_shooting = #{troubleShooting}</if>
@@ -58,6 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="writeTime != null  ">write_time,</if>
 			<if test="carCheckProject != null  and carCheckProject != ''  ">car_check_project,</if>
 			<if test="changeAddress != null  and changeAddress != ''  ">change_address,</if>
+			<if test="restAddress != null  and restAddress != ''  ">rest_address,</if>
 			<if test="stopCarTime != null  ">stop_car_time,</if>
 			<if test="startCarTime != null  ">start_car_time,</if>
 			<if test="troubleShooting != null  and troubleShooting != ''  ">trouble_shooting,</if>
@@ -74,6 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="writeTime != null  ">#{writeTime},</if>
 			<if test="carCheckProject != null  and carCheckProject != ''  ">#{carCheckProject},</if>
 			<if test="changeAddress != null  and changeAddress != ''  ">#{changeAddress},</if>
+			<if test="restAddress != null  and restAddress != ''  ">#{restAddress},</if>
 			<if test="stopCarTime != null  ">#{stopCarTime},</if>
 			<if test="startCarTime != null  ">#{startCarTime},</if>
 			<if test="troubleShooting != null  and troubleShooting != ''  ">#{troubleShooting},</if>
@@ -93,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="writeTime != null  ">write_time = #{writeTime},</if>
             <if test="carCheckProject != null  and carCheckProject != ''  ">car_check_project = #{carCheckProject},</if>
             <if test="changeAddress != null  and changeAddress != ''  ">change_address = #{changeAddress},</if>
+            <if test="restAddress != null  and restAddress != ''  ">rest_address = #{restAddress},</if>
             <if test="stopCarTime != null  ">stop_car_time = #{stopCarTime},</if>
             <if test="startCarTime != null  ">start_car_time = #{startCarTime},</if>
             <if test="troubleShooting != null  and troubleShooting != ''  ">trouble_shooting = #{troubleShooting},</if>

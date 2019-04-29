@@ -88,9 +88,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <delete id="deleteTPhysicalExaminationDetailByexaminationIds" parameterType="String">
-        delete from t_physical_examination_detail where examinationId in 
-        <foreach item="examinationId" collection="array" open="(" separator="," close=")">
-            #{examinationId}
-        </foreach>
+        delete from t_physical_examination_detail where examinationId = #{examinationId}
     </delete>
+    
+    <select id="selectTPhysicalExaminationDetailListById" parameterType="TPhysicalExaminationDetail" resultMap="TPhysicalExaminationDetailResult">
+	SELECT
+			ped.id,
+			ped.user_id,
+		  su.management_name as userName,
+		  su.management_sex as sex,
+		  su.management_phone as phone,
+		  DATE_FORMAT(su.entry_date,'%Y-%m-%d') as entryDateStr 
+		FROM
+			t_physical_examination_detail ped
+		LEFT JOIN t_users_management su  on ped.examination_user_id = su.management_user_id
+		where su.management_user_id is not null  
+             <if test="examinationId != null "> and ped.examination_id = #{examinationId}</if>
+    </select>
+    
 </mapper>

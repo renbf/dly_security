@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * 
  * @author rbf
@@ -30,18 +32,25 @@ public class UserPaperDetailVo implements Serializable
 	/** 题目分数 */
 	private Integer subjectScore;
 	/** 顺序 */
+	@JsonIgnore
 	private Integer subjectSort;
 	/** 题目选项信息 */
 	private List<Map<String,Object>> optionContents;
 	/** 用户考卷ID */
 	private String userPaperId;
 	/** 状态0未答题，1已答题 */
+	@JsonIgnore
 	private String status;
 	/** 考试分数 */
+	@JsonIgnore
 	private Integer paperScore;
+	/** 用户答题id */
+	private String userSubjectId;
 	/** 答题开始时间 */
+	@JsonIgnore
 	private Date startDate;
 	/** 交卷时间时间 */
+	@JsonIgnore
 	private Date commitDate;
 	/** 用户答案 */
 	private String userAnswer;
@@ -181,6 +190,12 @@ public class UserPaperDetailVo implements Serializable
 	}
 	public void setSubjectType(String subjectType) {
 		this.subjectType = subjectType;
+	}
+	public String getUserSubjectId() {
+		return userSubjectId;
+	}
+	public void setUserSubjectId(String userSubjectId) {
+		this.userSubjectId = userSubjectId;
 	}
 	
 	

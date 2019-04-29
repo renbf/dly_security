@@ -2,12 +2,19 @@ package com.project.web.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.support.Convert;
+import com.project.common.utils.StringUtils;
+import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
 import com.project.web.domian.TOperatingProcedures;
 import com.project.web.mapper.TOperatingProceduresMapper;
+import com.project.web.service.IFileService;
 import com.project.web.service.ITOperatingProceduresService;
 
 /**
@@ -21,6 +28,8 @@ public class TOperatingProceduresServiceImpl implements ITOperatingProceduresSer
 {
 	@Autowired
 	private TOperatingProceduresMapper tOperatingProceduresMapper;
+	@Autowired
+	private IFileService fileService;
 
 	/**
      * 查询操作规程信息
@@ -53,10 +62,21 @@ public class TOperatingProceduresServiceImpl implements ITOperatingProceduresSer
      * @return 结果
      */
 	@Override
-	public int insertTOperatingProcedures(TOperatingProcedures tOperatingProcedures)
+	public int insertTOperatingProcedures(TOperatingProcedures tOperatingProcedures,MultipartFile operatingFile)
 	{
-		tOperatingProcedures.setId(UUIDUtil.getUUID());
+		String uuid= UUIDUtil.getUUID();
+		tOperatingProcedures.setId(uuid);
 		tOperatingProcedures.setCreateTime(new Date());
+		tOperatingProcedures.setIsApply("1");//适用     0：不适用
+		try {			
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(operatingFile)&&StringUtils.isNotEmpty(operatingFile.getOriginalFilename())){
+				String Str = fileService.upolad("caozuoguicheng",uuid,"操作规程文件",operatingFile,0);
+				tOperatingProcedures.setOperatingFilePath(Str);
+			}	
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
 		return tOperatingProceduresMapper.insertTOperatingProcedures(tOperatingProcedures);
 	}
 	
@@ -67,9 +87,20 @@ public class TOperatingProceduresServiceImpl implements ITOperatingProceduresSer
      * @return 结果
      */
 	@Override
-	public int updateTOperatingProcedures(TOperatingProcedures tOperatingProcedures)
+	public int updateTOperatingProcedures(TOperatingProcedures tOperatingProcedures,MultipartFile operatingFile)
 	{
-	    return tOperatingProceduresMapper.updateTOperatingProcedures(tOperatingProcedures);
+		try {		
+			tOperatingProcedures.setUpdateTime(new Date());
+			tOperatingProcedures.setUpdateUserId(ShiroUtils.getUserId());
+			//若文件不为空   则进行上传文件
+			if(Objects.nonNull(operatingFile)&&StringUtils.isNotEmpty(operatingFile.getOriginalFilename())){
+				String Str = fileService.upolad("caozuoguicheng",tOperatingProcedures.getId(),"操作规程文件",operatingFile,0);
+				tOperatingProcedures.setOperatingFilePath(Str);
+			}	
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return tOperatingProceduresMapper.updateTOperatingProcedures(tOperatingProcedures);
 	}
 
 	/**

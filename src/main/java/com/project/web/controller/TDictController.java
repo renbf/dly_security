@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.common.annotation.Log;
 import com.project.common.enums.BusinessType;
+
+import com.project.framework.web.page.TableDataInfo;
+import com.project.system.core.base.BaseController;
 import com.project.web.domian.TDict;
 import com.project.web.service.ITDictService;
 import com.project.system.core.base.BaseController;
@@ -54,6 +57,20 @@ public class TDictController extends BaseController
 	}
 	
 	/**
+	 * 查询行车前 行车中 和行车后参数
+	 * @param tDict
+	 * @return
+	 */
+//	@RequiresPermissions("security:tDict:list")
+	@PostMapping("/listCarIno")
+	@ResponseBody
+	public AjaxResult listCarIno(TDict tDict)
+	{
+		return tDictService.selectTDictListCar(tDict);
+	}
+	
+	
+	/**
 	 * 新增字典
 	 */
 	@GetMapping("/add")
@@ -73,6 +90,7 @@ public class TDictController extends BaseController
 	{		
 		return toAjax(tDictService.insertTDict(tDict));
 	}
+	
 
 	/**
 	 * 修改字典

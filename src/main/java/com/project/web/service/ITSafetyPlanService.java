@@ -2,7 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TSafetyPlan;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全计划 服务层
@@ -34,7 +36,7 @@ public interface ITSafetyPlanService
      * @param tSafetyPlan 安全计划信息
      * @return 结果
      */
-	public int insertTSafetyPlan(TSafetyPlan tSafetyPlan);
+	public AjaxResult insertTSafetyPlan(TSafetyPlan tSafetyPlan, MultipartFile planFile);
 	
 	/**
      * 修改安全计划
@@ -42,7 +44,7 @@ public interface ITSafetyPlanService
      * @param tSafetyPlan 安全计划信息
      * @return 结果
      */
-	public int updateTSafetyPlan(TSafetyPlan tSafetyPlan);
+	public AjaxResult updateTSafetyPlan(TSafetyPlan tSafetyPlan,MultipartFile planFile);
 		
 	/**
      * 删除安全计划信息

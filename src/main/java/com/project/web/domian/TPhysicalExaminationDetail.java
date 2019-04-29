@@ -20,7 +20,7 @@ public class TPhysicalExaminationDetail extends BaseEntity
 	/** 主键 */
 	private String id;
 	/** 体检记录表 主键id */
-	private Date examinationId;
+	private String examinationId;
 	/** 体检人user_id */
 	private Long examinationUserId;
 	/** 创建日期 */
@@ -43,15 +43,15 @@ public class TPhysicalExaminationDetail extends BaseEntity
 	{
 		return id;
 	}
-	public void setExaminationId(Date examinationId) 
-	{
+
+	public String getExaminationId() {
+		return examinationId;
+	}
+
+	public void setExaminationId(String examinationId) {
 		this.examinationId = examinationId;
 	}
 
-	public Date getExaminationId() 
-	{
-		return examinationId;
-	}
 	public void setExaminationUserId(Long examinationUserId) 
 	{
 		this.examinationUserId = examinationUserId;

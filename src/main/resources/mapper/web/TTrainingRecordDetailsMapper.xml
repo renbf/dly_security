@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TTrainingRecordDetailsMapper">
+    
+    <resultMap type="TTrainingRecordDetails" id="TTrainingRecordDetailsResult">
+        <result property="id"    column="id"    />
+        <result property="trainingId"    column="training_id"    />
+        <result property="participateDeptId"    column="participate_dept_id"    />
+        <result property="participatePost"    column="participate_post"    />
+        <result property="participateUser"    column="participate_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTTrainingRecordDetailsVo">
+        select trd.id, trd.training_id, trd.participate_dept_id, trd.participate_post, trd.participate_user, trd.create_time, trd.update_time, trd.user_id, trd.meno, trd.business_id, trd.update_user_id from t_training_record_details trd
+    </sql>
+	
+    <select id="selectTTrainingRecordDetailsList" parameterType="TTrainingRecordDetails" resultMap="TTrainingRecordDetailsResult">
+        <include refid="selectTTrainingRecordDetailsVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and trd.id = #{id}</if>
+             <if test="trainingId != null  and trainingId != '' "> and trd.training_id = #{trainingId}</if>
+             <if test="participateDeptId != null "> and trd.participate_dept_id = #{participateDeptId}</if>
+             <if test="participatePost != null "> and trd.participate_post = #{participatePost}</if>
+             <if test="participateUser != null "> and trd.participate_user = #{participateUser}</if>
+             <if test="createTime != null "> and trd.create_time = #{createTime}</if>
+             <if test="updateTime != null "> and trd.update_time = #{updateTime}</if>
+             <if test="userId != null "> and trd.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and trd.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and trd.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and trd.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTTrainingRecordDetailsById" parameterType="String" resultMap="TTrainingRecordDetailsResult">
+        <include refid="selectTTrainingRecordDetailsVo"/>
+        where trd.id = #{id}
+    </select>
+        
+    <insert id="insertTTrainingRecordDetails" parameterType="TTrainingRecordDetails">
+        insert into t_training_record_details
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="trainingId != null  and trainingId != ''  ">training_id,</if>
+			<if test="participateDeptId != null  ">participate_dept_id,</if>
+			<if test="participatePost != null  ">participate_post,</if>
+			<if test="participateUser != null  ">participate_user,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="trainingId != null  and trainingId != ''  ">#{trainingId},</if>
+			<if test="participateDeptId != null  ">#{participateDeptId},</if>
+			<if test="participatePost != null  ">#{participatePost},</if>
+			<if test="participateUser != null  ">#{participateUser},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTTrainingRecordDetails" parameterType="TTrainingRecordDetails">
+        update t_training_record_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trainingId != null  and trainingId != ''  ">training_id = #{trainingId},</if>
+            <if test="participateDeptId != null  ">participate_dept_id = #{participateDeptId},</if>
+            <if test="participatePost != null  ">participate_post = #{participatePost},</if>
+            <if test="participateUser != null  ">participate_user = #{participateUser},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTTrainingRecordDetailsById" parameterType="String">
+        delete from t_training_record_details where id = #{id}
+    </delete>
+	
+    <delete id="deleteTTrainingRecordDetailsByIds" parameterType="String">
+        delete from t_training_record_details where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+
+    <delete id="deleteTTrainingRecordDetailsByTrainingIds" parameterType="String">
+        delete from t_training_record_details where training_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectTTrainingRecordDetailsByTrainingIds" parameterType="String" resultMap="TTrainingRecordDetailsResult">
+        <include refid="selectTTrainingRecordDetailsVo"/>
+        where trd.training_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+</mapper>

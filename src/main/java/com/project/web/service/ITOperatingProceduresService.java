@@ -2,6 +2,8 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.web.domian.TOperatingProcedures;
 
 /**
@@ -34,7 +36,7 @@ public interface ITOperatingProceduresService
      * @param tOperatingProcedures 操作规程信息
      * @return 结果
      */
-	public int insertTOperatingProcedures(TOperatingProcedures tOperatingProcedures);
+	public int insertTOperatingProcedures(TOperatingProcedures tOperatingProcedures,MultipartFile operatingFile);
 	
 	/**
      * 修改操作规程
@@ -42,7 +44,7 @@ public interface ITOperatingProceduresService
      * @param tOperatingProcedures 操作规程信息
      * @return 结果
      */
-	public int updateTOperatingProcedures(TOperatingProcedures tOperatingProcedures);
+	public int updateTOperatingProcedures(TOperatingProcedures tOperatingProcedures,MultipartFile operatingFile);
 		
 	/**
      * 删除操作规程信息

@@ -17,6 +17,7 @@ import com.project.framework.web.page.TableDataInfo;
 import com.project.system.core.base.BaseController;
 import com.project.web.domian.TSafetyFeeAccount;
 import com.project.web.service.ITSafetyFeeAccountService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全费用台账 信息操作处理
@@ -28,50 +29,50 @@ import com.project.web.service.ITSafetyFeeAccountService;
 @RequestMapping("/system/tSafetyFeeAccount")
 public class TSafetyFeeAccountController extends BaseController
 {
-    private String prefix = "system/tSafetyFeeAccount";
-	
+	private String prefix = "security/tSafetyFeeAccount";
+
 	@Autowired
 	private ITSafetyFeeAccountService tSafetyFeeAccountService;
-	
+
 	@RequiresPermissions("system:tSafetyFeeAccount:view")
 	@GetMapping()
 	public String tSafetyFeeAccount()
 	{
-	    return prefix + "/tSafetyFeeAccount";
+		return prefix + "/tSafetyFeeAccount";
 	}
-	
+
 	/**
 	 * 查询安全费用台账列表
 	 */
-	@RequiresPermissions("system:tSafetyFeeAccount:list")
+	//@RequiresPermissions("system:tSafetyFeeAccount:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSafetyFeeAccount tSafetyFeeAccount)
 	{
 		startPage();
-        List<TSafetyFeeAccount> list = tSafetyFeeAccountService.selectTSafetyFeeAccountList(tSafetyFeeAccount);
+		List<TSafetyFeeAccount> list = tSafetyFeeAccountService.selectTSafetyFeeAccountList(tSafetyFeeAccount);
 		return getDataTable(list);
 	}
-	
+
 	/**
 	 * 新增安全费用台账
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存安全费用台账
 	 */
-	@RequiresPermissions("system:tSafetyFeeAccount:add")
+	//@RequiresPermissions("system:tSafetyFeeAccount:add")
 	@Log(title = "安全费用台账", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TSafetyFeeAccount tSafetyFeeAccount)
-	{		
-		return toAjax(tSafetyFeeAccountService.insertTSafetyFeeAccount(tSafetyFeeAccount));
+	public AjaxResult addSave(TSafetyFeeAccount tSafetyFeeAccount, MultipartFile feeFile)
+	{
+		return tSafetyFeeAccountService.insertTSafetyFeeAccount(tSafetyFeeAccount,feeFile);
 	}
 
 	/**
@@ -82,31 +83,31 @@ public class TSafetyFeeAccountController extends BaseController
 	{
 		TSafetyFeeAccount tSafetyFeeAccount = tSafetyFeeAccountService.selectTSafetyFeeAccountById(id);
 		mmap.put("tSafetyFeeAccount", tSafetyFeeAccount);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存安全费用台账
 	 */
-	@RequiresPermissions("system:tSafetyFeeAccount:edit")
+	//@RequiresPermissions("system:tSafetyFeeAccount:edit")
 	@Log(title = "安全费用台账", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TSafetyFeeAccount tSafetyFeeAccount)
-	{		
-		return toAjax(tSafetyFeeAccountService.updateTSafetyFeeAccount(tSafetyFeeAccount));
+	public AjaxResult editSave(TSafetyFeeAccount tSafetyFeeAccount,MultipartFile feeFile)
+	{
+		return tSafetyFeeAccountService.updateTSafetyFeeAccount(tSafetyFeeAccount,feeFile);
 	}
-	
+
 	/**
 	 * 删除安全费用台账
 	 */
-	@RequiresPermissions("system:tSafetyFeeAccount:remove")
+	//@RequiresPermissions("system:tSafetyFeeAccount:remove")
 	@Log(title = "安全费用台账", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(tSafetyFeeAccountService.deleteTSafetyFeeAccountByIds(ids));
 	}
-	
+
 }

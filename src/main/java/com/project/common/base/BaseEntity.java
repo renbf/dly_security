@@ -59,8 +59,23 @@ public class BaseEntity implements Serializable {
      * 结束创建时间
      */
     private String endCreateTime;
+    
+    /**
+     * 文件路径
+     */
+    private String filePath;
+    
+    
 
-    public String getStartCreateTime() {
+    public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getStartCreateTime() {
         return startCreateTime;
     }
 

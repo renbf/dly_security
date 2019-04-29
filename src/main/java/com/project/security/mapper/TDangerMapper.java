@@ -2,6 +2,7 @@ package com.project.security.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.project.security.domain.TDanger;
@@ -66,4 +67,18 @@ public interface TDangerMapper
 	//以上自动生成的尽量别动
 	
 	public TDangerVo selectTDangerVoByDangerId(String dangerId);
+	/**
+	 * 隐患整改
+	 * @param userId
+	 * @param status
+	 * @return
+	 */
+	public List<TDangerVo> rectification(@Param("userId") String userId,@Param("status") String status);
+	/**
+	 * 隐患验收
+	 * @param userId
+	 * @param status
+	 * @return
+	 */
+	public List<TDangerVo> rectificationCheck(@Param("userId") String userId,@Param("status") String status);
 }

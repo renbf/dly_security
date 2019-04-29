@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
 import com.project.common.enums.BusinessType;
@@ -65,13 +68,13 @@ public class TManagementSystemController extends BaseController
 	/**
 	 * 新增保存管理制度
 	 */
-	@RequiresPermissions("system:tManagementSystem:add")
+//	@RequiresPermissions("system:tManagementSystem:add")
 	@Log(title = "管理制度", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TManagementSystem tManagementSystem)
+	public AjaxResult addSave(TManagementSystem tManagementSystem,@RequestParam(name = "managementFile",required = false) MultipartFile managementFile)
 	{		
-		return toAjax(tManagementSystemService.insertTManagementSystem(tManagementSystem));
+		return toAjax(tManagementSystemService.insertTManagementSystem(tManagementSystem,managementFile));
 	}
 
 	/**
@@ -92,9 +95,9 @@ public class TManagementSystemController extends BaseController
 	@Log(title = "管理制度", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TManagementSystem tManagementSystem)
+	public AjaxResult editSave(TManagementSystem tManagementSystem,@RequestParam(name = "managementFile",required = false) MultipartFile managementFile)
 	{		
-		return toAjax(tManagementSystemService.updateTManagementSystem(tManagementSystem));
+		return toAjax(tManagementSystemService.updateTManagementSystem(tManagementSystem,managementFile));
 	}
 	
 	/**

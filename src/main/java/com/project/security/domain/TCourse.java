@@ -1,16 +1,15 @@
 package com.project.security.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 课程表 t_course
  * 
  * @author rbf
- * @date 2019-04-16
+ * @date 2019-04-28
  */
 public class TCourse implements Serializable
 {
@@ -18,7 +17,7 @@ public class TCourse implements Serializable
 	
 	/** 课程ID */
 	private String id;
-	/** 培训类型123 */
+	/** 培训类型1文件2视频3文件和视频 */
 	private String trainingType;
 	/** 课程分类id（字典表） */
 	private String courseType;
@@ -42,6 +41,8 @@ public class TCourse implements Serializable
 	private Long price;
 	/** 预览分钟（秒） */
 	private Long previewTimes;
+	/** 视频总时长（秒） */
+	private Long totalTimes;
 	/** 文件观看时长（秒） */
 	private Long watchTimes;
 	/** 课程简介 */
@@ -60,6 +61,8 @@ public class TCourse implements Serializable
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
+	/** 课程副标题 */
+	private String courseTitle;
 
 	public void setId(String id) 
 	{
@@ -178,6 +181,15 @@ public class TCourse implements Serializable
 	{
 		return previewTimes;
 	}
+	public void setTotalTimes(Long totalTimes) 
+	{
+		this.totalTimes = totalTimes;
+	}
+
+	public Long getTotalTimes() 
+	{
+		return totalTimes;
+	}
 	public void setWatchTimes(Long watchTimes) 
 	{
 		this.watchTimes = watchTimes;
@@ -259,6 +271,15 @@ public class TCourse implements Serializable
 	{
 		return updateUserId;
 	}
+	public void setCourseTitle(String courseTitle) 
+	{
+		this.courseTitle = courseTitle;
+	}
+
+	public String getCourseTitle() 
+	{
+		return courseTitle;
+	}
 
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -275,6 +296,7 @@ public class TCourse implements Serializable
             .append("isCharge", getIsCharge())
             .append("price", getPrice())
             .append("previewTimes", getPreviewTimes())
+            .append("totalTimes", getTotalTimes())
             .append("watchTimes", getWatchTimes())
             .append("introduction", getIntroduction())
             .append("courseSource", getCourseSource())
@@ -284,6 +306,7 @@ public class TCourse implements Serializable
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())
             .append("updateUserId", getUpdateUserId())
+            .append("courseTitle", getCourseTitle())
             .toString();
     }
 }

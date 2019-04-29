@@ -25,14 +25,20 @@ public class TOperatingProcedures extends BaseEntity
 	private String operatingUnit;
 	/** 实施日期 */
 	private Date operatingDate;
+	/** 实施日期 */
+	private Date operatingDateEnd;
+	/** 实施日期字符串 */
+	private String operatingDateStr;
 	/** 适用部门 */
-	private String operatingDeptId;
+	private Long operatingDeptId;
 	/** 是否适用 1:适用 0:不适用 */
 	private String isApply;
 	/** 文件路径 */
 	private String operatingFilePath;
 	/** 创建日期 */
 	private Date createTime;
+	/** 创建日期 */
+	private Date createTimeEnd;
 	/** 更新时间 */
 	private Date updateTime;
 	/** 创建人id */
@@ -53,6 +59,30 @@ public class TOperatingProcedures extends BaseEntity
 	{
 		return id;
 	}
+	public Date getOperatingDateEnd() {
+		return operatingDateEnd;
+	}
+
+	public void setOperatingDateEnd(Date operatingDateEnd) {
+		this.operatingDateEnd = operatingDateEnd;
+	}
+
+	public String getOperatingDateStr() {
+		return operatingDateStr;
+	}
+
+	public void setOperatingDateStr(String operatingDateStr) {
+		this.operatingDateStr = operatingDateStr;
+	}
+
+	public Date getCreateTimeEnd() {
+		return createTimeEnd;
+	}
+
+	public void setCreateTimeEnd(Date createTimeEnd) {
+		this.createTimeEnd = createTimeEnd;
+	}
+
 	public void setOperatingName(String operatingName) 
 	{
 		this.operatingName = operatingName;
@@ -80,15 +110,15 @@ public class TOperatingProcedures extends BaseEntity
 	{
 		return operatingDate;
 	}
-	public void setOperatingDeptId(String operatingDeptId) 
-	{
+
+	public Long getOperatingDeptId() {
+		return operatingDeptId;
+	}
+
+	public void setOperatingDeptId(Long operatingDeptId) {
 		this.operatingDeptId = operatingDeptId;
 	}
 
-	public String getOperatingDeptId() 
-	{
-		return operatingDeptId;
-	}
 	public void setIsApply(String isApply) 
 	{
 		this.isApply = isApply;

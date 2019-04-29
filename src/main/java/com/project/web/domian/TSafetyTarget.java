@@ -19,19 +19,19 @@ public class TSafetyTarget extends BaseEntity
 	
 	/** 主键ID */
 	private String id;
-	/** 目标名称 */
+	/** #目标名称 */
 	private String targetName;
-	/** 目标日期 */
+	/** ##目标日期 */
 	private Date targetDate;
-	/** 目标制定人 */
+	/** #目标制定人 */
 	private String targetEnactingPerson;
-	/** 部门id */
+	/** #部门id */
 	private Long orgId;
-	/** 状态 0:正常  1:已作废 */
+	/** #状态 0:正常  1:已作废 */
 	private Integer targetStatus;
 	/** 附件文件路径 */
 	private String targetFilePath;
-	/** 创建日期 */
+	/** ##创建日期 */
 	private Date createTime;
 	/** 更新时间 */
 	private Date updateTime;
@@ -44,7 +44,55 @@ public class TSafetyTarget extends BaseEntity
 	/** 修改人id */
 	private Long updateUserId;
 
-	public void setId(String id) 
+
+	/*为查询增加两个时间字段*/
+	//目标日期1
+	private Date targetDate1;
+	//创建时间1
+	private Date createTime1;
+
+	/*增加返回的时间字符串字段*/
+	private String targetDateStr;
+	private String createTimeStr;
+
+
+	public String getTargetDateStr() {
+		return targetDateStr;
+	}
+
+	public TSafetyTarget setTargetDateStr(String targetDateStr) {
+		this.targetDateStr = targetDateStr;
+		return this;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public TSafetyTarget setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+		return this;
+	}
+
+	public Date getTargetDate1() {
+		return targetDate1;
+	}
+
+	public TSafetyTarget setTargetDate1(Date targetDate1) {
+		this.targetDate1 = targetDate1;
+		return this;
+	}
+
+	public Date getCreateTime1() {
+		return createTime1;
+	}
+
+	public TSafetyTarget setCreateTime1(Date createTime1) {
+		this.createTime1 = createTime1;
+		return this;
+	}
+
+	public void setId(String id)
 	{
 		this.id = id;
 	}

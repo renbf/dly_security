@@ -31,6 +31,8 @@ public class TUserDriverPractitioners extends BaseEntity
 	private Date annualValidityPeriod;
 	/** 证件有效期 */
 	private Date certificateValidityPeriod;
+	/** 证件有效期 */
+	private Date certificateValidityPeriodStr;
 	/** 是否持证  0:持证 1:不持证 */
 	private String isCertificate;
 	/** 继续教育有效期限 */
@@ -47,6 +49,16 @@ public class TUserDriverPractitioners extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+
+	
+	
+	public Date getCertificateValidityPeriodStr() {
+		return certificateValidityPeriodStr;
+	}
+
+	public void setCertificateValidityPeriodStr(Date certificateValidityPeriodStr) {
+		this.certificateValidityPeriodStr = certificateValidityPeriodStr;
+	}
 
 	public void setId(String id) 
 	{

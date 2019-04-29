@@ -78,4 +78,5 @@ public interface IAccountNumberService {
 	 * @return
 	 */
 	public DataResult getUserInfo(String userId);
+	
 }

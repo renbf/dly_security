@@ -29,6 +29,11 @@ public class TCheckPlan extends BaseEntity
 	private String deptId;
 	/** 计划检查时间 */
 	private Date palnCheckDate;
+	/** 计划检查时间(查询结束时间) */
+	private Date palnCheckDateEnd;
+	
+	/** 计划检查时间字符串 */
+	private String palnCheckDateStr;
 	/** 责任人user_id */
 	private Long personLiableId;
 	/** 责任人名称 */
@@ -61,6 +66,26 @@ public class TCheckPlan extends BaseEntity
 	{
 		return id;
 	}
+	
+	
+	public Date getPalnCheckDateEnd() {
+		return palnCheckDateEnd;
+	}
+
+	public void setPalnCheckDateEnd(Date palnCheckDateEnd) {
+		this.palnCheckDateEnd = palnCheckDateEnd;
+	}
+
+
+
+	public String getPalnCheckDateStr() {
+		return palnCheckDateStr;
+	}
+
+	public void setPalnCheckDateStr(String palnCheckDateStr) {
+		this.palnCheckDateStr = palnCheckDateStr;
+	}
+
 	public void setPlanTitle(String planTitle) 
 	{
 		this.planTitle = planTitle;
@@ -228,3 +253,4 @@ public class TCheckPlan extends BaseEntity
             .toString();
     }
 }
+

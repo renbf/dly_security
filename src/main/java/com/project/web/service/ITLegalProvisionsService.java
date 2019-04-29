@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TLegalProvisions;
 
 /**
@@ -34,7 +37,7 @@ public interface ITLegalProvisionsService
      * @param tLegalProvisions 法律法规信息
      * @return 结果
      */
-	public int insertTLegalProvisions(TLegalProvisions tLegalProvisions);
+	public AjaxResult insertTLegalProvisions(TLegalProvisions tLegalProvisions,MultipartFile legalFile);
 	
 	/**
      * 修改法律法规
@@ -42,7 +45,7 @@ public interface ITLegalProvisionsService
      * @param tLegalProvisions 法律法规信息
      * @return 结果
      */
-	public int updateTLegalProvisions(TLegalProvisions tLegalProvisions);
+	public AjaxResult updateTLegalProvisions(TLegalProvisions tLegalProvisions,MultipartFile legalFile);
 		
 	/**
      * 删除法律法规信息

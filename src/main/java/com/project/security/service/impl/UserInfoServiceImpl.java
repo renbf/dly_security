@@ -22,6 +22,7 @@ import com.project.framework.shiro.service.LoginService;
 import com.project.framework.shiro.service.PasswordService;
 import com.project.framework.util.FileUploadUtils;
 import com.project.framework.util.MessageUtils;
+import com.project.framework.util.ShiroUtils;
 import com.project.security.mapper.UserMapper;
 import com.project.security.service.IFileSystemService;
 import com.project.security.service.IUserInfoService;
@@ -151,5 +152,48 @@ public class UserInfoServiceImpl implements IUserInfoService {
 			throw new RuntimeException("上传认证接口异常");
 		}
 	}
-
+	
+	@Override
+	public DataResult changePassword(String userId, String oldPassword, String newPassword, String confirmPassword) {
+		DataResult result = new DataResult();
+        try {
+        	oldPassword = new String(Base64.getDecoder().decode(oldPassword),"UTF-8");
+        	newPassword = new String(Base64.getDecoder().decode(newPassword),"UTF-8");
+        	confirmPassword = new String(Base64.getDecoder().decode(confirmPassword),"UTF-8");
+        	SysUser user = userMapper.selectUserById(Long.valueOf(userId));
+        	if (user == null) {
+				result.setMessage("用户不存在");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
+        	if (!passwordService.matches(user, oldPassword)) {
+				result.setMessage("用户原始密码错误");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
+        	// 密码如果不在指定范围内 错误
+			if (newPassword.length() < UserConstants.PASSWORD_MIN_LENGTH
+					|| newPassword.length() > UserConstants.PASSWORD_MAX_LENGTH) {
+				result.setMessage("新密码不在指定范围内");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
+			if(!newPassword.equals(confirmPassword)) {
+				result.setMessage("新密码和确认密码不相同");
+				result.setStatus(Result.FAILED);
+				return result;
+			}
+			SysUser sysUser = new SysUser();
+			sysUser.setUserId(user.getUserId());
+			sysUser.setSalt(ShiroUtils.randomSalt());
+			sysUser.setPassword(passwordService.encryptPassword(user.getLoginName(), newPassword, sysUser.getSalt()));
+	        userMapper.updateUser(user);
+			result.setMessage("修改密码成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("修改密码接口异常",e);
+			throw new RuntimeException("修改密码接口异常");
+		}
+	}
 }

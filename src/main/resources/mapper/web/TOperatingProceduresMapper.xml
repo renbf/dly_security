@@ -21,20 +21,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTOperatingProceduresVo">
-        select op.id, op.operating_name, op.operating_unit, op.operating_date, op.operating_dept_id, op.is_apply, op.operating_file_path, op.create_time, op.update_time, op.user_id, op.meno, op.business_id, op.update_user_id from t_operating_procedures op
+        select op.id, op.operating_name, op.operating_unit, 
+         DATE_FORMAT(op.operating_date,'%Y-%m-%d') as operatingDateStr, 
+        op.operating_dept_id, op.is_apply, op.operating_file_path,
+         DATE_FORMAT(op.create_time,'%Y-%m-%d') as startCreateTime, 
+         op.update_time, op.user_id, op.meno, op.business_id, op.update_user_id from t_operating_procedures op
     </sql>
 	
     <select id="selectTOperatingProceduresList" parameterType="TOperatingProcedures" resultMap="TOperatingProceduresResult">
         <include refid="selectTOperatingProceduresVo"/>
         <where>  
             <if test="id != null  and id != '' "> and op.id = #{id}</if>
-             <if test="operatingName != null  and operatingName != '' "> and op.operating_name = #{operatingName}</if>
+             <if test="operatingName != null  and operatingName != '' "> and op.operating_name like CONCAT('%',#{operatingName},'%')</if>
              <if test="operatingUnit != null  and operatingUnit != '' "> and op.operating_unit = #{operatingUnit}</if>
-             <if test="operatingDate != null "> and op.operating_date = #{operatingDate}</if>
+              <if test="(operatingDate != null  ) and operatingDateEnd == null "> 
+             	and DATE_FORMAT(op.operating_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{operatingDate},'%Y-%m-%d')
+             </if>
+             <if test="(operatingDateEnd != null ) and operatingDate == null  "> 
+            	 and DATE_FORMAT(op.operating_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{operatingDateEnd},'%Y-%m-%d')
+             </if>
+               <if test="(operatingDateEnd != null  ) and operatingDate != null "> 
+               		 and DATE_FORMAT(op.operating_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{operatingDate},'%Y-%m-%d')
+                     and DATE_FORMAT(op.operating_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{operatingDateEnd},'%Y-%m-%d')                    
+             </if>
              <if test="operatingDeptId != null  and operatingDeptId != '' "> and op.operating_dept_id = #{operatingDeptId}</if>
              <if test="isApply != null  and isApply != '' "> and op.is_apply = #{isApply}</if>
              <if test="operatingFilePath != null  and operatingFilePath != '' "> and op.operating_file_path = #{operatingFilePath}</if>
-             <if test="createTime != null "> and op.create_time = #{createTime}</if>
+              <if test="(createTime != null  ) and createTimeEnd == null "> 
+             	and DATE_FORMAT(op.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+             </if>
+             <if test="(createTimeEnd != null ) and createTime == null  "> 
+            	 and DATE_FORMAT(op.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')
+             </if>
+               <if test="(createTimeEnd != null  ) and createTime != null "> 
+               		 and DATE_FORMAT(op.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+                     and DATE_FORMAT(op.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d')                    
+             </if>
              <if test="updateTime != null "> and op.update_time = #{updateTime}</if>
              <if test="userId != null "> and op.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and op.meno = #{meno}</if>

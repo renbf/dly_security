@@ -19,23 +19,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
+
 	<sql id="selectTSafetyTargetVo">
-        select st.id, st.target_name, st.target_date, st.target_enacting_person, st.org_id, st.target_status, st.target_file_path, st.create_time, st.update_time, st.user_id, st.meno, st.business_id, st.update_user_id from t_safety_target st
+        select st.id, st.target_name, st.target_date, st.target_enacting_person, st.org_id, st.target_status,
+        st.target_file_path, st.create_time, st.update_time, st.user_id, st.meno, st.business_id, st.update_user_id,
+        DATE_FORMAT(st.target_date,'%Y-%m-%d') as targetDateStr,
+        DATE_FORMAT(st.create_time,'%Y-%m-%d') as createTimeStr
+        from t_safety_target st
     </sql>
 	
     <select id="selectTSafetyTargetList" parameterType="TSafetyTarget" resultMap="TSafetyTargetResult">
         <include refid="selectTSafetyTargetVo"/>
         <where>  
             <if test="id != null  and id != '' "> and st.id = #{id}</if>
-             <if test="targetName != null  and targetName != '' "> and st.target_name = #{targetName}</if>
-             <if test="targetDate != null "> and st.target_date = #{targetDate}</if>
-             <if test="targetEnactingPerson != null  and targetEnactingPerson != '' "> and st.target_enacting_person = #{targetEnactingPerson}</if>
+
+            <if test="targetName != null  and targetName != '' "> and st.target_name like concat('%',#{targetName},'%')</if>
+
+            <if test="targetDate != null  and targetDate1 == null "> and DATE_FORMAT(st.target_date,'%Y%m%d') &gt;= DATE_FORMAT(#{targetDate},'%Y%m%d')</if>
+            <if test="targetDate1 != null  and targetDate == null "> and DATE_FORMAT(st.target_date,'%Y%m%d') &lt;= DATE_FORMAT(#{targetDate1},'%Y%m%d')</if>
+            <if test="targetDate1 != null  and targetDate != null "> and DATE_FORMAT(st.target_date,'%Y%m%d') &gt;= DATE_FORMAT(#{targetDate},'%Y%m%d')
+                and   DATE_FORMAT(st.target_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{targetDate1},'%Y%m%d')
+            </if>
+
+             <if test="targetEnactingPerson != null  and targetEnactingPerson != '' "> and st.target_enacting_person = like concat('%',#{targetEnactingPerson},'%')</if>
+
              <if test="orgId != null "> and st.org_id = #{orgId}</if>
              <if test="targetStatus != null "> and st.target_status = #{targetStatus}</if>
              <if test="targetFilePath != null  and targetFilePath != '' "> and st.target_file_path = #{targetFilePath}</if>
-             <if test="createTime != null "> and st.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and st.update_time = #{updateTime}</if>
+
+            <if test="createTime != null and createTime1 == null "> and st.create_time &gt;= #{createTime}</if>
+            <if test="createTime1 != null and createTime == null  "> and st.create_time &lt;= #{createTime1}</if>
+            <if test="createTime1 != null and createTime != null  "> and st.create_time &gt;= #{createTime}
+                and st.create_time &lt;= #{createTime1}
+            </if>
+
+            <if test="updateTime != null "> and st.update_time = #{updateTime}</if>
              <if test="userId != null "> and st.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and st.meno = #{meno}</if>
              <if test="businessId != null  and businessId != '' "> and st.business_id = #{businessId}</if>

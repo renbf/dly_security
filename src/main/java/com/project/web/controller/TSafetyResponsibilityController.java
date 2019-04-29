@@ -17,6 +17,7 @@ import com.project.framework.web.page.TableDataInfo;
 import com.project.system.core.base.BaseController;
 import com.project.web.domian.TSafetyResponsibility;
 import com.project.web.service.ITSafetyResponsibilityService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全责任 信息操作处理
@@ -43,7 +44,7 @@ public class TSafetyResponsibilityController extends BaseController
 	/**
 	 * 查询安全责任列表
 	 */
-	@RequiresPermissions("system:tSafetyResponsibility:list")
+	//@RequiresPermissions("system:tSafetyResponsibility:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSafetyResponsibility tSafetyResponsibility)
@@ -65,13 +66,13 @@ public class TSafetyResponsibilityController extends BaseController
 	/**
 	 * 新增保存安全责任
 	 */
-	@RequiresPermissions("system:tSafetyResponsibility:add")
+	//@RequiresPermissions("system:tSafetyResponsibility:add")
 	@Log(title = "安全责任", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TSafetyResponsibility tSafetyResponsibility)
+	public AjaxResult addSave(TSafetyResponsibility tSafetyResponsibility, MultipartFile responsibilityFile)
 	{		
-		return toAjax(tSafetyResponsibilityService.insertTSafetyResponsibility(tSafetyResponsibility));
+		return tSafetyResponsibilityService.insertTSafetyResponsibility(tSafetyResponsibility,responsibilityFile);
 	}
 
 	/**
@@ -88,19 +89,19 @@ public class TSafetyResponsibilityController extends BaseController
 	/**
 	 * 修改保存安全责任
 	 */
-	@RequiresPermissions("system:tSafetyResponsibility:edit")
+	//@RequiresPermissions("system:tSafetyResponsibility:edit")
 	@Log(title = "安全责任", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TSafetyResponsibility tSafetyResponsibility)
+	public AjaxResult editSave(TSafetyResponsibility tSafetyResponsibility,MultipartFile responsibilityFile)
 	{		
-		return toAjax(tSafetyResponsibilityService.updateTSafetyResponsibility(tSafetyResponsibility));
+		return tSafetyResponsibilityService.updateTSafetyResponsibility(tSafetyResponsibility,responsibilityFile);
 	}
 	
 	/**
 	 * 删除安全责任
 	 */
-	@RequiresPermissions("system:tSafetyResponsibility:remove")
+	//@RequiresPermissions("system:tSafetyResponsibility:remove")
 	@Log(title = "安全责任", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

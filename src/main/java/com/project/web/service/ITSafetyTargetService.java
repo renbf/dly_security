@@ -3,6 +3,7 @@ package com.project.web.service;
 import java.util.List;
 
 import com.project.web.domian.TSafetyTarget;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全目标 服务层
@@ -34,16 +35,17 @@ public interface ITSafetyTargetService
      * @param tSafetyTarget 安全目标信息
      * @return 结果
      */
-	public int insertTSafetyTarget(TSafetyTarget tSafetyTarget);
+	public int insertTSafetyTarget(TSafetyTarget tSafetyTarget, MultipartFile targetFile);
 	
+
 	/**
-     * 修改安全目标
-     * 
-     * @param tSafetyTarget 安全目标信息
-     * @return 结果
-     */
-	public int updateTSafetyTarget(TSafetyTarget tSafetyTarget);
-		
+	 * 修改安全目标
+	 *
+	 * @param tSafetyTarget 安全目标信息
+	 * @return 结果
+	 */
+	public int updateTSafetyTarget(TSafetyTarget tSafetyTarget, MultipartFile targetFile);
+
 	/**
      * 删除安全目标信息
      * 

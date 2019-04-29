@@ -44,6 +44,8 @@ public class TCourseVo implements Serializable
 	private Long price;
 	/** 预览分钟（秒） */
 	private Long previewTimes;
+	/** 视频总时长（秒） */
+	private Long totalTimes;
 	/** 文件观看时长（秒） */
 	private Long watchTimes;
 	/** 课程简介 */
@@ -54,6 +56,8 @@ public class TCourseVo implements Serializable
 	private String businessId;
 	/** 状态 */
 	private String status;
+	/** 课程副标题 */
+	private String courseTitle;
 	/** 创建人id */
 	@JsonIgnore
 	private String addUserId;
@@ -67,6 +71,8 @@ public class TCourseVo implements Serializable
 	@JsonIgnore
 	private String updateUserId;
 	//以上自动生成的尽量别动
+	/** 用户课程ID */
+	private String userCourseId;
 	/** 用户ID */
 	private String userId;
 	/** 学习状态0未学习1学习中2已完成 */
@@ -75,9 +81,23 @@ public class TCourseVo implements Serializable
 	private Long classHour;
 	/** 已观看秒数 */
 	private Long progress;
+	/** 百分比 */
+	private Integer percentage;
 	/** 是否收藏1是0否 */
 	private String isCollect;
+	/** 开始时间 */
+	private Date startDate;
+	/** 课程简介url */
+	private String webUrl;
 	
+	public String getUserCourseId() {
+		return userCourseId;
+	}
+
+	public void setUserCourseId(String userCourseId) {
+		this.userCourseId = userCourseId;
+	}
+
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -314,6 +334,46 @@ public class TCourseVo implements Serializable
 
 	public void setCourseUrl(String courseUrl) {
 		this.courseUrl = courseUrl;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getCourseTitle() {
+		return courseTitle;
+	}
+
+	public void setCourseTitle(String courseTitle) {
+		this.courseTitle = courseTitle;
+	}
+
+	public String getWebUrl() {
+		return webUrl;
+	}
+
+	public void setWebUrl(String webUrl) {
+		this.webUrl = webUrl;
+	}
+
+	public Long getTotalTimes() {
+		return totalTimes;
+	}
+
+	public void setTotalTimes(Long totalTimes) {
+		this.totalTimes = totalTimes;
+	}
+
+	public Integer getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(Integer percentage) {
+		this.percentage = percentage;
 	}
 
 	public String toString() {

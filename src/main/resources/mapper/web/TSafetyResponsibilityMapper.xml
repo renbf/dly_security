@@ -20,19 +20,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTSafetyResponsibilityVo">
-        select sr.id, sr.responsibility_name, sr.responsibility_date, sr.responsibility_type, sr.dept_id, sr.responsibility_file_path, sr.create_time, sr.update_time, sr.user_id, sr.meno, sr.business_id, sr.update_user_id from t_safety_responsibility sr
+        select sr.id, sr.responsibility_name, sr.responsibility_date, sr.responsibility_type, sr.dept_id,
+        sr.responsibility_file_path, sr.create_time, sr.update_time, sr.user_id, sr.meno, sr.business_id,
+        sr.update_user_id ,
+        DATE_FORMAT(sr.responsibility_date,'%Y-%m-%d') as responsibilityDateStr,
+         DATE_FORMAT(sr.create_time,'%Y-%m-%d') as createTimeStr
+        from t_safety_responsibility sr
     </sql>
 	
     <select id="selectTSafetyResponsibilityList" parameterType="TSafetyResponsibility" resultMap="TSafetyResponsibilityResult">
         <include refid="selectTSafetyResponsibilityVo"/>
         <where>  
             <if test="id != null  and id != '' "> and sr.id = #{id}</if>
-             <if test="responsibilityName != null  and responsibilityName != '' "> and sr.responsibility_name = #{responsibilityName}</if>
-             <if test="responsibilityDate != null "> and sr.responsibility_date = #{responsibilityDate}</if>
+
+             <if test="responsibilityName != null  and responsibilityName != '' "> and sr.responsibility_name like concat('%',#{responsibilityName},'%')</if>
+
+
+            <if test="responsibilityDate != null  and responsibilityDate1 == null "> and DATE_FORMAT(sr.responsibility_date,'%Y%m%d') &gt;= DATE_FORMAT(#{responsibilityDate},'%Y%m%d')</if>
+            <if test="responsibilityDate1 != null  and responsibilityDate == null "> and DATE_FORMAT(sr.responsibility_date,'%Y%m%d') &lt;= DATE_FORMAT(#{responsibilityDate1},'%Y%m%d')</if>
+            <if test="responsibilityDate1 != null  and responsibilityDate != null "> and DATE_FORMAT(sr.responsibility_date,'%Y%m%d') &gt;= DATE_FORMAT(#{responsibilityDate},'%Y%m%d')
+                and   DATE_FORMAT(sr.responsibility_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{responsibilityDate1},'%Y%m%d')
+            </if>
+
+            
              <if test="responsibilityType != null  and responsibilityType != '' "> and sr.responsibility_type = #{responsibilityType}</if>
              <if test="deptId != null  and deptId != '' "> and sr.dept_id = #{deptId}</if>
              <if test="responsibilityFilePath != null  and responsibilityFilePath != '' "> and sr.responsibility_file_path = #{responsibilityFilePath}</if>
-             <if test="createTime != null "> and sr.create_time = #{createTime}</if>
+
+
+            <if test="createTime != null  and createTime1 == null "> and DATE_FORMAT(sr.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime == null "> and DATE_FORMAT(sr.create_time,'%Y%m%d') &lt;= DATE_FORMAT(#{createTime1},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime != null "> and DATE_FORMAT(sr.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')
+                and   DATE_FORMAT(sr.create_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{createTime1},'%Y%m%d')
+            </if>
+
              <if test="updateTime != null "> and sr.update_time = #{updateTime}</if>
              <if test="userId != null "> and sr.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and sr.meno = #{meno}</if>

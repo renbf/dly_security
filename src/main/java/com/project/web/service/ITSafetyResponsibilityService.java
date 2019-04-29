@@ -2,7 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TSafetyResponsibility;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 安全责任 服务层
@@ -34,7 +36,7 @@ public interface ITSafetyResponsibilityService
      * @param tSafetyResponsibility 安全责任信息
      * @return 结果
      */
-	public int insertTSafetyResponsibility(TSafetyResponsibility tSafetyResponsibility);
+	public AjaxResult insertTSafetyResponsibility(TSafetyResponsibility tSafetyResponsibility, MultipartFile responsibilityFile);
 	
 	/**
      * 修改安全责任
@@ -42,7 +44,7 @@ public interface ITSafetyResponsibilityService
      * @param tSafetyResponsibility 安全责任信息
      * @return 结果
      */
-	public int updateTSafetyResponsibility(TSafetyResponsibility tSafetyResponsibility);
+	public AjaxResult updateTSafetyResponsibility(TSafetyResponsibility tSafetyResponsibility,MultipartFile responsibilityFile);
 		
 	/**
      * 删除安全责任信息

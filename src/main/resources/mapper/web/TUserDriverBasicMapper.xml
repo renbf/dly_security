@@ -31,27 +31,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
     <select id="selectTUserDriverBasicList" parameterType="TUserDriverBasic" resultMap="TUserDriverBasicResult">
-        <include refid="selectTUserDriverBasicVo"/>
+		       SELECT
+		tb.id, tb.driver_user_id, tb.driver_name, tb.driver_sex, tb.driver_phone, tb.is_incumbency, tb.driver_email, tb.driver_id_num, tb.driver_education, tb.driver_birth, tb.driver_addr, tb.driver_dept, tb.driver_post, tb.create_time,
+		 ti.driver_user_id, ti.driver_archives, ti.driver_license_number, ti.initial_date, ti.driver_age, DATE_FORMAT(ti.certificate_validity_period,'%Y-%m-%d') as certificateStr, ti.physical_validity_period, ti.driver_vehicle_type, ti.annual_validity_period, ti.driver_illegal_score,
+			tdo.driver_user_id, tdo.is_record, tdo.integrity_examination_period, tdo.integrity_examination_level, tdo.accurate_num, tdo.transportation_line, tdo.driver_validity_period, tdo.is_risk, tdo.risk_standard, tdo.risk_amt, tdo.assessor, tdo.assessor_date, tdo.assessor_info, 
+		 tp.driver_user_id, tp.practitioners_num, tp.practitioners_type, tp.practitioners_initial_date, tp.annual_validity_period, tp.certificate_validity_period, tp.is_certificate,  DATE_FORMAT(tp.certificate_validity_period,'%Y-%m-%d') as certificateValidityPeriodStr,
+		tpo.driver_user_id, tpo.head_img, tpo.personal_img, tpo.id_card_copy_img, tpo.certificate_copy_img, tpo.practitioners_copy_img, tpo.examination_paper_img, tpo.examination_paper_second_img, tpo.examination_paper_third_img, tpo.examination_paper_four_img, tpo.three_not_accident_img, tpo.one_year_illegal_record_img,
+		sd.dept_name,sp.post_name
+		
+		FROM
+			t_user_driver_basic tb
+		LEFT JOIN t_user_driver_info ti ON tb.driver_user_id = ti.driver_user_id
+		LEFT JOIN t_user_driver_others tdo on tb.driver_user_id = tdo.driver_user_id
+		LEFT JOIN t_user_driver_practitioners tp on tb.driver_user_id = tp.driver_user_id
+		LEFT JOIN t_user_driver_photos tpo on tb.driver_user_id = tpo.driver_user_id
+		LEFT JOIN sys_dept sd on tb.driver_dept = sd.dept_id
+		LEFT JOIN sys_post sp on tb.driver_post = sp.post_id
+		LEFT JOIN sys_user su on su.user_id = tb.driver_user_id
         <where>  
-            <if test="id != null  and id != '' "> and udb.id = #{id}</if>
-             <if test="driverUserId != null "> and udb.driver_user_id = #{driverUserId}</if>
-             <if test="driverName != null  and driverName != '' "> and udb.driver_name = #{driverName}</if>
-             <if test="driverSex != null  and driverSex != '' "> and udb.driver_sex = #{driverSex}</if>
-             <if test="driverPhone != null  and driverPhone != '' "> and udb.driver_phone = #{driverPhone}</if>
-             <if test="isIncumbency != null  and isIncumbency != '' "> and udb.is_incumbency = #{isIncumbency}</if>
-             <if test="driverEmail != null  and driverEmail != '' "> and udb.driver_email = #{driverEmail}</if>
-             <if test="driverIdNum != null  and driverIdNum != '' "> and udb.driver_id_num = #{driverIdNum}</if>
-             <if test="driverEducation != null  and driverEducation != '' "> and udb.driver_education = #{driverEducation}</if>
-             <if test="driverBirth != null "> and udb.driver_birth = #{driverBirth}</if>
-             <if test="driverAddr != null  and driverAddr != '' "> and udb.driver_addr = #{driverAddr}</if>
-             <if test="driverDept != null  and driverDept != '' "> and udb.driver_dept = #{driverDept}</if>
-             <if test="driverPost != null  and driverPost != '' "> and udb.driver_post = #{driverPost}</if>
-             <if test="createTime != null "> and udb.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and udb.update_time = #{updateTime}</if>
-             <if test="userId != null "> and udb.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and udb.meno = #{meno}</if>
+            <if test="id != null  and id != '' "> and tb.id = #{id}</if>
+             <if test="driverUserId != null "> and tb.driver_user_id = #{driverUserId}</if>
+             <if test="driverName != null  and driverName != '' "> and tb.driver_name like CONCAT('%',#{driverName},'%')</if>
+             <if test="driverSex != null  and driverSex != '' "> and tb.driver_sex = #{driverSex}</if>
+             <if test="driverPhone != null  and driverPhone != '' "> and tb.driver_phone = #{driverPhone}</if>
+             <if test="isIncumbency != null  and isIncumbency != '' "> and tb.is_incumbency = #{isIncumbency}</if>
+             <if test="driverEmail != null  and driverEmail != '' "> and tb.driver_email = #{driverEmail}</if>
+             <if test="driverIdNum != null  and driverIdNum != '' "> and tb.driver_id_num = #{driverIdNum}</if>
+             <if test="driverEducation != null  and driverEducation != '' "> and tb.driver_education = #{driverEducation}</if>
+             <if test="driverAddr != null  and driverAddr != '' "> and tb.driver_addr = #{driverAddr}</if>
+             <if test="driverDept != null  and driverDept != '' "> and tb.driver_dept = #{driverDept}</if>
+             <if test="driverPost != null  and driverPost != '' "> and tb.driver_post = #{driverPost}</if>
+             <if test="createTime != null "> and tb.create_time = #{createTime}</if>
              <if test="businessId != null  and businessId != '' "> and udb.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and udb.update_user_id = #{updateUserId}</if>
          </where>
          order by udb.create_time desc
     </select>

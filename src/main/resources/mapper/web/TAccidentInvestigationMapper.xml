@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TAccidentInvestigationMapper">
-    
-    <resultMap type="com.project.web.domian.TAccidentInvestigation" id="TAccidentInvestigationResult">
+
+    <resultMap type="TAccidentInvestigation" id="TAccidentInvestigationResult">
         <result property="id"    column="id"    />
         <result property="accidentBasiscId"    column="accident_basisc_id"    />
         <result property="accidentName"    column="accident_name"    />
@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="closeCaseDate"    column="close_case_date"    />
         <result property="closeCaseType"    column="close_case_type"    />
         <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
         <result property="participantInfo"    column="participant_info"    />
         <result property="accidentReason"    column="accident_reason"    />
         <result property="responsibilityInvestigate"    column="responsibility_investigate"    />
@@ -28,98 +29,107 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTAccidentInvestigationVo">
-        select ai.id, ai.accident_basisc_id, ai.accident_name, ai.is_handle, ai.handle_date, ai.is_close_case, ai.close_case_date, ai.close_case_type, ai.dept_id, ai.participant_info, ai.accident_reason, ai.responsibility_investigate, ai.accident_education, ai.rectification_measures, ai.preventive_measures, ai.file_path, ai.create_time, ai.update_time, ai.user_id, ai.meno, ai.business_id, ai.update_user_id from t_accident_investigation ai
+
+    <sql id="selectTAccidentInvestigationVo">
+        select ai.id, ai.accident_basisc_id, ai.accident_name, ai.is_handle, ai.handle_date, ai.is_close_case,
+        ai.close_case_date, ai.close_case_type, ai.dept_id, ai.dept_name, ai.participant_info, ai.accident_reason,
+        ai.responsibility_investigate, ai.accident_education, ai.rectification_measures, ai.preventive_measures,
+         ai.file_path, ai.create_time, ai.update_time, ai.user_id, ai.meno, ai.business_id, ai.update_user_id ,
+        DATE_FORMAT(ai.handle_date,'%Y-%m-%d') as handleDateStr,
+        DATE_FORMAT(ai.close_case_date,'%Y-%m-%d') as closeCaseDateStr,
+        DATE_FORMAT(ai.create_time,'%Y-%m-%d') as createTimeStr
+         from t_accident_investigation ai
     </sql>
-	
-    <select id="selectTAccidentInvestigationList" parameterType="com.project.web.domian.TAccidentInvestigation" resultMap="TAccidentInvestigationResult">
+
+    <select id="selectTAccidentInvestigationList" parameterType="TAccidentInvestigation" resultMap="TAccidentInvestigationResult">
         <include refid="selectTAccidentInvestigationVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and ai.id = #{id}</if>
-             <if test="accidentBasiscId != null  and accidentBasiscId != '' "> and ai.accident_basisc_id = #{accidentBasiscId}</if>
-             <if test="accidentName != null  and accidentName != '' "> and ai.accident_name = #{accidentName}</if>
-             <if test="isHandle != null  and isHandle != '' "> and ai.is_handle = #{isHandle}</if>
-             <if test="handleDate != null "> and ai.handle_date = #{handleDate}</if>
-             <if test="isCloseCase != null  and isCloseCase != '' "> and ai.is_close_case = #{isCloseCase}</if>
-             <if test="closeCaseDate != null "> and ai.close_case_date = #{closeCaseDate}</if>
-             <if test="closeCaseType != null  and closeCaseType != '' "> and ai.close_case_type = #{closeCaseType}</if>
-             <if test="deptId != null  and deptId != '' "> and ai.dept_id = #{deptId}</if>
-             <if test="participantInfo != null  and participantInfo != '' "> and ai.participant_info = #{participantInfo}</if>
-             <if test="accidentReason != null  and accidentReason != '' "> and ai.accident_reason = #{accidentReason}</if>
-             <if test="responsibilityInvestigate != null  and responsibilityInvestigate != '' "> and ai.responsibility_investigate = #{responsibilityInvestigate}</if>
-             <if test="accidentEducation != null  and accidentEducation != '' "> and ai.accident_education = #{accidentEducation}</if>
-             <if test="rectificationMeasures != null  and rectificationMeasures != '' "> and ai.rectification_measures = #{rectificationMeasures}</if>
-             <if test="preventiveMeasures != null  and preventiveMeasures != '' "> and ai.preventive_measures = #{preventiveMeasures}</if>
-             <if test="filePath != null  and filePath != '' "> and ai.file_path = #{filePath}</if>
-             <if test="createTime != null "> and ai.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and ai.update_time = #{updateTime}</if>
-             <if test="userId != null "> and ai.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and ai.meno = #{meno}</if>
-             <if test="businessId != null  and businessId != '' "> and ai.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and ai.update_user_id = #{updateUserId}</if>
-         </where>
-           order by ai.create_time desc
+            <if test="accidentBasiscId != null  and accidentBasiscId != '' "> and ai.accident_basisc_id = #{accidentBasiscId}</if>
+            <if test="accidentName != null  and accidentName != '' "> and ai.accident_name = #{accidentName}</if>
+            <if test="isHandle != null  and isHandle != '' "> and ai.is_handle = #{isHandle}</if>
+            <if test="handleDate != null "> and ai.handle_date = #{handleDate}</if>
+            <if test="isCloseCase != null  and isCloseCase != '' "> and ai.is_close_case = #{isCloseCase}</if>
+            <if test="closeCaseDate != null "> and ai.close_case_date = #{closeCaseDate}</if>
+            <if test="closeCaseType != null  and closeCaseType != '' "> and ai.close_case_type = #{closeCaseType}</if>
+            <if test="deptId != null "> and ai.dept_id = #{deptId}</if>
+            <if test="deptName != null  and deptName != '' "> and ai.dept_name = #{deptName}</if>
+            <if test="participantInfo != null  and participantInfo != '' "> and ai.participant_info = #{participantInfo}</if>
+            <if test="accidentReason != null  and accidentReason != '' "> and ai.accident_reason = #{accidentReason}</if>
+            <if test="responsibilityInvestigate != null  and responsibilityInvestigate != '' "> and ai.responsibility_investigate = #{responsibilityInvestigate}</if>
+            <if test="accidentEducation != null  and accidentEducation != '' "> and ai.accident_education = #{accidentEducation}</if>
+            <if test="rectificationMeasures != null  and rectificationMeasures != '' "> and ai.rectification_measures = #{rectificationMeasures}</if>
+            <if test="preventiveMeasures != null  and preventiveMeasures != '' "> and ai.preventive_measures = #{preventiveMeasures}</if>
+            <if test="filePath != null  and filePath != '' "> and ai.file_path = #{filePath}</if>
+            <if test="createTime != null "> and ai.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and ai.update_time = #{updateTime}</if>
+            <if test="userId != null "> and ai.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and ai.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and ai.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and ai.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTAccidentInvestigationById" parameterType="String" resultMap="TAccidentInvestigationResult">
         <include refid="selectTAccidentInvestigationVo"/>
         where ai.id = #{id}
     </select>
-        
-    <insert id="insertTAccidentInvestigation" parameterType="com.project.web.domian.TAccidentInvestigation">
+
+    <insert id="insertTAccidentInvestigation" parameterType="TAccidentInvestigation">
         insert into t_accident_investigation
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id,</if>
-			<if test="accidentName != null  and accidentName != ''  ">accident_name,</if>
-			<if test="isHandle != null  and isHandle != ''  ">is_handle,</if>
-			<if test="handleDate != null  ">handle_date,</if>
-			<if test="isCloseCase != null  and isCloseCase != ''  ">is_close_case,</if>
-			<if test="closeCaseDate != null  ">close_case_date,</if>
-			<if test="closeCaseType != null  and closeCaseType != ''  ">close_case_type,</if>
-			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
-			<if test="participantInfo != null  and participantInfo != ''  ">participant_info,</if>
-			<if test="accidentReason != null  and accidentReason != ''  ">accident_reason,</if>
-			<if test="responsibilityInvestigate != null  and responsibilityInvestigate != ''  ">responsibility_investigate,</if>
-			<if test="accidentEducation != null  and accidentEducation != ''  ">accident_education,</if>
-			<if test="rectificationMeasures != null  and rectificationMeasures != ''  ">rectification_measures,</if>
-			<if test="preventiveMeasures != null  and preventiveMeasures != ''  ">preventive_measures,</if>
-			<if test="filePath != null  and filePath != ''  ">file_path,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="meno != null  and meno != ''  ">meno,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id,</if>
+            <if test="accidentName != null  and accidentName != ''  ">accident_name,</if>
+            <if test="isHandle != null  and isHandle != ''  ">is_handle,</if>
+            <if test="handleDate != null  ">handle_date,</if>
+            <if test="isCloseCase != null  and isCloseCase != ''  ">is_close_case,</if>
+            <if test="closeCaseDate != null  ">close_case_date,</if>
+            <if test="closeCaseType != null  and closeCaseType != ''  ">close_case_type,</if>
+            <if test="deptId != null  ">dept_id,</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name,</if>
+            <if test="participantInfo != null  and participantInfo != ''  ">participant_info,</if>
+            <if test="accidentReason != null  and accidentReason != ''  ">accident_reason,</if>
+            <if test="responsibilityInvestigate != null  and responsibilityInvestigate != ''  ">responsibility_investigate,</if>
+            <if test="accidentEducation != null  and accidentEducation != ''  ">accident_education,</if>
+            <if test="rectificationMeasures != null  and rectificationMeasures != ''  ">rectification_measures,</if>
+            <if test="preventiveMeasures != null  and preventiveMeasures != ''  ">preventive_measures,</if>
+            <if test="filePath != null  and filePath != ''  ">file_path,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="accidentBasiscId != null  and accidentBasiscId != ''  ">#{accidentBasiscId},</if>
-			<if test="accidentName != null  and accidentName != ''  ">#{accidentName},</if>
-			<if test="isHandle != null  and isHandle != ''  ">#{isHandle},</if>
-			<if test="handleDate != null  ">#{handleDate},</if>
-			<if test="isCloseCase != null  and isCloseCase != ''  ">#{isCloseCase},</if>
-			<if test="closeCaseDate != null  ">#{closeCaseDate},</if>
-			<if test="closeCaseType != null  and closeCaseType != ''  ">#{closeCaseType},</if>
-			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
-			<if test="participantInfo != null  and participantInfo != ''  ">#{participantInfo},</if>
-			<if test="accidentReason != null  and accidentReason != ''  ">#{accidentReason},</if>
-			<if test="responsibilityInvestigate != null  and responsibilityInvestigate != ''  ">#{responsibilityInvestigate},</if>
-			<if test="accidentEducation != null  and accidentEducation != ''  ">#{accidentEducation},</if>
-			<if test="rectificationMeasures != null  and rectificationMeasures != ''  ">#{rectificationMeasures},</if>
-			<if test="preventiveMeasures != null  and preventiveMeasures != ''  ">#{preventiveMeasures},</if>
-			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="meno != null  and meno != ''  ">#{meno},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">#{accidentBasiscId},</if>
+            <if test="accidentName != null  and accidentName != ''  ">#{accidentName},</if>
+            <if test="isHandle != null  and isHandle != ''  ">#{isHandle},</if>
+            <if test="handleDate != null  ">#{handleDate},</if>
+            <if test="isCloseCase != null  and isCloseCase != ''  ">#{isCloseCase},</if>
+            <if test="closeCaseDate != null  ">#{closeCaseDate},</if>
+            <if test="closeCaseType != null  and closeCaseType != ''  ">#{closeCaseType},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="deptName != null  and deptName != ''  ">#{deptName},</if>
+            <if test="participantInfo != null  and participantInfo != ''  ">#{participantInfo},</if>
+            <if test="accidentReason != null  and accidentReason != ''  ">#{accidentReason},</if>
+            <if test="responsibilityInvestigate != null  and responsibilityInvestigate != ''  ">#{responsibilityInvestigate},</if>
+            <if test="accidentEducation != null  and accidentEducation != ''  ">#{accidentEducation},</if>
+            <if test="rectificationMeasures != null  and rectificationMeasures != ''  ">#{rectificationMeasures},</if>
+            <if test="preventiveMeasures != null  and preventiveMeasures != ''  ">#{preventiveMeasures},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTAccidentInvestigation" parameterType="com.project.web.domian.TAccidentInvestigation">
+
+    <update id="updateTAccidentInvestigation" parameterType="TAccidentInvestigation">
         update t_accident_investigation
         <trim prefix="SET" suffixOverrides=",">
             <if test="accidentBasiscId != null  and accidentBasiscId != ''  ">accident_basisc_id = #{accidentBasiscId},</if>
@@ -129,7 +139,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isCloseCase != null  and isCloseCase != ''  ">is_close_case = #{isCloseCase},</if>
             <if test="closeCaseDate != null  ">close_case_date = #{closeCaseDate},</if>
             <if test="closeCaseType != null  and closeCaseType != ''  ">close_case_type = #{closeCaseType},</if>
-            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name = #{deptName},</if>
             <if test="participantInfo != null  and participantInfo != ''  ">participant_info = #{participantInfo},</if>
             <if test="accidentReason != null  and accidentReason != ''  ">accident_reason = #{accidentReason},</if>
             <if test="responsibilityInvestigate != null  and responsibilityInvestigate != ''  ">responsibility_investigate = #{responsibilityInvestigate},</if>
@@ -147,15 +158,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-	<delete id="deleteTAccidentInvestigationById" parameterType="String">
+    <delete id="deleteTAccidentInvestigationById" parameterType="String">
         delete from t_accident_investigation where id = #{id}
     </delete>
-	
+
     <delete id="deleteTAccidentInvestigationByIds" parameterType="String">
-        delete from t_accident_investigation where id in 
+        delete from t_accident_investigation where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

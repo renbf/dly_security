@@ -2,6 +2,7 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TVehicleCheck;
 
 /**
@@ -34,7 +35,7 @@ public interface ITVehicleCheckService
      * @param tVehicleCheck 车辆例检信息
      * @return 结果
      */
-	public int insertTVehicleCheck(TVehicleCheck tVehicleCheck);
+	public AjaxResult insertTVehicleCheck(TVehicleCheck tVehicleCheck);
 	
 	/**
      * 修改车辆例检
@@ -42,7 +43,7 @@ public interface ITVehicleCheckService
      * @param tVehicleCheck 车辆例检信息
      * @return 结果
      */
-	public int updateTVehicleCheck(TVehicleCheck tVehicleCheck);
+	public AjaxResult updateTVehicleCheck(TVehicleCheck tVehicleCheck);
 		
 	/**
      * 删除车辆例检信息

@@ -1,6 +1,7 @@
 package com.project.security.service.impl;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,15 +18,16 @@ import org.springframework.stereotype.Service;
 
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.framework.config.ServerConfig;
 import com.project.security.domain.TBanner;
 import com.project.security.domain.TIndustryDynamics;
 import com.project.security.domain.TNotice;
 import com.project.security.domain.TUserMessage;
-import com.project.security.domain.User;
 import com.project.security.domain.vo.TCourseVo;
 import com.project.security.domain.vo.TSubjectVo;
 import com.project.security.domain.vo.TUserMessageVo;
 import com.project.security.domain.vo.TUserPaperVo;
+import com.project.security.domain.vo.UserVo;
 import com.project.security.mapper.TBannerMapper;
 import com.project.security.mapper.TCourseMapper;
 import com.project.security.mapper.TDictMapper;
@@ -38,6 +40,7 @@ import com.project.security.mapper.UserMapper;
 import com.project.security.service.IAccountNumberService;
 import com.project.security.utils.page.PageInfoUtil;
 import com.project.security.utils.page.TableDataView;
+import com.project.system.domain.SysUser;
 
 /**
  * 
@@ -70,7 +73,8 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	@Autowired
 	@Qualifier("userMapper")
 	private UserMapper userMapper;
-	
+	@Autowired
+	private ServerConfig serverConfig;
 	@Autowired
 	@Qualifier("subjectMapper")
 	private TSubjectMapper subjectMapper;
@@ -151,7 +155,13 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
         	if(Result.SUCCESS.equals(pageResult.getStatus())) {
     			return pageResult;
         	}
-    		List<TCourseVo> courseList = courseMapper.littleKnowledge(userId,"12");
+    		List<TCourseVo> courseList = courseMapper.littleKnowledge("12");
+    		if(CollectionUtils.isNotEmpty(courseList)) {
+    			String serverUrl = serverConfig.getUrl();
+    			for(TCourseVo courseVo :courseList) {
+    				courseVo.setWebUrl(serverUrl+"/safety/train/introductionUrl/"+courseVo.getId());
+    			}
+    		}
     		TableDataView<TCourseVo> tableDataView = PageInfoUtil.addPageInfo(courseList);
 			result.setResult(tableDataView);
 			result.setMessage("小知识查询成功");
@@ -244,7 +254,7 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
     			return pageResult;
         	}
         	Map<String,Object> param = new HashMap<String, Object>();
-        	param.put("hasCommitDate", "1");
+        	param.put("status", "2");
         	param.put("userId", userId);
     		List<TUserPaperVo> list = userPaperMapper.selectTUserPapersByWhere(param);
     		TableDataView<TUserPaperVo> tableDataView = PageInfoUtil.addPageInfo(list);
@@ -357,8 +367,8 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 	public DataResult getUserInfo(String userId) {
 		DataResult result = new DataResult();
         try {
-        	User sysUser = userMapper.selectUserByUserId(Long.valueOf(userId));
-        	result.setResult(sysUser);
+        	UserVo userVo = userMapper.selectUserByUserId(Long.valueOf(userId));
+        	result.setResult(userVo);
 			result.setMessage("查询个人信息成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -367,5 +377,5 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 			throw new RuntimeException("查询个人信息接口异常");
 		}
 	}
-	
+
 }

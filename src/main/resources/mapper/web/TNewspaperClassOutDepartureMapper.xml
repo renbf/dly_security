@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TNewspaperClassOutDepartureMapper">
-    
+
     <resultMap type="TNewspaperClassOutDeparture" id="TNewspaperClassOutDepartureResult">
         <result property="id"    column="id"    />
         <result property="shiftsVehicle"    column="shifts_vehicle"    />
@@ -17,76 +17,92 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
         <result property="businessId"    column="business_id"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTNewspaperClassOutDepartureVo">
-        select ncod.id, ncod.shifts_vehicle, ncod.shifts_driver, ncod.shifts_type, ncod.shifts_num, ncod.line_name, ncod.newspaper_class_date, ncod.newspaper_class_per, ncod.dept_id, ncod.create_time, ncod.update_time, ncod.user_id, ncod.business_id, ncod.update_user_id from t_newspaper_class_out_departure ncod
+
+    <sql id="selectTNewspaperClassOutDepartureVo">
+        select ncod.id, ncod.shifts_vehicle, ncod.shifts_driver, ncod.shifts_type, ncod.shifts_num,
+        ncod.line_name, ncod.newspaper_class_date, ncod.newspaper_class_per, ncod.dept_id, ncod.create_time,
+        ncod.update_time, ncod.user_id, ncod.meno, ncod.business_id, ncod.update_user_id ,
+		DATE_FORMAT(ncod.newspaper_class_date,'%Y-%m-%d') as newspaperClassDateStr,
+        DATE_FORMAT(ncod.create_time,'%Y-%m-%d') as createTimeStr
+        from t_newspaper_class_out_departure ncod
     </sql>
-	
+
     <select id="selectTNewspaperClassOutDepartureList" parameterType="TNewspaperClassOutDeparture" resultMap="TNewspaperClassOutDepartureResult">
         <include refid="selectTNewspaperClassOutDepartureVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and ncod.id = #{id}</if>
-             <if test="shiftsVehicle != null  and shiftsVehicle != '' "> and ncod.shifts_vehicle = #{shiftsVehicle}</if>
-             <if test="shiftsDriver != null  and shiftsDriver != '' "> and ncod.shifts_driver = #{shiftsDriver}</if>
-             <if test="shiftsType != null  and shiftsType != '' "> and ncod.shifts_type = #{shiftsType}</if>
-             <if test="shiftsNum != null  and shiftsNum != '' "> and ncod.shifts_num = #{shiftsNum}</if>
-             <if test="lineName != null  and lineName != '' "> and ncod.line_name = #{lineName}</if>
-             <if test="newspaperClassDate != null "> and ncod.newspaper_class_date = #{newspaperClassDate}</if>
-             <if test="newspaperClassPer != null  and newspaperClassPer != '' "> and ncod.newspaper_class_per = #{newspaperClassPer}</if>
-             <if test="deptId != null  and deptId != '' "> and ncod.dept_id = #{deptId}</if>
-             <if test="createTime != null "> and ncod.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and ncod.update_time = #{updateTime}</if>
-             <if test="userId != null "> and ncod.user_id = #{userId}</if>
-             <if test="businessId != null  and businessId != '' "> and ncod.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and ncod.update_user_id = #{updateUserId}</if>
-         </where>
-         order by ncod.create_time desc
+
+            <if test="shiftsVehicle != null  and shiftsVehicle != '' "> and ncod.shifts_vehicle like concat('%',#{shiftsVehicle},'%')</if>
+
+            <if test="shiftsDriver != null  and shiftsDriver != '' "> and ncod.shifts_driver like concat('%',#{shiftsDriver},'%')</if>
+
+            <if test="shiftsType != null  and shiftsType != '' "> and ncod.shifts_type like concat('%',#{shiftsType},'%')</if>
+
+            <if test="shiftsNum != null  and shiftsNum != '' "> and ncod.shifts_num like concat('%',#{shiftsNum},'%')</if>
+
+            <if test="lineName != null  and lineName != '' "> and ncod.line_name = #{lineName}</if>
+            <if test="newspaperClassDate != null "> and ncod.newspaper_class_date = #{newspaperClassDate}</if>
+
+            <if test="newspaperClassPer != null  and newspaperClassPer != '' "> and ncod.newspaper_class_per like concat('%',#{newspaperClassPer},'%')</if>
+
+            <if test="deptId != null  and deptId != '' "> and ncod.dept_id like concat('%',#{deptId},'%')</if>
+
+            <if test="createTime != null "> and ncod.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and ncod.update_time = #{updateTime}</if>
+            <if test="userId != null "> and ncod.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and ncod.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and ncod.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and ncod.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTNewspaperClassOutDepartureById" parameterType="String" resultMap="TNewspaperClassOutDepartureResult">
         <include refid="selectTNewspaperClassOutDepartureVo"/>
         where ncod.id = #{id}
     </select>
-        
+
     <insert id="insertTNewspaperClassOutDeparture" parameterType="TNewspaperClassOutDeparture">
         insert into t_newspaper_class_out_departure
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="shiftsVehicle != null  and shiftsVehicle != ''  ">shifts_vehicle,</if>
-			<if test="shiftsDriver != null  and shiftsDriver != ''  ">shifts_driver,</if>
-			<if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
-			<if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num,</if>
-			<if test="lineName != null  and lineName != ''  ">line_name,</if>
-			<if test="newspaperClassDate != null  ">newspaper_class_date,</if>
-			<if test="newspaperClassPer != null  and newspaperClassPer != ''  ">newspaper_class_per,</if>
-			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="shiftsVehicle != null  and shiftsVehicle != ''  ">shifts_vehicle,</if>
+            <if test="shiftsDriver != null  and shiftsDriver != ''  ">shifts_driver,</if>
+            <if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
+            <if test="shiftsNum != null  and shiftsNum != ''  ">shifts_num,</if>
+            <if test="lineName != null  and lineName != ''  ">line_name,</if>
+            <if test="newspaperClassDate != null  ">newspaper_class_date,</if>
+            <if test="newspaperClassPer != null  and newspaperClassPer != ''  ">newspaper_class_per,</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="shiftsVehicle != null  and shiftsVehicle != ''  ">#{shiftsVehicle},</if>
-			<if test="shiftsDriver != null  and shiftsDriver != ''  ">#{shiftsDriver},</if>
-			<if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
-			<if test="shiftsNum != null  and shiftsNum != ''  ">#{shiftsNum},</if>
-			<if test="lineName != null  and lineName != ''  ">#{lineName},</if>
-			<if test="newspaperClassDate != null  ">#{newspaperClassDate},</if>
-			<if test="newspaperClassPer != null  and newspaperClassPer != ''  ">#{newspaperClassPer},</if>
-			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="shiftsVehicle != null  and shiftsVehicle != ''  ">#{shiftsVehicle},</if>
+            <if test="shiftsDriver != null  and shiftsDriver != ''  ">#{shiftsDriver},</if>
+            <if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
+            <if test="shiftsNum != null  and shiftsNum != ''  ">#{shiftsNum},</if>
+            <if test="lineName != null  and lineName != ''  ">#{lineName},</if>
+            <if test="newspaperClassDate != null  ">#{newspaperClassDate},</if>
+            <if test="newspaperClassPer != null  and newspaperClassPer != ''  ">#{newspaperClassPer},</if>
+            <if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
+
     <update id="updateTNewspaperClassOutDeparture" parameterType="TNewspaperClassOutDeparture">
         update t_newspaper_class_out_departure
         <trim prefix="SET" suffixOverrides=",">
@@ -101,21 +117,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null  ">create_time = #{createTime},</if>
             <if test="updateTime != null  ">update_time = #{updateTime},</if>
             <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
             <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTNewspaperClassOutDepartureById" parameterType="String">
+    <delete id="deleteTNewspaperClassOutDepartureById" parameterType="String">
         delete from t_newspaper_class_out_departure where id = #{id}
     </delete>
-	
+
     <delete id="deleteTNewspaperClassOutDepartureByIds" parameterType="String">
-        delete from t_newspaper_class_out_departure where id in 
+        delete from t_newspaper_class_out_departure where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

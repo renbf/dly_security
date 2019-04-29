@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TSafetyInvestmentMapper">
+    
+    <resultMap type="TSafetyInvestment" id="TSafetyInvestmentResult">
+        <result property="id"    column="id"    />
+        <result property="responsibilityName"    column="responsibility_name"    />
+        <result property="investmentYear"    column="investment_year"    />
+        <result property="investmentMonth"    column="investment_month"    />
+        <result property="investmentRatio"    column="investment_ratio"    />
+        <result property="investmentAmt"    column="investment_amt"    />
+        <result property="investmentType"    column="investment_type"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="investmentPurpose"    column="investment_purpose"    />
+        <result property="investmentRemark"    column="investment_remark"    />
+        <result property="investmentFilePath"    column="investment_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTSafetyInvestmentVo">
+        select si.id, si.responsibility_name, si.investment_year, si.investment_month, si.investment_ratio,
+        si.investment_amt, si.investment_type, si.dept_id, si.investment_purpose, si.investment_remark,
+        si.investment_file_path, si.create_time, si.update_time, si.user_id, si.meno, si.business_id, si.update_user_id,
+        DATE_FORMAT(si.create_time,'%Y-%m-%d') as createTimeStr,
+        zd.dict_name as investmentTypeName
+        from t_safety_investment si LEFT JOIN t_dict zd ON (si.investment_type = zd.id and zd.dict_code = 'safety_investment_type')
+    </sql>
+	
+    <select id="selectTSafetyInvestmentList" parameterType="TSafetyInvestment" resultMap="TSafetyInvestmentResult">
+        <include refid="selectTSafetyInvestmentVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and si.id = #{id}</if>
+             <if test="responsibilityName != null  and responsibilityName != '' "> and si.responsibility_name = #{responsibilityName}</if>
+             <if test="investmentYear != null "> and si.investment_year = #{investmentYear}</if>
+             <if test="investmentMonth != null "> and si.investment_month = #{investmentMonth}</if>
+             <if test="investmentRatio != null  and investmentRatio != '' "> and si.investment_ratio = #{investmentRatio}</if>
+             <if test="investmentAmt != null "> and si.investment_amt = #{investmentAmt}</if>
+             <if test="investmentType != null  and investmentType != '' "> and si.investment_type = #{investmentType}</if>
+             <if test="deptId != null  and deptId != '' "> and si.dept_id = #{deptId}</if>
+
+             <if test="investmentPurpose != null  and investmentPurpose != '' "> and si.investment_purpose like concat('%',#{investmentPurpose},'%')</if>
+
+             <if test="investmentRemark != null  and investmentRemark != '' "> and si.investment_remark = #{investmentRemark}</if>
+             <if test="investmentFilePath != null  and investmentFilePath != '' "> and si.investment_file_path = #{investmentFilePath}</if>
+            
+
+            <if test="createTime != null  and createTime1 == null "> and DATE_FORMAT(si.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime == null "> and DATE_FORMAT(si.create_time,'%Y%m%d') &lt;= DATE_FORMAT(#{createTime1},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime != null "> and DATE_FORMAT(si.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')
+                and   DATE_FORMAT(si.create_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{createTime1},'%Y%m%d')
+            </if>
+            
+            
+             <if test="updateTime != null "> and si.update_time = #{updateTime}</if>
+             <if test="userId != null "> and si.user_id = #{userId}</if>
+             <if test="meno != null  and meno != '' "> and si.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and si.business_id = #{businessId}</if>
+             <if test="updateUserId != null "> and si.update_user_id = #{updateUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTSafetyInvestmentById" parameterType="String" resultMap="TSafetyInvestmentResult">
+        <include refid="selectTSafetyInvestmentVo"/>
+        where si.id = #{id}
+    </select>
+        
+    <insert id="insertTSafetyInvestment" parameterType="TSafetyInvestment">
+        insert into t_safety_investment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="responsibilityName != null  and responsibilityName != ''  ">responsibility_name,</if>
+			<if test="investmentYear != null  ">investment_year,</if>
+			<if test="investmentMonth != null  ">investment_month,</if>
+			<if test="investmentRatio != null  and investmentRatio != ''  ">investment_ratio,</if>
+			<if test="investmentAmt != null  ">investment_amt,</if>
+			<if test="investmentType != null  and investmentType != ''  ">investment_type,</if>
+			<if test="deptId != null  and deptId != ''  ">dept_id,</if>
+			<if test="investmentPurpose != null  and investmentPurpose != ''  ">investment_purpose,</if>
+			<if test="investmentRemark != null  and investmentRemark != ''  ">investment_remark,</if>
+			<if test="investmentFilePath != null  and investmentFilePath != ''  ">investment_file_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="responsibilityName != null  and responsibilityName != ''  ">#{responsibilityName},</if>
+			<if test="investmentYear != null  ">#{investmentYear},</if>
+			<if test="investmentMonth != null  ">#{investmentMonth},</if>
+			<if test="investmentRatio != null  and investmentRatio != ''  ">#{investmentRatio},</if>
+			<if test="investmentAmt != null  ">#{investmentAmt},</if>
+			<if test="investmentType != null  and investmentType != ''  ">#{investmentType},</if>
+			<if test="deptId != null  and deptId != ''  ">#{deptId},</if>
+			<if test="investmentPurpose != null  and investmentPurpose != ''  ">#{investmentPurpose},</if>
+			<if test="investmentRemark != null  and investmentRemark != ''  ">#{investmentRemark},</if>
+			<if test="investmentFilePath != null  and investmentFilePath != ''  ">#{investmentFilePath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTSafetyInvestment" parameterType="TSafetyInvestment">
+        update t_safety_investment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="responsibilityName != null  and responsibilityName != ''  ">responsibility_name = #{responsibilityName},</if>
+            <if test="investmentYear != null  ">investment_year = #{investmentYear},</if>
+            <if test="investmentMonth != null  ">investment_month = #{investmentMonth},</if>
+            <if test="investmentRatio != null  and investmentRatio != ''  ">investment_ratio = #{investmentRatio},</if>
+            <if test="investmentAmt != null  ">investment_amt = #{investmentAmt},</if>
+            <if test="investmentType != null  and investmentType != ''  ">investment_type = #{investmentType},</if>
+            <if test="deptId != null  and deptId != ''  ">dept_id = #{deptId},</if>
+            <if test="investmentPurpose != null  and investmentPurpose != ''  ">investment_purpose = #{investmentPurpose},</if>
+            <if test="investmentRemark != null  and investmentRemark != ''  ">investment_remark = #{investmentRemark},</if>
+            <if test="investmentFilePath != null  and investmentFilePath != ''  ">investment_file_path = #{investmentFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTSafetyInvestmentById" parameterType="String">
+        delete from t_safety_investment where id = #{id}
+    </delete>
+	
+    <delete id="deleteTSafetyInvestmentByIds" parameterType="String">
+        delete from t_safety_investment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

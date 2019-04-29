@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
@@ -70,9 +72,9 @@ public class TTaskManagementController extends BaseController
 	@Log(title = "作业管理", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TTaskManagement tTaskManagement)
+	public AjaxResult addSave(TTaskManagement tTaskManagement,@RequestParam(name = "taskFile",required = false) MultipartFile taskFile)
 	{		
-		return toAjax(tTaskManagementService.insertTTaskManagement(tTaskManagement));
+		return tTaskManagementService.insertTTaskManagement(tTaskManagement,taskFile);
 	}
 
 	/**
@@ -93,9 +95,9 @@ public class TTaskManagementController extends BaseController
 	@Log(title = "作业管理", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TTaskManagement tTaskManagement)
+	public AjaxResult editSave(TTaskManagement tTaskManagement,@RequestParam(name = "taskFile",required = false) MultipartFile taskFile)
 	{		
-		return toAjax(tTaskManagementService.updateTTaskManagement(tTaskManagement));
+		return tTaskManagementService.updateTTaskManagement(tTaskManagement,taskFile);
 	}
 	
 	/**

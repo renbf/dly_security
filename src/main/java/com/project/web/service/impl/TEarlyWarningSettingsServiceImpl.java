@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.common.support.Convert;
+import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
 import com.project.web.domian.TEarlyWarningSettings;
 import com.project.web.mapper.TEarlyWarningSettingsMapper;
@@ -54,9 +55,11 @@ public class TEarlyWarningSettingsServiceImpl implements ITEarlyWarningSettingsS
      */
 	@Override
 	public int insertTEarlyWarningSettings(TEarlyWarningSettings tEarlyWarningSettings)
-	{
+	{	
 		tEarlyWarningSettings.setId(UUIDUtil.getUUID());
 		tEarlyWarningSettings.setCreateTime(new Date());
+		tEarlyWarningSettings.setCreateBy(ShiroUtils.getLoginName());
+		tEarlyWarningSettings.setUserId(ShiroUtils.getUserId());
 		return tEarlyWarningSettingsMapper.insertTEarlyWarningSettings(tEarlyWarningSettings);
 	}
 	

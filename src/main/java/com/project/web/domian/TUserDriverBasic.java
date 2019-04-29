@@ -40,9 +40,13 @@ public class TUserDriverBasic extends BaseEntity
 	/** 地址 */
 	private String driverAddr;
 	/** 部门 */
-	private String driverDept;
+	private Long driverDept;
 	/** 岗位 */
-	private String driverPost;
+	private Long driverPost;
+	/** 入职日期 */
+	private Date entryDate;
+	/** 入职日期字符串 */
+	private String entryDateStr;
 	/** 创建日期 */
 	private Date createTime;
 	/** 更新时间 */
@@ -55,6 +59,76 @@ public class TUserDriverBasic extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	/**
+	 * 驾驶员信息表
+	 */
+	private TUserDriverInfo userDriverInfo;
+	/**
+	 * 驾驶员从业资格证表信息
+	 * @param id
+	 */
+	private TUserDriverPractitioners userDriverPractitioners;
+	/**驾驶员照片信息表
+	 * 
+	 * @param id
+	 */
+	private TUserDriverPhotos userDriverPhotos;
+	/**
+	 * 驾驶员其他信息表
+	 * @param id
+	 */
+	private TUserDriverOthers userDriverOthers;
+	
+	
+	
+	
+	public Date getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
+
+	public String getEntryDateStr() {
+		return entryDateStr;
+	}
+
+	public void setEntryDateStr(String entryDateStr) {
+		this.entryDateStr = entryDateStr;
+	}
+
+	public TUserDriverInfo getUserDriverInfo() {
+		return userDriverInfo;
+	}
+
+	public void setUserDriverInfo(TUserDriverInfo userDriverInfo) {
+		this.userDriverInfo = userDriverInfo;
+	}
+
+	public TUserDriverPractitioners getUserDriverPractitioners() {
+		return userDriverPractitioners;
+	}
+
+	public void setUserDriverPractitioners(TUserDriverPractitioners userDriverPractitioners) {
+		this.userDriverPractitioners = userDriverPractitioners;
+	}
+
+	public TUserDriverPhotos getUserDriverPhotos() {
+		return userDriverPhotos;
+	}
+
+	public void setUserDriverPhotos(TUserDriverPhotos userDriverPhotos) {
+		this.userDriverPhotos = userDriverPhotos;
+	}
+
+	public TUserDriverOthers getUserDriverOthers() {
+		return userDriverOthers;
+	}
+
+	public void setUserDriverOthers(TUserDriverOthers userDriverOthers) {
+		this.userDriverOthers = userDriverOthers;
+	}
 
 	public void setId(String id) 
 	{
@@ -155,24 +229,23 @@ public class TUserDriverBasic extends BaseEntity
 	{
 		return driverAddr;
 	}
-	public void setDriverDept(String driverDept) 
-	{
+
+	public Long getDriverDept() {
+		return driverDept;
+	}
+
+	public void setDriverDept(Long driverDept) {
 		this.driverDept = driverDept;
 	}
 
-	public String getDriverDept() 
-	{
-		return driverDept;
+	public Long getDriverPost() {
+		return driverPost;
 	}
-	public void setDriverPost(String driverPost) 
-	{
+
+	public void setDriverPost(Long driverPost) {
 		this.driverPost = driverPost;
 	}
 
-	public String getDriverPost() 
-	{
-		return driverPost;
-	}
 	public void setCreateTime(Date createTime) 
 	{
 		this.createTime = createTime;

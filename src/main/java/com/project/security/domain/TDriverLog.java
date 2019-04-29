@@ -1,9 +1,13 @@
 package com.project.security.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.Date;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 行车日志基础表 t_driver_log
@@ -22,22 +26,28 @@ public class TDriverLog implements Serializable
 	/** 车牌号 */
 	private String carNumber;
 	/** 核载吨位 */
+	@JsonIgnore
 	private String idealTonnage;
 	/** 实载吨位 */
+	@JsonIgnore
 	private String actualTonnage;
 	/** 货物名称 */
+	@JsonIgnore
 	private String goodsName;
 	/** 类项 */
+	@JsonIgnore
 	private String type;
 	/** 启运地 */
 	private String transporAddress;
 	/** 目的地 */
 	private String goalAddress;
 	/** 启运日期 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date transportDate;
 	/** 到达日期 */
 	private Date arriveDate;
 	/** 里程 */
+	@JsonIgnore
 	private String km;
 	/** 车辆状态0行车前1行车中2行车后 */
 	private String status;
@@ -48,12 +58,16 @@ public class TDriverLog implements Serializable
 	/** 押运员 */
 	private String escortId;
 	/** 气温 */
+	@JsonIgnore
 	private String temperature;
 	/** 天气 */
+	@JsonIgnore
 	private String weather;
 	/** 创建人id */
+	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
+	@JsonIgnore
 	private Date createDate;
 	/** 修改时间 */
 	private Date updateDate;

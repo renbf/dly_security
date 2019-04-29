@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.project.system.tVehicleCheck.mapper.TVehicleCheckMapper">
-    
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TVehicleCheckMapper">
+
     <resultMap type="TVehicleCheck" id="TVehicleCheckResult">
         <result property="id"    column="id"    />
         <result property="checkType"    column="check_type"    />
@@ -19,78 +19,104 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="userId"    column="user_id"    />
+        <result property="meno"    column="meno"    />
         <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTVehicleCheckVo">
-        select vc.id, vc.check_type, vc.vehicle_licence, vc.driver, vc.ckeck_date, vc.check_result, vc.check_validity, vc.vehicle_up_driver, vc.vehicle_down_driver, vc.microcomputer_operator, vc.unqualified_info, vc.create_time, vc.update_time, vc.user_id, vc.business_id from t_vehicle_check vc
+
+    <sql id="selectTVehicleCheckVo">
+        select vc.id, vc.check_type, vc.vehicle_licence, vc.driver, vc.ckeck_date, vc.check_result,
+        vc.check_validity, vc.vehicle_up_driver, vc.vehicle_down_driver, vc.microcomputer_operator,
+        vc.unqualified_info, vc.create_time, vc.update_time, vc.user_id, vc.meno, vc.business_id,
+        vc.update_user_id ,
+        DATE_FORMAT(vc.ckeck_date,'%Y-%m-%d') as ckeckDateStr,
+        DATE_FORMAT(vc.create_time,'%Y-%m-%d') as createTimeStr,
+        di.dict_name as checkTypeStr
+        from t_vehicle_check vc left join t_dict di on (vc.check_type = di.id and di.dict_code = 'vehicle_check_type')
+
     </sql>
-	
+
     <select id="selectTVehicleCheckList" parameterType="TVehicleCheck" resultMap="TVehicleCheckResult">
         <include refid="selectTVehicleCheckVo"/>
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and vc.id = #{id}</if>
-             <if test="checkType != null  and checkType != '' "> and vc.check_type = #{checkType}</if>
-             <if test="vehicleLicence != null  and vehicleLicence != '' "> and vc.vehicle_licence = #{vehicleLicence}</if>
-             <if test="driver != null  and driver != '' "> and vc.driver = #{driver}</if>
-             <if test="ckeckDate != null "> and vc.ckeck_date = #{ckeckDate}</if>
-             <if test="checkResult != null  and checkResult != '' "> and vc.check_result = #{checkResult}</if>
-             <if test="checkValidity != null "> and vc.check_validity = #{checkValidity}</if>
-             <if test="vehicleUpDriver != null  and vehicleUpDriver != '' "> and vc.vehicle_up_driver = #{vehicleUpDriver}</if>
-             <if test="vehicleDownDriver != null  and vehicleDownDriver != '' "> and vc.vehicle_down_driver = #{vehicleDownDriver}</if>
-             <if test="microcomputerOperator != null  and microcomputerOperator != '' "> and vc.microcomputer_operator = #{microcomputerOperator}</if>
-             <if test="unqualifiedInfo != null  and unqualifiedInfo != '' "> and vc.unqualified_info = #{unqualifiedInfo}</if>
-             <if test="createTime != null "> and vc.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and vc.update_time = #{updateTime}</if>
-             <if test="userId != null "> and vc.user_id = #{userId}</if>
-             <if test="businessId != null  and businessId != '' "> and vc.business_id = #{businessId}</if>
-         </where>
-         order by vc.create_time desc
+            <if test="checkType != null  and checkType != '' "> and vc.check_type = #{checkType}</if>
+
+            <if test="vehicleLicence != null  and vehicleLicence != '' "> and vc.vehicle_licence like concat('%',#{vehicleLicence},'%')</if>
+
+            <if test="driver != null  and driver != '' "> and vc.driver like concat('%',#{driver},'%')</if>
+
+
+            <if test="ckeckDate != null  and ckeckDate1 == null "> and DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &gt;= DATE_FORMAT(#{ckeckDate},'%Y%m%d')</if>
+            <if test="ckeckDate1 != null  and ckeckDate == null "> and DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &lt;= DATE_FORMAT(#{ckeckDate1},'%Y%m%d')</if>
+            <if test="ckeckDate1 != null  and ckeckDate != null "> and DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &gt;= DATE_FORMAT(#{ckeckDate},'%Y%m%d')
+                and   DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{ckeckDate1},'%Y%m%d')
+            </if>
+
+
+            <if test="checkResult != null  and checkResult != '' "> and vc.check_result like concat('%',#{checkResult},'%')</if>
+
+            <if test="checkValidity != null "> and vc.check_validity = #{checkValidity}</if>
+            <if test="vehicleUpDriver != null  and vehicleUpDriver != '' "> and vc.vehicle_up_driver = #{vehicleUpDriver}</if>
+            <if test="vehicleDownDriver != null  and vehicleDownDriver != '' "> and vc.vehicle_down_driver = #{vehicleDownDriver}</if>
+            <if test="microcomputerOperator != null  and microcomputerOperator != '' "> and vc.microcomputer_operator = #{microcomputerOperator}</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != '' "> and vc.unqualified_info = #{unqualifiedInfo}</if>
+            <if test="createTime != null "> and vc.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and vc.update_time = #{updateTime}</if>
+            <if test="userId != null "> and vc.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' "> and vc.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and vc.business_id = #{businessId}</if>
+            <if test="updateUserId != null "> and vc.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTVehicleCheckById" parameterType="String" resultMap="TVehicleCheckResult">
         <include refid="selectTVehicleCheckVo"/>
         where vc.id = #{id}
     </select>
-        
+
     <insert id="insertTVehicleCheck" parameterType="TVehicleCheck">
         insert into t_vehicle_check
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="checkType != null  and checkType != ''  ">check_type,</if>
-			<if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence,</if>
-			<if test="driver != null  and driver != ''  ">driver,</if>
-			<if test="ckeckDate != null  ">ckeck_date,</if>
-			<if test="checkResult != null  and checkResult != ''  ">check_result,</if>
-			<if test="checkValidity != null  ">check_validity,</if>
-			<if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">vehicle_up_driver,</if>
-			<if test="vehicleDownDriver != null  and vehicleDownDriver != ''  ">vehicle_down_driver,</if>
-			<if test="microcomputerOperator != null  and microcomputerOperator != ''  ">microcomputer_operator,</if>
-			<if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">unqualified_info,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="checkType != null  and checkType != ''  ">check_type,</if>
+            <if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence,</if>
+            <if test="driver != null  and driver != ''  ">driver,</if>
+            <if test="ckeckDate != null  ">ckeck_date,</if>
+            <if test="checkResult != null  and checkResult != ''  ">check_result,</if>
+            <if test="checkValidity != null  ">check_validity,</if>
+            <if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">vehicle_up_driver,</if>
+            <if test="vehicleDownDriver != null  and vehicleDownDriver != ''  ">vehicle_down_driver,</if>
+            <if test="microcomputerOperator != null  and microcomputerOperator != ''  ">microcomputer_operator,</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">unqualified_info,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="checkType != null  and checkType != ''  ">#{checkType},</if>
-			<if test="vehicleLicence != null  and vehicleLicence != ''  ">#{vehicleLicence},</if>
-			<if test="driver != null  and driver != ''  ">#{driver},</if>
-			<if test="ckeckDate != null  ">#{ckeckDate},</if>
-			<if test="checkResult != null  and checkResult != ''  ">#{checkResult},</if>
-			<if test="checkValidity != null  ">#{checkValidity},</if>
-			<if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">#{vehicleUpDriver},</if>
-			<if test="vehicleDownDriver != null  and vehicleDownDriver != ''  ">#{vehicleDownDriver},</if>
-			<if test="microcomputerOperator != null  and microcomputerOperator != ''  ">#{microcomputerOperator},</if>
-			<if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">#{unqualifiedInfo},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="checkType != null  and checkType != ''  ">#{checkType},</if>
+            <if test="vehicleLicence != null  and vehicleLicence != ''  ">#{vehicleLicence},</if>
+            <if test="driver != null  and driver != ''  ">#{driver},</if>
+            <if test="ckeckDate != null  ">#{ckeckDate},</if>
+            <if test="checkResult != null  and checkResult != ''  ">#{checkResult},</if>
+            <if test="checkValidity != null  ">#{checkValidity},</if>
+            <if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">#{vehicleUpDriver},</if>
+            <if test="vehicleDownDriver != null  and vehicleDownDriver != ''  ">#{vehicleDownDriver},</if>
+            <if test="microcomputerOperator != null  and microcomputerOperator != ''  ">#{microcomputerOperator},</if>
+            <if test="unqualifiedInfo != null  and unqualifiedInfo != ''  ">#{unqualifiedInfo},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
+
     <update id="updateTVehicleCheck" parameterType="TVehicleCheck">
         update t_vehicle_check
         <trim prefix="SET" suffixOverrides=",">
@@ -107,20 +133,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null  ">create_time = #{createTime},</if>
             <if test="updateTime != null  ">update_time = #{updateTime},</if>
             <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
             <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTVehicleCheckById" parameterType="String">
+    <delete id="deleteTVehicleCheckById" parameterType="String">
         delete from t_vehicle_check where id = #{id}
     </delete>
-	
+
     <delete id="deleteTVehicleCheckByIds" parameterType="String">
-        delete from t_vehicle_check where id in 
+        delete from t_vehicle_check where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

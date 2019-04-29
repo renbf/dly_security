@@ -1,102 +1,128 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TAccidentBasicsMapper">
-    
-    <resultMap type="com.project.web.domian.TAccidentBasics" id="TAccidentBasicsResult">
-        <result property="id"    column="id"    />
-        <result property="accidentName"    column="accident_name"    />
-        <result property="accidentType"    column="accident_type"    />
-        <result property="happenTime"    column="happen_time"    />
-        <result property="accidentLoss"    column="accident_loss"    />
-        <result property="accidentResponsibility"    column="accident_responsibility"    />
-        <result property="responsibilityUserId"    column="responsibility_user_id"    />
-        <result property="responsibilityDeptId"    column="responsibility_dept_id"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="userId"    column="user_id"    />
-        <result property="meno"    column="meno"    />
-        <result property="businessId"    column="business_id"    />
-        <result property="updateUserId"    column="update_user_id"    />
+
+    <resultMap type="TAccidentBasics" id="TAccidentBasicsResult">
+        <result property="id" column="id"/>
+        <result property="accidentName" column="accident_name"/>
+        <result property="accidentType" column="accident_type"/>
+        <result property="accidentPlace" column="accident_place"/>
+        <result property="happenTime" column="happen_time"/>
+        <result property="accidentLoss" column="accident_loss"/>
+        <result property="accidentResponsibility" column="accident_responsibility"/>
+        <result property="responsibilityUserId" column="responsibility_user_id"/>
+        <result property="responsibilityDeptId" column="responsibility_dept_id"/>
+        <result property="responsibilityDeptName" column="responsibility_dept_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="meno" column="meno"/>
+        <result property="businessId" column="business_id"/>
+        <result property="updateUserId" column="update_user_id"/>
     </resultMap>
-	
-	<sql id="selectTAccidentBasicsVo">
-        select ab.id, ab.accident_name, ab.accident_type, ab.happen_time, ab.accident_loss, ab.accident_responsibility, ab.responsibility_user_id, ab.responsibility_dept_id, ab.create_time, ab.update_time, ab.user_id, ab.meno, ab.business_id, ab.update_user_id from t_accident_basics ab
+
+    <sql id="selectTAccidentBasicsVo">
+        select ab.id, ab.accident_name, ab.accident_type, ab.accident_place, ab.happen_time, ab.accident_loss,
+        ab.accident_responsibility, ab.responsibility_user_id, ab.responsibility_dept_id, ab.responsibility_dept_name,
+         ab.create_time, ab.update_time, ab.user_id, ab.meno, ab.business_id, ab.update_user_id ,
+    		DATE_FORMAT(ab.happen_time,'%Y-%m-%d') as happenTimeStr,
+        DATE_FORMAT(ab.create_time,'%Y-%m-%d') as createTimeStr,
+			dic.dict_name as accidentTypeName
+          from t_accident_basics ab  left join t_dict dic on (dic.id = ab.accident_type and dic.dict_code = 'accident_type')
     </sql>
-	
-    <select id="selectTAccidentBasicsList" parameterType="com.project.web.domian.TAccidentBasics" resultMap="TAccidentBasicsResult">
+
+    <select id="selectTAccidentBasicsList" parameterType="TAccidentBasics" resultMap="TAccidentBasicsResult">
         <include refid="selectTAccidentBasicsVo"/>
-        <where>  
-            <if test="id != null  and id != '' "> and ab.id = #{id}</if>
-             <if test="accidentName != null  and accidentName != '' "> and ab.accident_name = #{accidentName}</if>
-             <if test="accidentType != null  and accidentType != '' "> and ab.accident_type = #{accidentType}</if>
-             <if test="happenTime != null "> and ab.happen_time = #{happenTime}</if>
-             <if test="accidentLoss != null  and accidentLoss != '' "> and ab.accident_loss = #{accidentLoss}</if>
-             <if test="accidentResponsibility != null  and accidentResponsibility != '' "> and ab.accident_responsibility = #{accidentResponsibility}</if>
-             <if test="responsibilityUserId != null "> and ab.responsibility_user_id = #{responsibilityUserId}</if>
-             <if test="responsibilityDeptId != null  and responsibilityDeptId != '' "> and ab.responsibility_dept_id = #{responsibilityDeptId}</if>
-             <if test="createTime != null "> and ab.create_time = #{createTime}</if>
-             <if test="updateTime != null "> and ab.update_time = #{updateTime}</if>
-             <if test="userId != null "> and ab.user_id = #{userId}</if>
-             <if test="meno != null  and meno != '' "> and ab.meno = #{meno}</if>
-             <if test="businessId != null  and businessId != '' "> and ab.business_id = #{businessId}</if>
-             <if test="updateUserId != null "> and ab.update_user_id = #{updateUserId}</if>
-         </where>
-           order by ab.create_time desc
+        <where>
+            <if test="id != null  and id != '' ">and ab.id = #{id}</if>
+            <if test="accidentName != null  and accidentName != '' ">and ab.accident_name like concat('%',#{accidentName},'%')</if>
+
+            <if test="accidentType != null  and accidentType != '' ">and ab.accident_type = #{accidentType}</if>
+            <if test="accidentPlace != null  and accidentPlace != '' ">and ab.accident_place like concat('%',#{accidentPlace},'%')</if>
+
+            <if test="happenTime != null ">and ab.happen_time = #{happenTime}</if>
+            <if test="accidentLoss != null  and accidentLoss != '' ">and ab.accident_loss = #{accidentLoss}</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != '' ">and ab.accident_responsibility like concat('%',#{accidentResponsibility},'%')</if>
+
+            <if test="responsibilityUserId != null ">and ab.responsibility_user_id = #{responsibilityUserId}</if>
+            <if test="responsibilityDeptId != null ">and ab.responsibility_dept_id = #{responsibilityDeptId}</if>
+            <if test="responsibilityDeptName != null  and responsibilityDeptName != '' ">and ab.responsibility_dept_name
+                = #{responsibilityDeptName}
+            </if>
+            <if test="createTime != null ">and ab.create_time = #{createTime}</if>
+            <if test="updateTime != null ">and ab.update_time = #{updateTime}</if>
+            <if test="userId != null ">and ab.user_id = #{userId}</if>
+            <if test="meno != null  and meno != '' ">and ab.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' ">and ab.business_id = #{businessId}</if>
+            <if test="updateUserId != null ">and ab.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTAccidentBasicsById" parameterType="String" resultMap="TAccidentBasicsResult">
         <include refid="selectTAccidentBasicsVo"/>
         where ab.id = #{id}
     </select>
-        
-    <insert id="insertTAccidentBasics" parameterType="com.project.web.domian.TAccidentBasics">
+
+    <insert id="insertTAccidentBasics" parameterType="TAccidentBasics">
         insert into t_accident_basics
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="accidentName != null  and accidentName != ''  ">accident_name,</if>
-			<if test="accidentType != null  and accidentType != ''  ">accident_type,</if>
-			<if test="happenTime != null  ">happen_time,</if>
-			<if test="accidentLoss != null  and accidentLoss != ''  ">accident_loss,</if>
-			<if test="accidentResponsibility != null  and accidentResponsibility != ''  ">accident_responsibility,</if>
-			<if test="responsibilityUserId != null  ">responsibility_user_id,</if>
-			<if test="responsibilityDeptId != null  and responsibilityDeptId != ''  ">responsibility_dept_id,</if>
-			<if test="createTime != null  ">create_time,</if>
-			<if test="updateTime != null  ">update_time,</if>
-			<if test="userId != null  ">user_id,</if>
-			<if test="meno != null  and meno != ''  ">meno,</if>
-			<if test="businessId != null  and businessId != ''  ">business_id,</if>
-			<if test="updateUserId != null  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="accidentName != null  and accidentName != ''  ">accident_name,</if>
+            <if test="accidentType != null  and accidentType != ''  ">accident_type,</if>
+            <if test="accidentPlace != null  and accidentPlace != ''  ">accident_place,</if>
+            <if test="happenTime != null  ">happen_time,</if>
+            <if test="accidentLoss != null  and accidentLoss != ''  ">accident_loss,</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != ''  ">accident_responsibility,</if>
+            <if test="responsibilityUserId != null  ">responsibility_user_id,</if>
+            <if test="responsibilityDeptId != null  ">responsibility_dept_id,</if>
+            <if test="responsibilityDeptName != null  and responsibilityDeptName != ''  ">responsibility_dept_name,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="userId != null  ">user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="accidentName != null  and accidentName != ''  ">#{accidentName},</if>
-			<if test="accidentType != null  and accidentType != ''  ">#{accidentType},</if>
-			<if test="happenTime != null  ">#{happenTime},</if>
-			<if test="accidentLoss != null  and accidentLoss != ''  ">#{accidentLoss},</if>
-			<if test="accidentResponsibility != null  and accidentResponsibility != ''  ">#{accidentResponsibility},</if>
-			<if test="responsibilityUserId != null  ">#{responsibilityUserId},</if>
-			<if test="responsibilityDeptId != null  and responsibilityDeptId != ''  ">#{responsibilityDeptId},</if>
-			<if test="createTime != null  ">#{createTime},</if>
-			<if test="updateTime != null  ">#{updateTime},</if>
-			<if test="userId != null  ">#{userId},</if>
-			<if test="meno != null  and meno != ''  ">#{meno},</if>
-			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
-			<if test="updateUserId != null  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="accidentName != null  and accidentName != ''  ">#{accidentName},</if>
+            <if test="accidentType != null  and accidentType != ''  ">#{accidentType},</if>
+            <if test="accidentPlace != null  and accidentPlace != ''  ">#{accidentPlace},</if>
+            <if test="happenTime != null  ">#{happenTime},</if>
+            <if test="accidentLoss != null  and accidentLoss != ''  ">#{accidentLoss},</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != ''  ">#{accidentResponsibility},
+            </if>
+            <if test="responsibilityUserId != null  ">#{responsibilityUserId},</if>
+            <if test="responsibilityDeptId != null  ">#{responsibilityDeptId},</if>
+            <if test="responsibilityDeptName != null  and responsibilityDeptName != ''  ">#{responsibilityDeptName},
+            </if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="userId != null  ">#{userId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTAccidentBasics" parameterType="com.project.web.domian.TAccidentBasics">
+
+    <update id="updateTAccidentBasics" parameterType="TAccidentBasics">
         update t_accident_basics
         <trim prefix="SET" suffixOverrides=",">
             <if test="accidentName != null  and accidentName != ''  ">accident_name = #{accidentName},</if>
             <if test="accidentType != null  and accidentType != ''  ">accident_type = #{accidentType},</if>
+            <if test="accidentPlace != null  and accidentPlace != ''  ">accident_place = #{accidentPlace},</if>
             <if test="happenTime != null  ">happen_time = #{happenTime},</if>
             <if test="accidentLoss != null  and accidentLoss != ''  ">accident_loss = #{accidentLoss},</if>
-            <if test="accidentResponsibility != null  and accidentResponsibility != ''  ">accident_responsibility = #{accidentResponsibility},</if>
+            <if test="accidentResponsibility != null  and accidentResponsibility != ''  ">accident_responsibility =
+                #{accidentResponsibility},
+            </if>
             <if test="responsibilityUserId != null  ">responsibility_user_id = #{responsibilityUserId},</if>
-            <if test="responsibilityDeptId != null  and responsibilityDeptId != ''  ">responsibility_dept_id = #{responsibilityDeptId},</if>
+            <if test="responsibilityDeptId != null  ">responsibility_dept_id = #{responsibilityDeptId},</if>
+            <if test="responsibilityDeptName != null  and responsibilityDeptName != ''  ">responsibility_dept_name =
+                #{responsibilityDeptName},
+            </if>
             <if test="createTime != null  ">create_time = #{createTime},</if>
             <if test="updateTime != null  ">update_time = #{updateTime},</if>
             <if test="userId != null  ">user_id = #{userId},</if>
@@ -107,15 +133,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-	<delete id="deleteTAccidentBasicsById" parameterType="String">
+    <delete id="deleteTAccidentBasicsById" parameterType="String">
         delete from t_accident_basics where id = #{id}
     </delete>
-	
+
     <delete id="deleteTAccidentBasicsByIds" parameterType="String">
-        delete from t_accident_basics where id in 
+        delete from t_accident_basics where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

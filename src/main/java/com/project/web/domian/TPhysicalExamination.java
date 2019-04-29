@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.project.common.base.BaseEntity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 体检记录表 t_physical_examination
@@ -21,6 +22,10 @@ public class TPhysicalExamination extends BaseEntity
 	private String id;
 	/** 体检时间 */
 	private Date physicalDate;
+	/** 体检时间 */
+	private Date physicalDateEnd;
+	/** 体检时间字符串 */
+	private String physicalStr;
 	/** 体检单位 */
 	private String physicalUnit;
 	/** 疑似病人数 */
@@ -39,6 +44,120 @@ public class TPhysicalExamination extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	
+	private String physicalExaminationDetail1;
+	
+	private Object obj;
+	
+	private List<Object> obj1;
+	
+	private Object[] obj2;
+	
+	private List<TPhysicalExaminationDetail> physicalExaminationDetail;
+	
+	
+	
+	
+
+	public Object[] getObj2() {
+		return obj2;
+	}
+
+	public void setObj2(Object[] obj2) {
+		this.obj2 = obj2;
+	}
+
+	public List<Object> getObj1() {
+		return obj1;
+	}
+
+	public void setObj1(List<Object> obj1) {
+		this.obj1 = obj1;
+	}
+
+	//姓名
+	private String userName;
+	//性别
+	private String sex;
+	//手机号
+	private String phone;
+	//入职日期
+	private String entryDateStr;
+	
+	
+	
+
+	public String getPhysicalExaminationDetail1() {
+		return physicalExaminationDetail1;
+	}
+
+	public void setPhysicalExaminationDetail1(String physicalExaminationDetail1) {
+		this.physicalExaminationDetail1 = physicalExaminationDetail1;
+	}
+
+	public Object getObj() {
+		return obj;
+	}
+
+	public void setObj(Object obj) {
+		this.obj = obj;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEntryDateStr() {
+		return entryDateStr;
+	}
+
+	public void setEntryDateStr(String entryDateStr) {
+		this.entryDateStr = entryDateStr;
+	}
+
+	public Date getPhysicalDateEnd() {
+		return physicalDateEnd;
+	}
+
+	public void setPhysicalDateEnd(Date physicalDateEnd) {
+		this.physicalDateEnd = physicalDateEnd;
+	}
+
+	public String getPhysicalStr() {
+		return physicalStr;
+	}
+
+	public void setPhysicalStr(String physicalStr) {
+		this.physicalStr = physicalStr;
+	}
+
+	public List<TPhysicalExaminationDetail> getPhysicalExaminationDetail() {
+		return physicalExaminationDetail;
+	}
+
+	public void setPhysicalExaminationDetail(List<TPhysicalExaminationDetail> physicalExaminationDetail) {
+		this.physicalExaminationDetail = physicalExaminationDetail;
+	}
 
 	public void setId(String id) 
 	{
@@ -156,3 +275,4 @@ public class TPhysicalExamination extends BaseEntity
             .toString();
     }
 }
+

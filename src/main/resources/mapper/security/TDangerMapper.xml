@@ -251,7 +251,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="inspectDeptName"    column="inspect_dept_name"    />
         <result property="dangerDeptName"    column="danger_dept_name"    />
         <result property="dochangeDeptName"    column="dochange_dept_name"    />
-        <result property="check_acceptDeptName"    column="check_accept_dept_name"    />
+        <result property="checkAcceptDeptName"    column="check_accept_dept_name"    />
         <result property="checkUserName"    column="check_user_name"    />
         <result property="dochangeUserName"    column="dochange_user_name"    />
         <result property="checkAcceptUserName"    column="check_accept_user_name"    />
@@ -260,6 +260,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dangerLevelName"    column="danger_level_name"    />
         <result property="maybeResultName"    column="maybe_result_name"    />
         <result property="dochangeTypeName"    column="dochange_type_name"    />
+        <result property="riskResourceName"    column="risk_resource_name"    />
     </resultMap>
     
     <select id="selectTDangerVoByDangerId" parameterType="java.lang.String" resultMap="TDangerVoResult">
@@ -267,7 +268,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	sd1.dept_name inspect_dept_name,
 		sd2.dept_name danger_dept_name,
 		sd3.dept_name dochange_dept_name,
-		sd4.dept_name check_accept_dept_name,
+		sd4.dept_name check_accept_dept_name  ,
 		u1.user_name check_user_name,
 		u2.user_name dochange_user_name,
 		u3.user_name check_accept_user_name,
@@ -275,8 +276,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		dic2.dict_name danger_type_name,
 		dic3.dict_name danger_level_name,
 		dic4.dict_name maybe_result_name,
-		dic5.dict_name dochange_type_name
+		dic5.dict_name dochange_type_name,
+		rlc.risk_name risk_resource_name
         from t_danger d
+        left join t_risk_level_control rlc on rlc.id = d.risk_resource
         left join sys_dept sd1 on d.inspect_dept_id = sd1.dept_id
 		left join sys_dept sd2 on d.danger_dept_id = sd2.dept_id
 		left join sys_dept sd3 on d.dochange_dept_id = sd3.dept_id
@@ -290,6 +293,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		left join t_dict dic4 on d.maybe_result = dic4.id
 		left join t_dict dic5 on d.dochange_type = dic5.id
 		where d.id = #{dangerId}
+    </select>
+    
+    <select id="rectification" parameterType="java.util.Map" resultMap="TDangerVoResult">
+    	<include refid="selectTDangerbasicColums"/>,
+		dic3.dict_name danger_level_name,
+		dic5.dict_name dochange_type_name
+        from t_danger d
+		left join t_dict dic3 on d.danger_level = dic3.id
+		left join t_dict dic5 on d.dochange_type = dic5.id
+		where d.dochange_user_id = #{userId}
+		and d.status = #{status}
+    </select>
+    
+    <select id="rectificationCheck" parameterType="java.util.Map" resultMap="TDangerVoResult">
+    	<include refid="selectTDangerbasicColums"/>,
+		sd3.dept_name dochange_dept_name,
+		u2.user_name dochange_user_name,
+		dic5.dict_name dochange_type_name
+        from t_danger d
+		left join sys_dept sd3 on d.dochange_dept_id = sd3.dept_id
+		left join sys_user u2 on d.dochange_user_id = u2.user_id
+		left join t_dict dic5 on d.dochange_type = dic5.id
+		where d.check_accept_user_id = #{userId}
+		and d.status = #{status}
     </select>
     
 </mapper>

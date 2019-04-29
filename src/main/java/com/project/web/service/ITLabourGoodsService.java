@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TLabourGoods;
 
 /**
@@ -34,7 +37,7 @@ public interface ITLabourGoodsService
      * @param tLabourGoods 劳动防护物品信息
      * @return 结果
      */
-	public int insertTLabourGoods(TLabourGoods tLabourGoods);
+	public AjaxResult insertTLabourGoods(TLabourGoods tLabourGoods,MultipartFile labourGoodsFile);
 	
 	/**
      * 修改劳动防护物品
@@ -42,7 +45,7 @@ public interface ITLabourGoodsService
      * @param tLabourGoods 劳动防护物品信息
      * @return 结果
      */
-	public int updateTLabourGoods(TLabourGoods tLabourGoods);
+	public AjaxResult updateTLabourGoods(TLabourGoods tLabourGoods,MultipartFile labourGoodsFile);
 		
 	/**
      * 删除劳动防护物品信息
@@ -53,3 +56,4 @@ public interface ITLabourGoodsService
 	public int deleteTLabourGoodsByIds(String ids);
 	
 }
+

@@ -27,88 +27,88 @@ import com.project.web.service.ITDepartureNewspaperClassService;
  * @date 2019-04-16
  */
 @Controller
-@RequestMapping("/system/tDepartureNewspaperClass")
+@RequestMapping("/web/tDepartureNewspaperClass")
 public class TDepartureNewspaperClassController extends BaseController
 {
-    private String prefix = "system/tDepartureNewspaperClass";
-	
+	private String prefix = "web/tDepartureNewspaperClass";
+
 	@Autowired
 	private ITDepartureNewspaperClassService tDepartureNewspaperClassService;
-	
-	@RequiresPermissions("system:tDepartureNewspaperClass:view")
+
+	@RequiresPermissions("web:tDepartureNewspaperClass:view")
 	@GetMapping()
 	public String tDepartureNewspaperClass()
 	{
-	    return prefix + "/tDepartureNewspaperClass";
+		return prefix + "/tDepartureNewspaperClass";
 	}
-	
+
 	/**
 	 * 查询车辆报班列表
 	 */
-	@RequiresPermissions("system:tDepartureNewspaperClass:list")
+	//@RequiresPermissions("web:tDepartureNewspaperClass:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TDepartureNewspaperClass tDepartureNewspaperClass)
 	{
 		startPage();
-        List<TDepartureNewspaperClass> list = tDepartureNewspaperClassService.selectTDepartureNewspaperClassList(tDepartureNewspaperClass);
+		List<TDepartureNewspaperClass> list = tDepartureNewspaperClassService.selectTDepartureNewspaperClassList(tDepartureNewspaperClass);
 		return getDataTable(list);
 	}
-	
+
 	/**
 	 * 新增车辆报班
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存车辆报班
 	 */
-	@RequiresPermissions("system:tDepartureNewspaperClass:add")
+	//@RequiresPermissions("web:tDepartureNewspaperClass:add")
 	@Log(title = "车辆报班", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TDepartureNewspaperClass tDepartureNewspaperClass)
-	{		
-		return toAjax(tDepartureNewspaperClassService.insertTDepartureNewspaperClass(tDepartureNewspaperClass));
+	{
+		return tDepartureNewspaperClassService.insertTDepartureNewspaperClass(tDepartureNewspaperClass);
 	}
 
 	/**
 	 * 修改车辆报班
 	 */
 	@GetMapping("/edit/{id}")
-	public String edit(@PathVariable("id") Long id, ModelMap mmap)
+	public String edit(@PathVariable("id") String id, ModelMap mmap)
 	{
 		TDepartureNewspaperClass tDepartureNewspaperClass = tDepartureNewspaperClassService.selectTDepartureNewspaperClassById(id);
 		mmap.put("tDepartureNewspaperClass", tDepartureNewspaperClass);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存车辆报班
 	 */
-	@RequiresPermissions("system:tDepartureNewspaperClass:edit")
+	//@RequiresPermissions("web:tDepartureNewspaperClass:edit")
 	@Log(title = "车辆报班", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(TDepartureNewspaperClass tDepartureNewspaperClass)
-	{		
-		return toAjax(tDepartureNewspaperClassService.updateTDepartureNewspaperClass(tDepartureNewspaperClass));
+	{
+		return tDepartureNewspaperClassService.updateTDepartureNewspaperClass(tDepartureNewspaperClass);
 	}
-	
+
 	/**
 	 * 删除车辆报班
 	 */
-	@RequiresPermissions("system:tDepartureNewspaperClass:remove")
+	//@RequiresPermissions("web:tDepartureNewspaperClass:remove")
 	@Log(title = "车辆报班", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(tDepartureNewspaperClassService.deleteTDepartureNewspaperClassByIds(ids));
 	}
-	
+
 }

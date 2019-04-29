@@ -164,7 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    <resultMap type="com.project.security.domain.User" id="UserVoResult">
+    <resultMap type="com.project.security.domain.vo.UserVo" id="UserVoResult">
         <result property="userId"    column="user_id"    />
         <result property="deptId"    column="dept_id"    />
         <result property="loginName"    column="login_name"    />
@@ -192,6 +192,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="deptName"    column="dept_name"    />
         <result property="businessName"    column="business_name"    />
         <result property="postName"    column="post_name"    />
+        <result property="sexName"    column="sex_name"    />
+    </resultMap>
+    
+    <resultMap type="com.project.security.domain.vo.TDictView" id="TDictViewResult">
+        <result property="id"    column="id"    />
+        <result property="dictName"    column="dict_name"    />
+        <result property="dictCode"    column="dict_code"    />
     </resultMap>
     
     <select id="selectUserByLoginName" parameterType="java.lang.String" resultMap="UserResult">
@@ -205,28 +212,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where user_id = #{userId}
  	</update>
  	
- 	<select id="selectUserByDriver" parameterType="java.lang.String" resultMap="UserResult">
- 		<include refid="selectUserVo"/>
+ 	<select id="selectUserByDriver" parameterType="java.util.Map" resultMap="TDictViewResult">
+ 		select u.user_id id,u.user_name dict_name
     	from sys_user u
  		join t_user_driver_basic udb on udb.driver_user_id = u.user_id
- 		where udb.business_id = #{businessId}
+ 		join sys_post p on udb.driver_post = p.post_id
+ 		where udb.business_id = #{businessId} and p.post_name = #{postName}
  	</select>
  	
- 	<select id="selectDriverUser" parameterType="java.lang.String" resultMap="UserResult">
+ 	<select id="selectDriverUser" parameterType="java.lang.String" resultMap="UserVoResult">
  		<include refid="selectUserVo"/>
     	from sys_user u
     	join t_user_driver_basic udb on udb.driver_user_id = u.user_id
-    	where udb.driver_user_id = #{userId}
+		join sys_post p on udb.driver_post = p.post_id
+    	where udb.driver_user_id = #{userId} and p.post_name = '驾驶员'
  	</select>
  	
- 	<select id="selectUserByUserId" parameterType="java.lang.Long" resultMap="UserResult">
+ 	<select id="selectUserByUserId" parameterType="java.lang.Long" resultMap="UserVoResult">
  		<include refid="selectUserVo"/>,
-    	d.dept_name,b.name business_name,p.post_name
+    	d.dept_name,b.name business_name,p.post_name,sdd.dict_label sex_name
 		from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
 		left join t_business b on b.id = u.business_id
 		left join sys_user_post up on u.user_id = up.user_id
 		left join sys_post p on up.post_id = p.post_id
+		left join sys_dict_data sdd on sdd.dict_type = 'sys_user_sex' and sdd.dict_value = u.sex
 		where u.user_id = #{userId}
  	</select>
  	
