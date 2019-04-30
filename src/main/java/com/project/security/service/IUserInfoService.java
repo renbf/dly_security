@@ -34,4 +34,11 @@ public interface IUserInfoService {
 	 * @return
 	 */
 	public DataResult changePassword(String userId,String oldPassword,String newPassword,String confirmPassword);
+	/**
+	 * 绑定用户cid
+	 * @param userId
+	 * @param clientId
+	 * @return
+	 */
+	public DataResult bindingCid(String userId,String clientId);
 }

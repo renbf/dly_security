@@ -127,12 +127,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
-        <result property="contents"    column="option_value"    />
+        <result property="optionValue"    column="option_value"    />
+        <result property="content"    column="content"    />
+        <result property="optionSort"    column="option_sort"    />
+        <result property="isCollect"    column="is_collect"    />
     </resultMap>
     
     <select id="examCollection" parameterType="java.lang.String" resultMap="TSubjectVoResult">
     	<include refid="selectTSubjectbasicColums"/>,
-    	so.option_value,so.content,so.option_sort
+    	so.option_value,so.content,so.option_sort,usc.is_collect
         from t_subject s
         join t_user_subject_collect usc on s.id = usc.subject_id
         join t_subject_option so on so.subject_id = s.id

@@ -193,6 +193,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessName"    column="business_name"    />
         <result property="postName"    column="post_name"    />
         <result property="sexName"    column="sex_name"    />
+        <result property="isVerify"    column="is_verify"    />
     </resultMap>
     
     <resultMap type="com.project.security.domain.vo.TDictView" id="TDictViewResult">
@@ -230,7 +231,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	
  	<select id="selectUserByUserId" parameterType="java.lang.Long" resultMap="UserVoResult">
  		<include refid="selectUserVo"/>,
-    	d.dept_name,b.name business_name,p.post_name,sdd.dict_label sex_name
+    	d.dept_name,b.name business_name,b.is_verify,p.post_name,sdd.dict_label sex_name
 		from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
 		left join t_business b on b.id = u.business_id

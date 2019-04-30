@@ -1,5 +1,7 @@
 package com.project.security.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.result.DataResult;
 
 public interface ITrainService {
@@ -59,6 +61,18 @@ public interface ITrainService {
 	 * @return
 	 */
 	public DataResult subjectCollection(String userId,String subjectId,String isCollect);
+	
+	/**
+	 * 人脸图片识别认证接口
+	 * @return
+	 */
+	public DataResult imgAuthentication(String userId,MultipartFile file);
+	/**
+	 * 查询是否开启认证接口
+	 * @return
+	 */
+	public DataResult queryIsVerifyOn(String businessId);
+	
 	/**
 	 * 课程简介h5
 	 * @param courseId

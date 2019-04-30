@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
@@ -207,6 +208,41 @@ public class TrainController {
 		} catch (Exception e) {
 			log.error("收藏题目接口失败",e);
 			result.setMessage("收藏题目接口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/imgAuthentication",method=RequestMethod.POST)
+	@ApiOperation(value="人脸图片识别认证接口",notes="人脸图片识别认证接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result imgAuthentication(HttpServletRequest request,
+			@ApiParam(name="userId",value="用户id",required=true) @RequestParam(value="userId",required=true) String userId,
+			@ApiParam(name="file",value="图片",required=false) @RequestParam(value="file",required=true) MultipartFile file
+	){
+		DataResult result=new DataResult();
+		try {
+			result = trainService.imgAuthentication(userId,file);
+			return result;
+		} catch (Exception e) {
+			log.error("人脸图片识别认证失败",e);
+			result.setMessage("人脸图片识别认证失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@RequestMapping(value="/queryIsVerifyOn",method=RequestMethod.GET)
+	@ApiOperation(value="查询是否开启认证接口",notes="图片认证接口",httpMethod="GET",response=Result.class)
+	public @ResponseBody Result queryIsVerifyOn(HttpServletRequest request,
+			@ApiParam(name="businessId",value="企业id",required=true) @RequestParam(value="businessId",required=true) String businessId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = trainService.queryIsVerifyOn(businessId);
+			return result;
+		} catch (Exception e) {
+			log.error("查询是否开启认证失败",e);
+			result.setMessage("查询是否开启认证失败");
 			result.setStatus(Result.FAILED);
 			return result;
 		}

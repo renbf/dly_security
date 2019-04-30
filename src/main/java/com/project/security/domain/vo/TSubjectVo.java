@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 题库表 t_subject
  * 
@@ -27,31 +29,44 @@ public class TSubjectVo implements Serializable
 	/** 题目类型 */
 	private String subjectType;
 	/** 企业类型 */
+	@JsonIgnore
 	private String businessType;
 	/** 专业类型 */
+	@JsonIgnore
 	private String majorType;
 	/** 正确答案 */
 	private String trueAnswer;
 	/** 题库来源 */
+	@JsonIgnore
 	private String subjectSource;
 	/** 企业ID */
+	@JsonIgnore
 	private String businessId;
 	/** 创建人id */
+	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
+	@JsonIgnore
 	private Date createDate;
 	/** 修改时间 */
+	@JsonIgnore
 	private Date updateDate;
 	/** 修改人id */
+	@JsonIgnore
 	private String updateUserId;
 	/** 题目选项 */
+	@JsonIgnore
 	private String optionValue;
 	/** 题目内容 */
+	@JsonIgnore
 	private String content;
 	/** 题目顺序 */
+	@JsonIgnore
 	private Integer optionSort;
 	/** 题目选项信息 */
 	private List<Map<String,Object>> optionContents;
+	/** 是否收藏 */
+	private String isCollect;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -200,6 +215,14 @@ public class TSubjectVo implements Serializable
 
 	public void setOptionSort(Integer optionSort) {
 		this.optionSort = optionSort;
+	}
+
+	public String getIsCollect() {
+		return isCollect;
+	}
+
+	public void setIsCollect(String isCollect) {
+		this.isCollect = isCollect;
 	}
 
 	public String toString() {

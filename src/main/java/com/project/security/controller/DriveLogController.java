@@ -81,7 +81,6 @@ public class DriveLogController {
 		}
 	}
 	
-	
 	@RequestMapping(value="/addBeforeLog",method=RequestMethod.POST)
 	@ApiOperation(value="添加行车前日志接口",notes="添加行车前日志接口",httpMethod="POST",response=Result.class)
 	public @ResponseBody Result addBeforeLog(HttpServletRequest request,

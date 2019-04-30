@@ -12,13 +12,13 @@ public class PushtoSingle {
     private static String appKey = "ICDZ2Z9zqN6vlZiZG0DSP7";
     private static String masterSecret = "Y6agaMC7qE96VQ908sKGP5";
 
-    static String CID = "e605a0db5ce3cca9b76b012978064940";
+    static String CID = "73a176cd803fb363d4b1da5b6b7c49ca";
   //别名推送方式
    // static String Alias = "";
     static String host = "http://sdk.open.api.igexin.com/apiex.htm";
 
     public static void main(String[] args) throws Exception {
-        IGtPush push = new IGtPush(appKey, masterSecret,true);
+        IGtPush push = new IGtPush(GetuiConfig.appKey, GetuiConfig.masterSecret,true);
         LinkTemplate template = linkTemplateDemo();
         SingleMessage message = new SingleMessage();
         message.setOffline(true);

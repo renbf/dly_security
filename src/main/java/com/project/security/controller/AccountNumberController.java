@@ -306,4 +306,22 @@ public class AccountNumberController {
 			return result;
 		}
 	}
+	
+	@RequestMapping(value="/bindingCid",method=RequestMethod.POST)
+	@ApiOperation(value="绑定cid接口",notes="修改密码接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result bindingCid(HttpServletRequest request,
+			@ApiParam(name="userId",value="用户id",required=true) @RequestParam(value="userId",required=true) String userId,
+			@ApiParam(name="clientId",value="设备cid",required=true) @RequestParam(value="clientId",required=true) String clientId
+	){
+		DataResult result=new DataResult();
+		try {
+			result = userInfoService.bindingCid(userId,clientId);
+			return result;
+		} catch (Exception e) {
+			log.error("绑定cid失败",e);
+			result.setMessage("绑定cid口失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
 }

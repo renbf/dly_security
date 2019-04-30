@@ -14,6 +14,7 @@ import com.gexin.rp.sdk.http.IGtPush;
 import com.gexin.rp.sdk.template.LinkTemplate;
 import com.gexin.rp.sdk.template.NotificationTemplate;
 import com.gexin.rp.sdk.template.TransmissionTemplate;
+import com.project.security.domain.TUserClient;
 import com.project.system.domain.SysUser;
 import com.project.web.domian.TMessage;
 /**
@@ -30,7 +31,7 @@ public class GetuiUtils {
 	 * @param users
 	 * @param tmessage
 	 */
-	public static void pushList(List<SysUser> users,TMessage tmessage) {
+	public static void pushList(List<TUserClient> users,TMessage tmessage) {
 		
 		IIGtPush push = new IGtPush(GetuiConfig.appKey, GetuiConfig.masterSecret,true);
 		LinkTemplate template = toLinkTemplate(tmessage);
@@ -42,10 +43,10 @@ public class GetuiUtils {
         message.setOfflineExpireTime(24 * 1000 * 3600);
         // 配置推送目标
         List<Target> targets = new ArrayList<Target>();
-        for(SysUser sysUser:users) {
+        for(TUserClient sysUser:users) {
         	Target target = new Target();
         	target.setAppId(GetuiConfig.appId);
-            target.setClientId(sysUser.getUserName());
+            target.setClientId(sysUser.getClientId());
             targets.add(target);
         }
         // taskId用于在推送时去查找对应的message
@@ -121,5 +122,18 @@ public class GetuiUtils {
         // 设置打开的网址地址
         return template;
     }
+	
+	public static void main(String[] args) {
+		List<TUserClient> users = new ArrayList<TUserClient>();
+		TUserClient tUserClient = new TUserClient();
+		tUserClient.setClientId("73a176cd803fb363d4b1da5b6b7c49ca");
+		users.add(tUserClient);
+		TMessage tmessage = new TMessage();
+		tmessage.setTitle("标题");
+		tmessage.setContext("内容内容");
+		tmessage.setLinkUrl("");
+		tmessage.setLogoUrl("");
+		pushList(users, tmessage);
+	}
 }
 

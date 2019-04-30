@@ -76,6 +76,8 @@ public class UserVo implements Serializable
 	private String businessName;
 	/** 用户性别（0男 1女 2未知） */
 	private String sexName;
+	/** 是否开启认证*/
+	private String isVerify;
 	public void setUserId(Long userId) 
 	{
 		this.userId = userId;
@@ -314,6 +316,14 @@ public class UserVo implements Serializable
 
 	public void setSexName(String sexName) {
 		this.sexName = sexName;
+	}
+
+	public String getIsVerify() {
+		return isVerify;
+	}
+
+	public void setIsVerify(String isVerify) {
+		this.isVerify = isVerify;
 	}
 
 	public String toString() {

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,8 @@ import com.project.framework.shiro.service.PasswordService;
 import com.project.framework.util.FileUploadUtils;
 import com.project.framework.util.MessageUtils;
 import com.project.framework.util.ShiroUtils;
+import com.project.security.domain.TUserClient;
+import com.project.security.mapper.TUserClientMapper;
 import com.project.security.mapper.UserMapper;
 import com.project.security.service.IFileSystemService;
 import com.project.security.service.IUserInfoService;
@@ -45,7 +48,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	private UserMapper userMapper;
 	@Autowired
 	private IFileSystemService fileSystemService;
-	
+	@Autowired
+	@Qualifier("userClientMapper")
+	private TUserClientMapper userClientMapper;
 	@Override
 	public DataResult login(String userName, String passWord) {
 		DataResult result = new DataResult();
@@ -196,4 +201,29 @@ public class UserInfoServiceImpl implements IUserInfoService {
 			throw new RuntimeException("修改密码接口异常");
 		}
 	}
+
+	@Override
+	public DataResult bindingCid(String userId, String clientId) {
+		DataResult result = new DataResult();
+        try {
+        	Long userid = Long.valueOf(userId);
+        	TUserClient userClient = userClientMapper.selectTUserClientById(userid);
+        	TUserClient tUserClient = new TUserClient();
+        	tUserClient.setClientId(clientId);
+        	tUserClient.setUserId(userid);
+        	if(userClient == null) {
+        		userClientMapper.insertTUserClient(tUserClient);
+        	}else {
+        		userClientMapper.updateTUserClient(tUserClient);
+        	}
+			result.setMessage("绑定cid成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("绑定cid接口异常",e);
+			throw new RuntimeException("绑定cid接口异常");
+		}
+	}
+	
+	
 }

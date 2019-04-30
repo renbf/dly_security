@@ -1,16 +1,15 @@
 package com.project.security.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 企业管理表 t_business
  * 
  * @author rbf
- * @date 2019-04-17
+ * @date 2019-04-30
  */
 public class TBusiness implements Serializable
 {
@@ -38,6 +37,8 @@ public class TBusiness implements Serializable
 	private String accountId;
 	/** 状态 */
 	private String status;
+	/** 是否开启识别1开启0未开启 */
+	private String isVerify;
 	/** 创建人id */
 	private String addUserId;
 	/** 创建时间 */
@@ -146,6 +147,15 @@ public class TBusiness implements Serializable
 	{
 		return status;
 	}
+	public void setIsVerify(String isVerify) 
+	{
+		this.isVerify = isVerify;
+	}
+
+	public String getIsVerify() 
+	{
+		return isVerify;
+	}
 	public void setAddUserId(String addUserId) 
 	{
 		this.addUserId = addUserId;
@@ -196,6 +206,7 @@ public class TBusiness implements Serializable
             .append("account", getAccount())
             .append("accountId", getAccountId())
             .append("status", getStatus())
+            .append("isVerify", getIsVerify())
             .append("addUserId", getAddUserId())
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())

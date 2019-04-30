@@ -1,5 +1,7 @@
 package com.project.security.service.impl;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,12 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
 import com.project.framework.config.ServerConfig;
 import com.project.framework.util.SpringUtils;
+import com.project.security.domain.TBusiness;
 import com.project.security.domain.TCourse;
 import com.project.security.domain.TSubject;
 import com.project.security.domain.TSubjectPaper;
@@ -37,6 +41,8 @@ import com.project.security.domain.vo.TCourseVo;
 import com.project.security.domain.vo.TUserCourseVo;
 import com.project.security.domain.vo.TUserPaperVo;
 import com.project.security.domain.vo.UserPaperDetailVo;
+import com.project.security.domain.vo.UserVo;
+import com.project.security.mapper.TBusinessMapper;
 import com.project.security.mapper.TCourseMapper;
 import com.project.security.mapper.TDictMapper;
 import com.project.security.mapper.TSubjectMapper;
@@ -49,10 +55,11 @@ import com.project.security.mapper.UserMapper;
 import com.project.security.service.ITrainService;
 import com.project.security.utils.page.PageInfoUtil;
 import com.project.security.utils.page.TableDataView;
-import com.project.system.domain.CostTime;
 import com.project.system.domain.SysUser;
-import com.project.system.service.ICostTimeService;
 import com.project.util.UUIDUtil;
+import com.project.util.aliyun.AESDecode;
+import com.project.util.aliyun.FaceVerifyParam;
+import com.project.util.aliyun.FaceVerifyResponse;
 /**
  * 
  * @author rbf
@@ -91,7 +98,9 @@ public class TrainServiceImpl implements ITrainService {
 	private TSubjectPaperMapper subjectPaperMapper;
 	@Autowired
 	private ServerConfig serverConfig;
-	
+	@Autowired
+	@Qualifier("businessMapper")
+	private TBusinessMapper businessMapper;
 	@Override
 	public DataResult courseArrange(Integer pageNumber,Long total,String userId) {
 		DataResult result = new DataResult();
@@ -448,6 +457,71 @@ public class TrainServiceImpl implements ITrainService {
 	}
 	
 	
+	@Override
+	public DataResult imgAuthentication(String userId, MultipartFile file) {
+		DataResult result = new DataResult();
+        try {
+        	HttpURLConnection conn = null;
+        	UserVo userVo = userMapper.selectUserByUserId(Long.valueOf(userId));
+        	String authUrl = userVo.getAuthUrl();
+        	URL url = new URL(authUrl);
+            conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(20 * 1000);
+            String content_1 = AESDecode.encodeImageToBase64(conn.getInputStream());
+            content_1 = content_1.replaceAll("[\\s*\t\n\r]", "");
+            String content_2 = AESDecode.encodeImageToBase64(file.getInputStream());
+            content_2 = content_2.replaceAll("[\\s*\t\n\r]", "");
+            FaceVerifyParam faceVerifyParam = new FaceVerifyParam();
+            faceVerifyParam.setType("1");
+            faceVerifyParam.setContent_1(content_1);
+            faceVerifyParam.setContent_2(content_2);
+            FaceVerifyResponse faceVerifyResponse = AESDecode.sendPost(faceVerifyParam);
+            if(faceVerifyResponse != null && faceVerifyResponse.getErrno() == 0) {
+            	if(faceVerifyResponse.getConfidence() > 8.0) {
+            		result.setMessage("图片认证成功");
+        			result.setStatus(Result.SUCCESS);
+        			return result;
+            	}
+            }
+            result.setMessage("图片认证失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		} catch (Exception e) {
+			log.error("图片认证接口异常",e);
+			throw new RuntimeException("图片认证接口异常");
+		}
+	}
+
+	@Override
+	public DataResult queryIsVerifyOn(String businessId) {
+		DataResult result = new DataResult();
+        try {
+        	TBusiness business = businessMapper.selectTBusinessById(businessId);
+        	String isVerify = "";
+        	if(business != null) {
+        		if("1".equals(business.getIsVerify())) {
+        			isVerify = "1";
+        		}else {
+        			isVerify = "0";
+        		}
+        	}else {
+        		result.setMessage("公司不存在");
+    			result.setStatus(Result.FAILED);
+    			return result;
+        	}
+        	Map<String,Object> map = new HashMap<String, Object>();
+        	map.put("isVerify", isVerify);
+        	result.setResult(map);
+        	result.setMessage("查询是否开启认证成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("查询是否开启认证接口异常",e);
+			throw new RuntimeException("查询是否开启认证接口异常");
+		}
+	}
+
 	@Override
 	public String introductionUrl(String courseId) {
 		TCourse tCourse = courseMapper.selectTCourseById(courseId);

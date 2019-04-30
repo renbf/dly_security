@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.security.mapper.TUserClientMapper">
+    
+    <resultMap type="com.project.security.domain.TUserClient" id="TUserClientResult">
+        <result property="userId"    column="user_id"    />
+        <result property="clientId"    column="client_id"    />
+    </resultMap>
+	
+	<sql id="selectTUserClientbasicColums">
+        select uc.user_id, uc.client_id    </sql>
+	
+    <select id="selectTUserClientList" parameterType="com.project.security.domain.TUserClient" resultMap="TUserClientResult">
+        <include refid="selectTUserClientbasicColums"/>
+        from t_user_client uc
+        <where>  
+            <if test="userId != null "> and uc.user_id = #{userId}</if>
+             <if test="clientId != null  and clientId != '' "> and uc.client_id = #{clientId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTUserClientById" parameterType="Long" resultMap="TUserClientResult">
+        <include refid="selectTUserClientbasicColums"/>
+        from t_user_client uc
+        where uc.user_id = #{userId}
+    </select>
+        
+    <insert id="insertTUserClient" parameterType="com.project.security.domain.TUserClient">
+        insert into t_user_client
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null  ">user_id,</if>
+			<if test="clientId != null  and clientId != ''  ">client_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null  ">#{userId},</if>
+			<if test="clientId != null  and clientId != ''  ">#{clientId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTUserClient" parameterType="com.project.security.domain.TUserClient">
+        update t_user_client
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientId != null  and clientId != ''  ">client_id = #{clientId},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+	<delete id="deleteTUserClientById" parameterType="Long">
+        delete from t_user_client where user_id = #{userId}
+    </delete>
+	
+    <delete id="deleteTUserClientByIds" parameterType="String">
+        delete from t_user_client where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <!-- 以上是自动生成的代码尽量别动 -->
+    
+</mapper>

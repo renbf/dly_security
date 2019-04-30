@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="account"    column="account"    />
         <result property="accountId"    column="account_id"    />
         <result property="status"    column="status"    />
+        <result property="isVerify"    column="is_verify"    />
         <result property="addUserId"    column="add_user_id"    />
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
@@ -23,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTBusinessbasicColums">
-        select b.id, b.name, b.address_id, b.address_detail, b.business_type, b.major_type, b.linkname_id, b.phone, b.account, b.account_id, b.status, b.add_user_id, b.create_date, b.update_date, b.update_user_id    </sql>
+        select b.id, b.name, b.address_id, b.address_detail, b.business_type, b.major_type, b.linkname_id, b.phone, b.account, b.account_id, b.status, b.is_verify, b.add_user_id, b.create_date, b.update_date, b.update_user_id    </sql>
 	
     <select id="selectTBusinessList" parameterType="com.project.security.domain.TBusiness" resultMap="TBusinessResult">
         <include refid="selectTBusinessbasicColums"/>
@@ -40,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="account != null  and account != '' "> and b.account = #{account}</if>
              <if test="accountId != null  and accountId != '' "> and b.account_id = #{accountId}</if>
              <if test="status != null  and status != '' "> and b.status = #{status}</if>
+             <if test="isVerify != null  and isVerify != '' "> and b.is_verify = #{isVerify}</if>
              <if test="addUserId != null  and addUserId != '' "> and b.add_user_id = #{addUserId}</if>
              <if test="createDate != null "> and b.create_date = #{createDate}</if>
              <if test="updateDate != null "> and b.update_date = #{updateDate}</if>
@@ -67,6 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="account != null  and account != ''  ">account,</if>
 			<if test="accountId != null  and accountId != ''  ">account_id,</if>
 			<if test="status != null  and status != ''  ">status,</if>
+			<if test="isVerify != null  and isVerify != ''  ">is_verify,</if>
 			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
 			<if test="createDate != null  ">create_date,</if>
 			<if test="updateDate != null  ">update_date,</if>
@@ -84,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="account != null  and account != ''  ">#{account},</if>
 			<if test="accountId != null  and accountId != ''  ">#{accountId},</if>
 			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="isVerify != null  and isVerify != ''  ">#{isVerify},</if>
 			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
 			<if test="createDate != null  ">#{createDate},</if>
 			<if test="updateDate != null  ">#{updateDate},</if>
@@ -104,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="account != null  and account != ''  ">account = #{account},</if>
             <if test="accountId != null  and accountId != ''  ">account_id = #{accountId},</if>
             <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="isVerify != null  and isVerify != ''  ">is_verify = #{isVerify},</if>
             <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
             <if test="createDate != null  ">create_date = #{createDate},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>

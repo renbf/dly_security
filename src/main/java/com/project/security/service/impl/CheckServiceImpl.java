@@ -329,7 +329,7 @@ public class CheckServiceImpl implements ICheckService {
 		DataResult result = new DataResult();
         try {
         	String dochangePicture = null;
-        	if(files != null) {
+        	if(files != null && files.length > 0) {
         		boolean fileType = FileUploadUtils.checkImgFiles(files);
     			if(!fileType) {
     				result.setMessage("上传图片类型错误");
@@ -402,7 +402,7 @@ public class CheckServiceImpl implements ICheckService {
 		DataResult result = new DataResult();
         try {
         	String checkAcceptUrl = null;
-        	if(files != null) {
+        	if(files != null && files.length > 0) {
         		boolean fileType = FileUploadUtils.checkImgFiles(files);
     			if(!fileType) {
     				result.setMessage("上传图片类型错误");

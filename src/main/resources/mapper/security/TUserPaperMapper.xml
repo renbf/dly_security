@@ -162,7 +162,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         p.name paper_name,p.paper_times
         from t_user_paper up
         join t_paper p on up.paper_id = p.id
-    	where up.user_id = #{userId}
+    	where up.user_id = #{userId} and up.status in ('0','1')
     </select>
     
     <select id="selectTUserPapersByWhere" parameterType="com.project.security.domain.TUserPaper" resultMap="TUserPaperVoResult">
