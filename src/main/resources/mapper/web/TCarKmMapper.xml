@@ -16,18 +16,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarKmbasicColums">
-        select ck.id, ck.car_id, ck.month_km, ck.total_km, ck.add_user_id, ck.create_date, ck.update_date, ck.update_user_id    </sql>
+        select ck.id, ck.car_id, ck.month_km, ck.total_km, ck.add_user_id, ck.create_date, ck.update_date, ck.update_user_id,
+        DATE_FORMAT(ck.create_date,'%Y-%m-%d') as createDateStr
+
+        from t_car_km ck
+    </sql>
 	
     <select id="selectTCarKmList" parameterType="com.project.web.domian.TCarKm" resultMap="TCarKmResult">
         <include refid="selectTCarKmbasicColums"/>
-        from t_car_km ck
         <where>  
             <if test="id != null  and id != '' "> and ck.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and ck.car_id = #{carId}</if>
              <if test="monthKm != null  and monthKm != '' "> and ck.month_km = #{monthKm}</if>
              <if test="totalKm != null  and totalKm != '' "> and ck.total_km = #{totalKm}</if>
              <if test="addUserId != null  and addUserId != '' "> and ck.add_user_id = #{addUserId}</if>
-             <if test="createDate != null "> and ck.create_date = #{createDate}</if>
+
+
+            <if test="createDate != null  and createDate1 == null "> and DATE_FORMAT(ck.create_date,'%Y%m%d') &gt;= DATE_FORMAT(#{createDate},'%Y%m%d')</if>
+            <if test="createDate1 != null  and createDate == null "> and DATE_FORMAT(ck.create_date,'%Y%m%d') &lt;= DATE_FORMAT(#{createDate1},'%Y%m%d')</if>
+            <if test="createDate1 != null  and createDate != null "> and DATE_FORMAT(ck.create_date,'%Y%m%d') &gt;= DATE_FORMAT(#{createDate},'%Y%m%d')
+                and   DATE_FORMAT(ck.create_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{createDate1},'%Y%m%d')
+            </if>
+            
+            
              <if test="updateDate != null "> and ck.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and ck.update_user_id = #{updateUserId}</if>
          </where>
@@ -35,7 +46,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTCarKmById" parameterType="String" resultMap="TCarKmResult">
         <include refid="selectTCarKmbasicColums"/>
-        from t_car_km ck
         where ck.id = #{id}
     </select>
         
@@ -82,11 +92,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 	
     <delete id="deleteTCarKmByIds" parameterType="String">
-        delete from t_car_km where id in 
+        delete from t_car_km where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_km where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

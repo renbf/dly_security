@@ -60,4 +60,14 @@ public interface TUserCourseMapper
      */
 	public int deleteTUserCourseByIds(String[] ids);
 	//以上自动生成的尽量别动
+
+	/**
+	 * 批量删除课程安排详情  ,根据 课程安排的id
+	 * @param id
+	 * @return
+	 */
+	public int deleteTUserCourseByCourseArrangeId(String[] ids);
+
+
+
 }

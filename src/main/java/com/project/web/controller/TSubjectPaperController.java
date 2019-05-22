@@ -43,7 +43,7 @@ public class TSubjectPaperController extends BaseController
 	/**
 	 * 查询考卷题目关系列表
 	 */
-	@RequiresPermissions("web:tSubjectPaper:list")
+//	@RequiresPermissions("web:tSubjectPaper:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSubjectPaper tSubjectPaper)
@@ -51,6 +51,18 @@ public class TSubjectPaperController extends BaseController
 		startPage();
         List<TSubjectPaper> list = tSubjectPaperService.selectTSubjectPaperList(tSubjectPaper);
 		return getDataTable(list);
+	}
+	
+	/**
+	 *   查询生成试卷的考题
+	 */
+//	@RequiresPermissions("web:tSubjectPaper:list")
+	@PostMapping("/listByPageId")
+	@ResponseBody
+	public AjaxResult listByPageId(TSubjectPaper tSubjectPaper)
+	{
+        List<TSubjectPaper> list = tSubjectPaperService.selectTSubjectPaperList(tSubjectPaper);
+		return null;
 	}
 	
 	/**
@@ -107,6 +119,20 @@ public class TSubjectPaperController extends BaseController
 	public AjaxResult remove(String ids)
 	{		
 		return toAjax(tSubjectPaperService.deleteTSubjectPaperByIds(ids));
+	}
+	
+	
+	/**
+	 * 更换题库 调用接口
+	 */
+//	@RequiresPermissions("web:tSubjectPaper:add")
+//	@Log(title = "考卷题目关系", businessType = BusinessType.INSERT)
+	@PostMapping("/change")
+	@ResponseBody
+	public AjaxResult changeSave(TSubjectPaper tSubjectPaper)
+	{		
+		
+		return toAjax(tSubjectPaperService.deleteTSubjectPaperBySubId(tSubjectPaper));
 	}
 	
 }

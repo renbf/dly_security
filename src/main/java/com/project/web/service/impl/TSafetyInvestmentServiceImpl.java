@@ -72,7 +72,7 @@ public class TSafetyInvestmentServiceImpl implements ITSafetyInvestmentService {
         //上传文件
         try {
             if (Objects.nonNull(investmentFile) && StringUtils.isNotEmpty(investmentFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquantouru", uuid, "安全投入附件文件", investmentFile, 0);
+                String upolad = this.fileService.upolad("anquantouru", uuid, "安全投入附件文件", investmentFile, 0,tSafetyInvestment.getBusinessId());
                 tSafetyInvestment.setInvestmentFilePath(upolad);
             }
         } catch (IOException e) {
@@ -99,7 +99,7 @@ public class TSafetyInvestmentServiceImpl implements ITSafetyInvestmentService {
         //上传文件
         try {
             if (Objects.nonNull(investmentFile) && StringUtils.isNotEmpty(investmentFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquantouru", tSafetyInvestment.getId(), "安全投入附件文件", investmentFile, 0);
+                String upolad = this.fileService.upolad("anquantouru", tSafetyInvestment.getId(), "安全投入附件文件", investmentFile, 0,tSafetyInvestment.getBusinessId());
                 tSafetyInvestment.setInvestmentFilePath(upolad);
             }
         } catch (IOException e) {

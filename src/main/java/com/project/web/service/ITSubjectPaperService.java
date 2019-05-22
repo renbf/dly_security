@@ -27,6 +27,8 @@ public interface ITSubjectPaperService
      */
 	public List<TSubjectPaper> selectTSubjectPaperList(TSubjectPaper tSubjectPaper);
 	
+
+	
 	/**
      * 新增考卷题目关系
      * 
@@ -51,4 +53,13 @@ public interface ITSubjectPaperService
      */
 	public int deleteTSubjectPaperByIds(String ids);
 	//以上自动生成的尽量别动
+	
+	
+	/**
+ * 	删除考卷题目关系信息
+ * 
+ * @param ids 需要删除的数据ID
+ * @return 结果
+ */
+	public int deleteTSubjectPaperBySubId(TSubjectPaper tSubjectPaper);
 }

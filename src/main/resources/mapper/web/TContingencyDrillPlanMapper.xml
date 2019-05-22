@@ -27,7 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
     <select id="selectTContingencyDrillPlanList" parameterType="TContingencyDrillPlan" resultMap="TContingencyDrillPlanResult">
-        <include refid="selectTContingencyDrillPlanVo"/>
+	           select cdp.id, cdp.drill_plan_name, cdp.drill_plan_date, cdp.drill_plan_location, cdp.dept_id, cdp.drill_plan_file_path,
+	        cdp.create_time, cdp.update_time, cdp.user_id, cdp.meno, cdp.business_id, cdp.update_user_id ,
+	        DATE_FORMAT(cdp.drill_plan_date,'%Y-%m-%d') as drillPlanDateStr,
+			sd.dept_name as deptName
+	        from t_contingency_drill_plan cdp
+	LEFT JOIN sys_dept sd on cdp.dept_id = sd.dept_id 
         <where>  
             <if test="id != null  and id != '' "> and cdp.id = #{id}</if>
             

@@ -2,6 +2,7 @@ package com.project.web.service;
 
 import java.util.List;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.THiddenTroubleInvestigation;
 
 /**
@@ -34,7 +35,7 @@ public interface ITHiddenTroubleInvestigationService
      * @param tHiddenTroubleInvestigation 隐患排查信息
      * @return 结果
      */
-	public int insertTHiddenTroubleInvestigation(THiddenTroubleInvestigation tHiddenTroubleInvestigation);
+	public AjaxResult insertTHiddenTroubleInvestigation(THiddenTroubleInvestigation tHiddenTroubleInvestigation);
 	
 	/**
      * 修改隐患排查
@@ -42,7 +43,7 @@ public interface ITHiddenTroubleInvestigationService
      * @param tHiddenTroubleInvestigation 隐患排查信息
      * @return 结果
      */
-	public int updateTHiddenTroubleInvestigation(THiddenTroubleInvestigation tHiddenTroubleInvestigation);
+	public AjaxResult updateTHiddenTroubleInvestigation(THiddenTroubleInvestigation tHiddenTroubleInvestigation);
 		
 	/**
      * 删除隐患排查信息

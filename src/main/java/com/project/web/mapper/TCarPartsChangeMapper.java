@@ -60,4 +60,10 @@ public interface TCarPartsChangeMapper
      */
 	public int deleteTCarPartsChangeByIds(String[] ids);
 	//以上自动生成的尽量别动
+	/**
+	 * 批量删除  根据车辆信息id
+	 * @param ids
+	 * @return
+	 */
+	public int deleteByCarInfoId(String[] ids);
 }

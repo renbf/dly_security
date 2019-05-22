@@ -43,7 +43,7 @@ public class THiddenTroubleInvestigationController extends BaseController
 	/**
 	 * 查询隐患排查列表
 	 */
-	@RequiresPermissions("system:tHiddenTroubleInvestigation:list")
+//	@RequiresPermissions("system:tHiddenTroubleInvestigation:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(THiddenTroubleInvestigation tHiddenTroubleInvestigation)
@@ -65,13 +65,13 @@ public class THiddenTroubleInvestigationController extends BaseController
 	/**
 	 * 新增保存隐患排查
 	 */
-	@RequiresPermissions("system:tHiddenTroubleInvestigation:add")
+//	@RequiresPermissions("system:tHiddenTroubleInvestigation:add")
 	@Log(title = "隐患排查", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(THiddenTroubleInvestigation tHiddenTroubleInvestigation)
 	{		
-		return toAjax(tHiddenTroubleInvestigationService.insertTHiddenTroubleInvestigation(tHiddenTroubleInvestigation));
+		return tHiddenTroubleInvestigationService.insertTHiddenTroubleInvestigation(tHiddenTroubleInvestigation);
 	}
 
 	/**
@@ -94,13 +94,13 @@ public class THiddenTroubleInvestigationController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(THiddenTroubleInvestigation tHiddenTroubleInvestigation)
 	{		
-		return toAjax(tHiddenTroubleInvestigationService.updateTHiddenTroubleInvestigation(tHiddenTroubleInvestigation));
+		return tHiddenTroubleInvestigationService.updateTHiddenTroubleInvestigation(tHiddenTroubleInvestigation);
 	}
 	
 	/**
 	 * 删除隐患排查
 	 */
-	@RequiresPermissions("system:tHiddenTroubleInvestigation:remove")
+//	@RequiresPermissions("system:tHiddenTroubleInvestigation:remove")
 	@Log(title = "隐患排查", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

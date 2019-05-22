@@ -30,7 +30,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
     <select id="selectTSafetyPlanList" parameterType="TSafetyPlan" resultMap="TSafetyPlanResult">
-        <include refid="selectTSafetyPlanVo"/>
+         select sp.id, sp.paln_name, sp.plan_date, sp.plan_enacting_person, sp.dept_id,
+        sp.plan_status, sp.plan_file_path, sp.create_time, sp.update_time, sp.user_id, sp.meno,
+         sp.business_id, sp.update_user_id ,
+         DATE_FORMAT(sp.plan_date,'%Y-%m-%d') as planDateStr,
+         DATE_FORMAT(sp.create_time,'%Y-%m-%d') as createTimeStr,
+       sd.dept_name as deptName
+         from t_safety_plan sp LEFT JOIN sys_dept sd on sp.dept_id = sd.dept_id 
         <where>  
             <if test="id != null  and id != '' "> and sp.id = #{id}</if>
 

@@ -73,12 +73,12 @@ public class TDangerTaskServiceImpl implements ITDangerTaskService
 		tDangerTask.setUserId(ShiroUtils.getUserId());	
 		try {
 			if(Objects.nonNull(technologyFile)&&StringUtils.isNotEmpty(technologyFile.getOriginalFilename())){
-				String technologyStr = fileService.upolad("weixianzuoye",uuid,"危险作业技术交底文件",technologyFile,0);
+				String technologyStr = fileService.upolad("weixianzuoye",uuid,"危险作业技术交底文件",technologyFile,0,tDangerTask.getBusinessId());
 				tDangerTask.setTechnologyFilePath(technologyStr);
 				
 			}	
 			if(Objects.nonNull(licenceFile)&&StringUtils.isNotEmpty(licenceFile.getOriginalFilename())){
-				String licenceStr = fileService.upolad("weixianzuoye",uuid,"危险作业许可文件文件",technologyFile,0);
+				String licenceStr = fileService.upolad("weixianzuoye",uuid,"危险作业许可文件文件",technologyFile,0,tDangerTask.getBusinessId());
 				tDangerTask.setLicenceFilePath(licenceStr);
 				
 			}				
@@ -101,12 +101,12 @@ public class TDangerTaskServiceImpl implements ITDangerTaskService
 	{
 		try {			
 			if(Objects.nonNull(technologyFile)&&StringUtils.isNotEmpty(technologyFile.getOriginalFilename())){
-				String technologyStr = fileService.upolad("weixianzuoye",tDangerTask.getId(),"危险作业技术交底文件",technologyFile,0);
+				String technologyStr = fileService.upolad("weixianzuoye",tDangerTask.getId(),"危险作业技术交底文件",technologyFile,0,tDangerTask.getBusinessId());
 				tDangerTask.setTechnologyFilePath(technologyStr);
 				
 			}	
 			if(Objects.nonNull(licenceFile)&&StringUtils.isNotEmpty(licenceFile.getOriginalFilename())){
-				String licenceStr = fileService.upolad("weixianzuoye",tDangerTask.getId(),"危险作业许可文件文件",technologyFile,0);
+				String licenceStr = fileService.upolad("weixianzuoye",tDangerTask.getId(),"危险作业许可文件文件",technologyFile,0,tDangerTask.getBusinessId());
 				tDangerTask.setLicenceFilePath(licenceStr);
 				
 			}				

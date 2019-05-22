@@ -3,16 +3,22 @@ package com.project.web.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
+import java.util.Objects;
 import java.util.Date;
 import com.project.framework.util.ShiroUtils;
 import com.project.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.web.mapper.TDangerMapper;
 import com.project.web.domian.TDanger;
+import com.project.web.service.IFileService;
 import com.project.web.service.ITDangerService;
+import com.project.common.base.AjaxResult;
 import com.project.common.support.Convert;
+import com.project.common.utils.StringUtils;
 
 /**
  * 隐患 服务层实现
@@ -27,6 +33,8 @@ public class TDangerServiceImpl implements ITDangerService
 	@Autowired
 	@Qualifier("tDangerMapper")
 	private TDangerMapper tDangerMapper;
+    @Autowired
+    private IFileService fileService;
 
 	/**
      * 查询隐患信息
@@ -74,9 +82,19 @@ public class TDangerServiceImpl implements ITDangerService
      * @return 结果
      */
 	@Override
-	public int updateTDanger(TDanger tDanger)
+	public int updateTDanger(TDanger tDanger,MultipartFile dochangePicture)
 	{
-	    return tDangerMapper.updateTDanger(tDanger);
+	    try {
+	    	if (Objects.nonNull(dochangePicture) && StringUtils.isNotEmpty(dochangePicture.getOriginalFilename())) {
+                String upolad = this.fileService.upolad("zhenggaizhaopian", tDanger.getId(), "整改照片文件", dochangePicture, 0,tDanger.getBusinessId());
+                tDanger.setDochangePicture(upolad);
+            }
+	    	tDanger.setDochangeDate(new Date());
+	    	
+		} catch (Exception e) {
+			
+		}
+		return tDangerMapper.updateTDanger(tDanger);
 	}
 
 	/**
@@ -91,4 +109,10 @@ public class TDangerServiceImpl implements ITDangerService
 		return tDangerMapper.deleteTDangerByIds(Convert.toStrArray(ids));
 	}
 	//以上自动生成的尽量别动
+
+	@Override
+	public List<TDanger> selectTDangerListByUser(TDanger tDanger) {		
+		tDanger.setDochangeUserId(ShiroUtils.getUserId());
+		return tDangerMapper.selectTDangerListByDochangeUser(tDanger);
+	}
 }

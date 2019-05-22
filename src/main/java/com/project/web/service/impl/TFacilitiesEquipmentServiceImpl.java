@@ -71,7 +71,7 @@ public class TFacilitiesEquipmentServiceImpl implements ITFacilitiesEquipmentSer
 		tFacilitiesEquipment.setUserId(ShiroUtils.getUserId());
 		try {
 			if(Objects.nonNull(facilitiesFile)&&StringUtils.isNotEmpty(facilitiesFile.getOriginalFilename())){
-				String Str = fileService.upolad("sheshishebei",uuid,"设施设备使用等级附件",facilitiesFile,0);
+				String Str = fileService.upolad("sheshishebei",uuid,"设施设备使用等级附件",facilitiesFile,0,tFacilitiesEquipment.getBusinessId());
 				tFacilitiesEquipment.setFilePath(Str);
 				
 			}				
@@ -93,7 +93,7 @@ public class TFacilitiesEquipmentServiceImpl implements ITFacilitiesEquipmentSer
 	{
 		try {
 			if(Objects.nonNull(facilitiesFile)&&StringUtils.isNotEmpty(facilitiesFile.getOriginalFilename())){
-				String Str = fileService.upolad("sheshishebei",tFacilitiesEquipment.getId(),"设施设备使用等级附件",facilitiesFile,0);
+				String Str = fileService.upolad("sheshishebei",tFacilitiesEquipment.getId(),"设施设备使用等级附件",facilitiesFile,0,tFacilitiesEquipment.getBusinessId());
 				tFacilitiesEquipment.setFilePath(Str);
 				
 			}				

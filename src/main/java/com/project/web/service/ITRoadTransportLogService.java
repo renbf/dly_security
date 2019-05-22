@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TRoadTransportLog;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface ITRoadTransportLogService
      * @param tRoadTransportLog 道路运输证变更信息
      * @return 结果
      */
-	public int insertTRoadTransportLog(TRoadTransportLog tRoadTransportLog);
+	public AjaxResult insertTRoadTransportLog(TRoadTransportLog tRoadTransportLog);
 	
 	/**
      * 修改道路运输证变更
@@ -41,7 +42,7 @@ public interface ITRoadTransportLogService
      * @param tRoadTransportLog 道路运输证变更信息
      * @return 结果
      */
-	public int updateTRoadTransportLog(TRoadTransportLog tRoadTransportLog);
+	public AjaxResult updateTRoadTransportLog(TRoadTransportLog tRoadTransportLog);
 		
 	/**
      * 删除道路运输证变更信息

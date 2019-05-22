@@ -38,10 +38,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="inspectPlanId"    column="inspect_plan_id"    />
     </resultMap>
 	
 	<sql id="selectTDangerbasicColums">
-        select d.id, d.inspect_dept_id, d.inspect_obj, d.check_user_id, d.check_date, d.check_type, d.danger_position, d.danger_dept_id, d.danger_type, d.danger_level, d.risk_resource, d.maybe_result, d.danger_url, d.remark, d.status, d.end_date, d.dochange_user_id, d.dochange_dept_id, d.dochange_step, d.dochange_capital, d.dochange_picture, d.dochange_date, d.dochange_type, d.refuse_text, d.check_accept_user_id, d.check_accept_dept_id, d.check_accept_date, d.check_accept_result, d.check_accept_url, d.add_user_id, d.create_date, d.update_date, d.update_user_id    </sql>
+        select d.id, d.inspect_dept_id, d.inspect_obj, d.check_user_id, 
+        d.check_date, 
+        DATE_FORMAT(d.check_date,'%Y-%m-%d') as checkDateStr,
+        d.check_type, d.danger_position, d.danger_dept_id, d.danger_type, d.danger_level, d.risk_resource, d.maybe_result, d.danger_url, d.remark, d.status, d.end_date, d.dochange_user_id, d.dochange_dept_id, d.dochange_step, d.dochange_capital, d.dochange_picture, d.dochange_date, d.dochange_type, d.refuse_text, d.check_accept_user_id, d.check_accept_dept_id, d.check_accept_date, d.check_accept_result, d.check_accept_url, d.add_user_id, d.create_date, d.update_date, d.update_user_id    </sql>
 	
     <select id="selectTDangerList" parameterType="com.project.web.domian.TDanger" resultMap="TDangerResult">
         <include refid="selectTDangerbasicColums"/>
@@ -49,9 +54,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="id != null  and id != '' "> and d.id = #{id}</if>
              <if test="inspectDeptId != null "> and d.inspect_dept_id = #{inspectDeptId}</if>
-             <if test="inspectObj != null  and inspectObj != '' "> and d.inspect_obj = #{inspectObj}</if>
-             <if test="checkUserId != null  and checkUserId != '' "> and d.check_user_id = #{checkUserId}</if>
-             <if test="checkDate != null "> and d.check_date = #{checkDate}</if>
+             <if test="inspectObj != null  and inspectObj != '' "> and d.inspect_obj like concat('%',#{inspectObj},'%')</if>
+             <if test="checkUserId != null  and checkUserId != '' "> and d.check_user_id = #{checkUserId}</if>           
+            <if test="checkDate != null  and checkDate1 == null "> 
+           	 	and DATE_FORMAT(d.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+            </if>
+            <if test="checkDate1 != null  and checkDate == null "> 
+            	and DATE_FORMAT(d.check_date,'%Y%m%d') &lt;= DATE_FORMAT(#{checkDate1},'%Y%m%d')
+            </if>
+            <if test="checkDate1 != null  and checkDate != null "> 
+            	and DATE_FORMAT(d.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+                and   DATE_FORMAT(d.check_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{checkDate1},'%Y%m%d')
+            </if>         
              <if test="checkType != null  and checkType != '' "> and d.check_type = #{checkType}</if>
              <if test="dangerPosition != null  and dangerPosition != '' "> and d.danger_position = #{dangerPosition}</if>
              <if test="dangerDeptId != null "> and d.danger_dept_id = #{dangerDeptId}</if>
@@ -74,13 +88,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="checkAcceptUserId != null  and checkAcceptUserId != '' "> and d.check_accept_user_id = #{checkAcceptUserId}</if>
              <if test="checkAcceptDeptId != null "> and d.check_accept_dept_id = #{checkAcceptDeptId}</if>
              <if test="checkAcceptDate != null "> and d.check_accept_date = #{checkAcceptDate}</if>
-             <if test="checkAcceptResult != null  and checkAcceptResult != '' "> and d.check_accept_result = #{checkAcceptResult}</if>
+             <if test="checkAcceptResult != null  and checkAcceptResult != '' "> and d.check_accept_result like concat('%',#{checkAcceptResult},'%')</if>
              <if test="checkAcceptUrl != null  and checkAcceptUrl != '' "> and d.check_accept_url = #{checkAcceptUrl}</if>
              <if test="addUserId != null  and addUserId != '' "> and d.add_user_id = #{addUserId}</if>
              <if test="createDate != null "> and d.create_date = #{createDate}</if>
              <if test="updateDate != null "> and d.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and d.update_user_id = #{updateUserId}</if>
          </where>
+         order by d.check_date desc
     </select>
     
     <select id="selectTDangerById" parameterType="String" resultMap="TDangerResult">
@@ -125,6 +140,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">create_date,</if>
 			<if test="updateDate != null  ">update_date,</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+			<if test="businessId != null and businessId !='' ">business_id,</if>
+			<if test="inspectPlanId != null  ">inspect_plan_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -160,6 +177,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">#{createDate},</if>
 			<if test="updateDate != null  ">#{updateDate},</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+			<if test="businessId != null and businessId !='' ">#{businessId},</if>
+			<if test="inspectPlanId != null ">#{inspectPlanId},</if>
          </trim>
     </insert>
 	 
@@ -213,5 +232,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
+  <select id="selectTDangerListByDochangeUser" parameterType="com.project.web.domian.TDanger" resultMap="TDangerResult">
+        <include refid="selectTDangerbasicColums"/>
+        from t_danger d
+        <where>  
+            <if test="id != null  and id != '' "> and d.id = #{id}</if>
+             <if test="inspectDeptId != null "> and d.inspect_dept_id = #{inspectDeptId}</if>
+             <if test="inspectObj != null  and inspectObj != '' "> and d.inspect_obj like concat('%',#{inspectObj},'%')</if>
+             <if test="checkUserId != null  and checkUserId != '' "> and d.check_user_id = #{checkUserId}</if>           
+            <if test="checkDate != null  and checkDate1 == null "> 
+           	 	and DATE_FORMAT(d.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+            </if>
+            <if test="checkDate1 != null  and checkDate == null "> 
+            	and DATE_FORMAT(d.check_date,'%Y%m%d') &lt;= DATE_FORMAT(#{checkDate1},'%Y%m%d')
+            </if>
+            <if test="checkDate1 != null  and checkDate != null "> 
+            	and DATE_FORMAT(d.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+                and   DATE_FORMAT(d.check_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{checkDate1},'%Y%m%d')
+            </if>         
+             <if test="checkType != null  and checkType != '' "> and d.check_type = #{checkType}</if>
+             <if test="dangerPosition != null  and dangerPosition != '' "> and d.danger_position = #{dangerPosition}</if>
+             <if test="dangerDeptId != null "> and d.danger_dept_id = #{dangerDeptId}</if>
+             <if test="dangerType != null  and dangerType != '' "> and d.danger_type = #{dangerType}</if>
+             <if test="dangerLevel != null  and dangerLevel != '' "> and d.danger_level = #{dangerLevel}</if>
+             <if test="riskResource != null  and riskResource != '' "> and d.risk_resource = #{riskResource}</if>
+             <if test="maybeResult != null  and maybeResult != '' "> and d.maybe_result = #{maybeResult}</if>
+             <if test="dangerUrl != null  and dangerUrl != '' "> and d.danger_url = #{dangerUrl}</if>
+             <if test="remark != null  and remark != '' "> and d.remark = #{remark}</if>
+             <if test="endDate != null "> and d.end_date = #{endDate}</if>
+             <if test="dochangeUserId != null  and dochangeUserId != '' "> and d.dochange_user_id = #{dochangeUserId}</if>
+             <if test="dochangeDeptId != null "> and d.dochange_dept_id = #{dochangeDeptId}</if>
+             <if test="dochangeStep != null  and dochangeStep != '' "> and d.dochange_step = #{dochangeStep}</if>
+             <if test="dochangeCapital != null  and dochangeCapital != '' "> and d.dochange_capital = #{dochangeCapital}</if>
+             <if test="dochangePicture != null  and dochangePicture != '' "> and d.dochange_picture = #{dochangePicture}</if>
+             <if test="dochangeDate != null "> and d.dochange_date = #{dochangeDate}</if>
+             <if test="dochangeType != null  and dochangeType != '' "> and d.dochange_type = #{dochangeType}</if>
+             <if test="refuseText != null  and refuseText != '' "> and d.refuse_text = #{refuseText}</if>
+             <if test="checkAcceptUserId != null  and checkAcceptUserId != '' "> and d.check_accept_user_id = #{checkAcceptUserId}</if>
+             <if test="checkAcceptDeptId != null "> and d.check_accept_dept_id = #{checkAcceptDeptId}</if>
+             <if test="checkAcceptDate != null "> and d.check_accept_date = #{checkAcceptDate}</if>
+             <if test="checkAcceptResult != null  and checkAcceptResult != '' "> and d.check_accept_result like concat('%',#{checkAcceptResult},'%')</if>
+             and d.status in ('1','2')
+         </where>
+         order by d.check_date desc
+    </select>
     
 </mapper>

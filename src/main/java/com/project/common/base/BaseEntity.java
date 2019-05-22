@@ -64,10 +64,38 @@ public class BaseEntity implements Serializable {
      * 文件路径
      */
     private String filePath;
-    
-    
+    /**
+     * 部门名称
+     */
+    private String deptName;
 
-    public String getFilePath() {
+
+    /**
+     * 企业ID 用于前端传值
+     */
+    private String businessId;
+
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getDeptName() {
+		return deptName;
+	}
+
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+
+	public String getFilePath() {
 		return filePath;
 	}
 

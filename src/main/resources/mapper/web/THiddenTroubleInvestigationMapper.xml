@@ -36,14 +36,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="id != null  and id != '' "> and hti.id = #{id}</if>
              <if test="deptId != null  and deptId != '' "> and hti.dept_id = #{deptId}</if>
-             <if test="riskPosition != null  and riskPosition != '' "> and hti.risk_position = #{riskPosition}</if>
-             <if test="riskName != null  and riskName != '' "> and hti.risk_name = #{riskName}</if>
+             <if test="riskPosition != null  and riskPosition != '' "> and hti.risk_position like concat('%',#{riskPosition},'%')</if>
+             <if test="riskName != null  and riskName != '' "> and hti.risk_name like concat('%',#{riskName},'%')</if>
              <if test="riskMeasures != null  and riskMeasures != '' "> and hti.risk_measures = #{riskMeasures}</if>
              <if test="riskNotControl != null  and riskNotControl != '' "> and hti.risk_not_control = #{riskNotControl}</if>
              <if test="riskLevel != null  and riskLevel != '' "> and hti.risk_level = #{riskLevel}</if>
              <if test="derelictionDeptId != null  and derelictionDeptId != '' "> and hti.dereliction_dept_id = #{derelictionDeptId}</if>
              <if test="derelictionPer != null "> and hti.dereliction_per = #{derelictionPer}</if>
-             <if test="derelictionPerName != null  and derelictionPerName != '' "> and hti.dereliction_per_name = #{derelictionPerName}</if>
+             <if test="derelictionPerName != null  and derelictionPerName != '' "> and hti.dereliction_per_name like concat('%',#{derelictionPerName},'%')</if>
              <if test="troubleshootDeptId != null  and troubleshootDeptId != '' "> and hti.troubleshoot_dept_id = #{troubleshootDeptId}</if>
              <if test="troubleshootPer != null "> and hti.troubleshoot_per = #{troubleshootPer}</if>
              <if test="troubleshootPerName != null  and troubleshootPerName != '' "> and hti.troubleshoot_per_name = #{troubleshootPerName}</if>

@@ -86,7 +86,7 @@ public class TRelevantMessageServiceImpl implements ITRelevantMessageService
 			tRelevantMessage.setCreateTime(new Date());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(relevantlFile)&&StringUtils.isNotEmpty(relevantlFile.getOriginalFilename())){
-				String Str = fileService.upolad("xiangguanfang",uuid,"相关方文件",relevantlFile,0);
+				String Str = fileService.upolad("xiangguanfang",uuid,"相关方文件",relevantlFile,0,tRelevantMessage.getBusinessId());
 				tRelevantMessage.setFilePath(Str);
 				
 			}					
@@ -119,7 +119,7 @@ public class TRelevantMessageServiceImpl implements ITRelevantMessageService
 			
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(relevantlFile)&&StringUtils.isNotEmpty(relevantlFile.getOriginalFilename())){
-				String Str = fileService.upolad("xiangguanfang",tRelevantMessage.getId(),"相关方文件",relevantlFile,0);
+				String Str = fileService.upolad("xiangguanfang",tRelevantMessage.getId(),"相关方文件",relevantlFile,0,tRelevantMessage.getBusinessId());
 				tRelevantMessage.setFilePath(Str);
 				
 			}					

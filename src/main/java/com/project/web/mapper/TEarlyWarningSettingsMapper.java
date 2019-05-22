@@ -59,5 +59,10 @@ public interface TEarlyWarningSettingsMapper
      * @return 结果
      */
 	public int deleteTEarlyWarningSettingsByIds(String[] ids);
-	
+	/**
+	 * 根据企业id查询
+	 * @param businessId
+	 * @return
+	 */
+	public TEarlyWarningSettings selectTEarlyWarningSettingsByBusinessId(String businessId);
 }

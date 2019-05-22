@@ -60,4 +60,13 @@ public interface TUserPaperMapper
      */
 	public int deleteTUserPaperByIds(String[] ids);
 	//以上自动生成的尽量别动
+
+
+	/**
+	 * 批量删除用户考试安排根据主表id
+	 * @param ids
+	 * @return
+	 */
+	public int deleteTUserPaperByPaperArrangeId(String[] ids);
+
 }

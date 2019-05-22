@@ -46,7 +46,7 @@ public class TLegalProvisionsController extends BaseController
 	/**
 	 * 查询法律法规列表
 	 */
-	@RequiresPermissions("system:tLegalProvisions:list")
+//	@RequiresPermissions("system:tLegalProvisions:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TLegalProvisions tLegalProvisions)
@@ -68,7 +68,7 @@ public class TLegalProvisionsController extends BaseController
 	/**
 	 * 新增保存法律法规
 	 */
-	@RequiresPermissions("system:tLegalProvisions:add")
+//	@RequiresPermissions("system:tLegalProvisions:add")
 	@Log(title = "法律法规", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
@@ -91,7 +91,7 @@ public class TLegalProvisionsController extends BaseController
 	/**
 	 * 修改保存法律法规
 	 */
-	@RequiresPermissions("system:tLegalProvisions:edit")
+//	@RequiresPermissions("system:tLegalProvisions:edit")
 	@Log(title = "法律法规", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -103,7 +103,7 @@ public class TLegalProvisionsController extends BaseController
 	/**
 	 * 删除法律法规
 	 */
-	@RequiresPermissions("system:tLegalProvisions:remove")
+//	@RequiresPermissions("system:tLegalProvisions:remove")
 	@Log(title = "法律法规", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

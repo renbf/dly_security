@@ -21,17 +21,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarSatellitePositionbasicColums">
-        select csp.id, csp.car_id, csp.position_time, csp.terminal_type, csp.setup_date, csp.system, csp.end_date, csp.remark, csp.file_url, csp.add_user_id, csp.create_date, csp.update_date, csp.update_user_id    </sql>
+        select csp.id, csp.car_id, csp.position_time, csp.terminal_type, csp.setup_date, csp.system, csp.end_date,
+        csp.remark, csp.file_url, csp.add_user_id, csp.create_date, csp.update_date, csp.update_user_id ,
+        DATE_FORMAT(csp.position_time,'%Y-%m-%d') as positionTimeStr,
+        DATE_FORMAT(csp.setup_date,'%Y-%m-%d') as setupDateStr,
+        DATE_FORMAT(csp.end_date,'%Y-%m-%d') as endDateStr,
+        DATE_FORMAT(csp.create_date,'%Y-%m-%d') as createDateStr
+        from t_car_satellite_position csp
+
+    </sql>
 	
     <select id="selectTCarSatellitePositionList" parameterType="com.project.web.domian.TCarSatellitePosition" resultMap="TCarSatellitePositionResult">
         <include refid="selectTCarSatellitePositionbasicColums"/>
-        from t_car_satellite_position csp
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and csp.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and csp.car_id = #{carId}</if>
-             <if test="positionTime != null "> and csp.position_time = #{positionTime}</if>
+
+
+            <if test="positionTime != null  and positionTime1 == null "> and DATE_FORMAT(csp.position_time,'%Y%m%d') &gt;= DATE_FORMAT(#{positionTime},'%Y%m%d')</if>
+            <if test="positionTime1 != null  and positionTime == null "> and DATE_FORMAT(csp.position_time,'%Y%m%d') &lt;= DATE_FORMAT(#{positionTime1},'%Y%m%d')</if>
+            <if test="positionTime1 != null  and positionTime != null "> and DATE_FORMAT(csp.position_time,'%Y%m%d') &gt;= DATE_FORMAT(#{positionTime},'%Y%m%d')
+                and   DATE_FORMAT(csp.position_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{positionTime1},'%Y%m%d')
+            </if>
+
+
              <if test="terminalType != null  and terminalType != '' "> and csp.terminal_type = #{terminalType}</if>
-             <if test="setupDate != null "> and csp.setup_date = #{setupDate}</if>
+
+
+            <if test="setupDate != null  and setupDate1 == null "> and DATE_FORMAT(csp.setup_date,'%Y%m%d') &gt;= DATE_FORMAT(#{setupDate},'%Y%m%d')</if>
+            <if test="setupDate1 != null  and setupDate == null "> and DATE_FORMAT(csp.setup_date,'%Y%m%d') &lt;= DATE_FORMAT(#{setupDate1},'%Y%m%d')</if>
+            <if test="setupDate1 != null  and setupDate != null "> and DATE_FORMAT(csp.setup_date,'%Y%m%d') &gt;= DATE_FORMAT(#{setupDate},'%Y%m%d')
+                and   DATE_FORMAT(csp.setup_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{setupDate1},'%Y%m%d')
+            </if>
+
+
              <if test="system != null  and system != '' "> and csp.system = #{system}</if>
              <if test="endDate != null "> and csp.end_date = #{endDate}</if>
              <if test="remark != null  and remark != '' "> and csp.remark = #{remark}</if>
@@ -113,5 +136,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_satellite_position where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

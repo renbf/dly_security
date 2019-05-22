@@ -25,22 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class SysUserServiceImpl implements ISysUserService {
     @Autowired
     private SysUserMapper userMapper;
-
     @Autowired
     private SysRoleMapper roleMapper;
-
     @Autowired
     private SysPostMapper postMapper;
-
     @Autowired
     private SysUserPostMapper userPostMapper;
-
     @Autowired
     private SysUserRoleMapper userRoleMapper;
     @Autowired
     private SysDeptMapper sysDeptMapper;
-    @Autowired
-    private SysRoleMapper sysRoleMapper;
     @Autowired
     RedisUtil redisUtil;
     /**
@@ -53,9 +47,9 @@ public class SysUserServiceImpl implements ISysUserService {
 //    @DataScope(tableAlias = "d")
     public List<SysUser> selectUserList(SysUser user) {
         List<SysUser> list= userMapper.selectUserList(user);
-        list.forEach(obj->{
-            obj.setDept(sysDeptMapper.selectDeptById(obj.getDeptId()));
-        });
+//        list.forEach(obj->{
+//            obj.setDept(sysDeptMapper.selectDeptById(obj.getDeptId()));
+//        });
         return list;
     }
 

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.project.common.base.BaseEntity;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 考卷表 t_paper
@@ -41,10 +42,46 @@ public class TPaper extends BaseEntity
 	private String addUserId;
 	/** 创建时间 */
 	private Date createDate;
+	/** 创建时间 */
+	private Date createDateEnd;
 	/** 修改时间 */
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
+	
+	/**
+	 * 题库ID集合
+	 */
+	private List<TSubjectPaper> tSubList;
+	/**
+	 * 题集合
+	 */
+	private List<TSubject> subJectList;
+
+
+	public List<TSubjectPaper> gettSubList() {
+		return tSubList;
+	}
+
+	public void settSubList(List<TSubjectPaper> tSubList) {
+		this.tSubList = tSubList;
+	}
+
+	public List<TSubject> getSubJectList() {
+		return subJectList;
+	}
+
+	public void setSubJectList(List<TSubject> subJectList) {
+		this.subJectList = subJectList;
+	}
+
+	public Date getCreateDateEnd() {
+		return createDateEnd;
+	}
+
+	public void setCreateDateEnd(Date createDateEnd) {
+		this.createDateEnd = createDateEnd;
+	}
 
 	public void setId(String id) 
 	{

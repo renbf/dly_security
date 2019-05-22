@@ -30,8 +30,9 @@
         DATE_FORMAT(dnc.shifts_date,'%Y-%m-%d') as shiftsDateStr,
         DATE_FORMAT(dnc.newspaper_class_date,'%Y-%m-%d') as newspaperClassDateStr,
         DATE_FORMAT(dnc.create_time,'%Y-%m-%d') as createTimeStr,
-        dic.dict_name as vehicleLicenseTypeName
-        from t_departure_newspaper_class dnc  left join t_dict dic on (dic.id = dc.shifts_type and dic.dict_code = 'vehicle_license_type')
+        dic.dict_name as vehicleLicenseTypeName,
+        DATE_FORMAT(dnc.last_synchro_date,'%Y-%m-%d') as lastSynchroDateStr
+        from t_departure_newspaper_class dnc  left join t_dict dic on (dic.id = dnc.shifts_type and dic.dict_code = 'vehicle_license_type')
     </sql>
 
     <select id="selectTDepartureNewspaperClassList" parameterType="TDepartureNewspaperClass" resultMap="TDepartureNewspaperClassResult">
@@ -68,6 +69,7 @@
             <if test="businessId != null  and businessId != '' "> and dnc.business_id = #{businessId}</if>
             <if test="updateUserId != null "> and dnc.update_user_id = #{updateUserId}</if>
         </where>
+        order by dnc.create_time desc
     </select>
 
     <select id="selectTDepartureNewspaperClassById" parameterType="String" resultMap="TDepartureNewspaperClassResult">

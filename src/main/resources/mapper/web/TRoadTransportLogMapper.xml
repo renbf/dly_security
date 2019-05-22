@@ -1,82 +1,133 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TRoadTransportLogMapper">
-    
-    <resultMap type="com.project.web.domian.TRoadTransportLog" id="TRoadTransportLogResult">
+
+    <resultMap type="TRoadTransportLog" id="TRoadTransportLogResult">
         <result property="id"    column="id"    />
+        <result property="carInfoId"    column="car_info_id"    />
         <result property="ownerName"    column="owner_name"    />
         <result property="roadTransportNumber"    column="road_transport_number"    />
-        <result property="validityTerm"    column="validity_term"    />
+        <result property="validityDate"    column="validity_date"    />
         <result property="businessScope"    column="business_scope"    />
         <result property="startDate"    column="start_date"    />
+        <result property="photoFilePath"    column="photo_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTRoadTransportLogbasicColums">
-        select rtl.id, rtl.owner_name, rtl.road_transport_number, rtl.validity_term, rtl.business_scope, rtl.start_date    </sql>
-	
-    <select id="selectTRoadTransportLogList" parameterType="com.project.web.domian.TRoadTransportLog" resultMap="TRoadTransportLogResult">
-        <include refid="selectTRoadTransportLogbasicColums"/>
-        from t_road_transport_log rtl
-        <where>  
+
+    <sql id="selectTRoadTransportLogVo">
+        select rtl.id, rtl.car_info_id, rtl.owner_name, rtl.road_transport_number, rtl.validity_date,
+        rtl.business_scope, rtl.start_date, rtl.photo_file_path, rtl.create_time, rtl.update_time,
+         rtl.add_user_id, rtl.meno, rtl.business_id, rtl.update_user_id,
+        DATE_FORMAT(rtl.validity_date,'%Y-%m-%d') as validityDateStr,
+        DATE_FORMAT(rtl.create_time,'%Y-%m-%d') as createTimeStr
+
+          from t_road_transport_log rtl
+    </sql>
+
+    <select id="selectTRoadTransportLogList" parameterType="TRoadTransportLog" resultMap="TRoadTransportLogResult">
+        <include refid="selectTRoadTransportLogVo"/>
+        <where>
             <if test="id != null  and id != '' "> and rtl.id = #{id}</if>
-             <if test="ownerName != null  and ownerName != '' "> and rtl.owner_name = #{ownerName}</if>
-             <if test="roadTransportNumber != null  and roadTransportNumber != '' "> and rtl.road_transport_number = #{roadTransportNumber}</if>
-             <if test="validityTerm != null  and validityTerm != '' "> and rtl.validity_term = #{validityTerm}</if>
-             <if test="businessScope != null  and businessScope != '' "> and rtl.business_scope = #{businessScope}</if>
-             <if test="startDate != null "> and rtl.start_date = #{startDate}</if>
-         </where>
+            <if test="carInfoId != null  and carInfoId != '' "> and rtl.car_info_id = #{carInfoId}</if>
+            <if test="ownerName != null  and ownerName != '' "> and rtl.owner_name = #{ownerName}</if>
+            <if test="roadTransportNumber != null  and roadTransportNumber != '' "> and rtl.road_transport_number = #{roadTransportNumber}</if>
+            <if test="validityDate != null "> and rtl.validity_date = #{validityDate}</if>
+            <if test="businessScope != null  and businessScope != '' "> and rtl.business_scope = #{businessScope}</if>
+            <if test="startDate != null "> and rtl.start_date = #{startDate}</if>
+            <if test="photoFilePath != null  and photoFilePath != '' "> and rtl.photo_file_path = #{photoFilePath}</if>
+            <if test="createTime != null "> and rtl.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and rtl.update_time = #{updateTime}</if>
+            <if test="addUserId != null  and addUserId != '' "> and rtl.add_user_id = #{addUserId}</if>
+            <if test="meno != null  and meno != '' "> and rtl.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and rtl.business_id = #{businessId}</if>
+            <if test="updateUserId != null  and updateUserId != '' "> and rtl.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTRoadTransportLogById" parameterType="String" resultMap="TRoadTransportLogResult">
-        <include refid="selectTRoadTransportLogbasicColums"/>
-        from t_road_transport_log rtl
+        <include refid="selectTRoadTransportLogVo"/>
         where rtl.id = #{id}
     </select>
-        
-    <insert id="insertTRoadTransportLog" parameterType="com.project.web.domian.TRoadTransportLog">
+
+    <insert id="insertTRoadTransportLog" parameterType="TRoadTransportLog">
         insert into t_road_transport_log
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="ownerName != null  and ownerName != ''  ">owner_name,</if>
-			<if test="roadTransportNumber != null  and roadTransportNumber != ''  ">road_transport_number,</if>
-			<if test="validityTerm != null  and validityTerm != ''  ">validity_term,</if>
-			<if test="businessScope != null  and businessScope != ''  ">business_scope,</if>
-			<if test="startDate != null  ">start_date,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="carInfoId != null  and carInfoId != ''  ">car_info_id,</if>
+            <if test="ownerName != null  and ownerName != ''  ">owner_name,</if>
+            <if test="roadTransportNumber != null  and roadTransportNumber != ''  ">road_transport_number,</if>
+            <if test="validityDate != null  ">validity_date,</if>
+            <if test="businessScope != null  and businessScope != ''  ">business_scope,</if>
+            <if test="startDate != null  ">start_date,</if>
+            <if test="photoFilePath != null  and photoFilePath != ''  ">photo_file_path,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="ownerName != null  and ownerName != ''  ">#{ownerName},</if>
-			<if test="roadTransportNumber != null  and roadTransportNumber != ''  ">#{roadTransportNumber},</if>
-			<if test="validityTerm != null  and validityTerm != ''  ">#{validityTerm},</if>
-			<if test="businessScope != null  and businessScope != ''  ">#{businessScope},</if>
-			<if test="startDate != null  ">#{startDate},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="carInfoId != null  and carInfoId != ''  ">#{carInfoId},</if>
+            <if test="ownerName != null  and ownerName != ''  ">#{ownerName},</if>
+            <if test="roadTransportNumber != null  and roadTransportNumber != ''  ">#{roadTransportNumber},</if>
+            <if test="validityDate != null  ">#{validityDate},</if>
+            <if test="businessScope != null  and businessScope != ''  ">#{businessScope},</if>
+            <if test="startDate != null  ">#{startDate},</if>
+            <if test="photoFilePath != null  and photoFilePath != ''  ">#{photoFilePath},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTRoadTransportLog" parameterType="com.project.web.domian.TRoadTransportLog">
+
+    <update id="updateTRoadTransportLog" parameterType="TRoadTransportLog">
         update t_road_transport_log
         <trim prefix="SET" suffixOverrides=",">
+            <if test="carInfoId != null  and carInfoId != ''  ">car_info_id = #{carInfoId},</if>
             <if test="ownerName != null  and ownerName != ''  ">owner_name = #{ownerName},</if>
             <if test="roadTransportNumber != null  and roadTransportNumber != ''  ">road_transport_number = #{roadTransportNumber},</if>
-            <if test="validityTerm != null  and validityTerm != ''  ">validity_term = #{validityTerm},</if>
+            <if test="validityDate != null  ">validity_date = #{validityDate},</if>
             <if test="businessScope != null  and businessScope != ''  ">business_scope = #{businessScope},</if>
             <if test="startDate != null  ">start_date = #{startDate},</if>
+            <if test="photoFilePath != null  and photoFilePath != ''  ">photo_file_path = #{photoFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTRoadTransportLogById" parameterType="String">
+    <delete id="deleteTRoadTransportLogById" parameterType="String">
         delete from t_road_transport_log where id = #{id}
     </delete>
-	
+
     <delete id="deleteTRoadTransportLogByIds" parameterType="String">
-        delete from t_road_transport_log where id in 
+        delete from t_road_transport_log where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_road_transport_log where car_info_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

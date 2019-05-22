@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TDriverLog;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public interface ITDriverLogService
      * @param tDriverLog 行车日志基础信息
      * @return 结果
      */
-	public int updateTDriverLog(TDriverLog tDriverLog);
+	public AjaxResult updateTDriverLog(TDriverLog tDriverLog);
 		
 	/**
      * 删除行车日志基础信息

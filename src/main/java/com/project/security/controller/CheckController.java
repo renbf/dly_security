@@ -128,7 +128,7 @@ public class CheckController {
 	@ApiOperation(value="上报隐患接口接口",notes="上报隐患接口接口",httpMethod="POST",response=Result.class)
 	public @ResponseBody Result uploadHiddenDanger(HttpServletRequest request,
 			@ApiParam(name="dangerJson",value="上报隐患json字符串",required=true) @RequestParam(value="dangerJson",required=true) String dangerJson,
-			@ApiParam(name="inspectPlanId",value="检查计划id",required=true) @RequestParam(value="inspectPlanId",required=true) String inspectPlanId,
+			@ApiParam(name="inspectPlanId",value="检查计划id",required=false) @RequestParam(value="inspectPlanId",required=false) String inspectPlanId,
 			@ApiParam(name="photoFile",value="隐患图片",required=false) MultipartFile[] photoFile
 	){
 		DataResult result=new DataResult();

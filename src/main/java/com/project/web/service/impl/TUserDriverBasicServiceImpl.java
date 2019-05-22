@@ -200,52 +200,52 @@ public class TUserDriverBasicServiceImpl implements ITUserDriverBasicService
 			driverPhoto.setCreateTime(new Date());
 			//驾驶员头像
 			if(Objects.nonNull(headImg)&&StringUtils.isNotEmpty(headImg.getOriginalFilename())){	
-				String Str = fileService.upolad("jiashiyuantouxiang",uuidTemp,"驾驶员头像图片",headImg,0);
+				String Str = fileService.upolad("jiashiyuantouxiang",uuidTemp,"驾驶员头像图片",headImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setHeadImg(Str);				
 			}	
 			//个人照片图片
 			if(Objects.nonNull(personalImg)&&StringUtils.isNotEmpty(personalImg.getOriginalFilename())){	
-				String Str = fileService.upolad("gerenzhaopian",uuidTemp,"个人照片图片",personalImg,0);
+				String Str = fileService.upolad("gerenzhaopian",uuidTemp,"个人照片图片",personalImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setPersonalImg(Str);				
 			}	
 			//身份证复印件照片图片
 			if(Objects.nonNull(idCardCopyImg)&&StringUtils.isNotEmpty(idCardCopyImg.getOriginalFilename())){	
-				String Str = fileService.upolad("shenfenzhengzhaopian",uuidTemp,"身份证复印件照片图片",idCardCopyImg,0);
+				String Str = fileService.upolad("shenfenzhengzhaopian",uuidTemp,"身份证复印件照片图片",idCardCopyImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setIdCardCopyImg(Str);				
 			}	
 			//从业资格证复印件照片图片
 			if(Objects.nonNull(practitionersCopyImg)&&StringUtils.isNotEmpty(practitionersCopyImg.getOriginalFilename())){	
-				String Str = fileService.upolad("congyezigezheng",uuidTemp,"从业资格证复印件照片图片",practitionersCopyImg,0);
+				String Str = fileService.upolad("congyezigezheng",uuidTemp,"从业资格证复印件照片图片",practitionersCopyImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setPractitionersCopyImg(Str);				
 			}	
 			//考试试卷正
 			if(Objects.nonNull(examinationPaperImg)&&StringUtils.isNotEmpty(examinationPaperImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuanzheng",uuidTemp,"考试试卷正图片",examinationPaperImg,0);
+				String Str = fileService.upolad("kaoshishijuanzheng",uuidTemp,"考试试卷正图片",examinationPaperImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperImg(Str);				
 			}	
 			//考试试卷第二页
 			if(Objects.nonNull(examinationPaperSecondImg)&&StringUtils.isNotEmpty(examinationPaperSecondImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuandier",uuidTemp,"考试试卷第二页图片",examinationPaperSecondImg,0);
+				String Str = fileService.upolad("kaoshishijuandier",uuidTemp,"考试试卷第二页图片",examinationPaperSecondImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperSecondImg(Str);				
 			}	
 			//考试试卷第三页
 			if(Objects.nonNull(examinationPaperThirdImg)&&StringUtils.isNotEmpty(examinationPaperThirdImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuandisan",uuidTemp,"考试试卷第三页图片",examinationPaperThirdImg,0);
+				String Str = fileService.upolad("kaoshishijuandisan",uuidTemp,"考试试卷第三页图片",examinationPaperThirdImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperThirdImg(Str);				
 			}	
 			//考试试卷第四页
 			if(Objects.nonNull(examinationPaperFourImg)&&StringUtils.isNotEmpty(examinationPaperFourImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuandisi",uuidTemp,"考试试卷第四页图片",examinationPaperFourImg,0);
+				String Str = fileService.upolad("kaoshishijuandisi",uuidTemp,"考试试卷第四页图片",examinationPaperFourImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperFourImg(Str);				
 			}	
 			//三年无重大事故
 			if(Objects.nonNull(threeNotAccidentImg)&&StringUtils.isNotEmpty(threeNotAccidentImg.getOriginalFilename())){	
-				String Str = fileService.upolad("sannianwuzhongdashigu",uuidTemp,"三年无重大事故图片",threeNotAccidentImg,0);
+				String Str = fileService.upolad("sannianwuzhongdashigu",uuidTemp,"三年无重大事故图片",threeNotAccidentImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setThreeNotAccidentImg(Str);				
 			}	
 			//一年违法记录查询 
 			if(Objects.nonNull(oneYearIllegalRecordImg)&&StringUtils.isNotEmpty(oneYearIllegalRecordImg.getOriginalFilename())){	
-				String Str = fileService.upolad("yinianweifajiluchaxun",uuidTemp,"一年违法记录查询图片",oneYearIllegalRecordImg,0);
+				String Str = fileService.upolad("yinianweifajiluchaxun",uuidTemp,"一年违法记录查询图片",oneYearIllegalRecordImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setOneYearIllegalRecordImg(Str);				
 			}	
 			
@@ -347,52 +347,52 @@ public class TUserDriverBasicServiceImpl implements ITUserDriverBasicService
 		try {
 			//驾驶员头像
 			if(Objects.nonNull(headImg)&&StringUtils.isNotEmpty(headImg.getOriginalFilename())){	
-				String Str = fileService.upolad("jiashiyuantouxiang",uuidTemp,"驾驶员头像图片",headImg,0);
+				String Str = fileService.upolad("jiashiyuantouxiang",uuidTemp,"驾驶员头像图片",headImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setHeadImg(Str);				
 			}	
 			//个人照片图片
 			if(Objects.nonNull(personalImg)&&StringUtils.isNotEmpty(personalImg.getOriginalFilename())){	
-				String Str = fileService.upolad("gerenzhaopian",uuidTemp,"个人照片图片",personalImg,0);
+				String Str = fileService.upolad("gerenzhaopian",uuidTemp,"个人照片图片",personalImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setPersonalImg(Str);				
 			}	
 			//身份证复印件照片图片
 			if(Objects.nonNull(idCardCopyImg)&&StringUtils.isNotEmpty(idCardCopyImg.getOriginalFilename())){	
-				String Str = fileService.upolad("shenfenzhengzhaopian",uuidTemp,"身份证复印件照片图片",idCardCopyImg,0);
+				String Str = fileService.upolad("shenfenzhengzhaopian",uuidTemp,"身份证复印件照片图片",idCardCopyImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setIdCardCopyImg(Str);				
 			}	
 			//从业资格证复印件照片图片
 			if(Objects.nonNull(practitionersCopyImg)&&StringUtils.isNotEmpty(practitionersCopyImg.getOriginalFilename())){	
-				String Str = fileService.upolad("congyezigezheng",uuidTemp,"从业资格证复印件照片图片",practitionersCopyImg,0);
+				String Str = fileService.upolad("congyezigezheng",uuidTemp,"从业资格证复印件照片图片",practitionersCopyImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setPractitionersCopyImg(Str);				
 			}	
 			//考试试卷正
 			if(Objects.nonNull(examinationPaperImg)&&StringUtils.isNotEmpty(examinationPaperImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuanzheng",uuidTemp,"考试试卷正图片",examinationPaperImg,0);
+				String Str = fileService.upolad("kaoshishijuanzheng",uuidTemp,"考试试卷正图片",examinationPaperImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperImg(Str);				
 			}	
 			//考试试卷第二页
 			if(Objects.nonNull(examinationPaperSecondImg)&&StringUtils.isNotEmpty(examinationPaperSecondImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuandier",uuidTemp,"考试试卷第二页图片",examinationPaperSecondImg,0);
+				String Str = fileService.upolad("kaoshishijuandier",uuidTemp,"考试试卷第二页图片",examinationPaperSecondImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperSecondImg(Str);				
 			}	
 			//考试试卷第三页
 			if(Objects.nonNull(examinationPaperThirdImg)&&StringUtils.isNotEmpty(examinationPaperThirdImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuandisan",uuidTemp,"考试试卷第三页图片",examinationPaperThirdImg,0);
+				String Str = fileService.upolad("kaoshishijuandisan",uuidTemp,"考试试卷第三页图片",examinationPaperThirdImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperThirdImg(Str);				
 			}	
 			//考试试卷第四页
 			if(Objects.nonNull(examinationPaperFourImg)&&StringUtils.isNotEmpty(examinationPaperFourImg.getOriginalFilename())){	
-				String Str = fileService.upolad("kaoshishijuandisi",uuidTemp,"考试试卷第四页图片",examinationPaperFourImg,0);
+				String Str = fileService.upolad("kaoshishijuandisi",uuidTemp,"考试试卷第四页图片",examinationPaperFourImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setExaminationPaperFourImg(Str);				
 			}	
 			//三年无重大事故
 			if(Objects.nonNull(threeNotAccidentImg)&&StringUtils.isNotEmpty(threeNotAccidentImg.getOriginalFilename())){	
-				String Str = fileService.upolad("sannianwuzhongdashigu",uuidTemp,"三年无重大事故图片",threeNotAccidentImg,0);
+				String Str = fileService.upolad("sannianwuzhongdashigu",uuidTemp,"三年无重大事故图片",threeNotAccidentImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setThreeNotAccidentImg(Str);				
 			}	
 			//一年违法记录查询 
 			if(Objects.nonNull(oneYearIllegalRecordImg)&&StringUtils.isNotEmpty(oneYearIllegalRecordImg.getOriginalFilename())){	
-				String Str = fileService.upolad("yinianweifajiluchaxun",uuidTemp,"一年违法记录查询图片",oneYearIllegalRecordImg,0);
+				String Str = fileService.upolad("yinianweifajiluchaxun",uuidTemp,"一年违法记录查询图片",oneYearIllegalRecordImg,0,driverPhoto.getBusinessId());
 				driverPhoto.setOneYearIllegalRecordImg(Str);				
 			}
 		} catch (Exception e) {

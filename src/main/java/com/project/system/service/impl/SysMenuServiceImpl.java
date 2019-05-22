@@ -5,11 +5,9 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.project.common.utils.TimeUuidUtil;
-import com.project.framework.util.ShiroUtils;
 import com.project.system.domain.*;
 import com.project.system.service.ISysRoleService;
 import com.project.util.RedisUtil;
-import com.project.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.common.constant.UserConstants;
@@ -29,7 +27,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     @Autowired
     private SysMenuMapper menuMapper;
-
     @Autowired
     private SysRoleMenuMapper roleMenuMapper;
     @Autowired

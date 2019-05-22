@@ -9,9 +9,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="legalName"    column="legal_name"    />
         <result property="legalType"    column="legal_type"    />
         <result property="legalUnit"    column="legal_unit"    />
+        <result property="legalCode"    column="legal_code"    />   
+        <result property="isApply"    column="is_apply"    />      
         <result property="legalDate"    column="legal_date"    />
         <result property="legalDeptId"    column="legal_dept_id"    />
         <result property="legalEvaluate"    column="legal_evaluate"    />
+        <result property="deptName"    column="dept_name"    />
         <result property="legalFilePath"    column="legal_file_path"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
@@ -23,20 +26,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<sql id="selectTLegalProvisionsVo">
         select lp.id, lp.legal_name, lp.legal_type, lp.legal_unit, 
-        
+        lp.legal_date,
         DATE_FORMAT(lp.legal_date,'%Y-%m-%d') as legalDateStr,
         lp.legal_dept_id, lp.legal_evaluate, lp.legal_file_path, 
         DATE_FORMAT(lp.create_time,'%Y-%m-%d') as startCreateTime, 
-        lp.update_time, lp.user_id, lp.meno, lp.business_id, lp.update_user_id from t_legal_provisions lp
+        lp.update_time, lp.user_id, lp.meno, lp.business_id, lp.update_user_id,lp.legal_code,lp.is_apply from t_legal_provisions lp
+        
     </sql>
 	
     <select id="selectTLegalProvisionsList" parameterType="TLegalProvisions" resultMap="TLegalProvisionsResult">
-        <include refid="selectTLegalProvisionsVo"/>
+       select lp.id, lp.legal_name, lp.legal_type, lp.legal_unit, 
+        lp.legal_date,
+        DATE_FORMAT(lp.legal_date,'%Y-%m-%d') as legalDateStr,
+        lp.legal_dept_id, lp.legal_evaluate, lp.legal_file_path, 
+        DATE_FORMAT(lp.create_time,'%Y-%m-%d') as startCreateTime, 
+        lp.update_time, lp.user_id, lp.meno, lp.business_id, lp.update_user_id,lp.legal_code,lp.is_apply,sd.dept_name 
+ from t_legal_provisions lp
+LEFT JOIN sys_dept sd on lp.legal_dept_id = sd.dept_id
         <where>  
             <if test="id != null  and id != '' "> and lp.id = #{id}</if>
-             <if test="legalName != null  and legalName != '' "> and lp.legal_name = #{legalName}</if>
+             <if test="legalName != null  and legalName != '' "> and lp.legal_name like concat('%',#{legalName},'%')</if>
              <if test="legalType != null  and legalType != '' "> and lp.legal_type = #{legalType}</if>
-             <if test="legalUnit != null  and legalUnit != '' "> and lp.legal_unit = #{legalUnit}</if>
+             <if test="isApply != null  and isApply != '' "> and lp.is_apply = #{isApply}</if>
+             <if test="legalCode != null  and legalCode != '' "> and lp.legal_code like concat('%',#{legalCode},'%')</if>
+             <if test="legalUnit != null  and legalUnit != '' "> and lp.legal_unit like concat('%',#{legalUnit},'%')</if>
               <if test="(legalDate != null  ) and legalDateEnd == null "> 
              	and DATE_FORMAT(lp.legal_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{legalDate},'%Y-%m-%d')
              </if>
@@ -82,6 +95,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="id != null  and id != ''  ">id,</if>
 			<if test="legalName != null  and legalName != ''  ">legal_name,</if>
 			<if test="legalType != null  and legalType != ''  ">legal_type,</if>
+			<if test="legalCode != null  and legalCode != ''  ">legal_code,</if>
+			<if test="isApply != null  and isApply != ''  ">is_apply,</if>
 			<if test="legalUnit != null  and legalUnit != ''  ">legal_unit,</if>
 			<if test="legalDate != null  ">legal_date,</if>
 			<if test="legalDeptId != null  and legalDeptId != ''  ">legal_dept_id,</if>
@@ -98,6 +113,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="id != null  and id != ''  ">#{id},</if>
 			<if test="legalName != null  and legalName != ''  ">#{legalName},</if>
 			<if test="legalType != null  and legalType != ''  ">#{legalType},</if>
+			<if test="legalCode != null  and legalCode != ''  ">#{legalCode},</if>
+			<if test="isApply != null  and isApply != ''  ">#{isApply},</if>
 			<if test="legalUnit != null  and legalUnit != ''  ">#{legalUnit},</if>
 			<if test="legalDate != null  ">#{legalDate},</if>
 			<if test="legalDeptId != null  and legalDeptId != ''  ">#{legalDeptId},</if>
@@ -117,7 +134,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="legalName != null  and legalName != ''  ">legal_name = #{legalName},</if>
             <if test="legalType != null  and legalType != ''  ">legal_type = #{legalType},</if>
+            <if test="legalCode != null  and legalCode != ''  ">legal_code = #{legalCode},</if>
             <if test="legalUnit != null  and legalUnit != ''  ">legal_unit = #{legalUnit},</if>
+            <if test="isApply != null  and isApply != ''  ">is_apply = #{isApply},</if>
             <if test="legalDate != null  ">legal_date = #{legalDate},</if>
             <if test="legalDeptId != null  and legalDeptId != ''  ">legal_dept_id = #{legalDeptId},</if>
             <if test="legalEvaluate != null  and legalEvaluate != ''  ">legal_evaluate = #{legalEvaluate},</if>

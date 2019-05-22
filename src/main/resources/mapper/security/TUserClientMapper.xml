@@ -7,10 +7,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="com.project.security.domain.TUserClient" id="TUserClientResult">
         <result property="userId"    column="user_id"    />
         <result property="clientId"    column="client_id"    />
+        <result property="source"    column="source"    />
     </resultMap>
 	
 	<sql id="selectTUserClientbasicColums">
-        select uc.user_id, uc.client_id    </sql>
+        select uc.user_id, uc.client_id, uc.source    </sql>
 	
     <select id="selectTUserClientList" parameterType="com.project.security.domain.TUserClient" resultMap="TUserClientResult">
         <include refid="selectTUserClientbasicColums"/>
@@ -18,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="userId != null "> and uc.user_id = #{userId}</if>
              <if test="clientId != null  and clientId != '' "> and uc.client_id = #{clientId}</if>
+             <if test="source != null  and source != '' "> and uc.source = #{source}</if>
          </where>
     </select>
     
@@ -32,10 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null  ">user_id,</if>
 			<if test="clientId != null  and clientId != ''  ">client_id,</if>
+			<if test="source != null  and source != ''  ">source,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="userId != null  ">#{userId},</if>
 			<if test="clientId != null  and clientId != ''  ">#{clientId},</if>
+			<if test="source != null  and source != ''  ">#{source},</if>
          </trim>
     </insert>
 	 
@@ -43,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update t_user_client
         <trim prefix="SET" suffixOverrides=",">
             <if test="clientId != null  and clientId != ''  ">client_id = #{clientId},</if>
+            <if test="source != null  and source != ''  ">source = #{source},</if>
         </trim>
         where user_id = #{userId}
     </update>

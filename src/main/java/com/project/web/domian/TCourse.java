@@ -59,6 +59,21 @@ public class TCourse extends BaseEntity
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
+	/**
+	 * 副标题
+	 * @param id
+	 */
+	private String courseTitle;
+	
+	
+
+	public String getCourseTitle() {
+		return courseTitle;
+	}
+
+	public void setCourseTitle(String courseTitle) {
+		this.courseTitle = courseTitle;
+	}
 
 	public void setId(String id) 
 	{

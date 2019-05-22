@@ -70,7 +70,7 @@ public class TEmergencyPlanReleaseServiceImpl implements ITEmergencyPlanReleaseS
         //文件上传
         try {
             if (Objects.nonNull(planReleaseFile) && StringUtils.isNotEmpty(planReleaseFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("yingjiyuanfabu", uuid, "应急预案发布附件文件", planReleaseFile, 0);
+                String upolad = this.fileService.upolad("yingjiyuanfabu", uuid, "应急预案发布附件文件", planReleaseFile, 0,tEmergencyPlanRelease.getBusinessId());
                 tEmergencyPlanRelease.setFilePath(upolad);
             }
         } catch (IOException e) {
@@ -100,7 +100,7 @@ public class TEmergencyPlanReleaseServiceImpl implements ITEmergencyPlanReleaseS
         //文件上传
         try {
             if (Objects.nonNull(planReleaseFile) && StringUtils.isNotEmpty(planReleaseFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("yingjiyuanfabu", tEmergencyPlanRelease.getId(), "应急预案发布附件文件", planReleaseFile, 0);
+                String upolad = this.fileService.upolad("yingjiyuanfabu", tEmergencyPlanRelease.getId(), "应急预案发布附件文件", planReleaseFile, 0,tEmergencyPlanRelease.getBusinessId());
                 tEmergencyPlanRelease.setFilePath(upolad);
             }
         } catch (IOException e) {

@@ -60,4 +60,15 @@ public interface TSubjectPaperMapper
      */
 	public int deleteTSubjectPaperByIds(String[] paperIds);
 	//以上自动生成的尽量别动
+	
+	
+	/**
+     * 	删除试卷下的题库
+     * 
+     * @param paperId 考卷题目关系ID
+     * @return 结果
+     */
+	public int deleteTSubjectPaperBySubId(TSubjectPaper tSubjectPaper);
+	
+	
 }

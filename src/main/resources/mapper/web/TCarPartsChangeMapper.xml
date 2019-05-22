@@ -20,18 +20,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarPartsChangebasicColums">
-        select cpc.id, cpc.car_id, cpc.change_date, cpc.part_name, cpc.model, cpc.factory_name, cpc.part_num, cpc.repair_unit, cpc.add_user_id, cpc.create_date, cpc.update_date, cpc.update_user_id    </sql>
+        select cpc.id, cpc.car_id, cpc.change_date, cpc.part_name, cpc.model, cpc.factory_name, cpc.part_num,
+        cpc.repair_unit, cpc.add_user_id, cpc.create_date, cpc.update_date, cpc.update_user_id ,
+
+        DATE_FORMAT(cpc.change_date,'%Y-%m-%d') as changeDateStr,
+        DATE_FORMAT(cpc.create_date,'%Y-%m-%d') as createDateStr
+
+
+        from t_car_parts_change cpc
+
+</sql>
 	
     <select id="selectTCarPartsChangeList" parameterType="com.project.web.domian.TCarPartsChange" resultMap="TCarPartsChangeResult">
         <include refid="selectTCarPartsChangebasicColums"/>
-        from t_car_parts_change cpc
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and cpc.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and cpc.car_id = #{carId}</if>
-             <if test="changeDate != null "> and cpc.change_date = #{changeDate}</if>
-             <if test="partName != null  and partName != '' "> and cpc.part_name = #{partName}</if>
+
+
+            <if test="changeDate != null  and changeDate1 == null "> and DATE_FORMAT(cpc.change_date,'%Y%m%d') &gt;= DATE_FORMAT(#{changeDate},'%Y%m%d')</if>
+            <if test="changeDate1 != null  and changeDate == null "> and DATE_FORMAT(cpc.change_date,'%Y%m%d') &lt;= DATE_FORMAT(#{changeDate1},'%Y%m%d')</if>
+            <if test="changeDate1 != null  and changeDate != null "> and DATE_FORMAT(cpc.change_date,'%Y%m%d') &gt;= DATE_FORMAT(#{changeDate},'%Y%m%d')
+                and   DATE_FORMAT(cpc.change_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{changeDate1},'%Y%m%d')
+            </if>
+
+
+             <if test="partName != null  and partName != '' "> and cpc.part_name like concat('%',#{partName},'%')</if>
+
              <if test="model != null  and model != '' "> and cpc.model = #{model}</if>
-             <if test="factoryName != null  and factoryName != '' "> and cpc.factory_name = #{factoryName}</if>
+             <if test="factoryName != null  and factoryName != '' "> and cpc.factory_name like concat('%',#{partName},'%')</if>
+
              <if test="partNum != null  and partNum != '' "> and cpc.part_num = #{partNum}</if>
              <if test="repairUnit != null  and repairUnit != '' "> and cpc.repair_unit = #{repairUnit}</if>
              <if test="addUserId != null  and addUserId != '' "> and cpc.add_user_id = #{addUserId}</if>
@@ -43,7 +61,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTCarPartsChangeById" parameterType="String" resultMap="TCarPartsChangeResult">
         <include refid="selectTCarPartsChangebasicColums"/>
-        from t_car_parts_change cpc
         where cpc.id = #{id}
     </select>
         
@@ -108,5 +125,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_parts_change where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

@@ -1,72 +1,118 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TCarLogMapper">
-    
-    <resultMap type="com.project.web.domian.TCarLog" id="TCarLogResult">
+
+    <resultMap type="TCarLog" id="TCarLogResult">
         <result property="id"    column="id"    />
+        <result property="carInfoId"    column="car_info_id"    />
         <result property="carNumber"    column="car_number"    />
         <result property="color"    column="color"    />
         <result property="updateDate"    column="update_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTCarLogbasicColums">
-        select cl.id, cl.car_number, cl.color, cl.update_date    </sql>
-	
-    <select id="selectTCarLogList" parameterType="com.project.web.domian.TCarLog" resultMap="TCarLogResult">
-        <include refid="selectTCarLogbasicColums"/>
+
+    <sql id="selectTCarLogVo">
+        select cl.id, cl.car_info_id, cl.car_number, cl.color, cl.update_date, cl.create_time, cl.update_time,
+        cl.add_user_id, cl.meno, cl.business_id, cl.update_user_id ,
+
+		DATE_FORMAT(cl.update_date,'%Y-%m-%d') as updateDateStr,
+        DATE_FORMAT(cl.create_time,'%Y-%m-%d') as createTimeStr
+
         from t_car_log cl
-        <where>  
+    </sql>
+
+    <select id="selectTCarLogList" parameterType="TCarLog" resultMap="TCarLogResult">
+        <include refid="selectTCarLogVo"/>
+        <where>
             <if test="id != null  and id != '' "> and cl.id = #{id}</if>
-             <if test="carNumber != null  and carNumber != '' "> and cl.car_number = #{carNumber}</if>
-             <if test="color != null  and color != '' "> and cl.color = #{color}</if>
-             <if test="updateDate != null "> and cl.update_date = #{updateDate}</if>
-         </where>
+            <if test="carInfoId != null  and carInfoId != '' "> and cl.car_info_id = #{carInfoId}</if>
+            <if test="carNumber != null  and carNumber != '' "> and cl.car_number = #{carNumber}</if>
+            <if test="color != null  and color != '' "> and cl.color = #{color}</if>
+            <if test="updateDate != null "> and cl.update_date = #{updateDate}</if>
+            <if test="createTime != null "> and cl.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and cl.update_time = #{updateTime}</if>
+            <if test="addUserId != null  and addUserId != '' "> and cl.add_user_id = #{addUserId}</if>
+            <if test="meno != null  and meno != '' "> and cl.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and cl.business_id = #{businessId}</if>
+            <if test="updateUserId != null  and updateUserId != '' "> and cl.update_user_id = #{updateUserId}</if>
+        </where>
+        order by cl.update_date
     </select>
-    
+
     <select id="selectTCarLogById" parameterType="String" resultMap="TCarLogResult">
-        <include refid="selectTCarLogbasicColums"/>
-        from t_car_log cl
+        <include refid="selectTCarLogVo"/>
         where cl.id = #{id}
     </select>
-        
-    <insert id="insertTCarLog" parameterType="com.project.web.domian.TCarLog">
+
+    <insert id="insertTCarLog" parameterType="TCarLog">
         insert into t_car_log
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="carNumber != null  and carNumber != ''  ">car_number,</if>
-			<if test="color != null  and color != ''  ">color,</if>
-			<if test="updateDate != null  ">update_date,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="carInfoId != null  and carInfoId != ''  ">car_info_id,</if>
+            <if test="carNumber != null  and carNumber != ''  ">car_number,</if>
+            <if test="color != null  and color != ''  ">color,</if>
+            <if test="updateDate != null  ">update_date,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="carNumber != null  and carNumber != ''  ">#{carNumber},</if>
-			<if test="color != null  and color != ''  ">#{color},</if>
-			<if test="updateDate != null  ">#{updateDate},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="carInfoId != null  and carInfoId != ''  ">#{carInfoId},</if>
+            <if test="carNumber != null  and carNumber != ''  ">#{carNumber},</if>
+            <if test="color != null  and color != ''  ">#{color},</if>
+            <if test="updateDate != null  ">#{updateDate},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTCarLog" parameterType="com.project.web.domian.TCarLog">
+
+    <update id="updateTCarLog" parameterType="TCarLog">
         update t_car_log
         <trim prefix="SET" suffixOverrides=",">
+            <if test="carInfoId != null  and carInfoId != ''  ">car_info_id = #{carInfoId},</if>
             <if test="carNumber != null  and carNumber != ''  ">car_number = #{carNumber},</if>
             <if test="color != null  and color != ''  ">color = #{color},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTCarLogById" parameterType="String">
+    <delete id="deleteTCarLogById" parameterType="String">
         delete from t_car_log where id = #{id}
     </delete>
-	
+
     <delete id="deleteTCarLogByIds" parameterType="String">
-        delete from t_car_log where id in 
+        delete from t_car_log where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_log where car_info_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

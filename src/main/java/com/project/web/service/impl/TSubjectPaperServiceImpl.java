@@ -9,6 +9,8 @@ import com.project.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.project.web.mapper.TSubjectPaperMapper;
 import com.project.web.domian.TSubjectPaper;
 import com.project.web.service.ITSubjectPaperService;
@@ -88,4 +90,30 @@ public class TSubjectPaperServiceImpl implements ITSubjectPaperService
 		return tSubjectPaperMapper.deleteTSubjectPaperByIds(Convert.toStrArray(ids));
 	}
 	//以上自动生成的尽量别动
+
+	@Override
+	@Transactional
+	public int deleteTSubjectPaperBySubId(TSubjectPaper tSubjectPaper) {
+		//根据旧的题库id和试卷id查询出  之前这道题在这个试卷中的分值和排序
+		TSubjectPaper ts =new TSubjectPaper();
+		ts.setPaperId(tSubjectPaper.getPaperId());
+		ts.setSubjectId(tSubjectPaper.getOldSubjectId());
+		List<TSubjectPaper> tempList = tSubjectPaperMapper.selectTSubjectPaperList(ts);
+		
+		//先删除 再新增一条数据
+		TSubjectPaper tsTemp = new TSubjectPaper();
+		tsTemp.setPaperId(tSubjectPaper.getPaperId());
+		tsTemp.setSubjectId(tSubjectPaper.getOldSubjectId());
+		int i=tSubjectPaperMapper.deleteTSubjectPaperBySubId(tsTemp);
+		if(i==0) {
+			return 0;
+		}
+		tSubjectPaper.setSubjectScore(tempList.get(0).getSubjectScore());//分值
+		tSubjectPaper.setSubjectSort(tempList.get(0).getSubjectSort());//排序
+		i=tSubjectPaperMapper.insertTSubjectPaper(tSubjectPaper);
+		if(i==0) {
+			return 0;
+		}
+		return 1;
+	}
 }

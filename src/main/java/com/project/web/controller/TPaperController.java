@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.common.annotation.Log;
 import com.project.common.enums.BusinessType;
 import com.project.web.domian.TPaper;
+import com.project.web.domian.TSubject;
 import com.project.web.service.ITPaperService;
 import com.project.system.core.base.BaseController;
 import com.project.framework.web.page.TableDataInfo;
@@ -43,7 +44,7 @@ public class TPaperController extends BaseController
 	/**
 	 * 查询考卷列表
 	 */
-	@RequiresPermissions("web:tPaper:list")
+//	@RequiresPermissions("web:tPaper:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TPaper tPaper)
@@ -51,6 +52,33 @@ public class TPaperController extends BaseController
 		startPage();
         List<TPaper> list = tPaperService.selectTPaperList(tPaper);
 		return getDataTable(list);
+	}
+	/**
+	 *  根据考卷ID查询题库信息
+	 */
+//	@RequiresPermissions("web:tPaper:list")
+	@PostMapping("/listSubByPageId")
+	@ResponseBody
+	public AjaxResult listSubByPageId(TPaper tPaper)
+	{
+		AjaxResult aj = AjaxResult.success();
+		List<TSubject>  list = tPaperService.selectTPaperListByPageId(tPaper);
+		aj.put("data", list);
+		return aj;
+	}
+	
+	/**
+	 *  根据考卷ID查询出该企业下除了本次试卷题库下的题外  所有未生成的题
+	 */
+//	@RequiresPermissions("web:tPaper:list")
+	@PostMapping("/listNotInSubPage")
+	@ResponseBody
+	public AjaxResult listNotInSubPage(TPaper tPaper)
+	{
+		AjaxResult aj = AjaxResult.success();
+		List<TSubject>  list = tPaperService.selectTPaperListByNotInPageId(tPaper);		
+		aj.put("data", list);
+		return aj;
 	}
 	
 	/**
@@ -65,13 +93,13 @@ public class TPaperController extends BaseController
 	/**
 	 * 新增保存考卷
 	 */
-	@RequiresPermissions("web:tPaper:add")
+//	@RequiresPermissions("web:tPaper:add")
 	@Log(title = "考卷", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TPaper tPaper)
 	{		
-		return toAjax(tPaperService.insertTPaper(tPaper));
+		return tPaperService.insertTPaper(tPaper);
 	}
 
 	/**
@@ -88,7 +116,7 @@ public class TPaperController extends BaseController
 	/**
 	 * 修改保存考卷
 	 */
-	@RequiresPermissions("web:tPaper:edit")
+//	@RequiresPermissions("web:tPaper:edit")
 	@Log(title = "考卷", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -100,7 +128,7 @@ public class TPaperController extends BaseController
 	/**
 	 * 删除考卷
 	 */
-	@RequiresPermissions("web:tPaper:remove")
+//	@RequiresPermissions("web:tPaper:remove")
 	@Log(title = "考卷", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

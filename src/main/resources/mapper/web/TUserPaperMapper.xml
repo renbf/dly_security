@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TUserPaperMapper">
-    
-    <resultMap type="com.project.web.domian.TUserPaper" id="TUserPaperResult">
+
+    <resultMap type="TUserPaper" id="TUserPaperResult">
         <result property="id"    column="id"    />
+        <result property="paperArrangeId"    column="paper_arrange_id"    />
         <result property="userId"    column="user_id"    />
         <result property="paperId"    column="paper_id"    />
         <result property="beginDate"    column="begin_date"    />
@@ -19,73 +20,114 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTUserPaperbasicColums">
-        select up.id, up.user_id, up.paper_id, up.begin_date, up.end_date, up.status, up.paper_score, up.start_date, up.commit_date, up.add_user_id, up.create_date, up.update_date, up.update_user_id    </sql>
-	
-    <select id="selectTUserPaperList" parameterType="com.project.web.domian.TUserPaper" resultMap="TUserPaperResult">
-        <include refid="selectTUserPaperbasicColums"/>
-        from t_user_paper up
-        <where>  
+
+    <sql id="selectTUserPaperVo">
+        select up.id, up.paper_arrange_id, up.user_id, up.paper_id, up.begin_date, up.end_date, up.status,
+         up.paper_score, up.start_date, up.commit_date, up.add_user_id, up.create_date, up.update_date,
+          up.update_user_id ,
+         su.user_name as userName,
+          su.sex as sex,
+          su.phonenumber as phonenumber,
+          sp.post_name as postName,
+          sd.dept_name as deptName,
+          tp.name as paperName
+
+
+
+
+          from t_user_paper up
+            left join sys_user su on (uc.user_id = su.user_id)
+
+            left join sys_user_post sup on (uc.user_id = sup.user_id)
+            left join sys_post sp on (sup.post_id = sp.post_id)
+
+            left join sys_dept sd on (su.dept_id = sd.dept_id)
+
+            left join t_paper tp on (tp.id = up.paper_id)
+    </sql>
+
+    <select id="selectTUserPaperList" parameterType="TUserPaper" resultMap="TUserPaperResult">
+        <include refid="selectTUserPaperVo"/>
+        <where>
             <if test="id != null  and id != '' "> and up.id = #{id}</if>
-             <if test="userId != null  and userId != '' "> and up.user_id = #{userId}</if>
-             <if test="paperId != null  and paperId != '' "> and up.paper_id = #{paperId}</if>
-             <if test="beginDate != null "> and up.begin_date = #{beginDate}</if>
-             <if test="endDate != null "> and up.end_date = #{endDate}</if>
-             <if test="status != null  and status != '' "> and up.status = #{status}</if>
-             <if test="paperScore != null "> and up.paper_score = #{paperScore}</if>
-             <if test="startDate != null "> and up.start_date = #{startDate}</if>
-             <if test="commitDate != null "> and up.commit_date = #{commitDate}</if>
-             <if test="addUserId != null  and addUserId != '' "> and up.add_user_id = #{addUserId}</if>
-             <if test="createDate != null "> and up.create_date = #{createDate}</if>
-             <if test="updateDate != null "> and up.update_date = #{updateDate}</if>
-             <if test="updateUserId != null  and updateUserId != '' "> and up.update_user_id = #{updateUserId}</if>
-         </where>
+            <if test="paperArrangeId != null  and paperArrangeId != '' "> and up.paper_arrange_id = #{paperArrangeId}</if>
+            <if test="userId != null  and userId != '' "> and up.user_id = #{userId}</if>
+            <if test="paperId != null  and paperId != '' "> and up.paper_id = #{paperId}</if>
+            <if test="beginDate != null "> and up.begin_date = #{beginDate}</if>
+            <if test="endDate != null "> and up.end_date = #{endDate}</if>
+            <if test="status != null  and status != '' "> and up.status = #{status}</if>
+            <if test="paperScore != null "> and up.paper_score = #{paperScore}</if>
+            <if test="startDate != null "> and up.start_date = #{startDate}</if>
+            <if test="commitDate != null "> and up.commit_date = #{commitDate}</if>
+            <if test="addUserId != null  and addUserId != '' "> and up.add_user_id = #{addUserId}</if>
+            <if test="createDate != null "> and up.create_date = #{createDate}</if>
+            <if test="updateDate != null "> and up.update_date = #{updateDate}</if>
+            <if test="updateUserId != null  and updateUserId != '' "> and up.update_user_id = #{updateUserId}</if>
+
+
+            <if test="paperArrangeIds != null  and paperArrangeIds.length != 0 ">
+                and up.paper_arrange_id in
+                <foreach item="tempId" collection="paperArrangeIds" index="index" open="(" separator="," close=")">
+                    #{tempId}
+                </foreach>
+            </if>
+
+
+            <if test="userName != null and userName != '' "> and su.user_name like concat('%',#{userName},'%')</if>
+
+            <if test="sex != null and sex != '' "> and su.sex = #{sex}</if>
+            <if test="phonenumber != null phonenumber != '' "> and su.phonenumber like concat('%',#{progress},'%')</if>
+            <if test="postId != null postId != '' "> and sp.post_id = #{postId}</if>
+            <if test="deptId != null deptId != '' "> and sd.dept_id = #{deptId}</if>
+
+        </where>
     </select>
-    
+
     <select id="selectTUserPaperById" parameterType="String" resultMap="TUserPaperResult">
-        <include refid="selectTUserPaperbasicColums"/>
-        from t_user_paper up
+        <include refid="selectTUserPaperVo"/>
         where up.id = #{id}
     </select>
-        
-    <insert id="insertTUserPaper" parameterType="com.project.web.domian.TUserPaper">
+
+    <insert id="insertTUserPaper" parameterType="TUserPaper">
         insert into t_user_paper
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="userId != null  and userId != ''  ">user_id,</if>
-			<if test="paperId != null  and paperId != ''  ">paper_id,</if>
-			<if test="beginDate != null  ">begin_date,</if>
-			<if test="endDate != null  ">end_date,</if>
-			<if test="status != null  and status != ''  ">status,</if>
-			<if test="paperScore != null  ">paper_score,</if>
-			<if test="startDate != null  ">start_date,</if>
-			<if test="commitDate != null  ">commit_date,</if>
-			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
-			<if test="createDate != null  ">create_date,</if>
-			<if test="updateDate != null  ">update_date,</if>
-			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="paperArrangeId != null  and paperArrangeId != ''  ">paper_arrange_id,</if>
+            <if test="userId != null  and userId != ''  ">user_id,</if>
+            <if test="paperId != null  and paperId != ''  ">paper_id,</if>
+            <if test="beginDate != null  ">begin_date,</if>
+            <if test="endDate != null  ">end_date,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+            <if test="paperScore != null  ">paper_score,</if>
+            <if test="startDate != null  ">start_date,</if>
+            <if test="commitDate != null  ">commit_date,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="createDate != null  ">create_date,</if>
+            <if test="updateDate != null  ">update_date,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="userId != null  and userId != ''  ">#{userId},</if>
-			<if test="paperId != null  and paperId != ''  ">#{paperId},</if>
-			<if test="beginDate != null  ">#{beginDate},</if>
-			<if test="endDate != null  ">#{endDate},</if>
-			<if test="status != null  and status != ''  ">#{status},</if>
-			<if test="paperScore != null  ">#{paperScore},</if>
-			<if test="startDate != null  ">#{startDate},</if>
-			<if test="commitDate != null  ">#{commitDate},</if>
-			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
-			<if test="createDate != null  ">#{createDate},</if>
-			<if test="updateDate != null  ">#{updateDate},</if>
-			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="paperArrangeId != null  and paperArrangeId != ''  ">#{paperArrangeId},</if>
+            <if test="userId != null  and userId != ''  ">#{userId},</if>
+            <if test="paperId != null  and paperId != ''  ">#{paperId},</if>
+            <if test="beginDate != null  ">#{beginDate},</if>
+            <if test="endDate != null  ">#{endDate},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="paperScore != null  ">#{paperScore},</if>
+            <if test="startDate != null  ">#{startDate},</if>
+            <if test="commitDate != null  ">#{commitDate},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="createDate != null  ">#{createDate},</if>
+            <if test="updateDate != null  ">#{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTUserPaper" parameterType="com.project.web.domian.TUserPaper">
+
+    <update id="updateTUserPaper" parameterType="TUserPaper">
         update t_user_paper
         <trim prefix="SET" suffixOverrides=",">
+            <if test="paperArrangeId != null  and paperArrangeId != ''  ">paper_arrange_id = #{paperArrangeId},</if>
             <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
             <if test="paperId != null  and paperId != ''  ">paper_id = #{paperId},</if>
             <if test="beginDate != null  ">begin_date = #{beginDate},</if>
@@ -98,20 +140,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null  ">create_date = #{createDate},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
             <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+
+            <if test="status != null and status == '0' ">paper_score = null , start_date = null , commit_date = null </if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTUserPaperById" parameterType="String">
+    <delete id="deleteTUserPaperById" parameterType="String">
         delete from t_user_paper where id = #{id}
     </delete>
-	
+
     <delete id="deleteTUserPaperByIds" parameterType="String">
-        delete from t_user_paper where id in 
+        delete from t_user_paper where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteTUserPaperByPaperArrangeId" parameterType="String">
+        delete from t_user_paper where paper_arrange_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

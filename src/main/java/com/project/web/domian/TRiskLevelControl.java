@@ -13,7 +13,7 @@ import java.util.Date;
  * @author rbf
  * @date 2019-04-17
  */
-public class TRiskLevelControl extends BaseEntity
+public class TRiskLevelControl extends BaseEntity 
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -31,12 +31,16 @@ public class TRiskLevelControl extends BaseEntity
 	private String accidentType;
 	/** 辨识日期 */
 	private Date identificationDate;
+	/** 辨识日期 */
+	private Date identificationDate1;
+	/** 辨识日期 */
+	private String identificationDateStr;
 	/** 依据 */
 	private String basis;
 	/** 所属部门id */
-	private String deptId;
+	private Long deptId;
 	/** 责任人 */
-	private String personLiable;
+	private Long personLiable;
 	/** 附件路径 */
 	private String filePath;
 	/** 创建日期 */
@@ -51,6 +55,23 @@ public class TRiskLevelControl extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+
+	
+	public Date getIdentificationDate1() {
+		return identificationDate1;
+	}
+
+	public void setIdentificationDate1(Date identificationDate1) {
+		this.identificationDate1 = identificationDate1;
+	}
+
+	public String getIdentificationDateStr() {
+		return identificationDateStr;
+	}
+
+	public void setIdentificationDateStr(String identificationDateStr) {
+		this.identificationDateStr = identificationDateStr;
+	}
 
 	public void setId(String id) 
 	{
@@ -124,24 +145,23 @@ public class TRiskLevelControl extends BaseEntity
 	{
 		return basis;
 	}
-	public void setDeptId(String deptId) 
-	{
+	
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 
-	public String getDeptId() 
-	{
-		return deptId;
+	public Long getPersonLiable() {
+		return personLiable;
 	}
-	public void setPersonLiable(String personLiable) 
-	{
+
+	public void setPersonLiable(Long personLiable) {
 		this.personLiable = personLiable;
 	}
 
-	public String getPersonLiable() 
-	{
-		return personLiable;
-	}
 	public void setFilePath(String filePath) 
 	{
 		this.filePath = filePath;

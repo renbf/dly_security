@@ -1,6 +1,9 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TCarCarrier;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
@@ -28,20 +31,20 @@ public interface ITCarCarrierService
 	public List<TCarCarrier> selectTCarCarrierList(TCarCarrier tCarCarrier);
 	
 	/**
-     * 新增承运人责任险
-     * 
-     * @param tCarCarrier 承运人责任险信息
-     * @return 结果
-     */
-	public int insertTCarCarrier(TCarCarrier tCarCarrier);
-	
+	 * 新增承运人责任险
+	 *
+	 * @param tCarCarrier 承运人责任险信息
+	 * @return 结果
+	 */
+	public AjaxResult insertTCarCarrier(TCarCarrier tCarCarrier, MultipartFile file);
+
 	/**
      * 修改承运人责任险
      * 
      * @param tCarCarrier 承运人责任险信息
      * @return 结果
      */
-	public int updateTCarCarrier(TCarCarrier tCarCarrier);
+	public AjaxResult updateTCarCarrier(TCarCarrier tCarCarrier,MultipartFile file);
 		
 	/**
      * 删除承运人责任险信息

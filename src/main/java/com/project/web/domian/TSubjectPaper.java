@@ -19,9 +19,21 @@ public class TSubjectPaper extends BaseEntity
 	/** 题库ID */
 	private String subjectId;
 	/** 题目分数 */
-	private Integer subjectScore;
+	private Double subjectScore;
 	/** 顺序 */
 	private Integer subjectSort;
+	
+	private String oldSubjectId;
+	
+	
+
+	public String getOldSubjectId() {
+		return oldSubjectId;
+	}
+
+	public void setOldSubjectId(String oldSubjectId) {
+		this.oldSubjectId = oldSubjectId;
+	}
 
 	public void setPaperId(String paperId) 
 	{
@@ -41,15 +53,15 @@ public class TSubjectPaper extends BaseEntity
 	{
 		return subjectId;
 	}
-	public void setSubjectScore(Integer subjectScore) 
-	{
+
+	public Double getSubjectScore() {
+		return subjectScore;
+	}
+
+	public void setSubjectScore(Double subjectScore) {
 		this.subjectScore = subjectScore;
 	}
 
-	public Integer getSubjectScore() 
-	{
-		return subjectScore;
-	}
 	public void setSubjectSort(Integer subjectSort) 
 	{
 		this.subjectSort = subjectSort;

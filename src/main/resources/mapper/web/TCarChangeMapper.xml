@@ -17,17 +17,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarChangebasicColums">
-        select cc.id, cc.car_id, cc.change_date, cc.change_reason, cc.change_option, cc.add_user_id, cc.create_date, cc.update_date, cc.update_user_id    </sql>
+        select cc.id, cc.car_id, cc.change_date, cc.change_reason, cc.change_option, cc.add_user_id,
+        cc.create_date, cc.update_date, cc.update_user_id,
+		DATE_FORMAT(cc.change_date,'%Y-%m-%d') as changeDateStr,
+        DATE_FORMAT(cc.create_date,'%Y-%m-%d') as createDateStr
+
+
+        from t_car_change cc
+
+</sql>
 	
     <select id="selectTCarChangeList" parameterType="com.project.web.domian.TCarChange" resultMap="TCarChangeResult">
         <include refid="selectTCarChangebasicColums"/>
-        from t_car_change cc
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and cc.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and cc.car_id = #{carId}</if>
-             <if test="changeDate != null "> and cc.change_date = #{changeDate}</if>
+
+
+            <if test="changeDate != null  and changeDate1 == null "> and DATE_FORMAT(cc.change_date,'%Y%m%d') &gt;= DATE_FORMAT(#{changeDate},'%Y%m%d')</if>
+            <if test="changeDate1 != null  and changeDate == null "> and DATE_FORMAT(cc.change_date,'%Y%m%d') &lt;= DATE_FORMAT(#{changeDate1},'%Y%m%d')</if>
+            <if test="changeDate1 != null  and changeDate != null "> and DATE_FORMAT(cc.change_date,'%Y%m%d') &gt;= DATE_FORMAT(#{changeDate},'%Y%m%d')
+                and   DATE_FORMAT(cc.change_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{changeDate1},'%Y%m%d')
+            </if>
+
+
              <if test="changeReason != null  and changeReason != '' "> and cc.change_reason = #{changeReason}</if>
-             <if test="changeOption != null  and changeOption != '' "> and cc.change_option = #{changeOption}</if>
+             <if test="changeOption != null  and changeOption != '' "> and cc.change_option like concat('%',#{changeOption},'%')</if>
+            
              <if test="addUserId != null  and addUserId != '' "> and cc.add_user_id = #{addUserId}</if>
              <if test="createDate != null "> and cc.create_date = #{createDate}</if>
              <if test="updateDate != null "> and cc.update_date = #{updateDate}</if>
@@ -93,5 +109,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_change where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

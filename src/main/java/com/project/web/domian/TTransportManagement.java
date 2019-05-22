@@ -52,7 +52,7 @@ public class TTransportManagement extends BaseEntity
 	/** 日营运里程 */
 	private String dayMileage;
 	/** 所属机构(部门) */
-	private String organization;
+	private Long deptId;
 	/** 途径车站 */
 	private String passByStation;
 	/** 停靠站 */
@@ -79,6 +79,15 @@ public class TTransportManagement extends BaseEntity
 	{
 		return id;
 	}
+	
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
 	public void setLineName(String lineName) 
 	{
 		this.lineName = lineName;
@@ -223,15 +232,7 @@ public class TTransportManagement extends BaseEntity
 	{
 		return dayMileage;
 	}
-	public void setOrganization(String organization) 
-	{
-		this.organization = organization;
-	}
 
-	public String getOrganization() 
-	{
-		return organization;
-	}
 	public void setPassByStation(String passByStation) 
 	{
 		this.passByStation = passByStation;
@@ -324,7 +325,6 @@ public class TTransportManagement extends BaseEntity
             .append("permitValidityDate", getPermitValidityDate())
             .append("shiftsType", getShiftsType())
             .append("dayMileage", getDayMileage())
-            .append("organization", getOrganization())
             .append("passByStation", getPassByStation())
             .append("stopStation", getStopStation())
             .append("filePath", getFilePath())

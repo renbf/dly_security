@@ -87,6 +87,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 		DataResult result = new DataResult();
 		try {
 			List<TBanner> bannerList = bannerMapper.selectTBannerList(null);
+			if(CollectionUtils.isNotEmpty(bannerList)) {
+    			String serverUrl = serverConfig.getUrl();
+    			for(TBanner banner :bannerList) {
+    				banner.setWebUrl(serverUrl+"/safety/train/industryDynamicsWebUrl/"+banner.getId());
+    			}
+    		}
 			List<TNotice> noticeList = noticeMapper.selectTNoticeList(null);
 			Map<String, Object> mapResult = new HashMap<>();
 			mapResult.put("bannerList", bannerList);
@@ -136,6 +142,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
     			return pageResult;
         	}
             List<TIndustryDynamics> list = industryDynamicsMapper.selectTIndustryDynamicsList(null);
+            if(CollectionUtils.isNotEmpty(list)) {
+    			String serverUrl = serverConfig.getUrl();
+    			for(TIndustryDynamics industryDynamics :list) {
+    				industryDynamics.setWebUrl(serverUrl+"/safety/train/industryDynamicsWebUrl/"+industryDynamics.getId());
+    			}
+    		}
             TableDataView<TIndustryDynamics> tableDataView = PageInfoUtil.addPageInfo(list);
 			result.setResult(tableDataView);
 			result.setMessage("行业动态查询成功");
@@ -352,6 +364,12 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
         	param.put("status", "2");
         	param.put("userId", userId);
     		List<TCourseVo> courseList = courseMapper.courseCollection(param);
+    		if(CollectionUtils.isNotEmpty(courseList)) {
+    			String serverUrl = serverConfig.getUrl();
+    			for(TCourseVo courseVo :courseList) {
+    				courseVo.setWebUrl(serverUrl+"/safety/train/introductionUrl/"+courseVo.getId());
+    			}
+    		}
     		TableDataView<TCourseVo> tableDataView = PageInfoUtil.addPageInfo(courseList);
 			result.setResult(tableDataView);
 			result.setMessage("查询我的课程成功");
@@ -375,6 +393,33 @@ public class AccountNumberServiceImpl implements IAccountNumberService{
 		} catch (Exception e) {
 			log.error("查询个人信息接口异常",e);
 			throw new RuntimeException("查询个人信息接口异常");
+		}
+	}
+
+
+	@Override
+	public DataResult searchCource(Integer pageNumber,Long total,String userId,String searchKey) {
+		DataResult result = new DataResult();
+        try {
+        	DataResult pageResult = PageInfoUtil.startPage(pageNumber, total,null);
+        	if(Result.SUCCESS.equals(pageResult.getStatus())) {
+    			return pageResult;
+        	}
+    		List<TCourseVo> courseList = courseMapper.searchCource(userId,searchKey);
+    		if(CollectionUtils.isNotEmpty(courseList)) {
+    			String serverUrl = serverConfig.getUrl();
+    			for(TCourseVo courseVo :courseList) {
+    				courseVo.setWebUrl(serverUrl+"/safety/train/introductionUrl/"+courseVo.getId());
+    			}
+    		}
+    		TableDataView<TCourseVo> tableDataView = PageInfoUtil.addPageInfo(courseList);
+			result.setResult(tableDataView);
+			result.setMessage("搜索课程成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("搜索课程接口异常",e);
+			throw new RuntimeException("搜索课程接口异常");
 		}
 	}
 

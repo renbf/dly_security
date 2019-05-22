@@ -46,33 +46,21 @@ public class TPhysicalExamination extends BaseEntity
 	private Long updateUserId;
 	
 	private String physicalExaminationDetail1;
+	/** 体检人user_id */
+	private Long examinationUserId;
 	
-	private Object obj;
-	
-	private List<Object> obj1;
-	
-	private Object[] obj2;
 	
 	private List<TPhysicalExaminationDetail> physicalExaminationDetail;
 	
 	
 	
-	
 
-	public Object[] getObj2() {
-		return obj2;
+	public Long getExaminationUserId() {
+		return examinationUserId;
 	}
 
-	public void setObj2(Object[] obj2) {
-		this.obj2 = obj2;
-	}
-
-	public List<Object> getObj1() {
-		return obj1;
-	}
-
-	public void setObj1(List<Object> obj1) {
-		this.obj1 = obj1;
+	public void setExaminationUserId(Long examinationUserId) {
+		this.examinationUserId = examinationUserId;
 	}
 
 	//姓名
@@ -93,14 +81,6 @@ public class TPhysicalExamination extends BaseEntity
 
 	public void setPhysicalExaminationDetail1(String physicalExaminationDetail1) {
 		this.physicalExaminationDetail1 = physicalExaminationDetail1;
-	}
-
-	public Object getObj() {
-		return obj;
-	}
-
-	public void setObj(Object obj) {
-		this.obj = obj;
 	}
 
 	public String getUserName() {

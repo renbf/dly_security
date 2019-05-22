@@ -1,6 +1,7 @@
 package com.project.security.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -20,7 +21,7 @@ public class TSubjectPaper implements Serializable
 	/** 题库ID */
 	private String subjectId;
 	/** 题目分数 */
-	private Integer subjectScore;
+	private BigDecimal subjectScore;
 	/** 顺序 */
 	private Integer subjectSort;
 
@@ -42,12 +43,12 @@ public class TSubjectPaper implements Serializable
 	{
 		return subjectId;
 	}
-	public void setSubjectScore(Integer subjectScore) 
+	public void setSubjectScore(BigDecimal subjectScore) 
 	{
 		this.subjectScore = subjectScore;
 	}
 
-	public Integer getSubjectScore() 
+	public BigDecimal getSubjectScore() 
 	{
 		return subjectScore;
 	}

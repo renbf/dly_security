@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TTransportManagement;
 
 /**
@@ -34,7 +37,7 @@ public interface ITTransportManagementService
      * @param tTransportManagement 客运管理信息
      * @return 结果
      */
-	public int insertTTransportManagement(TTransportManagement tTransportManagement);
+	public AjaxResult insertTTransportManagement(TTransportManagement tTransportManagement,MultipartFile transportFile);
 	
 	/**
      * 修改客运管理
@@ -42,7 +45,7 @@ public interface ITTransportManagementService
      * @param tTransportManagement 客运管理信息
      * @return 结果
      */
-	public int updateTTransportManagement(TTransportManagement tTransportManagement);
+	public AjaxResult updateTTransportManagement(TTransportManagement tTransportManagement,MultipartFile transportFile);
 		
 	/**
      * 删除客运管理信息

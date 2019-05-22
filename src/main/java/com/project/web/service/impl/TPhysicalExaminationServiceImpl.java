@@ -1,14 +1,20 @@
 package com.project.web.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONArray;
 import com.project.common.base.AjaxResult;
 import com.project.common.support.Convert;
 import com.project.common.utils.StringUtils;
@@ -22,7 +28,7 @@ import com.project.web.service.IFileService;
 import com.project.web.service.ITPhysicalExaminationDetailService;
 import com.project.web.service.ITPhysicalExaminationService;
 
-import net.sf.json.JSONObject;
+
 
 /**
  * 体检记录 服务层实现
@@ -82,20 +88,14 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
      * @return 结果
      */
 	@Override
+    @Transactional
 	public AjaxResult insertTPhysicalExamination(TPhysicalExamination tPhysicalExamination,MultipartFile physicalFile)
 	{
 
-	
-		  JSONObject jSONObject = JSONObject.fromObject(tPhysicalExamination.getObj());  
-		  String a =jSONObject.toString();
-		  TPhysicalExaminationDetail b=JsonUtil.fromJson(a, TPhysicalExaminationDetail.class);
-		
-		
-//			String [] a= tPhysicalExamination.getPhysicalExaminationDetailStr();
-//			String b =a[0];
-		if( tPhysicalExamination.getId()==null) {
-			return AjaxResult.error(2, "主键不能为空");
-		}	
+		List<TPhysicalExaminationDetail> listAll = JSONArray.parseArray(tPhysicalExamination.getPhysicalExaminationDetail1(),TPhysicalExaminationDetail.class);
+		if(listAll ==null || listAll.size() ==0) {
+			return AjaxResult.error(2, "选择人数不能为空");
+		 }  	
 		if(tPhysicalExamination==null || tPhysicalExamination.getPhysicalDate()==null) {
 			return AjaxResult.error(2, "体检时间不能为空");
 		}
@@ -106,11 +106,12 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
 			return AjaxResult.error(2, "体检单位不能为空");
 		}
 
-		tPhysicalExamination.setId(tPhysicalExamination.getId());
+		String uuid =UUIDUtil.getUUID(); 
+		tPhysicalExamination.setId(uuid);
 		tPhysicalExamination.setCreateTime(new Date());
 		try {
 			if(Objects.nonNull(physicalFile)&&StringUtils.isNotEmpty(physicalFile.getOriginalFilename())){
-				String str = fileService.upolad("tijianjilu",tPhysicalExamination.getId(),"体检记录文件",physicalFile,0);
+				String str = fileService.upolad("tijianjilu",uuid,"体检记录文件",physicalFile,0,tPhysicalExamination.getBusinessId());
 				tPhysicalExamination.setFilePath(str);				
 			}		
 			int i=tPhysicalExaminationMapper.insertTPhysicalExamination(tPhysicalExamination);
@@ -118,17 +119,19 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
 				return AjaxResult.error(2, "操作失败");
 			}
 			//插入体检明细表
-			if(tPhysicalExamination.getPhysicalExaminationDetail()!=null && tPhysicalExamination.getPhysicalExaminationDetail().size() >0) {
-				for(TPhysicalExaminationDetail detail:tPhysicalExamination.getPhysicalExaminationDetail()) {
-					detail.setExaminationId(tPhysicalExamination.getId());//体检记录表主键
-					detail.setId(UUIDUtil.getUUID());//主键的主键
-					
-					i =physicalExaminationDetailService.insertTPhysicalExaminationDetail(detail);
-					if(i==0) {
-						return AjaxResult.error(2, "操作失败");
-					}
-				}
-				
+			if(listAll !=null && listAll.size()>0) {
+			  for(int j=0;j<listAll.size();j++) {				  
+				  TPhysicalExaminationDetail temp = new TPhysicalExaminationDetail();
+				  temp.setExaminationId(uuid);//体检记录表主键
+				  temp.setId(UUIDUtil.getUUID());//主键的主键
+				  temp.setExaminationUserId(listAll.get(j).getExaminationUserId());
+				  temp.setCreateTime(new Date());
+				  temp.setUserId(ShiroUtils.getUserId());
+				  i =physicalExaminationDetailService.insertTPhysicalExaminationDetail(temp);
+				  if(i==0) {
+				    return AjaxResult.error(2, "操作失败");
+				 }
+			  }
 			}
 			
 		} catch (IOException e) {
@@ -145,6 +148,7 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
      * @return 结果
      */
 	@Override
+    @Transactional
 	public AjaxResult updateTPhysicalExamination(TPhysicalExamination tPhysicalExamination,MultipartFile physicalFile)
 	{
 		try {
@@ -158,7 +162,7 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
 				return AjaxResult.error(2, "体检单位不能为空");
 			}
 			if(Objects.nonNull(physicalFile)&&StringUtils.isNotEmpty(physicalFile.getOriginalFilename())){
-				String str = fileService.upolad("tijianjilu",tPhysicalExamination.getId(),"体检记录文件",physicalFile,0);
+				String str = fileService.upolad("tijianjilu",tPhysicalExamination.getId(),"体检记录文件",physicalFile,0,tPhysicalExamination.getBusinessId());
 				tPhysicalExamination.setFilePath(str);				
 			}	
 			tPhysicalExamination.setUpdateTime(new Date());
@@ -166,12 +170,17 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
 			tPhysicalExaminationMapper.updateTPhysicalExamination(tPhysicalExamination);
 			int i=0;
 			//更新体检明细表
-			if(tPhysicalExamination.getPhysicalExaminationDetail()!=null && tPhysicalExamination.getPhysicalExaminationDetail().size() >0) {				
+			List<TPhysicalExaminationDetail> listAll = JSONArray.parseArray(tPhysicalExamination.getPhysicalExaminationDetail1(),TPhysicalExaminationDetail.class);
+			
+			if(listAll!=null && listAll.size() >0) {				
 				//根据体检表id先删除再插入
 				physicalExaminationDetailService.deleteTPhysicalExaminationDetailByexaminationIds(tPhysicalExamination.getId());
-				for(TPhysicalExaminationDetail detail:tPhysicalExamination.getPhysicalExaminationDetail()) {
+				for(TPhysicalExaminationDetail detail:listAll) {
 					detail.setExaminationId(tPhysicalExamination.getId());//体检表主键id
 					detail.setId(UUIDUtil.getUUID());
+					detail.setExaminationUserId(detail.getExaminationUserId());//体检人员
+					detail.setUpdateTime(new Date());
+					detail.setUpdateUserId(ShiroUtils.getUserId());
 					i =physicalExaminationDetailService.insertTPhysicalExaminationDetail(detail);
 					if(i==0) {
 						return AjaxResult.error(2, "操作失败");
@@ -210,5 +219,7 @@ public class TPhysicalExaminationServiceImpl implements ITPhysicalExaminationSer
 		return 1;
 	}
 	
+
+  
 }
 

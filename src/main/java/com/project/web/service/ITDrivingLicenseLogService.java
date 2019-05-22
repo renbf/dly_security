@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TDrivingLicenseLog;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface ITDrivingLicenseLogService
      * @param tDrivingLicenseLog 行驶证变更信息
      * @return 结果
      */
-	public int insertTDrivingLicenseLog(TDrivingLicenseLog tDrivingLicenseLog);
+	public AjaxResult insertTDrivingLicenseLog(TDrivingLicenseLog tDrivingLicenseLog);
 	
 	/**
      * 修改行驶证变更
@@ -41,7 +42,7 @@ public interface ITDrivingLicenseLogService
      * @param tDrivingLicenseLog 行驶证变更信息
      * @return 结果
      */
-	public int updateTDrivingLicenseLog(TDrivingLicenseLog tDrivingLicenseLog);
+	public AjaxResult updateTDrivingLicenseLog(TDrivingLicenseLog tDrivingLicenseLog);
 		
 	/**
      * 删除行驶证变更信息

@@ -60,4 +60,17 @@ public interface TInspectPlanMapper
      */
 	public int deleteTInspectPlanByIds(String[] ids);
 	//以上自动生成的尽量别动
+
+	/**
+	 * 删除检查计划根据 标题ID (该模块主表的主键)
+	 * @param titleId
+	 * @return
+	 */
+	public int deleteTInspectPlanByTitleId(String[] titleIds);
+
+
+	/**
+	 *修改检查计划根据  检查计划主表id
+	 */
+	public int updateTInspectPlanByTitleId(TInspectPlan tInspectPlan);
 }

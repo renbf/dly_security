@@ -29,7 +29,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
     <select id="selectTSafetyTargetList" parameterType="TSafetyTarget" resultMap="TSafetyTargetResult">
-        <include refid="selectTSafetyTargetVo"/>
+           select st.id, st.target_name, st.target_date, st.target_enacting_person, st.org_id, st.target_status,
+        st.target_file_path, st.create_time, st.update_time, st.user_id, st.meno, st.business_id, st.update_user_id,
+        DATE_FORMAT(st.target_date,'%Y-%m-%d') as targetDateStr,
+        DATE_FORMAT(st.create_time,'%Y-%m-%d') as createTimeStr,
+sd.dept_name as deptName
+        from t_safety_target st
+LEFT JOIN sys_dept sd on st.org_id = sd.dept_id 
         <where>  
             <if test="id != null  and id != '' "> and st.id = #{id}</if>
 

@@ -102,7 +102,7 @@ public class TSafetyMeetServiceImpl implements ITSafetyMeetService {
         //文件上传
         try {
             if (Objects.nonNull(meetFile) && StringUtils.isNotEmpty(meetFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquanhuiyi", uuid, "安全会议附件文件", meetFile, 0);
+                String upolad = this.fileService.upolad("anquanhuiyi", uuid, "安全会议附件文件", meetFile, 0,tSafetyMeet.getBusinessId());
                 tSafetyMeet.setFilePath(upolad);
             }
         } catch (IOException e) {
@@ -152,7 +152,7 @@ public class TSafetyMeetServiceImpl implements ITSafetyMeetService {
         //文件上传
         try {
             if (Objects.nonNull(meetFile) && StringUtils.isNotEmpty(meetFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquanhuiyi", tSafetyMeet.getId(), "安全会议附件文件", meetFile, 0);
+                String upolad = this.fileService.upolad("anquanhuiyi", tSafetyMeet.getId(), "安全会议附件文件", meetFile, 0,tSafetyMeet.getBusinessId());
                 tSafetyMeet.setFilePath(upolad);
             }
         } catch (IOException e) {

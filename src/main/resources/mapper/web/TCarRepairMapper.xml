@@ -22,19 +22,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarRepairbasicColums">
-        select cr.id, cr.car_id, cr.repair_date, cr.total_km, cr.repair_type, cr.certificate_num, cr.repair_content, cr.repair_unit, cr.remark, cr.file_url, cr.add_user_id, cr.create_date, cr.update_date, cr.update_user_id    </sql>
+        select cr.id, cr.car_id, cr.repair_date, cr.total_km, cr.repair_type, cr.certificate_num, cr.repair_content,
+        cr.repair_unit, cr.remark, cr.file_url, cr.add_user_id, cr.create_date, cr.update_date, cr.update_user_id,
+        DATE_FORMAT(cr.repair_date,'%Y-%m-%d') as repairDateStr,
+        DATE_FORMAT(cr.create_date,'%Y-%m-%d') as createDateStr
+        from t_car_repair cr
+
+
+</sql>
 	
     <select id="selectTCarRepairList" parameterType="com.project.web.domian.TCarRepair" resultMap="TCarRepairResult">
         <include refid="selectTCarRepairbasicColums"/>
-        from t_car_repair cr
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and cr.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and cr.car_id = #{carId}</if>
-             <if test="repairDate != null "> and cr.repair_date = #{repairDate}</if>
+
+
+            <if test="repairDate != null  and repairDate1 == null "> and DATE_FORMAT(cr.repair_date,'%Y%m%d') &gt;= DATE_FORMAT(#{repairDate},'%Y%m%d')</if>
+            <if test="repairDate1 != null  and repairDate == null "> and DATE_FORMAT(cr.repair_date,'%Y%m%d') &lt;= DATE_FORMAT(#{repairDate1},'%Y%m%d')</if>
+            <if test="repairDate1 != null  and repairDate != null "> and DATE_FORMAT(cr.repair_date,'%Y%m%d') &gt;= DATE_FORMAT(#{repairDate},'%Y%m%d')
+                and   DATE_FORMAT(cr.repair_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{repairDate1},'%Y%m%d')
+            </if>
+            
+            
              <if test="totalKm != null  and totalKm != '' "> and cr.total_km = #{totalKm}</if>
              <if test="repairType != null  and repairType != '' "> and cr.repair_type = #{repairType}</if>
              <if test="certificateNum != null  and certificateNum != '' "> and cr.certificate_num = #{certificateNum}</if>
-             <if test="repairContent != null  and repairContent != '' "> and cr.repair_content = #{repairContent}</if>
+             <if test="repairContent != null  and repairContent != '' "> and cr.repair_content like concat('%',#{repairContent},'%')</if>
+
              <if test="repairUnit != null  and repairUnit != '' "> and cr.repair_unit = #{repairUnit}</if>
              <if test="remark != null  and remark != '' "> and cr.remark = #{remark}</if>
              <if test="fileUrl != null  and fileUrl != '' "> and cr.file_url = #{fileUrl}</if>
@@ -47,7 +62,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTCarRepairById" parameterType="String" resultMap="TCarRepairResult">
         <include refid="selectTCarRepairbasicColums"/>
-        from t_car_repair cr
         where cr.id = #{id}
     </select>
         
@@ -118,5 +132,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_repair where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

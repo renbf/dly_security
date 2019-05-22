@@ -75,7 +75,7 @@ public class TDictServiceImpl implements ITDictService
 		}
 		
 		
-	     return AjaxResult.error();
+	     return ajaxResult;
 	}
 	
     /**
@@ -231,5 +231,80 @@ public class TDictServiceImpl implements ITDictService
 			return AjaxResult.error(2, "操作失败");
 		}
 
+	}
+
+	@Override
+	public AjaxResult insertTDictNew(TDict tDict) {
+		//字典项新增
+		if(tDict ==null ) {
+			AjaxResult.error(2, "参数不能为空");
+		}
+		//当为4的时候 为检查类型
+		if("4".equals(tDict.getId())) {
+			//插入一级目录时首先判断其企业下面是否有根目录，有则不需要插入，否则插入一条根目录
+			if("0".equals(tDict.getParentId())) {
+				TDict td =new TDict();
+				td.setBusinessId(tDict.getBusinessId());
+				td.setParentId("4");
+				List<TDict> isExits= tDictMapper.selectTDictList(td);
+				String parentId="";
+				if(isExits!=null && isExits.size()>0) {
+					parentId=isExits.get(0).getId();
+				}else {
+					parentId=UUIDUtil.getUUID();
+				}
+				
+				TDict saveTd =new TDict();
+				saveTd.setId(UUIDUtil.getUUID());
+				saveTd.setParentId(parentId);
+				saveTd.setBusinessId(tDict.getBusinessId());
+				saveTd.setDictName(tDict.getDictName());
+				saveTd.setCreateTime(new Date());
+				saveTd.setAddUserId(ShiroUtils.getUserId()+"");
+				int i=tDictMapper.insertTDict(saveTd);
+				if(i==0) {
+					AjaxResult.error();
+				}
+			}else {
+				//若新增的非一级目录 则直接新增
+				int i=tDictMapper.insertTDict(tDict);
+				if(i==0) {
+					AjaxResult.error();
+				}
+			}
+			
+		}
+		return AjaxResult.success();
+	}
+	
+	/**
+	 * 转换树形节点
+	 * @param list 全部节点列表
+	 * @param classifyId 分类ID
+	 * @param type 遍历类型 1-父级列表，2-子级列表 ,3-平级列表
+	 * @param newList 树形节点列表
+	 * @return
+	 */
+	public  List<TDict> childrensTree(List<TDict> list,String classifyId,Integer type,List<TDict> newList){
+		list.forEach(productClassify -> {
+			if(type==1){
+				if(productClassify.getId().equals(classifyId)){
+					System.err.println(productClassify.getDictName());
+                    productClassify.setChildrens(childrensTree(list,productClassify.getParentId(),type,new ArrayList<>()));
+					newList.add(productClassify);
+				}
+			}else if(type==2){
+				if(classifyId.equals(productClassify.getParentId())){
+					productClassify.setChildrens(childrensTree(list,productClassify.getId(),type,new ArrayList<>()));
+					newList.add(productClassify);
+				}
+			}else if(type==3){
+					if(productClassify.getParentId().equals(classifyId)){
+						newList.add(productClassify);
+					}
+			}
+
+		});
+		return newList;
 	}
 }

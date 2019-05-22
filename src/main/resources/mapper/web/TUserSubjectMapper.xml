@@ -78,5 +78,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+
+    <delete id="deleteTUserSubjectByUserPaperId" parameterType="String">
+        delete from t_user_subject where user_paper_id = #{id}
+    </delete>
 </mapper>

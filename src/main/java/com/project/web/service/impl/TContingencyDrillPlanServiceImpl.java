@@ -65,7 +65,7 @@ public class TContingencyDrillPlanServiceImpl implements ITContingencyDrillPlanS
         //目标文件上传和保存
         try {
             if (Objects.nonNull(drillPlanFile) && StringUtils.isNotEmpty(drillPlanFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("yingjiyanlianjihua", uuid, "应急演练计划附件文件", drillPlanFile, 0);
+                String upolad = this.fileService.upolad("yingjiyanlianjihua", uuid, "应急演练计划附件文件", drillPlanFile, 0,tContingencyDrillPlan.getBusinessId());
                 tContingencyDrillPlan.setDrillPlanFilePath(upolad);
             }
         } catch (IOException e) {
@@ -89,7 +89,7 @@ public class TContingencyDrillPlanServiceImpl implements ITContingencyDrillPlanS
         //目标文件上传和保存
         try {
             if (Objects.nonNull(drillPlanFile) && StringUtils.isNotEmpty(drillPlanFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("yingjiyanlianjihua", tContingencyDrillPlan.getId(), "应急演练计划附件文件", drillPlanFile, 0);
+                String upolad = this.fileService.upolad("yingjiyanlianjihua", tContingencyDrillPlan.getId(), "应急演练计划附件文件", drillPlanFile, 0,tContingencyDrillPlan.getBusinessId());
                 tContingencyDrillPlan.setDrillPlanFilePath(upolad);
             }
         } catch (IOException e) {

@@ -46,7 +46,7 @@ public class TOperatingProceduresController extends BaseController
 	/**
 	 * 查询操作规程列表
 	 */
-	@RequiresPermissions("system:tOperatingProcedures:list")
+//	@RequiresPermissions("system:tOperatingProcedures:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TOperatingProcedures tOperatingProcedures)
@@ -68,7 +68,7 @@ public class TOperatingProceduresController extends BaseController
 	/**
 	 * 新增保存操作规程
 	 */
-	@RequiresPermissions("system:tOperatingProcedures:add")
+//	@RequiresPermissions("system:tOperatingProcedures:add")
 	@Log(title = "操作规程", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
@@ -91,7 +91,7 @@ public class TOperatingProceduresController extends BaseController
 	/**
 	 * 修改保存操作规程
 	 */
-	@RequiresPermissions("system:tOperatingProcedures:edit")
+//	@RequiresPermissions("system:tOperatingProcedures:edit")
 	@Log(title = "操作规程", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -103,7 +103,7 @@ public class TOperatingProceduresController extends BaseController
 	/**
 	 * 删除操作规程
 	 */
-	@RequiresPermissions("system:tOperatingProcedures:remove")
+//	@RequiresPermissions("system:tOperatingProcedures:remove")
 	@Log(title = "操作规程", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

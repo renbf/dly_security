@@ -9,7 +9,7 @@
         <result property="checkType"    column="check_type"    />
         <result property="vehicleLicence"    column="vehicle_licence"    />
         <result property="driver"    column="driver"    />
-        <result property="ckeckDate"    column="ckeck_date"    />
+        <result property="checkDate"    column="check_date"    />
         <result property="checkResult"    column="check_result"    />
         <result property="checkValidity"    column="check_validity"    />
         <result property="vehicleUpDriver"    column="vehicle_up_driver"    />
@@ -25,11 +25,11 @@
     </resultMap>
 
     <sql id="selectTVehicleCheckVo">
-        select vc.id, vc.check_type, vc.vehicle_licence, vc.driver, vc.ckeck_date, vc.check_result,
+        select vc.id, vc.check_type, vc.vehicle_licence, vc.driver, vc.check_date, vc.check_result,
         vc.check_validity, vc.vehicle_up_driver, vc.vehicle_down_driver, vc.microcomputer_operator,
         vc.unqualified_info, vc.create_time, vc.update_time, vc.user_id, vc.meno, vc.business_id,
         vc.update_user_id ,
-        DATE_FORMAT(vc.ckeck_date,'%Y-%m-%d') as ckeckDateStr,
+        DATE_FORMAT(vc.check_date,'%Y-%m-%d') as checkDateStr,
         DATE_FORMAT(vc.create_time,'%Y-%m-%d') as createTimeStr,
         di.dict_name as checkTypeStr
         from t_vehicle_check vc left join t_dict di on (vc.check_type = di.id and di.dict_code = 'vehicle_check_type')
@@ -47,10 +47,10 @@
             <if test="driver != null  and driver != '' "> and vc.driver like concat('%',#{driver},'%')</if>
 
 
-            <if test="ckeckDate != null  and ckeckDate1 == null "> and DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &gt;= DATE_FORMAT(#{ckeckDate},'%Y%m%d')</if>
-            <if test="ckeckDate1 != null  and ckeckDate == null "> and DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &lt;= DATE_FORMAT(#{ckeckDate1},'%Y%m%d')</if>
-            <if test="ckeckDate1 != null  and ckeckDate != null "> and DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &gt;= DATE_FORMAT(#{ckeckDate},'%Y%m%d')
-                and   DATE_FORMAT(vc.ckeck_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{ckeckDate1},'%Y%m%d')
+            <if test="checkDate != null  and checkDate1 == null "> and DATE_FORMAT(vc.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')</if>
+            <if test="checkDate1 != null  and checkDate == null "> and DATE_FORMAT(vc.check_date,'%Y%m%d') &lt;= DATE_FORMAT(#{checkDate1},'%Y%m%d')</if>
+            <if test="checkDate1 != null  and checkDate != null "> and DATE_FORMAT(vc.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+                and   DATE_FORMAT(vc.check_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{checkDate1},'%Y%m%d')
             </if>
 
 
@@ -82,7 +82,7 @@
             <if test="checkType != null  and checkType != ''  ">check_type,</if>
             <if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence,</if>
             <if test="driver != null  and driver != ''  ">driver,</if>
-            <if test="ckeckDate != null  ">ckeck_date,</if>
+            <if test="checkDate != null  ">check_date,</if>
             <if test="checkResult != null  and checkResult != ''  ">check_result,</if>
             <if test="checkValidity != null  ">check_validity,</if>
             <if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">vehicle_up_driver,</if>
@@ -101,7 +101,7 @@
             <if test="checkType != null  and checkType != ''  ">#{checkType},</if>
             <if test="vehicleLicence != null  and vehicleLicence != ''  ">#{vehicleLicence},</if>
             <if test="driver != null  and driver != ''  ">#{driver},</if>
-            <if test="ckeckDate != null  ">#{ckeckDate},</if>
+            <if test="checkDate != null  ">#{checkDate},</if>
             <if test="checkResult != null  and checkResult != ''  ">#{checkResult},</if>
             <if test="checkValidity != null  ">#{checkValidity},</if>
             <if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">#{vehicleUpDriver},</if>
@@ -123,7 +123,7 @@
             <if test="checkType != null  and checkType != ''  ">check_type = #{checkType},</if>
             <if test="vehicleLicence != null  and vehicleLicence != ''  ">vehicle_licence = #{vehicleLicence},</if>
             <if test="driver != null  and driver != ''  ">driver = #{driver},</if>
-            <if test="ckeckDate != null  ">ckeck_date = #{ckeckDate},</if>
+            <if test="checkDate != null  ">check_date = #{checkDate},</if>
             <if test="checkResult != null  and checkResult != ''  ">check_result = #{checkResult},</if>
             <if test="checkValidity != null  ">check_validity = #{checkValidity},</if>
             <if test="vehicleUpDriver != null  and vehicleUpDriver != ''  ">vehicle_up_driver = #{vehicleUpDriver},</if>

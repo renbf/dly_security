@@ -106,11 +106,11 @@ public class FileServiceImpl implements IFileService
 	 * @return  附件路径
 	 */
 	@Override
-	public String upolad(String sourceType, String sourceId, String fileName, MultipartFile multipartFile, Integer state) throws IOException {
+	public String upolad(String sourceType, String sourceId, String fileName, MultipartFile multipartFile, Integer state,String bussinessId) throws IOException {
 		Date date =new Date();
-		SimpleDateFormat sdf =new SimpleDateFormat("yyyyMMdd");
-		//按日期生成文件夹
-		String path= java.io.File.separator+sdf.format(date)+ java.io.File.separator+"upload";
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM");
+		//按日期和企业id生成文件夹
+		String path= java.io.File.separator+sdf.format(date)+ java.io.File.separator+bussinessId;
 		path=path+java.io.File.separator+FileUploadUtils.upload(FileUploadUtils.getDefaultBaseDir()+ path,multipartFile);
 		File file=new File();
 		file.setFilePath(path);
@@ -128,5 +128,10 @@ public class FileServiceImpl implements IFileService
 		return fileHost+path ;
 	}
 
+	public static void main(String[] args) {
+		Date date =new Date();
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM");
+		System.out.println(sdf.format(date));
+	}
 
 }

@@ -26,7 +26,7 @@ public class TSafetyPlan extends BaseEntity
 	/** #计划制定人 */
 	private String planEnactingPerson;
 	/** #部门id */
-	private String deptId;
+	private Long deptId;
 	/** #状态 0:正常  1:已作废 */
 	private Integer planStatus;
 	/** 附件文件路径 */
@@ -130,15 +130,15 @@ public class TSafetyPlan extends BaseEntity
 	{
 		return planEnactingPerson;
 	}
-	public void setDeptId(String deptId) 
-	{
+	
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 
-	public String getDeptId() 
-	{
-		return deptId;
-	}
 	public void setPlanStatus(Integer planStatus) 
 	{
 		this.planStatus = planStatus;

@@ -1,5 +1,7 @@
 package com.project.security.controller;
 
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.security.domain.TBanner;
+import com.project.security.domain.TIndustryDynamics;
 import com.project.security.service.ITrainService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -58,11 +62,12 @@ public class TrainController {
 	@ApiOperation(value="上传视频进度接口",notes="上传视频进度接口",httpMethod="POST",response=Result.class)
 	public @ResponseBody Result uploadVideoProgress(HttpServletRequest request,
 			@ApiParam(name="userCourseId",value="用户课程id",required=true) @RequestParam(value="userCourseId",required=true) String userCourseId,
-			@ApiParam(name="progress",value="进度",required=true) @RequestParam(value="progress",required=true) Long progress
+			@ApiParam(name="progress",value="进度",required=true) @RequestParam(value="progress",required=true) Long progress,
+			@ApiParam(name="type",value="类型1开始2结束",required=true) @RequestParam(value="type",required=true) int type
 	){
 		DataResult result=new DataResult();
 		try {
-			result = trainService.uploadVideoProgress(userCourseId,progress);
+			result = trainService.uploadVideoProgress(userCourseId,progress,type);
 			return result;
 		} catch (Exception e) {
 			log.error("上传视频进度接口失败",e);
@@ -248,6 +253,25 @@ public class TrainController {
 		}
 	}
 	
+	@RequestMapping(value="/sendVideoTotalTimes",method=RequestMethod.POST)
+	@ApiOperation(value="发送视频时长接口",notes="发送视频时长接口",httpMethod="POST",response=Result.class)
+	public @ResponseBody Result sendVideoTotalTimes(HttpServletRequest request,
+			@ApiParam(name="courseId",value="课程id",required=true) @RequestParam(value="courseId",required=true) String courseId,
+			@ApiParam(name="totalTimes",value="视频毫秒",required=true) @RequestParam(value="totalTimes",required=true) Long totalTimes
+	){
+		DataResult result=new DataResult();
+		try {
+			result = trainService.sendVideoTotalTimes(courseId,totalTimes);
+			return result;
+		} catch (Exception e) {
+			log.error("发送视频时长失败",e);
+			result.setMessage("发送视频时长失败");
+			result.setStatus(Result.FAILED);
+			return result;
+		}
+	}
+	
+	@ApiOperation(value="课程weburl",notes="行业动态weburl接口",httpMethod="GET",response=Result.class)
 	@GetMapping("/introductionUrl/{courseId}")
 	public String introductionUrl(@PathVariable("courseId") String courseId,ModelMap mmap)
 	{
@@ -255,6 +279,28 @@ public class TrainController {
 		if(StringUtils.isNotEmpty(introduction)) {
 			mmap.put("introduction", introduction);
 		}
-	    return "web/tUserInfo/add";
+	    return "security/weburl/kecheng";
+	}
+	
+	@ApiOperation(value="行业动态weburl",notes="行业动态weburl接口",httpMethod="GET",response=Result.class)
+	@GetMapping("/industryDynamicsWebUrl/{industryDynamicsId}")
+	public String industryDynamicsWebUrl(@PathVariable("industryDynamicsId") String industryDynamicsId,ModelMap mmap)
+	{
+		TIndustryDynamics industryDynamics = trainService.industryDynamicsWebUrl(industryDynamicsId);
+		if(Objects.nonNull(industryDynamics)) {
+			mmap.put("industryDynamics", industryDynamics);
+		}
+	    return "security/weburl/industryContent";
+	}
+	
+	@ApiOperation(value="轮播图weburl",notes="轮播图weburl接口",httpMethod="GET",response=Result.class)
+	@GetMapping("/bannerWebUrl/{bannerId}")
+	public String bannerWebUrl(@PathVariable("bannerId") String bannerId,ModelMap mmap)
+	{
+		TBanner banner = trainService.bannerWebUrl(bannerId);
+		if(Objects.nonNull(banner)) {
+			mmap.put("industryDynamics", banner);
+		}
+	    return "security/weburl/swiperDetails";
 	}
 }

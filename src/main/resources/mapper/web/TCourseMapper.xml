@@ -27,10 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="courseTitle"    column="course_title"    />
+        
     </resultMap>
 	
 	<sql id="selectTCoursebasicColums">
-        select c.id, c.training_type, c.course_type, c.course_url, c.video_url, c.file_url, c.course_name, c.business_type, c.major_type, c.is_timing, c.is_charge, c.price, c.preview_times, c.watch_times, c.introduction, c.course_source, c.business_id, c.status, c.add_user_id, c.create_date, c.update_date, c.update_user_id    </sql>
+        select c.id, c.training_type, c.course_type, c.course_url, c.video_url, c.file_url, c.course_name, c.business_type, c.major_type, c.is_timing, c.is_charge, c.price, c.preview_times, c.watch_times, c.introduction, c.course_source, c.business_id, c.status, c.add_user_id, c.create_date, c.update_date, c.update_user_id ,c.course_title   </sql>
 	
     <select id="selectTCourseList" parameterType="com.project.web.domian.TCourse" resultMap="TCourseResult">
         <include refid="selectTCoursebasicColums"/>
@@ -92,6 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">create_date,</if>
 			<if test="updateDate != null  ">update_date,</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+			<if test="courseTitle != null  and courseTitle != ''  ">course_title,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -116,6 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">#{createDate},</if>
 			<if test="updateDate != null  ">#{updateDate},</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+			<if test="courseTitle != null  and courseTitle != ''  ">#{courseTitle},</if>
          </trim>
     </insert>
 	 
@@ -143,6 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null  ">create_date = #{createDate},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
             <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+            <if test="courseTitle != null  and courseTitle != ''  ">course_title = #{courseTitle},</if>
         </trim>
         where id = #{id}
     </update>

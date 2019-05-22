@@ -86,7 +86,7 @@ public class TLabourGoodsServiceImpl implements ITLabourGoodsService
 			tLabourGoods.setUserId(ShiroUtils.getUserId());//创建人
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(labourGoodsFile)&&StringUtils.isNotEmpty(labourGoodsFile.getOriginalFilename())){
-				String Str = fileService.upolad("laodongfanghu",uuid,"劳动防护物品信息文件",labourGoodsFile,0);
+				String Str = fileService.upolad("laodongfanghu",uuid,"劳动防护物品信息文件",labourGoodsFile,0,tLabourGoods.getBusinessId());
 				tLabourGoods.setFilePath(Str);
 			}			
 			int i = tLabourGoodsMapper.insertTLabourGoods(tLabourGoods);
@@ -134,7 +134,7 @@ public class TLabourGoodsServiceImpl implements ITLabourGoodsService
 		if(Objects.nonNull(labourGoodsFile)&&StringUtils.isNotEmpty(labourGoodsFile.getOriginalFilename())){
 		
 			try {
-				String Str = fileService.upolad("laodongfanghu",tLabourGoods.getId(),"劳动防护物品信息文件",labourGoodsFile,0);
+				String Str = fileService.upolad("laodongfanghu",tLabourGoods.getId(),"劳动防护物品信息文件",labourGoodsFile,0,tLabourGoods.getBusinessId());
 				tLabourGoods.setFilePath(Str);
 				int i = tLabourGoodsMapper.insertTLabourGoods(tLabourGoods);
 				if(i==0) {

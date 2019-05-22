@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TUserCourseMapper">
-    
-    <resultMap type="com.project.web.domian.TUserCourse" id="TUserCourseResult">
+
+    <resultMap type="TUserCourse" id="TUserCourseResult">
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
+        <result property="courseArrangeId"    column="course_arrange_id"    />
         <result property="startDate"    column="start_date"    />
         <result property="courseId"    column="course_id"    />
         <result property="levelType"    column="level_type"    />
@@ -19,74 +20,116 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTUserCoursebasicColums">
-        select uc.id, uc.user_id, uc.start_date, uc.course_id, uc.level_type, uc.status, uc.class_hour, uc.progress, uc.is_collect, uc.add_user_id, uc.publish_date, uc.update_date, uc.update_user_id    </sql>
-	
-    <select id="selectTUserCourseList" parameterType="com.project.web.domian.TUserCourse" resultMap="TUserCourseResult">
-        <include refid="selectTUserCoursebasicColums"/>
-        from t_user_course uc
-        <where>  
+
+    <sql id="selectTUserCourseVo">
+        select uc.id, uc.user_id, uc.course_arrange_id, uc.start_date, uc.course_id, uc.level_type, uc.status,
+        uc.class_hour, uc.progress, uc.is_collect, uc.add_user_id, uc.publish_date, uc.update_date, uc.update_user_id,
+         su.user_name as userName,
+          su.sex as sex,
+          su.phonenumber as phonenumber,
+          sp.post_name as postName,
+          sd.dept_name as deptName,
+          concat(left(uc.progress / tc.total_times * 100,5),'%') as progressStr,
+
+          tc.course_name as courseName
+
+         from t_user_course uc
+            left join sys_user su on (uc.user_id = su.user_id)
+
+            left join sys_user_post sup on (uc.user_id = sup.user_id)
+            left join sys_post sp on (sup.post_id = sp.post_id)
+
+            left join sys_dept sd on (su.dept_id = sd.dept_id)
+
+            left join t_course_arrange tca on (uc.course_arrange_id = tca.id)
+            left join t_course tc on (tca.course_id = tc.id)
+
+
+    </sql>
+
+    <select id="selectTUserCourseList" parameterType="TUserCourse" resultMap="TUserCourseResult">
+        <include refid="selectTUserCourseVo"/>
+        <where>
             <if test="id != null  and id != '' "> and uc.id = #{id}</if>
-             <if test="userId != null  and userId != '' "> and uc.user_id = #{userId}</if>
-             <if test="startDate != null "> and uc.start_date = #{startDate}</if>
-             <if test="courseId != null  and courseId != '' "> and uc.course_id = #{courseId}</if>
-             <if test="levelType != null  and levelType != '' "> and uc.level_type = #{levelType}</if>
-             <if test="status != null  and status != '' "> and uc.status = #{status}</if>
-             <if test="classHour != null "> and uc.class_hour = #{classHour}</if>
-             <if test="progress != null "> and uc.progress = #{progress}</if>
-             <if test="isCollect != null  and isCollect != '' "> and uc.is_collect = #{isCollect}</if>
-             <if test="addUserId != null  and addUserId != '' "> and uc.add_user_id = #{addUserId}</if>
-             <if test="publishDate != null "> and uc.publish_date = #{publishDate}</if>
-             <if test="updateDate != null "> and uc.update_date = #{updateDate}</if>
-             <if test="updateUserId != null  and updateUserId != '' "> and uc.update_user_id = #{updateUserId}</if>
-         </where>
+            <if test="userId != null  and userId != '' "> and uc.user_id = #{userId}</if>
+            <if test="courseArrangeId != null  and courseArrangeId != '' "> and uc.course_arrange_id = #{courseArrangeId}</if>
+            <if test="startDate != null "> and uc.start_date = #{startDate}</if>
+            <if test="courseId != null  and courseId != '' "> and uc.course_id = #{courseId}</if>
+            <if test="levelType != null  and levelType != '' "> and uc.level_type = #{levelType}</if>
+            <if test="status != null  and status != '' "> and uc.status = #{status}</if>
+            <if test="classHour != null "> and uc.class_hour = #{classHour}</if>
+            <if test="progress != null "> and uc.progress = #{progress}</if>
+            <if test="isCollect != null  and isCollect != '' "> and uc.is_collect = #{isCollect}</if>
+            <if test="addUserId != null  and addUserId != '' "> and uc.add_user_id = #{addUserId}</if>
+            <if test="publishDate != null "> and uc.publish_date = #{publishDate}</if>
+            <if test="updateDate != null "> and uc.update_date = #{updateDate}</if>
+            <if test="updateUserId != null  and updateUserId != '' "> and uc.update_user_id = #{updateUserId}</if>
+
+
+
+            <if test="courseArrangeIds != null  and courseArrangeIds.length != 0 ">
+               and uc.course_arrange_id in
+                <foreach item="tempId" collection="courseArrangeIds" index="index" open="(" separator="," close=")">
+                    #{tempId}
+                </foreach>
+            </if>
+
+            <if test="userName != null and userName != '' "> and su.user_name like concat('%',#{userName},'%')</if>
+
+            <if test="sex != null and sex != '' "> and su.sex = #{sex}</if>
+            <if test="phonenumber != null phonenumber != '' "> and su.phonenumber like concat('%',#{progress},'%')</if>
+            <if test="postId != null postId != '' "> and sp.post_id = #{postId}</if>
+            <if test="deptId != null deptId != '' "> and sd.dept_id = #{deptId}</if>
+
+        </where>
     </select>
-    
+
     <select id="selectTUserCourseById" parameterType="String" resultMap="TUserCourseResult">
-        <include refid="selectTUserCoursebasicColums"/>
-        from t_user_course uc
+        <include refid="selectTUserCourseVo"/>
         where uc.id = #{id}
     </select>
-        
-    <insert id="insertTUserCourse" parameterType="com.project.web.domian.TUserCourse">
+
+    <insert id="insertTUserCourse" parameterType="TUserCourse">
         insert into t_user_course
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="userId != null  and userId != ''  ">user_id,</if>
-			<if test="startDate != null  ">start_date,</if>
-			<if test="courseId != null  and courseId != ''  ">course_id,</if>
-			<if test="levelType != null  and levelType != ''  ">level_type,</if>
-			<if test="status != null  and status != ''  ">status,</if>
-			<if test="classHour != null  ">class_hour,</if>
-			<if test="progress != null  ">progress,</if>
-			<if test="isCollect != null  and isCollect != ''  ">is_collect,</if>
-			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
-			<if test="publishDate != null  ">publish_date,</if>
-			<if test="updateDate != null  ">update_date,</if>
-			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="userId != null  and userId != ''  ">user_id,</if>
+            <if test="courseArrangeId != null  and courseArrangeId != ''  ">course_arrange_id,</if>
+            <if test="startDate != null  ">start_date,</if>
+            <if test="courseId != null  and courseId != ''  ">course_id,</if>
+            <if test="levelType != null  and levelType != ''  ">level_type,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+            <if test="classHour != null  ">class_hour,</if>
+            <if test="progress != null  ">progress,</if>
+            <if test="isCollect != null  and isCollect != ''  ">is_collect,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="publishDate != null  ">publish_date,</if>
+            <if test="updateDate != null  ">update_date,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="userId != null  and userId != ''  ">#{userId},</if>
-			<if test="startDate != null  ">#{startDate},</if>
-			<if test="courseId != null  and courseId != ''  ">#{courseId},</if>
-			<if test="levelType != null  and levelType != ''  ">#{levelType},</if>
-			<if test="status != null  and status != ''  ">#{status},</if>
-			<if test="classHour != null  ">#{classHour},</if>
-			<if test="progress != null  ">#{progress},</if>
-			<if test="isCollect != null  and isCollect != ''  ">#{isCollect},</if>
-			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
-			<if test="publishDate != null  ">#{publishDate},</if>
-			<if test="updateDate != null  ">#{updateDate},</if>
-			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="userId != null  and userId != ''  ">#{userId},</if>
+            <if test="courseArrangeId != null  and courseArrangeId != ''  ">#{courseArrangeId},</if>
+            <if test="startDate != null  ">#{startDate},</if>
+            <if test="courseId != null  and courseId != ''  ">#{courseId},</if>
+            <if test="levelType != null  and levelType != ''  ">#{levelType},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="classHour != null  ">#{classHour},</if>
+            <if test="progress != null  ">#{progress},</if>
+            <if test="isCollect != null  and isCollect != ''  ">#{isCollect},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="publishDate != null  ">#{publishDate},</if>
+            <if test="updateDate != null  ">#{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTUserCourse" parameterType="com.project.web.domian.TUserCourse">
+
+    <update id="updateTUserCourse" parameterType="TUserCourse">
         update t_user_course
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
+            <if test="courseArrangeId != null  and courseArrangeId != ''  ">course_arrange_id = #{courseArrangeId},</if>
             <if test="startDate != null  ">start_date = #{startDate},</if>
             <if test="courseId != null  and courseId != ''  ">course_id = #{courseId},</if>
             <if test="levelType != null  and levelType != ''  ">level_type = #{levelType},</if>
@@ -102,16 +145,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-	<delete id="deleteTUserCourseById" parameterType="String">
+    <delete id="deleteTUserCourseById" parameterType="String">
         delete from t_user_course where id = #{id}
     </delete>
-	
+
     <delete id="deleteTUserCourseByIds" parameterType="String">
-        delete from t_user_course where id in 
+        delete from t_user_course where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+
+    <delete id="deleteTUserCourseByCourseArrangeId" parameterType="String">
+        delete from t_user_course where course_arrange_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

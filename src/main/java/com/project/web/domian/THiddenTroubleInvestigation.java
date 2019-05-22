@@ -20,7 +20,7 @@ public class THiddenTroubleInvestigation extends BaseEntity
 	/** 主键ID */
 	private String id;
 	/** 部门/车间 部门id */
-	private String deptId;
+	private Long deptId;
 	/** 风险部位 */
 	private String riskPosition;
 	/** 隐患名称 */
@@ -32,13 +32,13 @@ public class THiddenTroubleInvestigation extends BaseEntity
 	/** 隐患等级 */
 	private String riskLevel;
 	/** 失职部门id */
-	private String derelictionDeptId;
+	private Long derelictionDeptId;
 	/** 失职人员id */
 	private Long derelictionPer;
 	/** 失职人员名称 */
 	private String derelictionPerName;
 	/** 排查部门id */
-	private String troubleshootDeptId;
+	private Long troubleshootDeptId;
 	/** 排查人员id */
 	private Long troubleshootPer;
 	/** 排查人员名称 */
@@ -67,15 +67,32 @@ public class THiddenTroubleInvestigation extends BaseEntity
 	{
 		return id;
 	}
-	public void setDeptId(String deptId) 
-	{
+	
+	
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 
-	public String getDeptId() 
-	{
-		return deptId;
+	public Long getDerelictionDeptId() {
+		return derelictionDeptId;
 	}
+
+	public void setDerelictionDeptId(Long derelictionDeptId) {
+		this.derelictionDeptId = derelictionDeptId;
+	}
+
+	public Long getTroubleshootDeptId() {
+		return troubleshootDeptId;
+	}
+
+	public void setTroubleshootDeptId(Long troubleshootDeptId) {
+		this.troubleshootDeptId = troubleshootDeptId;
+	}
+
 	public void setRiskPosition(String riskPosition) 
 	{
 		this.riskPosition = riskPosition;
@@ -121,15 +138,7 @@ public class THiddenTroubleInvestigation extends BaseEntity
 	{
 		return riskLevel;
 	}
-	public void setDerelictionDeptId(String derelictionDeptId) 
-	{
-		this.derelictionDeptId = derelictionDeptId;
-	}
-
-	public String getDerelictionDeptId() 
-	{
-		return derelictionDeptId;
-	}
+	
 	public void setDerelictionPer(Long derelictionPer) 
 	{
 		this.derelictionPer = derelictionPer;
@@ -148,15 +157,7 @@ public class THiddenTroubleInvestigation extends BaseEntity
 	{
 		return derelictionPerName;
 	}
-	public void setTroubleshootDeptId(String troubleshootDeptId) 
-	{
-		this.troubleshootDeptId = troubleshootDeptId;
-	}
 
-	public String getTroubleshootDeptId() 
-	{
-		return troubleshootDeptId;
-	}
 	public void setTroubleshootPer(Long troubleshootPer) 
 	{
 		this.troubleshootPer = troubleshootPer;
@@ -242,16 +243,11 @@ public class THiddenTroubleInvestigation extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("deptId", getDeptId())
             .append("riskPosition", getRiskPosition())
             .append("riskName", getRiskName())
             .append("riskMeasures", getRiskMeasures())
             .append("riskNotControl", getRiskNotControl())
             .append("riskLevel", getRiskLevel())
-            .append("derelictionDeptId", getDerelictionDeptId())
-            .append("derelictionPer", getDerelictionPer())
-            .append("derelictionPerName", getDerelictionPerName())
-            .append("troubleshootDeptId", getTroubleshootDeptId())
             .append("troubleshootPer", getTroubleshootPer())
             .append("troubleshootPerName", getTroubleshootPerName())
             .append("troubleshootStatus", getTroubleshootStatus())

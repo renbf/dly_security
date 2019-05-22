@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TCourseArrangeMapper">
+    
+    <resultMap type="TCourseArrange" id="TCourseArrangeResult">
+        <result property="id"    column="id"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="courseType"    column="course_type"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="levelType"    column="level_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+	
+	<sql id="selectTCourseArrangeVo">
+        select ca.id, ca.start_date, ca.course_type, ca.course_id, ca.level_type, ca.create_time, ca.update_time,
+        ca.add_user_id, ca.meno, ca.business_id, ca.update_user_id ,
+        tc.course_name as courseName,
+        uc.num as studyNum,
+    	DATE_FORMAT(ca.start_date,'%Y-%m-%d') as startDateStr,
+        DATE_FORMAT(ca.create_time,'%Y-%m-%d') as createTimeStr
+
+        from t_course_arrange ca
+          left join t_course tc on (tc.id = ca.course_id)
+          left join (select count(*) as num , course_arrange_id from t_user_course GROUP BY course_arrange_id) uc on (ca.id = uc.course_arrange_id)
+    </sql>
+	
+    <select id="selectTCourseArrangeList" parameterType="TCourseArrange" resultMap="TCourseArrangeResult">
+        <include refid="selectTCourseArrangeVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and ca.id = #{id}</if>
+             <if test="startDate != null "> and ca.start_date = #{startDate}</if>
+             <if test="courseType != null  and courseType != '' "> and ca.course_type = #{courseType}</if>
+             <if test="courseId != null  and courseId != '' "> and ca.course_id = #{courseId}</if>
+             <if test="levelType != null  and levelType != '' "> and ca.level_type = #{levelType}</if>
+             <if test="createTime != null "> and ca.create_time = #{createTime}</if>
+
+
+            <if test="createTime != null  and createTime1 == null "> and DATE_FORMAT(ca.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime == null "> and DATE_FORMAT(ca.create_time,'%Y%m%d') &lt;= DATE_FORMAT(#{createTime1},'%Y%m%d')</if>
+            <if test="createTime1 != null  and createTime != null "> and DATE_FORMAT(ca.create_time,'%Y%m%d') &gt;= DATE_FORMAT(#{createTime},'%Y%m%d')
+                and   DATE_FORMAT(ca.create_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{createTime1},'%Y%m%d')
+            </if>
+
+            
+             <if test="updateTime != null "> and ca.update_time = #{updateTime}</if>
+             <if test="addUserId != null  and addUserId != '' "> and ca.add_user_id = #{addUserId}</if>
+             <if test="meno != null  and meno != '' "> and ca.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and ca.business_id = #{businessId}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and ca.update_user_id = #{updateUserId}</if>
+
+
+            <if test="courseName != null  and courseName != '' "> and  tc.course_name like concat('%',#{courseName},'%')</if>
+
+
+            <if test="studyNum != null  and studyNum1 == null "> and uc.num &gt;= #{studyNum}</if>
+            <if test="studyNum1 != null  and studyNum == null "> and uc.num &lt;= #{studyNum1}</if>
+            <if test="studyNum1 != null  and studyNum != null "> and uc.num &gt;= #{studyNum}
+                and   uc.num &lt;=  #{studyNum1}
+            </if>
+
+
+         </where>
+    </select>
+    
+    <select id="selectTCourseArrangeById" parameterType="String" resultMap="TCourseArrangeResult">
+        <include refid="selectTCourseArrangeVo"/>
+        where ca.id = #{id}
+    </select>
+        
+    <insert id="insertTCourseArrange" parameterType="TCourseArrange">
+        insert into t_course_arrange
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="startDate != null  ">start_date,</if>
+			<if test="courseType != null  and courseType != ''  ">course_type,</if>
+			<if test="courseId != null  and courseId != ''  ">course_id,</if>
+			<if test="levelType != null  and levelType != ''  ">level_type,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="startDate != null  ">#{startDate},</if>
+			<if test="courseType != null  and courseType != ''  ">#{courseType},</if>
+			<if test="courseId != null  and courseId != ''  ">#{courseId},</if>
+			<if test="levelType != null  and levelType != ''  ">#{levelType},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTCourseArrange" parameterType="TCourseArrange">
+        update t_course_arrange
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="startDate != null  ">start_date = #{startDate},</if>
+            <if test="courseType != null  and courseType != ''  ">course_type = #{courseType},</if>
+            <if test="courseId != null  and courseId != ''  ">course_id = #{courseId},</if>
+            <if test="levelType != null  and levelType != ''  ">level_type = #{levelType},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTCourseArrangeById" parameterType="String">
+        delete from t_course_arrange where id = #{id}
+    </delete>
+	
+    <delete id="deleteTCourseArrangeByIds" parameterType="String">
+        delete from t_course_arrange where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -83,8 +83,8 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
 			tLegalProvisions.setCreateTime(new Date());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(legalFile)&&StringUtils.isNotEmpty(legalFile.getOriginalFilename())){
-				String Str = fileService.upolad("falvfagui",uuid,"法律法规文件",legalFile,0);
-				tLegalProvisions.setFilePath(Str);
+				String Str = fileService.upolad("falvfagui",uuid,"法律法规文件",legalFile,0,tLegalProvisions.getBusinessId());
+				tLegalProvisions.setLegalFilePath(Str);
 			}
 			int i = tLegalProvisionsMapper.insertTLegalProvisions(tLegalProvisions);
 			if(i==1) {
@@ -92,6 +92,7 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
+			e.getMessage();
 		}
 	
 		return AjaxResult.error();
@@ -111,7 +112,7 @@ public class TLegalProvisionsServiceImpl implements ITLegalProvisionsService
 			tLegalProvisions.setUpdateUserId(ShiroUtils.getUserId());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(legalFile)&&StringUtils.isNotEmpty(legalFile.getOriginalFilename())){
-				String Str = fileService.upolad("falvfagui",tLegalProvisions.getId(),"法律法规文件",legalFile,0);
+				String Str = fileService.upolad("falvfagui",tLegalProvisions.getId(),"法律法规文件",legalFile,0,tLegalProvisions.getBusinessId());
 				tLegalProvisions.setFilePath(Str);
 			}
 			int i = tLegalProvisionsMapper.updateTLegalProvisions(tLegalProvisions);

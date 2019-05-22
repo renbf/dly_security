@@ -68,5 +68,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+   	<delete id="deleteTSubjectPaperBySubId" parameterType="com.project.web.domian.TSubjectPaper">
+        delete from t_subject_paper where subject_id = #{subjectId}
+        <if test="paperId != null  and paperId != ''  ">and  paper_id = #{paperId}</if>
+    </delete> 
 </mapper>

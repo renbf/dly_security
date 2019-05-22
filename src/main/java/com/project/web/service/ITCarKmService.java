@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TCarKm;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface ITCarKmService
      * @param tCarKm 车辆行驶里程登记信息
      * @return 结果
      */
-	public int insertTCarKm(TCarKm tCarKm);
+	public AjaxResult insertTCarKm(TCarKm tCarKm);
 	
 	/**
      * 修改车辆行驶里程登记
@@ -41,7 +42,7 @@ public interface ITCarKmService
      * @param tCarKm 车辆行驶里程登记信息
      * @return 结果
      */
-	public int updateTCarKm(TCarKm tCarKm);
+	public AjaxResult updateTCarKm(TCarKm tCarKm);
 		
 	/**
      * 删除车辆行驶里程登记信息

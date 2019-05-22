@@ -125,6 +125,8 @@ public class SysUser extends BaseEntity {
      */
     private String roleIds;
     private String deptIds;
+	/** 入职日期 */
+	private Date entryDate;
 
     public String getDeptIds() {
         return deptIds;
@@ -166,11 +168,21 @@ public class SysUser extends BaseEntity {
         return isAdmin(this.userId);
     }
 
+    
     public static boolean isAdmin(Long userId) {
         return userId != null && userId==Global.TOP_ADMIN_ID;
     }
 
-    public Long getDeptId() {
+    
+    public Date getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
+
+	public Long getDeptId() {
         return deptId;
     }
 

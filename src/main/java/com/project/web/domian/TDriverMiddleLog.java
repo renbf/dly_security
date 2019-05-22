@@ -3,7 +3,10 @@ package com.project.web.domian;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.project.common.base.BaseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 行车中检查事项表 t_driver_middle_log
@@ -44,7 +47,86 @@ public class TDriverMiddleLog extends BaseEntity
 	/** 修改人id */
 	private String updateUserId;
 
-	public void setDriverLogId(String driverLogId) 
+
+	/*查询输入新增*/
+
+	/*查询输出新增*/
+	private String writeTimeStr;
+	private String stopCarTimeStr;
+	private String startCarTimeStr;
+	private String createDateStr;
+
+
+	/*修改输入新增*/
+	private List<String> updatePhotoUrls;
+	private List<MultipartFile> newPhotoFiles;
+	private MultipartFile newAutographFile;
+
+
+	public List<String> getUpdatePhotoUrls() {
+		return updatePhotoUrls;
+	}
+
+	public TDriverMiddleLog setUpdatePhotoUrls(List<String> updatePhotoUrls) {
+		this.updatePhotoUrls = updatePhotoUrls;
+		return this;
+	}
+
+	public List<MultipartFile> getNewPhotoFiles() {
+		return newPhotoFiles;
+	}
+
+	public TDriverMiddleLog setNewPhotoFiles(List<MultipartFile> newPhotoFiles) {
+		this.newPhotoFiles = newPhotoFiles;
+		return this;
+	}
+
+	public MultipartFile getNewAutographFile() {
+		return newAutographFile;
+	}
+
+	public TDriverMiddleLog setNewAutographFile(MultipartFile newAutographFile) {
+		this.newAutographFile = newAutographFile;
+		return this;
+	}
+
+	public String getWriteTimeStr() {
+		return writeTimeStr;
+	}
+
+	public TDriverMiddleLog setWriteTimeStr(String writeTimeStr) {
+		this.writeTimeStr = writeTimeStr;
+		return this;
+	}
+
+	public String getStopCarTimeStr() {
+		return stopCarTimeStr;
+	}
+
+	public TDriverMiddleLog setStopCarTimeStr(String stopCarTimeStr) {
+		this.stopCarTimeStr = stopCarTimeStr;
+		return this;
+	}
+
+	public String getStartCarTimeStr() {
+		return startCarTimeStr;
+	}
+
+	public TDriverMiddleLog setStartCarTimeStr(String startCarTimeStr) {
+		this.startCarTimeStr = startCarTimeStr;
+		return this;
+	}
+
+	public String getCreateDateStr() {
+		return createDateStr;
+	}
+
+	public TDriverMiddleLog setCreateDateStr(String createDateStr) {
+		this.createDateStr = createDateStr;
+		return this;
+	}
+
+	public void setDriverLogId(String driverLogId)
 	{
 		this.driverLogId = driverLogId;
 	}

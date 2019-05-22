@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TCarLog;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface ITCarLogService
      * @param tCarLog 车牌号牌变更信息
      * @return 结果
      */
-	public int insertTCarLog(TCarLog tCarLog);
+	public AjaxResult insertTCarLog(TCarLog tCarLog);
 	
 	/**
      * 修改车牌号牌变更
@@ -41,7 +42,7 @@ public interface ITCarLogService
      * @param tCarLog 车牌号牌变更信息
      * @return 结果
      */
-	public int updateTCarLog(TCarLog tCarLog);
+	public AjaxResult updateTCarLog(TCarLog tCarLog);
 		
 	/**
      * 删除车牌号牌变更信息

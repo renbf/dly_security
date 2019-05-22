@@ -3,6 +3,7 @@ package com.project.security.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class TIndustryDynamics implements Serializable
 	@JsonIgnore
 	private String addUserId;
 	/** 创建时间 */
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date createDate;
 	/** 修改时间 */
 	@JsonIgnore

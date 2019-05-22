@@ -43,7 +43,7 @@ public class TCarInsuranceController extends BaseController
 	/**
 	 * 查询车辆保险情况列表
 	 */
-	@RequiresPermissions("web:tCarInsurance:list")
+	//@RequiresPermissions("web:tCarInsurance:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TCarInsurance tCarInsurance)
@@ -65,13 +65,13 @@ public class TCarInsuranceController extends BaseController
 	/**
 	 * 新增保存车辆保险情况
 	 */
-	@RequiresPermissions("web:tCarInsurance:add")
+	//@RequiresPermissions("web:tCarInsurance:add")
 	@Log(title = "车辆保险情况", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TCarInsurance tCarInsurance)
 	{		
-		return toAjax(tCarInsuranceService.insertTCarInsurance(tCarInsurance));
+		return tCarInsuranceService.insertTCarInsurance(tCarInsurance);
 	}
 
 	/**
@@ -88,19 +88,19 @@ public class TCarInsuranceController extends BaseController
 	/**
 	 * 修改保存车辆保险情况
 	 */
-	@RequiresPermissions("web:tCarInsurance:edit")
+	//@RequiresPermissions("web:tCarInsurance:edit")
 	@Log(title = "车辆保险情况", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(TCarInsurance tCarInsurance)
 	{		
-		return toAjax(tCarInsuranceService.updateTCarInsurance(tCarInsurance));
+		return tCarInsuranceService.updateTCarInsurance(tCarInsurance);
 	}
 	
 	/**
 	 * 删除车辆保险情况
 	 */
-	@RequiresPermissions("web:tCarInsurance:remove")
+	//@RequiresPermissions("web:tCarInsurance:remove")
 	@Log(title = "车辆保险情况", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

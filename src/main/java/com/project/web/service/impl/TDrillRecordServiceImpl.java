@@ -71,7 +71,7 @@ public class TDrillRecordServiceImpl implements ITDrillRecordService {
         //文件上传
         try {
             if (Objects.nonNull(photoFile) && StringUtils.isNotEmpty(photoFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("yanlianjilu", uuid, "演练记录附件文件", photoFile, 0);
+                String upolad = this.fileService.upolad("yanlianjilu", uuid, "演练记录附件文件", photoFile, 0,tDrillRecord.getBusinessId());
                 tDrillRecord.setExerciseFilePath(upolad);
             }
         } catch (IOException e) {
@@ -101,7 +101,7 @@ public class TDrillRecordServiceImpl implements ITDrillRecordService {
         //文件上传
         try {
             if (Objects.nonNull(photoFile) && StringUtils.isNotEmpty(photoFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("yanlianjilu", tDrillRecord.getId(), "演练记录附件文件", photoFile, 0);
+                String upolad = this.fileService.upolad("yanlianjilu", tDrillRecord.getId(), "演练记录附件文件", photoFile, 0,tDrillRecord.getBusinessId());
                 tDrillRecord.setExerciseFilePath(upolad);
             }
         } catch (IOException e) {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<meta name="renderer" content="webkit" />
+		<!--强制360使用极速模式-->
+		<meta name="format-detection" content="telephone=no" />
+		<!--禁用电话号码显示为拨号的超链接-->
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<!--指定使用谷歌内核渲染-->
+		<meta name="HandheldFriendly" content="true">
+		<!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--是否显示工具栏和菜单栏-->
+		<!--测试用清除缓存-->
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<!-- -->
+		<meta name="screen-orientation" content="portrait" />
+		<!-- uc强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="full-screen" content="yes">
+		<!-- UC强制全屏 -->
+		<meta name="x5-fullscreen" content="true">
+		<!-- QQ强制全屏 -->
+		<meta name="browsermode" content="application">
+		<!-- UC应用模式 -->
+		<meta name="x5-page-mode" content="app">
+		<!-- QQ应用模式 -->
+		<title>轮播图详情</title>
+	</head>
+	<style>
+	.swiperImg{
+		width:6.9rem;
+		display: block;
+		margin:auto;
+		margin-top: 0.3rem;
+		margin-bottom: 0.35rem;
+	}
+		.paragraph{
+			color:#333333;
+			font-size:0.24rem;
+			width:6.76rem;
+			margin:auto;
+		}
+	</style>
+	<body>
+		 
+		<img class="swiperImg" src="http://img02.tooopen.com/Downs/images/2010/11/19/sy_20101119234326890959.jpg" alt="" />
+		<div class='paragraph' id="innerText"></div>
+	</body>
+	<script>
+	var res="<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;东风电子科技股份有限公司是以汽车零部件研发、制造、销售为主业的上市公司。公司创立于1997年6月，由原东风汽车公司仪表公司改制组建东风汽车电子仪表股份有限公司，同年7月日在上海证券交易所挂牌上市。2000年8月，东风汽车电子仪表股</div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;东风电子科技股份有限公司东风电子科技股份有限公司东风电子科技股份有限公司东风电子科技股份有限公司东风电子科技股份有限公司东风电子科技股份有限公司东风电子科技股份有限公司东风电子科技股份有限公司</div>"
+		document.getElementById('innerText').innerHTML=res
+	</script>
+	<script th:src="@{/project/js/matching.js}"></script>
+		
+	</script>
+</html>

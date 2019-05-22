@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TSubject;
 import java.util.List;
 
@@ -28,12 +29,21 @@ public interface ITSubjectService
 	public List<TSubject> selectTSubjectList(TSubject tSubject);
 	
 	/**
+     * 	查询题库所有列表 选项为一条数据的拼接
+     * 
+     * @param tSubject 题库信息
+     * @return 题库集合
+     */
+	public List<TSubject> selectTSubjectListByOneData(TSubject tSubject);
+	
+	
+	/**
      * 新增题库
      * 
      * @param tSubject 题库信息
      * @return 结果
      */
-	public int insertTSubject(TSubject tSubject);
+	public AjaxResult insertTSubject(TSubject tSubject);
 	
 	/**
      * 修改题库
@@ -41,7 +51,7 @@ public interface ITSubjectService
      * @param tSubject 题库信息
      * @return 结果
      */
-	public int updateTSubject(TSubject tSubject);
+	public AjaxResult updateTSubject(TSubject tSubject);
 		
 	/**
      * 删除题库信息
@@ -51,4 +61,13 @@ public interface ITSubjectService
      */
 	public int deleteTSubjectByIds(String ids);
 	//以上自动生成的尽量别动
+	
+	//根据题库id 查询出下面的题
+	public List<TSubject> selectTPaperListByPageId(String ids);
+	//根据试卷ID查询出本企业未生成题库的题
+	public List<TSubject> selectTPaperListByNotInPageId(TSubject tSubject);
+	
+	//根据试卷ID查询出本企业生成题库的题 包含分数等信息   换题时用
+	public List<TSubject> selectTPaperListAllByInPageId(TSubject tSubject);
+	
 }

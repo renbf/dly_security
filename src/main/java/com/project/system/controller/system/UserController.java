@@ -152,6 +152,21 @@ public class UserController extends BaseController {
             return error(e.getMessage());
         }
     }
+    
+//    @RequiresPermissions("system:user:list")
+    @PostMapping("/listByDept")
+    @ResponseBody
+    public AjaxResult listByDept(SysUser user) {
+    	AjaxResult aj =AjaxResult.success();
+    	SysUser su= new SysUser();
+    	su.setDeptId(user.getDeptId());
+    	su.setBusinessId(user.getBusinessId());
+        List<SysUser> list = userService.selectUserList(user);
+        
+        aj.put("data", list);
+        return aj;
+    }
+
 
     /**
      * 校验用户名

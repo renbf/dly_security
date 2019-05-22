@@ -60,4 +60,14 @@ public interface TUserSubjectMapper
      */
 	public int deleteTUserSubjectByIds(String[] ids);
 	//以上自动生成的尽量别动
+
+
+	/**
+	 * 删除,根据   user_paper_id (考试安排详情表主键)
+	 */
+	public int deleteTUserSubjectByUserPaperId(String id);
+
+
+
+
 }

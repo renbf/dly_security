@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<meta name="renderer" content="webkit" />
+		<!--强制360使用极速模式-->
+		<meta name="format-detection" content="telephone=no" />
+		<!--禁用电话号码显示为拨号的超链接-->
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<!--指定使用谷歌内核渲染-->
+		<meta name="HandheldFriendly" content="true">
+		<!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!--是否显示工具栏和菜单栏-->
+		<!--测试用清除缓存-->
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<!-- -->
+		<meta name="screen-orientation" content="portrait" />
+		<!-- uc强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="full-screen" content="yes">
+		<!-- UC强制全屏 -->
+		<meta name="x5-fullscreen" content="true">
+		<!-- QQ强制全屏 -->
+		<meta name="browsermode" content="application">
+		<!-- UC应用模式 -->
+		<meta name="x5-page-mode" content="app">
+		<!-- QQ应用模式 -->
+		<title>课程详情</title>
+	</head>
+	<style>
+	.swiperImg{
+		width:100%;
+		display: block;
+		margin:auto;
+		margin-bottom: 0.34rem;
+	}
+	.collection{
+		display: flex;
+		justify-content: space-between;
+		margin-bottom:0.35rem;
+	}
+	.title{
+		font-size:0.32rem;
+		color:#1c1c1c;
+		margin-left:0.31rem;
+	}
+	.right{
+		font-size:0.3rem;
+		color:#333333;
+		margin-right:0.29rem;
+	}
+	.collectionImg{
+		width:0.3rem;
+		height:0.3rem;
+		margin-right:0.12rem;
+	}
+		.paragraph{
+			color:#333333;
+			font-size:0.24rem;
+			width:6.76rem;
+			margin:auto;
+		}
+	</style>
+	<body>
+		<div class='paragraph' id="innerText" th:text="${introduction}"></div>
+	</body>
+	<script th:src="@{/project/js/matching.js}"></script>
+</html>

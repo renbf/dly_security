@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.annotation.Log;
 import com.project.common.enums.BusinessType;
 import com.project.web.domian.TCoursePlan;
@@ -65,13 +68,13 @@ public class TCoursePlanController extends BaseController
 	/**
 	 * 新增保存课程计划
 	 */
-	@RequiresPermissions("web:tCoursePlan:add")
+//	@RequiresPermissions("web:tCoursePlan:add")
 	@Log(title = "课程计划", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TCoursePlan tCoursePlan)
+	public AjaxResult addSave(TCoursePlan tCoursePlan,@RequestParam(name = "attachmentFile",required = false) MultipartFile attachmentFile)
 	{		
-		return toAjax(tCoursePlanService.insertTCoursePlan(tCoursePlan));
+		return tCoursePlanService.insertTCoursePlan(tCoursePlan,attachmentFile);
 	}
 
 	/**
@@ -92,9 +95,9 @@ public class TCoursePlanController extends BaseController
 	@Log(title = "课程计划", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TCoursePlan tCoursePlan)
+	public AjaxResult editSave(TCoursePlan tCoursePlan,@RequestParam(name = "attachmentFile",required = false) MultipartFile attachmentFile)
 	{		
-		return toAjax(tCoursePlanService.updateTCoursePlan(tCoursePlan));
+		return tCoursePlanService.updateTCoursePlan(tCoursePlan,attachmentFile);
 	}
 	
 	/**

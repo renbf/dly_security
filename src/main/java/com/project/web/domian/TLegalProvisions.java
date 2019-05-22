@@ -21,6 +21,10 @@ public class TLegalProvisions extends BaseEntity
 	private String id;
 	/** 法规名称 */
 	private String legalName;
+	/**
+	 * 法规标准号
+	 */
+	private String legalCode;
 	/** 类型 */
 	private String legalType;
 	/** 颁发单位 */
@@ -37,6 +41,8 @@ public class TLegalProvisions extends BaseEntity
 	private String legalEvaluate;
 	/** 文件路径 */
 	private String legalFilePath;
+	/** 是否适用 1:适用 0:不适用 */
+	private String isApply;
 	/** 创建日期 */
 	private Date createTime;
 	/** 创建日期 */
@@ -51,11 +57,44 @@ public class TLegalProvisions extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	private String deptName;
+	
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
 
 	public void setId(String id) 
 	{
 		this.id = id;
 	}
+
+	
+	public String getIsApply() {
+		return isApply;
+	}
+
+
+	public void setIsApply(String isApply) {
+		this.isApply = isApply;
+	}
+
+
+	public String getLegalCode() {
+		return legalCode;
+	}
+
+
+	public void setLegalCode(String legalCode) {
+		this.legalCode = legalCode;
+	}
+
 
 	public Date getLegalDateEnd() {
 		return legalDateEnd;

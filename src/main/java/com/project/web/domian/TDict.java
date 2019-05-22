@@ -51,8 +51,21 @@ public class TDict extends BaseEntity
     //子类型二级
     private List<TDict> childTwoList;
     
+	/**
+	 * 子级列表
+	 */
+ 	private List<TDict> childrens;
     
     
+    
+
+	public List<TDict> getChildrens() {
+		return childrens;
+	}
+
+	public void setChildrens(List<TDict> childrens) {
+		this.childrens = childrens;
+	}
 
 	public List<TDict> getChildOneList() {
 		return childOneList;

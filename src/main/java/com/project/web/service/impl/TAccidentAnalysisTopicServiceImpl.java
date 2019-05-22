@@ -71,7 +71,7 @@ public class TAccidentAnalysisTopicServiceImpl implements ITAccidentAnalysisTopi
         //文件上传
         try {
             if (Objects.nonNull(file) && StringUtils.isNotEmpty(file.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("shigufenxizhuantihuiyi", uuid, "事故分析专题会议附件文件", file, 0);
+                String upolad = this.fileService.upolad("shigufenxizhuantihuiyi", uuid, "事故分析专题会议附件文件", file, 0,tAccidentAnalysisTopic.getBusinessId());
                 tAccidentAnalysisTopic.setFilePath(upolad);
             }
         } catch (IOException e) {
@@ -122,7 +122,7 @@ public class TAccidentAnalysisTopicServiceImpl implements ITAccidentAnalysisTopi
         //文件上传
         try {
             if (Objects.nonNull(file) && StringUtils.isNotEmpty(file.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("shigufenxizhuantihuiyi", tAccidentAnalysisTopic.getId(), "事故分析专题会议附件文件", file, 0);
+                String upolad = this.fileService.upolad("shigufenxizhuantihuiyi", tAccidentAnalysisTopic.getId(), "事故分析专题会议附件文件", file, 0,tAccidentAnalysisTopic.getBusinessId());
                 tAccidentAnalysisTopic.setFilePath(upolad);
             }
         } catch (IOException e) {

@@ -2,6 +2,9 @@ package com.project.web.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TRiskLevelControl;
 
 /**
@@ -34,7 +37,7 @@ public interface ITRiskLevelControlService
      * @param tRiskLevelControl 风险分级管控信息
      * @return 结果
      */
-	public int insertTRiskLevelControl(TRiskLevelControl tRiskLevelControl);
+	public AjaxResult insertTRiskLevelControl(TRiskLevelControl tRiskLevelControl,MultipartFile riskLevelFile);
 	
 	/**
      * 修改风险分级管控
@@ -42,7 +45,7 @@ public interface ITRiskLevelControlService
      * @param tRiskLevelControl 风险分级管控信息
      * @return 结果
      */
-	public int updateTRiskLevelControl(TRiskLevelControl tRiskLevelControl);
+	public AjaxResult updateTRiskLevelControl(TRiskLevelControl tRiskLevelControl,MultipartFile riskLevelFile);
 		
 	/**
      * 删除风险分级管控信息

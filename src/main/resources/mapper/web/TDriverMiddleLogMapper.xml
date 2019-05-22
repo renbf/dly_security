@@ -22,7 +22,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTDriverMiddleLogbasicColums">
-        select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time, dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id, dml.create_date, dml.update_date, dml.update_user_id    </sql>
+        select dml.driver_log_id, dml.write_time, dml.car_check_project, dml.change_address, dml.stop_car_time,
+        dml.start_car_time, dml.trouble_shooting, dml.driving_photo, dml.autograph, dml.remark, dml.add_user_id,
+        dml.create_date, dml.update_date, dml.update_user_id    ,
+    	DATE_FORMAT(dml.write_time,'%Y-%m-%d') as writeTimeStr,
+        DATE_FORMAT(dml.stop_car_time,'%Y-%m-%d') as stopCarTimeStr,
+        DATE_FORMAT(dml.start_car_time,'%Y-%m-%d') as startCarTimeStr,
+        DATE_FORMAT(dml.create_date,'%Y-%m-%d') as createDateStr
+
+
+
+    </sql>
 	
     <select id="selectTDriverMiddleLogList" parameterType="com.project.web.domian.TDriverMiddleLog" resultMap="TDriverMiddleLogResult">
         <include refid="selectTDriverMiddleLogbasicColums"/>
@@ -96,7 +106,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stopCarTime != null  ">stop_car_time = #{stopCarTime},</if>
             <if test="startCarTime != null  ">start_car_time = #{startCarTime},</if>
             <if test="troubleShooting != null  and troubleShooting != ''  ">trouble_shooting = #{troubleShooting},</if>
+
             <if test="drivingPhoto != null  and drivingPhoto != ''  ">driving_photo = #{drivingPhoto},</if>
+            <if test="drivingPhoto == null  or drivingPhoto == ''  ">driving_photo = null,</if>
+
             <if test="autograph != null  and autograph != ''  ">autograph = #{autograph},</if>
             <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
             <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>

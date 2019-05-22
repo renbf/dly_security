@@ -21,17 +21,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarCarrierbasicColums">
-        select cc.id, cc.car_id, cc.validity_date, cc.insurance_unit, cc.insurance_number, cc.insurance_price, cc.insurance_cost, cc.remark, cc.file_url, cc.add_user_id, cc.create_date, cc.update_date, cc.update_user_id    </sql>
+        select cc.id, cc.car_id, cc.validity_date, cc.insurance_unit, cc.insurance_number, cc.insurance_price,
+        cc.insurance_cost, cc.remark, cc.file_url, cc.add_user_id, cc.create_date, cc.update_date, cc.update_user_id,
+    	DATE_FORMAT(cc.validity_date,'%Y-%m-%d') as validityDateStr,
+        DATE_FORMAT(cc.create_date,'%Y-%m-%d') as createDateStr
+
+        from t_car_carrier cc
+
+    </sql>
 	
     <select id="selectTCarCarrierList" parameterType="com.project.web.domian.TCarCarrier" resultMap="TCarCarrierResult">
         <include refid="selectTCarCarrierbasicColums"/>
-        from t_car_carrier cc
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and cc.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and cc.car_id = #{carId}</if>
-             <if test="validityDate != null "> and cc.validity_date = #{validityDate}</if>
-             <if test="insuranceUnit != null  and insuranceUnit != '' "> and cc.insurance_unit = #{insuranceUnit}</if>
-             <if test="insuranceNumber != null  and insuranceNumber != '' "> and cc.insurance_number = #{insuranceNumber}</if>
+
+
+            <if test="validityDate != null  and validityDate1 == null "> and DATE_FORMAT(cc.validity_date,'%Y%m%d') &gt;= DATE_FORMAT(#{validityDate},'%Y%m%d')</if>
+            <if test="validityDate1 != null  and validityDate == null "> and DATE_FORMAT(cc.validity_date,'%Y%m%d') &lt;= DATE_FORMAT(#{validityDate1},'%Y%m%d')</if>
+            <if test="validityDate1 != null  and validityDate != null "> and DATE_FORMAT(cc.validity_date,'%Y%m%d') &gt;= DATE_FORMAT(#{validityDate},'%Y%m%d')
+                and   DATE_FORMAT(cc.validity_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{validityDate1},'%Y%m%d')
+            </if>
+
+
+             <if test="insuranceUnit != null  and insuranceUnit != '' "> and cc.insurance_unit like concat('%',#{insuranceUnit},'%')</if>
+
+             <if test="insuranceNumber != null  and insuranceNumber != '' "> and cc.insurance_number like concat('%',#{insuranceNumber},'%')</if>
+
              <if test="insurancePrice != null  and insurancePrice != '' "> and cc.insurance_price = #{insurancePrice}</if>
              <if test="insuranceCost != null  and insuranceCost != '' "> and cc.insurance_cost = #{insuranceCost}</if>
              <if test="remark != null  and remark != '' "> and cc.remark = #{remark}</if>
@@ -113,5 +129,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_carrier where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

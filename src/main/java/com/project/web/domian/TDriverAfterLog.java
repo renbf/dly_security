@@ -3,7 +3,10 @@ package com.project.web.domian;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.project.common.base.BaseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 行车后检查事项表 t_driver_after_log
@@ -44,7 +47,63 @@ public class TDriverAfterLog extends BaseEntity
 	/** 修改人id */
 	private String updateUserId;
 
-	public void setDriverLogId(String driverLogId) 
+	/*查询输入新增*/
+	/*查询输出新增*/
+	private String writeTimeStr;
+	private String createDateStr;
+
+	/*修改输入新增*/
+	private List<String> updatePhotoUrls;
+	private List<MultipartFile> newPhotoFiles;
+	private MultipartFile newAutographFile;
+
+
+	public List<String> getUpdatePhotoUrls() {
+		return updatePhotoUrls;
+	}
+
+	public TDriverAfterLog setUpdatePhotoUrls(List<String> updatePhotoUrls) {
+		this.updatePhotoUrls = updatePhotoUrls;
+		return this;
+	}
+
+	public List<MultipartFile> getNewPhotoFiles() {
+		return newPhotoFiles;
+	}
+
+	public TDriverAfterLog setNewPhotoFiles(List<MultipartFile> newPhotoFiles) {
+		this.newPhotoFiles = newPhotoFiles;
+		return this;
+	}
+
+	public MultipartFile getNewAutographFile() {
+		return newAutographFile;
+	}
+
+	public TDriverAfterLog setNewAutographFile(MultipartFile newAutographFile) {
+		this.newAutographFile = newAutographFile;
+		return this;
+	}
+
+	public String getWriteTimeStr() {
+		return writeTimeStr;
+	}
+
+	public TDriverAfterLog setWriteTimeStr(String writeTimeStr) {
+		this.writeTimeStr = writeTimeStr;
+		return this;
+	}
+
+	public String getCreateDateStr() {
+		return createDateStr;
+	}
+
+	public TDriverAfterLog setCreateDateStr(String createDateStr) {
+		this.createDateStr = createDateStr;
+		return this;
+	}
+
+	public void setDriverLogId(String driverLogId)
 	{
 		this.driverLogId = driverLogId;
 	}

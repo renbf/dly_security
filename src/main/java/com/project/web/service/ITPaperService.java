@@ -1,6 +1,9 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TPaper;
+import com.project.web.domian.TSubject;
+
 import java.util.List;
 
 /**
@@ -26,6 +29,23 @@ public interface ITPaperService
      * @return 考卷集合
      */
 	public List<TPaper> selectTPaperList(TPaper tPaper);
+
+	/**
+	 *  根据考卷ID查询题库信息
+     * 
+     * @param 
+     * @return 
+     */
+	public List<TSubject> selectTPaperListByPageId(TPaper tPaper);
+	
+	/**
+	 *  根据考卷ID查询题库信息
+     * 
+     * @param 
+     * @return 
+     */
+	public List<TSubject> selectTPaperListByNotInPageId(TPaper tPaper);
+	
 	
 	/**
      * 新增考卷
@@ -33,7 +53,7 @@ public interface ITPaperService
      * @param tPaper 考卷信息
      * @return 结果
      */
-	public int insertTPaper(TPaper tPaper);
+	public AjaxResult insertTPaper(TPaper tPaper);
 	
 	/**
      * 修改考卷

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TPaperArrangeMapper">
+    
+    <resultMap type="TPaperArrange" id="TPaperArrangeResult">
+        <result property="id"    column="id"    />
+        <result property="paperType"    column="paper_type"    />
+        <result property="paperId"    column="paper_id"    />
+        <result property="paperName"    column="paper_name"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+    </resultMap>
+	
+	<sql id="selectTPaperArrangeVo">
+        select pa.id, pa.paper_type, pa.paper_id, pa.paper_name, pa.start_date, pa.end_date, pa.create_date,
+         pa.update_date, pa.add_user_id, pa.update_user_id, pa.meno, pa.business_id ,
+        DATE_FORMAT(pa.start_date,'%Y-%m-%d') as startDateStr,
+        DATE_FORMAT(pa.end_date,'%Y-%m-%d') as endDateStr,
+        DATE_FORMAT(pa.create_date,'%Y-%m-%d') as createDateStr,
+        tup.postNames as userPosts,
+        tup.num as paperNum,
+        tp.name as paperName
+
+
+
+
+         from t_paper_arrange pa
+          left join (select count(*) as num , group_concat(distinct sp1.post_name separator '、') as postNames , tup1.paper_arrange_id as paper_arrange_id
+                      from t_user_paper tup1
+                        left join sys_user su1 on (su1.user_id = tup1.user_id)
+                        left join sys_user_post sup1 on (su1.user_id = sup1.user_id)
+                        left join sys_post sp1 on (sup1.post_id = sp1.post_id)
+                      group by tup1.paper_arrange_id ) tup on (pa.id = tup.paper_arrange_id)
+          left join t_paper tp on (tp.id = pa.paper_id)
+    </sql>
+	
+    <select id="selectTPaperArrangeList" parameterType="TPaperArrange" resultMap="TPaperArrangeResult">
+        <include refid="selectTPaperArrangeVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and pa.id = #{id}</if>
+             <if test="paperType != null  and paperType != '' "> and pa.paper_type = #{paperType}</if>
+             <if test="paperId != null  and paperId != '' "> and pa.paper_id = #{paperId}</if>
+             <if test="paperName != null  and paperName != '' "> and tp.name like concat('%',#{paperName},'%')</if>
+
+
+            <if test="startDate != null  and startDate1 == null "> and DATE_FORMAT(pa.start_date,'%Y%m%d') &gt;= DATE_FORMAT(#{startDate},'%Y%m%d')</if>
+            <if test="startDate1 != null  and startDate == null "> and DATE_FORMAT(pa.start_date,'%Y%m%d') &lt;= DATE_FORMAT(#{startDate1},'%Y%m%d')</if>
+            <if test="startDate1 != null  and startDate != null "> and DATE_FORMAT(pa.start_date,'%Y%m%d') &gt;= DATE_FORMAT(#{startDate},'%Y%m%d')
+                and   DATE_FORMAT(pa.start_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{startDate1},'%Y%m%d')
+            </if>
+
+
+             <if test="endDate != null "> and pa.end_date = #{endDate}</if>
+
+
+            <if test="createDate != null  and createDate1 == null "> and DATE_FORMAT(pa.create_date,'%Y%m%d') &gt;= DATE_FORMAT(#{createDate},'%Y%m%d')</if>
+            <if test="createDate1 != null  and createDate == null "> and DATE_FORMAT(pa.create_date,'%Y%m%d') &lt;= DATE_FORMAT(#{createDate1},'%Y%m%d')</if>
+            <if test="createDate1 != null  and createDate != null "> and DATE_FORMAT(pa.create_date,'%Y%m%d') &gt;= DATE_FORMAT(#{createDate},'%Y%m%d')
+                and   DATE_FORMAT(pa.create_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{createDate1},'%Y%m%d')
+            </if>
+            
+            
+             <if test="updateDate != null "> and pa.update_date = #{updateDate}</if>
+             <if test="addUserId != null  and addUserId != '' "> and pa.add_user_id = #{addUserId}</if>
+             <if test="updateUserId != null  and updateUserId != '' "> and pa.update_user_id = #{updateUserId}</if>
+             <if test="meno != null  and meno != '' "> and pa.meno = #{meno}</if>
+             <if test="businessId != null  and businessId != '' "> and pa.business_id = #{businessId}</if>
+         </where>
+    </select>
+    
+    <select id="selectTPaperArrangeById" parameterType="String" resultMap="TPaperArrangeResult">
+        <include refid="selectTPaperArrangeVo"/>
+        where pa.id = #{id}
+    </select>
+        
+    <insert id="insertTPaperArrange" parameterType="TPaperArrange">
+        insert into t_paper_arrange
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="paperType != null  and paperType != ''  ">paper_type,</if>
+			<if test="paperId != null  and paperId != ''  ">paper_id,</if>
+			<if test="paperName != null  and paperName != ''  ">paper_name,</if>
+			<if test="startDate != null  ">start_date,</if>
+			<if test="endDate != null  ">end_date,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+			<if test="meno != null  and meno != ''  ">meno,</if>
+			<if test="businessId != null  and businessId != ''  ">business_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="paperType != null  and paperType != ''  ">#{paperType},</if>
+			<if test="paperId != null  and paperId != ''  ">#{paperId},</if>
+			<if test="paperName != null  and paperName != ''  ">#{paperName},</if>
+			<if test="startDate != null  ">#{startDate},</if>
+			<if test="endDate != null  ">#{endDate},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+			<if test="meno != null  and meno != ''  ">#{meno},</if>
+			<if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTPaperArrange" parameterType="TPaperArrange">
+        update t_paper_arrange
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paperType != null  and paperType != ''  ">paper_type = #{paperType},</if>
+            <if test="paperId != null  and paperId != ''  ">paper_id = #{paperId},</if>
+            <if test="paperName != null  and paperName != ''  ">paper_name = #{paperName},</if>
+            <if test="startDate != null  ">start_date = #{startDate},</if>
+            <if test="endDate != null  ">end_date = #{endDate},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTPaperArrangeById" parameterType="String">
+        delete from t_paper_arrange where id = #{id}
+    </delete>
+	
+    <delete id="deleteTPaperArrangeByIds" parameterType="String">
+        delete from t_paper_arrange where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

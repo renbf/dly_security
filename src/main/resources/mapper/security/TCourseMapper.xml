@@ -236,4 +236,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </select>
     
+    <select id="searchCource" parameterType="java.util.Map" resultMap="TCourseVoResult">
+    	<include refid="selectTCoursebasicColums"/>,
+    	uc.id user_course_id,uc.is_collect,uc.user_id,uc.status user_course_status,uc.progress,ifnull(round(uc.progress/c.total_times*100),0) percentage,uc.start_date
+    	from t_course c
+        join t_user_course uc on uc.course_id = c.id
+        where uc.add_user_id is not null
+        and uc.user_id = #{userId} and uc.status in('0','1')
+        and c.course_name like '%${searchKey}%'
+        order by uc.status
+    </select>
+    
 </mapper>

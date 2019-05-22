@@ -90,7 +90,7 @@ public class TAccidentReportServiceImpl implements ITAccidentReportService {
         //文件上传
         try {
             if (Objects.nonNull(file) && StringUtils.isNotEmpty(file.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("shigubaogao", uuid, "事故报告附件文件", file, 0);
+                String upolad = this.fileService.upolad("shigubaogao", uuid, "事故报告附件文件", file, 0,tAccidentReport.getBusinessId());
                 tAccidentReport.setFilePath(upolad);
             }
         } catch (IOException e) {
@@ -120,7 +120,7 @@ public class TAccidentReportServiceImpl implements ITAccidentReportService {
         //文件上传
         try {
             if (Objects.nonNull(file) && StringUtils.isNotEmpty(file.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("shigubaogao", tAccidentReport.getId(), "事故报告附件文件", file, 0);
+                String upolad = this.fileService.upolad("shigubaogao", tAccidentReport.getId(), "事故报告附件文件", file, 0,tAccidentReport.getBusinessId());
                 tAccidentReport.setFilePath(upolad);
             }
         } catch (IOException e) {

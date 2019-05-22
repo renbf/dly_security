@@ -23,14 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTPaperbasicColums">
-        select p.id, p.name, p.paper_times, p.paper_type, p.subject_nums, p.business_type, p.major_type, p.paper_price, p.pass_score, p.paper_source, p.business_id, p.add_user_id, p.create_date, p.update_date, p.update_user_id    </sql>
+        select p.id, p.name, p.paper_times, p.paper_type, p.subject_nums, p.business_type, p.major_type, p.paper_price, p.pass_score, p.paper_source, p.business_id, p.add_user_id,        
+         DATE_FORMAT(p.create_date,'%Y-%m-%d') as startCreateTime,
+         p.update_date, p.update_user_id    </sql>
 	
     <select id="selectTPaperList" parameterType="com.project.web.domian.TPaper" resultMap="TPaperResult">
         <include refid="selectTPaperbasicColums"/>
         from t_paper p
         <where>  
             <if test="id != null  and id != '' "> and p.id = #{id}</if>
-             <if test="name != null  and name != '' "> and p.name = #{name}</if>
+             <if test="name != null  and name != '' "> and p.name like CONCAT('%',#{name},'%')</if>
              <if test="paperTimes != null "> and p.paper_times = #{paperTimes}</if>
              <if test="paperType != null  and paperType != '' "> and p.paper_type = #{paperType}</if>
              <if test="subjectNums != null "> and p.subject_nums = #{subjectNums}</if>
@@ -41,10 +43,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="paperSource != null  and paperSource != '' "> and p.paper_source = #{paperSource}</if>
              <if test="businessId != null  and businessId != '' "> and p.business_id = #{businessId}</if>
              <if test="addUserId != null  and addUserId != '' "> and p.add_user_id = #{addUserId}</if>
-             <if test="createDate != null "> and p.create_date = #{createDate}</if>
+              <if test="(createDate != null  ) and createDateEnd == null "> 
+                 	and DATE_FORMAT(p.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createDate},'%Y-%m-%d')
+             </if>
+             <if test="(createDateEnd != null ) and createDate == null  "> 
+             		and DATE_FORMAT(p.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createDateEnd},'%Y-%m-%d')
+             </if>
+             <if test="(createDateEnd != null  ) and createDate != null  "> 
+             		 and DATE_FORMAT(p.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createDate},'%Y-%m-%d')
+                     and DATE_FORMAT(p.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createDateEnd},'%Y-%m-%d')                    
+             </if>
              <if test="updateDate != null "> and p.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and p.update_user_id = #{updateUserId}</if>
          </where>
+         order by p.create_date DESC
     </select>
     
     <select id="selectTPaperById" parameterType="String" resultMap="TPaperResult">

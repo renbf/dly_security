@@ -70,7 +70,7 @@ public class TManagementSystemServiceImpl implements ITManagementSystemService
 		try {			
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(managementFile)&&StringUtils.isNotEmpty(managementFile.getOriginalFilename())){
-				String Str = fileService.upolad("guanlizhidu",uuid,"管理制度文件",managementFile,0);
+				String Str = fileService.upolad("guanlizhidu",uuid,"管理制度文件",managementFile,0,tManagementSystem.getBusinessId());
 				tManagementSystem.setManagementFilePath(Str);
 			}	
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class TManagementSystemServiceImpl implements ITManagementSystemService
 			tManagementSystem.setUpdateUserId(ShiroUtils.getUserId());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(managementFile)&&StringUtils.isNotEmpty(managementFile.getOriginalFilename())){
-				String Str = fileService.upolad("guanlizhidu",tManagementSystem.getId(),"管理制度文件",managementFile,0);
+				String Str = fileService.upolad("guanlizhidu",tManagementSystem.getId(),"管理制度文件",managementFile,0,tManagementSystem.getBusinessId());
 				tManagementSystem.setManagementFilePath(Str);
 			}	
 		} catch (Exception e) {

@@ -22,7 +22,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTDriverAfterLogbasicColums">
-        select dal.driver_log_id, dal.write_time, dal.car_check_project, dal.fault_handling, dal.autograph, dal.driving_photo, dal.start_from_station, dal.start_from_check, dal.en_route_address, dal.en_route_check, dal.add_user_id, dal.create_date, dal.update_date, dal.update_user_id    </sql>
+        select dal.driver_log_id, dal.write_time, dal.car_check_project, dal.fault_handling, dal.autograph,
+        dal.driving_photo, dal.start_from_station, dal.start_from_check, dal.en_route_address, dal.en_route_check,
+        dal.add_user_id, dal.create_date, dal.update_date, dal.update_user_id   ,
+	    DATE_FORMAT(dal.write_time,'%Y-%m-%d') as writeTimeStr,
+        DATE_FORMAT(dal.create_date,'%Y-%m-%d') as createDateStr
+
+    </sql>
 	
     <select id="selectTDriverAfterLogList" parameterType="com.project.web.domian.TDriverAfterLog" resultMap="TDriverAfterLogResult">
         <include refid="selectTDriverAfterLogbasicColums"/>
@@ -94,7 +100,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="carCheckProject != null  and carCheckProject != ''  ">car_check_project = #{carCheckProject},</if>
             <if test="faultHandling != null  and faultHandling != ''  ">fault_handling = #{faultHandling},</if>
             <if test="autograph != null  and autograph != ''  ">autograph = #{autograph},</if>
+
             <if test="drivingPhoto != null  and drivingPhoto != ''  ">driving_photo = #{drivingPhoto},</if>
+            <if test="drivingPhoto == null  or drivingPhoto == ''  ">driving_photo = null,</if>
+
             <if test="startFromStation != null  and startFromStation != ''  ">start_from_station = #{startFromStation},</if>
             <if test="startFromCheck != null  and startFromCheck != ''  ">start_from_check = #{startFromCheck},</if>
             <if test="enRouteAddress != null  and enRouteAddress != ''  ">en_route_address = #{enRouteAddress},</if>

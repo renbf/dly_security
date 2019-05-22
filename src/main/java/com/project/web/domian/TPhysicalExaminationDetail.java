@@ -33,6 +33,58 @@ public class TPhysicalExaminationDetail extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	//姓名
+	private String managementName;
+	//性别
+	private String managementSex;
+	//手机号
+	private String managementPhone;
+	//入职日期
+	private String entryDateStr;
+	
+	private String managementUserId;
+	
+
+
+	public String getManagementUserId() {
+		return managementUserId;
+	}
+
+	public void setManagementUserId(String managementUserId) {
+		this.managementUserId = managementUserId;
+	}
+
+	public String getManagementName() {
+		return managementName;
+	}
+
+	public void setManagementName(String managementName) {
+		this.managementName = managementName;
+	}
+
+	public String getManagementSex() {
+		return managementSex;
+	}
+
+	public void setManagementSex(String managementSex) {
+		this.managementSex = managementSex;
+	}
+
+	public String getManagementPhone() {
+		return managementPhone;
+	}
+
+	public void setManagementPhone(String managementPhone) {
+		this.managementPhone = managementPhone;
+	}
+
+	public String getEntryDateStr() {
+		return entryDateStr;
+	}
+
+	public void setEntryDateStr(String entryDateStr) {
+		this.entryDateStr = entryDateStr;
+	}
 
 	public void setId(String id) 
 	{

@@ -41,17 +41,31 @@ public class TSubjectController extends BaseController
 	}
 	
 	/**
-	 * 查询题库列表
+	 * 查询题库列表  选项为一条拼接字段
 	 */
-	@RequiresPermissions("web:tSubject:list")
+//	@RequiresPermissions("web:tSubject:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TSubject tSubject)
 	{
 		startPage();
-        List<TSubject> list = tSubjectService.selectTSubjectList(tSubject);
+        List<TSubject> list = tSubjectService.selectTSubjectListByOneData(tSubject);
 		return getDataTable(list);
 	}
+	
+	/**
+	 * 根据ID查询 具体某一条数据
+	 */
+//	@RequiresPermissions("web:tSubject:list")
+	@PostMapping("/listById")
+	@ResponseBody
+	public AjaxResult listById(TSubject tSubject)
+	{	AjaxResult aj =AjaxResult.success();
+		String id= tSubject.getId();
+		aj.put("data", tSubjectService.selectTSubjectById(id));
+		return aj;
+	}
+	
 	
 	/**
 	 * 新增题库
@@ -65,13 +79,13 @@ public class TSubjectController extends BaseController
 	/**
 	 * 新增保存题库
 	 */
-	@RequiresPermissions("web:tSubject:add")
+//	@RequiresPermissions("web:tSubject:add")
 	@Log(title = "题库", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TSubject tSubject)
 	{		
-		return toAjax(tSubjectService.insertTSubject(tSubject));
+		return tSubjectService.insertTSubject(tSubject);
 	}
 
 	/**
@@ -88,19 +102,19 @@ public class TSubjectController extends BaseController
 	/**
 	 * 修改保存题库
 	 */
-	@RequiresPermissions("web:tSubject:edit")
+//	@RequiresPermissions("web:tSubject:edit")
 	@Log(title = "题库", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(TSubject tSubject)
 	{		
-		return toAjax(tSubjectService.updateTSubject(tSubject));
+		return tSubjectService.updateTSubject(tSubject);
 	}
 	
 	/**
 	 * 删除题库
 	 */
-	@RequiresPermissions("web:tSubject:remove")
+//	@RequiresPermissions("web:tSubject:remove")
 	@Log(title = "题库", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

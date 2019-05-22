@@ -50,7 +50,7 @@ public class TNewspaperClassOutDeparture extends BaseEntity {
     /**
      * 所属机构     #$
      */
-    private String deptId;
+    private Long deptId;
     /**
      * 创建日期
      */
@@ -167,15 +167,17 @@ public class TNewspaperClassOutDeparture extends BaseEntity {
         this.newspaperClassPer = newspaperClassPer;
     }
 
-    public String getDeptId() {
-        return deptId;
-    }
+  
 
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
-    }
+    public Long getDeptId() {
+		return deptId;
+	}
 
-    public Date getCreateTime() {
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
+	public Date getCreateTime() {
         return createTime;
     }
 

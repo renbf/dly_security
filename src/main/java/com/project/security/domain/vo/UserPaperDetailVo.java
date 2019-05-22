@@ -1,6 +1,7 @@
 package com.project.security.domain.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class UserPaperDetailVo implements Serializable
 	/** 考卷类型 */
 	private String subjectType;
 	/** 题目分数 */
-	private Integer subjectScore;
+	private BigDecimal subjectScore;
 	/** 顺序 */
 	@JsonIgnore
 	private Integer subjectSort;
@@ -43,7 +44,7 @@ public class UserPaperDetailVo implements Serializable
 	private String status;
 	/** 考试分数 */
 	@JsonIgnore
-	private Integer paperScore;
+	private BigDecimal paperScore;
 	/** 用户答题id */
 	private String userSubjectId;
 	/** 答题开始时间 */
@@ -100,10 +101,10 @@ public class UserPaperDetailVo implements Serializable
 	public void setTrueAnswer(String trueAnswer) {
 		this.trueAnswer = trueAnswer;
 	}
-	public Integer getSubjectScore() {
+	public BigDecimal getSubjectScore() {
 		return subjectScore;
 	}
-	public void setSubjectScore(Integer subjectScore) {
+	public void setSubjectScore(BigDecimal subjectScore) {
 		this.subjectScore = subjectScore;
 	}
 	public Integer getSubjectSort() {
@@ -131,10 +132,10 @@ public class UserPaperDetailVo implements Serializable
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Integer getPaperScore() {
+	public BigDecimal getPaperScore() {
 		return paperScore;
 	}
-	public void setPaperScore(Integer paperScore) {
+	public void setPaperScore(BigDecimal paperScore) {
 		this.paperScore = paperScore;
 	}
 	public Date getStartDate() {

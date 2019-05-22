@@ -24,7 +24,7 @@ public class TContingencyDrillPlan extends BaseEntity
 	/** #预计演练地点 */
 	private String drillPlanLocation;
 	/** 部门ID */
-	private String deptId;
+	private Long deptId;
 	/** 附件文件路径 */
 	private String drillPlanFilePath;
 	/** 创建日期 */
@@ -106,15 +106,15 @@ public class TContingencyDrillPlan extends BaseEntity
 	{
 		return drillPlanLocation;
 	}
-	public void setDeptId(String deptId) 
-	{
+	
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 
-	public String getDeptId() 
-	{
-		return deptId;
-	}
 	public void setDrillPlanFilePath(String drillPlanFilePath) 
 	{
 		this.drillPlanFilePath = drillPlanFilePath;

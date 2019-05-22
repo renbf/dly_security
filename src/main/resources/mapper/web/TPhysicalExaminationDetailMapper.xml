@@ -88,16 +88,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <delete id="deleteTPhysicalExaminationDetailByexaminationIds" parameterType="String">
-        delete from t_physical_examination_detail where examinationId = #{examinationId}
+        delete from t_physical_examination_detail where examination_id = #{examinationId}
     </delete>
     
     <select id="selectTPhysicalExaminationDetailListById" parameterType="TPhysicalExaminationDetail" resultMap="TPhysicalExaminationDetailResult">
 	SELECT
-			ped.id,
-			ped.user_id,
-		  su.management_name as userName,
-		  su.management_sex as sex,
-		  su.management_phone as phone,
+		  ped.id,
+		  ped.examination_user_id AS managementUserId,
+		  su.management_name as managementName,
+		  su.management_sex as managementSex,
+		  su.management_phone as managementPhone,
 		  DATE_FORMAT(su.entry_date,'%Y-%m-%d') as entryDateStr 
 		FROM
 			t_physical_examination_detail ped

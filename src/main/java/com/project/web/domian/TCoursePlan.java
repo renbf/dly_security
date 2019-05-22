@@ -22,7 +22,7 @@ public class TCoursePlan extends BaseEntity
 	/** 标题 */
 	private String title;
 	/** 部门id */
-	private String deptId;
+	private Long deptId;
 	/** 级别类型 */
 	private String levelType;
 	/** 计划课时 */
@@ -33,10 +33,41 @@ public class TCoursePlan extends BaseEntity
 	private String addUserId;
 	/** 创建时间 */
 	private Date createDate;
+	/** 创建时间 */
+	private Date createDateEnd;
 	/** 修改时间 */
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
+	//课程类型 1:线上  0:线下
+	private String courseType;
+	//企业id
+	private String businessId;
+	
+	
+	public String getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
+
+	public Date getCreateDateEnd() {
+		return createDateEnd;
+	}
+
+	public void setCreateDateEnd(Date createDateEnd) {
+		this.createDateEnd = createDateEnd;
+	}
+
+	public String getCourseType() {
+		return courseType;
+	}
+
+	public void setCourseType(String courseType) {
+		this.courseType = courseType;
+	}
 
 	public void setId(String id) 
 	{
@@ -65,15 +96,15 @@ public class TCoursePlan extends BaseEntity
 	{
 		return title;
 	}
-	public void setDeptId(String deptId) 
-	{
+	
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 
-	public String getDeptId() 
-	{
-		return deptId;
-	}
 	public void setLevelType(String levelType) 
 	{
 		this.levelType = levelType;

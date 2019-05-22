@@ -46,7 +46,7 @@ public class TManagementSystemController extends BaseController
 	/**
 	 * 查询管理制度列表
 	 */
-	@RequiresPermissions("system:tManagementSystem:list")
+//	@RequiresPermissions("system:tManagementSystem:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TManagementSystem tManagementSystem)
@@ -91,7 +91,7 @@ public class TManagementSystemController extends BaseController
 	/**
 	 * 修改保存管理制度
 	 */
-	@RequiresPermissions("system:tManagementSystem:edit")
+//	@RequiresPermissions("system:tManagementSystem:edit")
 	@Log(title = "管理制度", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -103,7 +103,7 @@ public class TManagementSystemController extends BaseController
 	/**
 	 * 删除管理制度
 	 */
-	@RequiresPermissions("system:tManagementSystem:remove")
+//	@RequiresPermissions("system:tManagementSystem:remove")
 	@Log(title = "管理制度", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

@@ -66,5 +66,5 @@ public interface IFileService
 	 * @param
 	 * @return  附件路径
 	 */
-	public String upolad(String sourceType, String sourceId, String fileName, MultipartFile multipartFile,Integer state) throws IOException;
+	public String upolad(String sourceType, String sourceId, String fileName, MultipartFile multipartFile,Integer state,String bussinessId) throws IOException;
 }

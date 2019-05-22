@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="operatingDate"    column="operating_date"    />
         <result property="operatingDeptId"    column="operating_dept_id"    />
         <result property="isApply"    column="is_apply"    />
+        <result property="deptName"    column="dept_name"    />
         <result property="operatingFilePath"    column="operating_file_path"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
@@ -22,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<sql id="selectTOperatingProceduresVo">
         select op.id, op.operating_name, op.operating_unit, 
+         op.operating_date,
          DATE_FORMAT(op.operating_date,'%Y-%m-%d') as operatingDateStr, 
         op.operating_dept_id, op.is_apply, op.operating_file_path,
          DATE_FORMAT(op.create_time,'%Y-%m-%d') as startCreateTime, 
@@ -29,7 +31,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
     <select id="selectTOperatingProceduresList" parameterType="TOperatingProcedures" resultMap="TOperatingProceduresResult">
-        <include refid="selectTOperatingProceduresVo"/>
+	                select op.id, op.operating_name, op.operating_unit, 
+	         DATE_FORMAT(op.operating_date,'%Y-%m-%d') as operatingDateStr, 
+	        op.operating_dept_id, op.is_apply, op.operating_file_path,
+	        op.operating_date,
+	         DATE_FORMAT(op.create_time,'%Y-%m-%d') as startCreateTime, 
+	         op.update_time, op.user_id, op.meno, op.business_id, op.update_user_id,
+					sd.dept_name
+	from t_operating_procedures op
+	LEFT JOIN sys_dept sd on op.operating_dept_id = sd.dept_id 
         <where>  
             <if test="id != null  and id != '' "> and op.id = #{id}</if>
              <if test="operatingName != null  and operatingName != '' "> and op.operating_name like CONCAT('%',#{operatingName},'%')</if>

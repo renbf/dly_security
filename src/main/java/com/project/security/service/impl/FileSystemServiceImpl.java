@@ -221,7 +221,11 @@ public class FileSystemServiceImpl implements IFileSystemService {
 		        }
 			}
 	        if(StringUtils.isNotEmpty(sb.toString())) {
-	        	return sb.toString();
+	        	String result = sb.toString();
+	        	if(result.endsWith(",")) {
+	        		result = result.substring(0,result.length() - 1);
+	        	}
+	        	return result;
 	        }else {
 	        	return "";
 	        }

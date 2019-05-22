@@ -192,7 +192,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
 			sysUser.setUserId(user.getUserId());
 			sysUser.setSalt(ShiroUtils.randomSalt());
 			sysUser.setPassword(passwordService.encryptPassword(user.getLoginName(), newPassword, sysUser.getSalt()));
-	        userMapper.updateUser(user);
+	        userMapper.updateUser(sysUser);
 			result.setMessage("修改密码成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -203,7 +203,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	}
 
 	@Override
-	public DataResult bindingCid(String userId, String clientId) {
+	public DataResult bindingCid(String userId, String clientId,String source) {
 		DataResult result = new DataResult();
         try {
         	Long userid = Long.valueOf(userId);
@@ -211,6 +211,11 @@ public class UserInfoServiceImpl implements IUserInfoService {
         	TUserClient tUserClient = new TUserClient();
         	tUserClient.setClientId(clientId);
         	tUserClient.setUserId(userid);
+        	if(!StringUtils.isEmpty(source)) {
+        		tUserClient.setSource(source);
+        	}else {
+        		tUserClient.setSource("0");
+        	}
         	if(userClient == null) {
         		userClientMapper.insertTUserClient(tUserClient);
         	}else {

@@ -16,26 +16,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTInspectRecordbasicColums">
-        select ir.id, ir.inspect_plan_id, ir.check_user_id, ir.check_obj, ir.check_result, ir.check_date, ir.check_type, ir.user_sign_url    </sql>
+        select ir.id, ir.inspect_plan_id, ir.check_user_id, ir.check_obj, ir.check_result, ir.check_date, ir.check_type, ir.user_sign_url,
+
+        DATE_FORMAT(ir.check_date,'%Y-%m-%d') as checkDateStr,
+        su.user_name as checkUserName
+        from t_inspect_record ir
+          left join sys_user su on (ir.check_user_id = su.user_id)
+
+</sql>
 	
     <select id="selectTInspectRecordList" parameterType="com.project.web.domian.TInspectRecord" resultMap="TInspectRecordResult">
         <include refid="selectTInspectRecordbasicColums"/>
-        from t_inspect_record ir
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and ir.id = #{id}</if>
              <if test="inspectPlanId != null  and inspectPlanId != '' "> and ir.inspect_plan_id = #{inspectPlanId}</if>
              <if test="checkUserId != null  and checkUserId != '' "> and ir.check_user_id = #{checkUserId}</if>
-             <if test="checkObj != null  and checkObj != '' "> and ir.check_obj = #{checkObj}</if>
+             <if test="checkObj != null  and checkObj != '' "> and ir.check_obj like concat('%',#{checkObj},'%')</if>
+
              <if test="checkResult != null  and checkResult != '' "> and ir.check_result = #{checkResult}</if>
-             <if test="checkDate != null "> and ir.check_date = #{checkDate}</if>
+
+
+            <if test="checkDate != null  and checkDate1 == null "> and DATE_FORMAT(ir.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')</if>
+            <if test="checkDate1 != null  and checkDate == null "> and DATE_FORMAT(ir.check_date,'%Y%m%d') &lt;= DATE_FORMAT(#{checkDate1},'%Y%m%d')</if>
+            <if test="checkDate1 != null  and checkDate != null "> and DATE_FORMAT(ir.check_date,'%Y%m%d') &gt;= DATE_FORMAT(#{checkDate},'%Y%m%d')
+                and   DATE_FORMAT(ir.check_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{checkDate1},'%Y%m%d')
+            </if>
+
+
              <if test="checkType != null  and checkType != '' "> and ir.check_type = #{checkType}</if>
              <if test="userSignUrl != null  and userSignUrl != '' "> and ir.user_sign_url = #{userSignUrl}</if>
+
+
+            
+             <if test="checkUserName != null  and checkUserName != '' "> and su.user_name like concat('%',#{checkUserName},'%')</if>
+
+
+
+
          </where>
     </select>
     
     <select id="selectTInspectRecordById" parameterType="String" resultMap="TInspectRecordResult">
         <include refid="selectTInspectRecordbasicColums"/>
-        from t_inspect_record ir
         where ir.id = #{id}
     </select>
         

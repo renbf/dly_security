@@ -34,7 +34,7 @@ public class TVehicleCheck extends BaseEntity {
     /**
      * 例检时间     ##
      */
-    private Date ckeckDate;
+    private Date checkDate;
     /**
      * 检查结果     #$
      */
@@ -86,11 +86,11 @@ public class TVehicleCheck extends BaseEntity {
 
 
     /*查询入参增加*/
-    private Date ckeckDate1;
+    private Date checkDate1;
 
 
     /*查询出参增加*/
-    private String ckeckDateStr;
+    private String checkDateStr;
     private String createTimeStr;
     private String checkTypeStr;
 
@@ -104,25 +104,27 @@ public class TVehicleCheck extends BaseEntity {
         return this;
     }
 
-    public Date getCkeckDate1() {
-        return ckeckDate1;
-    }
+    
 
-    public TVehicleCheck setCkeckDate1(Date ckeckDate1) {
-        this.ckeckDate1 = ckeckDate1;
-        return this;
-    }
+  
 
-    public String getCkeckDateStr() {
-        return ckeckDateStr;
-    }
+    public Date getCheckDate1() {
+		return checkDate1;
+	}
 
-    public TVehicleCheck setCkeckDateStr(String ckeckDateStr) {
-        this.ckeckDateStr = ckeckDateStr;
-        return this;
-    }
+	public void setCheckDate1(Date checkDate1) {
+		this.checkDate1 = checkDate1;
+	}
 
-    public String getCreateTimeStr() {
+	public String getCheckDateStr() {
+		return checkDateStr;
+	}
+
+	public void setCheckDateStr(String checkDateStr) {
+		this.checkDateStr = checkDateStr;
+	}
+
+	public String getCreateTimeStr() {
         return createTimeStr;
     }
 
@@ -163,15 +165,17 @@ public class TVehicleCheck extends BaseEntity {
         this.driver = driver;
     }
 
-    public Date getCkeckDate() {
-        return ckeckDate;
-    }
+   
 
-    public void setCkeckDate(Date ckeckDate) {
-        this.ckeckDate = ckeckDate;
-    }
+    public Date getCheckDate() {
+		return checkDate;
+	}
 
-    public String getCheckResult() {
+	public void setCheckDate(Date checkDate) {
+		this.checkDate = checkDate;
+	}
+
+	public String getCheckResult() {
         return checkResult;
     }
 
@@ -273,7 +277,6 @@ public class TVehicleCheck extends BaseEntity {
                 .append("checkType", getCheckType())
                 .append("vehicleLicence", getVehicleLicence())
                 .append("driver", getDriver())
-                .append("ckeckDate", getCkeckDate())
                 .append("checkResult", getCheckResult())
                 .append("checkValidity", getCheckValidity())
                 .append("vehicleUpDriver", getVehicleUpDriver())

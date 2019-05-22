@@ -1,0 +1,1029 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TEarlyWarningReportMapper">
+
+    <resultMap type="TEarlyWarningReport" id="TEarlyWarningReportResult">
+        <result property="id" column="id"/>
+        <result property="alarmObj" column="alarm_obj"/>
+        <result property="firstAlarmDate" column="first_alarm_date"/>
+        <result property="numbers" column="numbers"/>
+        <result property="factor" column="factor"/>
+        <result property="alarmDesc" column="alarm_desc"/>
+        <result property="solveUserId" column="solve_user_id"/>
+        <result property="solveDate" column="solve_date"/>
+        <result property="solveReason" column="solve_reason"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="alarmId" column="alarm_id"/>
+        <result property="alarmType" column="alarm_type"/>
+        <result property="earlyWarningType" column="early_warning_type"/>
+        <result property="status" column="status"/>
+        <result property="businessId" column="business_id"/>
+        <result property="addUserId" column="add_user_id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="meno" column="meno"/>
+        <result property="meno1" column="meno1"/>
+        <result property="meno2" column="meno2"/>
+        <result property="meno3" column="meno3"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateUserId" column="update_user_id"/>
+    </resultMap>
+
+    <sql id="selectTEarlyWarningReportVo">
+        select ewr.id, ewr.alarm_obj, ewr.first_alarm_date, ewr.numbers, ewr.factor, ewr.alarm_desc,
+        ewr.solve_user_id, ewr.solve_date, ewr.solve_reason, ewr.dept_id, ewr.alarm_id, ewr.alarm_type,
+        ewr.early_warning_type, ewr.status, ewr.business_id, ewr.add_user_id, ewr.create_date, ewr.meno,
+        ewr.meno1, ewr.meno2, ewr.meno3, ewr.update_date, ewr.update_user_id
+
+
+
+
+
+        from t_early_warning_report ewr
+    </sql>
+
+    <select id="selectTEarlyWarningReportList" parameterType="TEarlyWarningReport"
+            resultMap="TEarlyWarningReportResult">
+        <include refid="selectTEarlyWarningReportVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ewr.id = #{id}</if>
+            <if test="alarmObj != null  and alarmObj != '' ">and ewr.alarm_obj = #{alarmObj}</if>
+
+
+            <if test="firstAlarmDate != null  and firstAlarmDate1 == null "> and DATE_FORMAT(ewr.first_alarm_date,'%Y%m%d') &gt;= DATE_FORMAT(#{firstAlarmDate},'%Y%m%d')</if>
+            <if test="firstAlarmDate1 != null  and firstAlarmDate == null "> and DATE_FORMAT(ewr.first_alarm_date,'%Y%m%d') &lt;= DATE_FORMAT(#{firstAlarmDate1},'%Y%m%d')</if>
+            <if test="firstAlarmDate1 != null  and firstAlarmDate != null "> and DATE_FORMAT(ewr.first_alarm_date,'%Y%m%d') &gt;= DATE_FORMAT(#{firstAlarmDate},'%Y%m%d')
+                and   DATE_FORMAT(ewr.first_alarm_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{firstAlarmDate1},'%Y%m%d')
+            </if>
+
+
+            <if test="numbers != null ">and ewr.numbers = #{numbers}</if>
+            <if test="factor != null ">and ewr.factor = #{factor}</if>
+            <if test="alarmDesc != null  and alarmDesc != '' ">and ewr.alarm_desc = #{alarmDesc}</if>
+            <if test="solveUserId != null  and solveUserId != '' ">and ewr.solve_user_id = #{solveUserId}</if>
+            <if test="solveDate != null ">and ewr.solve_date = #{solveDate}</if>
+            <if test="solveReason != null  and solveReason != '' ">and ewr.solve_reason = #{solveReason}</if>
+            <if test="deptId != null ">and ewr.dept_id = #{deptId}</if>
+            <if test="alarmId != null  and alarmId != '' ">and ewr.alarm_id = #{alarmId}</if>
+            <if test="alarmType != null  and alarmType != '' ">and ewr.alarm_type = #{alarmType}</if>
+            <if test="earlyWarningType != null  and earlyWarningType != '' ">and ewr.early_warning_type =
+                #{earlyWarningType}
+            </if>
+            <if test="status != null  and status != '' ">and ewr.status = #{status}</if>
+            <if test="businessId != null  and businessId != '' ">and ewr.business_id = #{businessId}</if>
+            <if test="addUserId != null  and addUserId != '' ">and ewr.add_user_id = #{addUserId}</if>
+            <if test="createDate != null ">and ewr.create_date = #{createDate}</if>
+            <if test="meno != null  and meno != '' ">and ewr.meno = #{meno}</if>
+            <if test="meno1 != null  and meno1 != '' ">and ewr.meno1 = #{meno1}</if>
+            <if test="meno2 != null  and meno2 != '' ">and ewr.meno2 = #{meno2}</if>
+            <if test="meno3 != null  and meno3 != '' ">and ewr.meno3 = #{meno3}</if>
+            <if test="updateDate != null ">and ewr.update_date = #{updateDate}</if>
+            <if test="updateUserId != null  and updateUserId != '' ">and ewr.update_user_id = #{updateUserId}</if>
+        </where>
+    </select>
+
+    <select id="selectTEarlyWarningReportById" parameterType="String" resultMap="TEarlyWarningReportResult">
+        <include refid="selectTEarlyWarningReportVo"/>
+        where ewr.id = #{id}
+    </select>
+
+    <insert id="insertTEarlyWarningReport" parameterType="TEarlyWarningReport">
+        insert into t_early_warning_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="alarmObj != null  and alarmObj != ''  ">alarm_obj,</if>
+            <if test="firstAlarmDate != null  ">first_alarm_date,</if>
+            <if test="numbers != null  ">numbers,</if>
+            <if test="factor != null  ">factor,</if>
+            <if test="alarmDesc != null  and alarmDesc != ''  ">alarm_desc,</if>
+            <if test="solveUserId != null  and solveUserId != ''  ">solve_user_id,</if>
+            <if test="solveDate != null  ">solve_date,</if>
+            <if test="solveReason != null  and solveReason != ''  ">solve_reason,</if>
+            <if test="deptId != null  ">dept_id,</if>
+            <if test="alarmId != null  and alarmId != ''  ">alarm_id,</if>
+            <if test="alarmType != null  and alarmType != ''  ">alarm_type,</if>
+            <if test="earlyWarningType != null  and earlyWarningType != ''  ">early_warning_type,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="createDate != null  ">create_date,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="meno1 != null  and meno1 != ''  ">meno1,</if>
+            <if test="meno2 != null  and meno2 != ''  ">meno2,</if>
+            <if test="meno3 != null  and meno3 != ''  ">meno3,</if>
+            <if test="updateDate != null  ">update_date,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="alarmObj != null  and alarmObj != ''  ">#{alarmObj},</if>
+            <if test="firstAlarmDate != null  ">#{firstAlarmDate},</if>
+            <if test="numbers != null  ">#{numbers},</if>
+            <if test="factor != null  ">#{factor},</if>
+            <if test="alarmDesc != null  and alarmDesc != ''  ">#{alarmDesc},</if>
+            <if test="solveUserId != null  and solveUserId != ''  ">#{solveUserId},</if>
+            <if test="solveDate != null  ">#{solveDate},</if>
+            <if test="solveReason != null  and solveReason != ''  ">#{solveReason},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="alarmId != null  and alarmId != ''  ">#{alarmId},</if>
+            <if test="alarmType != null  and alarmType != ''  ">#{alarmType},</if>
+            <if test="earlyWarningType != null  and earlyWarningType != ''  ">#{earlyWarningType},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="createDate != null  ">#{createDate},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="meno1 != null  and meno1 != ''  ">#{meno1},</if>
+            <if test="meno2 != null  and meno2 != ''  ">#{meno2},</if>
+            <if test="meno3 != null  and meno3 != ''  ">#{meno3},</if>
+            <if test="updateDate != null  ">#{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTEarlyWarningReport" parameterType="TEarlyWarningReport">
+        update t_early_warning_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmObj != null  and alarmObj != ''  ">alarm_obj = #{alarmObj},</if>
+            <if test="firstAlarmDate != null  ">first_alarm_date = #{firstAlarmDate},</if>
+            <if test="numbers != null  ">numbers = #{numbers},</if>
+            <if test="factor != null  ">factor = #{factor},</if>
+            <if test="alarmDesc != null  and alarmDesc != ''  ">alarm_desc = #{alarmDesc},</if>
+            <if test="solveUserId != null  and solveUserId != ''  ">solve_user_id = #{solveUserId},</if>
+            <if test="solveDate != null  ">solve_date = #{solveDate},</if>
+            <if test="solveReason != null  and solveReason != ''  ">solve_reason = #{solveReason},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="alarmId != null  and alarmId != ''  ">alarm_id = #{alarmId},</if>
+            <if test="alarmType != null  and alarmType != ''  ">alarm_type = #{alarmType},</if>
+            <if test="earlyWarningType != null  and earlyWarningType != ''  ">early_warning_type =
+                #{earlyWarningType},
+            </if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="meno1 != null  and meno1 != ''  ">meno1 = #{meno1},</if>
+            <if test="meno2 != null  and meno2 != ''  ">meno2 = #{meno2},</if>
+            <if test="meno3 != null  and meno3 != ''  ">meno3 = #{meno3},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTEarlyWarningReportById" parameterType="String">
+        delete from t_early_warning_report where id = #{id}
+    </delete>
+
+    <delete id="deleteTEarlyWarningReportByIds" parameterType="String">
+        delete from t_early_warning_report where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectEarlyWarningTask" resultMap="TEarlyWarningReportResult">
+        SELECT tci.car_number                                AS alarmObj,
+        0                                             AS status,
+        1                                             as earlyWarningType,
+        CONCAT('车辆:', tci.car_number, ',道路运输证即将到期!!') AS alarmDesc,
+        tews.business_id                              as businessId,
+        null                                          as deptId,
+        trtl.id                                       as alarmId,
+        'YXZ'                                         as alarmType
+        FROM t_car_info tci
+        inner JOIN t_road_transport_log trtl ON (trtl.car_info_id = tci.id)
+        inner JOIN (SELECT road_transport AS yz, business_id
+        FROM t_early_warning_settings
+        group by business_id) tews ON (tci.business_id = tews.business_id)
+        WHERE trtl.create_time =
+        (SELECT max(create_time) FROM t_road_transport_log trtl2 WHERE trtl.car_info_id = trtl2.car_info_id)
+        AND DATEDIFF(trtl.validity_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        AND DATEDIFF(trtl.validity_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tci.car_number                              AS alarmObj,
+        0                                           AS status,
+        1                                           as earlyWarningType,
+        CONCAT('车辆:', tci.car_number, ',行驶证即将到期!!') AS alarmDesc,
+        tews.business_id                            as businessId,
+        null                                        as deptId,
+        tdll.id                                     as alarmId,
+        'XSZ'                                       as alarmType
+        FROM t_car_info tci
+        LEFT JOIN t_driving_license_log tdll ON (tdll.car_info_id = tci.id)
+        inner JOIN (SELECT travel_card AS yz, business_id
+        FROM t_early_warning_settings
+        group by business_id) tews ON (tci.business_id = tews.business_id)
+        WHERE tdll.create_time = (SELECT max(create_time)
+        FROM t_driving_license_log tdll2
+        WHERE tdll.car_info_id = tdll2.car_info_id
+        LIMIT 1)
+        AND DATEDIFF(tdll.validity_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        AND DATEDIFF(tdll.validity_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                  AS alarmObj,
+        0                                                 AS status,
+        1                                                 as earlyWarningType,
+        CONCAT('驾驶员:', tudb.driver_name, ',年龄即将到达60周岁!!') AS alarmDesc,
+        tews.business_id                                  as businessId,
+        tudb.driver_dept                                  as deptId,
+        tudb.id                                           as alarmId,
+        'JSYNL'                                           as alarmType
+        FROM t_user_driver_basic tudb
+        inner JOIN (SELECT driver_age AS da, business_id
+        FROM t_early_warning_settings
+        group by business_id) tews ON (tudb.business_id = tews.business_id)
+        WHERE DATEDIFF(DATE_ADD(tudb.driver_birth, INTERVAL 61 YEAR), CURRENT_TIMESTAMP()) &lt;= tews.da
+        AND DATEDIFF(DATE_ADD(tudb.driver_birth, INTERVAL 61 YEAR), CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT su.user_name                                                              AS alarmObj,
+        0                                                                         AS status,
+        1                                                                         as early_warning_type,
+        CONCAT('隐患名称:', td.danger_name, ',整改责任人:', su.user_name, ',即将到达整改截止日期!!') AS alarmDesc,
+        tews.business_id                                                          as businessId,
+        su.dept_id                                                                as dept_id,
+        td.id                                                                     as alarmId,
+        'YHZGXS'                                                                  as alarmType
+        FROM t_danger td
+        inner JOIN (SELECT rectification_limited_day AS yz, business_id
+        FROM t_early_warning_settings
+        group by business_id) tews ON (td.business_id = tews.business_id)
+        left join sys_user su on (td.dochange_user_id = su.user_id)
+        WHERE (td.STATUS = 1 OR td.STATUS = 2)
+        AND DATEDIFF(td.end_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        AND DATEDIFF(td.end_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tsr.responsibility_name                                  AS alarmObj,
+        0                                                        AS status,
+        1                                                        as early_warning_type,
+        CONCAT('安全责任状:', tsr.responsibility_name, ',文件日期即将到期!!') AS alarmDesc,
+        tews.business_id                                         as businessId,
+        tsr.dept_id                                              as dept_id,
+        tsr.id                                                   as alarmId,
+        'AQZRZ'                                                  as alarmType
+        FROM t_safety_responsibility tsr
+        INNER JOIN (SELECT security_responsibility AS yz, business_id
+        FROM t_early_warning_settings
+        group by business_id) tews ON (tsr.business_id = tews.business_id)
+        WHERE DATEDIFF(tsr.responsibility_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        AND DATEDIFF(tsr.responsibility_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tci.car_number                                                 AS alarmObj,
+        0                                                              AS status,
+        1                                                              as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的保险(', td.dict_name, ')即将过期') AS alarmDesc,
+        tews.business_id                                               as businessId,
+        null                                                           as dept_id,
+        tcin.id                                                        as alarmId,
+        'CLBX'                                                         as alarmType
+        FROM (select vehicle_insurance yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_car_info tci on (tews.business_id = tci.business_id)
+        inner join t_car_insurance tcin on (tci.id = tcin.car_id)
+        left join t_dict td on (tcin.insurance_type = td.id)
+        where tcin.create_date = (select max(tcin2.create_date)
+        from t_car_insurance tcin2
+        where tcin2.car_id = tcin.car_id
+        and tcin2.insurance_type = tcin.insurance_type)
+        and DATEDIFF(tcin.validity_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tcin.validity_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT su.user_name                                                           AS alarmObj,
+        0                                                                      AS status,
+        1                                                                      as early_warning_type,
+        CONCAT('员工:(', su.user_name, ')在安排课程(', tc.course_name, ')后5天未进行课程学习') AS alarmDesc,
+        tews.business_id                                                       as businessId,
+        su.dept_id                                                             as dept_id,
+        tca.id                                                                 as alarmId,
+        'WXX'                                                                  as alarmType
+        from (select not_learn yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_course_arrange tca on (tca.business_id = tews.business_id)
+        inner join t_user_course tuc on (tuc.course_arrange_id = tca.id)
+        left join sys_user su on (su.user_id = tuc.user_id)
+        left join t_course tc on (tc.id = tca.course_id)
+        where tuc.status = '0'
+        and DATEDIFF(CURRENT_TIMESTAMP(), DATE_ADD(tca.start_date, interval 5 DAY)) &gt;= 0
+        and DATEDIFF(CURRENT_TIMESTAMP(), DATE_ADD(tca.start_date, interval 5 DAY)) &lt;= tews.yz + 5
+
+        UNION ALL
+
+        SELECT tudb.driver_name                               AS alarmObj,
+        0                                              AS status,
+        1                                              as early_warning_type,
+        CONCAT('驾驶员:(', tudb.driver_name, ')的驾驶证即将过期') AS alarmDesc,
+        tews.business_id                               as businessId,
+        tudb.driver_dept                               as dept_id,
+        tudi.id                                        as alarmId,
+        'JSZRQ'                                        as alarmType
+        from (select driver_license_time yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_user_driver_basic tudb on (tudb.business_id = tews.business_id)
+        inner join t_user_driver_info tudi on (tudi.user_id = tudb.user_id)
+        where tudb.is_incumbency = 0
+        and DATEDIFF(tudi.physical_validity_period, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tudi.physical_validity_period, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                 AS alarmObj,
+        0                                                AS status,
+        1                                                as early_warning_type,
+        CONCAT('驾驶员:(', tudb.driver_name, ')的从业资格证即将过期') AS alarmDesc,
+        tews.business_id                                 as businessId,
+        tudb.driver_dept                                 as dept_id,
+        tudp.id                                          as alarmId,
+        'CYZGZ'                                          as alarmType
+        from (select qualification_certificate yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_user_driver_basic tudb on (tudb.business_id = tews.business_id)
+        inner join t_user_driver_practitioners tudp on (tudp.user_id = tudb.user_id)
+        where tudb.is_incumbency = 0
+        and DATEDIFF(tudp.certificate_validity_period, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tudp.certificate_validity_period, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                         AS alarmObj,
+        0                                                        AS status,
+        1                                                        as early_warning_type,
+        CONCAT('驾驶员:(', tudb.driver_name, ')的从业资格中的继续教育有效期即将过期') AS alarmDesc,
+        tews.business_id                                         as businessId,
+        tudb.driver_dept                                         as dept_id,
+        tudp.id                                                  as alarmId,
+        'JSYJXJY'                                                as alarmType
+        from (select driver_education yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_user_driver_basic tudb on (tudb.business_id = tews.business_id)
+        inner join t_user_driver_practitioners tudp on (tudb.user_id = tudp.user_id)
+        where tudb.is_incumbency = 0
+        and DATEDIFF(tudp.agin_education_validity_period, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tudp.agin_education_validity_period, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tci.car_number                                    AS alarmObj,
+        0                                                 AS status,
+        1                                                 as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的综合性能检测有效期即将到期') AS alarmDesc,
+        tews.business_id                                  as businessId,
+        null                                              as dept_id,
+        tcte.id                                           as alarmId,
+        'CLZHXNJC'                                        as alarmType
+        from (select driver_comprehensive_check yz, business_id
+        from t_early_warning_settings
+        where business_id = 1
+        LIMIT 1) tews
+        inner join t_car_info tci on (tews.business_id = tci.business_id)
+        inner join t_car_testing_evaluate tcte on (tcte.car_id = tci.id)
+        where tcte.create_date = (SELECT max(create_date)
+        FROM t_car_testing_evaluate tcte2
+        WHERE tcte.car_id = tcte2.car_id
+        and tcte.testing_type = tcte2.testing_type)
+        and DATEDIFF(tcte.testing_date, CURRENT_TIMESTAMP()) &gt;= tews.yz
+        and DATEDIFF(tcte.testing_date, CURRENT_TIMESTAMP()) &lt;= 0
+
+        UNION ALL
+
+        SELECT tci.car_number                                 AS alarmObj,
+        0                                              AS status,
+        1                                              as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的承运人责任险即将过期') AS alarmDesc,
+        tews.business_id                               as businessId,
+        null                                           as dept_id,
+        tcc.id                                         as alarmId,
+        'CYRZRX'                                       as alarmType
+        from (select shipment_responsible_day yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_car_info tci on (tci.business_id = tews.business_id)
+        inner join t_car_carrier tcc on (tcc.car_id = tci.id)
+        where DATEDIFF(tcc.validity_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tcc.validity_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tci.car_number                                                                                 AS alarmObj,
+        0                                                                                              AS status,
+        1                                                                                              as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的罐体(', tcsu.device_code, ')的(', td.dict_name, ')检测报告有效期即将过期') AS alarmDesc,
+        tews.business_id                                                                               as businessId,
+        null                                                                                           as dept_id,
+        tcsu.id                                                                                        as alarmId,
+        'CLGJ'                                                                                         as alarmType
+        from (select pot_check yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_car_info tci on (tci.business_id = tews.business_id)
+        inner join t_car_special_use tcsu on (tcsu.car_id = tci.id)
+        left join t_dict td on (td.id = tcsu.testing_type)
+        where tcsu.create_date = (SELECT max(create_date)
+        FROM t_car_special_use tcsu2
+        WHERE tcsu.car_id = tcsu2.car_id
+        and tcsu.testing_type = tcsu2.testing_type
+        and tcsu.device_code = tcsu2.device_code)
+        and DATEDIFF(tcsu.validity_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tcsu.validity_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT tfe.equipment_name                                    AS alarmObj,
+        0                                                     AS status,
+        1                                                     as early_warning_type,
+        CONCAT('设备设施:(', tfe.equipment_name, ')的即将到达下次检测日期!') AS alarmDesc,
+        tews.business_id                                      as businessId,
+        null                                                  as dept_id,
+        tfe.id                                                as alarmId,
+        'TZSBNJ'                                              as alarmType
+        from (select special_equipment_check yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_facilities_equipment tfe on (tfe.business_id = tews.business_id)
+        where tfe.equipment_status = '0'
+        and DATEDIFF(tfe.next_check_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(tfe.next_check_date, CURRENT_TIMESTAMP()) &gt;= 0
+
+        UNION ALL
+
+        SELECT ttm.line_name                                  AS alarmObj,
+        0                                              AS status,
+        1                                              as early_warning_type,
+        CONCAT('线路牌:(', ttm.line_name, ')的许可有效期即将到期!') AS alarmDesc,
+        tews.business_id                               as businessId,
+        null                                           as dept_id,
+        ttm.id                                         as alarmId,
+        'XLPYXQ'                                       as alarmType
+        from (select special_equipment_check yz, business_id from t_early_warning_settings group by business_id) tews
+        inner join t_transport_management ttm on (ttm.business_id = tews.business_id)
+        where DATEDIFF(ttm.permit_validity_date, CURRENT_TIMESTAMP()) &lt;= tews.yz
+        and DATEDIFF(ttm.permit_validity_date, CURRENT_TIMESTAMP()) &gt;= 0
+    </select>
+
+	<select id="selectEarlyWarningOverTask" resultMap="TEarlyWarningReportResult">
+        SELECT tci.car_number                                                                  AS alarm_obj,
+        0                                                                               AS status,
+        case
+        when DATEDIFF(now(), trtl.validity_date) &lt; 0
+        then 1
+        else 2 end                                                                    as early_warning_type,
+        CONCAT('车辆:', tci.car_number, ',道路运输证即将到期!!')                                   AS alarm_desc,
+        trtl.business_id                                                                as business_id,
+        null                                                                            as dept_id,
+        trtl.id                                                                         as alarm_id,
+        'YXZ'                                                                           as alarm_type,
+        DATEDIFF(now(), DATE_SUB(trtl.validity_date, INTERVAL tews.road_transport DAY)) as numbers,
+        DATEDIFF(now(), trtl.validity_date)                                             as meno,
+        case when ewr.id is null then 1 else 2 end                                      as factor,
+        ewr.id                                                                          as id
+        FROM t_car_info tci
+        inner JOIN t_road_transport_log trtl ON (trtl.car_info_id = tci.id)
+        inner join t_early_warning_settings tews on tews.business_id = tci.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'YXZ' and ewr.status = '0' and ewr.alarm_id = trtl.id
+        WHERE trtl.create_time =
+        (SELECT max(trtl2.create_time) FROM t_road_transport_log trtl2 WHERE trtl.car_info_id = trtl2.car_info_id)
+        and DATEDIFF(trtl.validity_date, now()) &lt;= tews.road_transport
+
+        UNION ALL
+
+        SELECT tci.car_number                                                               AS alarm_obj,
+        0                                                                            AS status,
+        case
+        when DATEDIFF(now(), tdll.validity_date) &lt; 0
+        then 1
+        else 2 end                                                                 as early_warning_type,
+        CONCAT('车辆:', tci.car_number, ',行驶证即将到期!!')                                  AS alarm_desc,
+        tdll.business_id                                                             as business_id,
+        null                                                                         as dept_id,
+        tdll.id                                                                      as alarm_id,
+        'XSZ'                                                                        as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tdll.validity_date, INTERVAL tews.travel_card DAY)) as numbers,
+        DATEDIFF(now(), tdll.validity_date)                                          as meno,
+        case when ewr.id is null then 1 else 2 end                                      factor,
+        ewr.id                                                                       as id
+        FROM t_car_info tci
+        inner JOIN t_driving_license_log tdll ON (tdll.car_info_id = tci.id)
+        inner join t_early_warning_settings tews on tews.business_id = tci.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'XSZ' and ewr.status = '0' and ewr.alarm_id = tdll.id
+        WHERE tdll.create_time = (SELECT max(tdll2.create_time)
+        FROM t_driving_license_log tdll2
+        WHERE tdll.car_info_id = tdll2.car_info_id)
+        AND DATEDIFF(tdll.validity_date, now()) &lt;= tews.travel_card
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                               AS alarm_obj,
+        0                                                              AS status,
+        case
+        when DATEDIFF(now(), DATE_ADD(tudb.driver_birth, INTERVAL 61 YEAR)) &lt; 0
+        then 1
+        else 2 end                                                   as early_warning_type,
+        CONCAT('驾驶员:', tudb.driver_name, ',年龄即将到达60周岁!!')              AS alarm_desc,
+        tudb.business_id                                               as business_id,
+        tudb.driver_dept                                               as dept_id,
+        tudb.id                                                        as alarm_id,
+        'JSYNL'                                                        as alarm_type,
+        DATEDIFF(now(), DATE_SUB(DATE_ADD(tudb.driver_birth, INTERVAL 61 YEAR), INTERVAL tews.driver_age
+        DAY))                                 as numbers,
+        DATEDIFF(now(), DATE_ADD(tudb.driver_birth, INTERVAL 61 YEAR)) as meno,
+        case when ewr.id is null then 1 else 2 end                        factor,
+        ewr.id                                                         as id
+        FROM t_user_driver_basic tudb
+        inner join t_early_warning_settings tews on tews.business_id = tudb.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'JSYNL' and ewr.status = '0' and ewr.alarm_id = tudb.id
+        WHERE DATEDIFF(DATE_ADD(tudb.driver_birth, INTERVAL 61 YEAR), now()) &lt;= tews.driver_age
+
+        UNION ALL
+
+        SELECT su.user_name                                                                        AS alarm_obj,
+        0                                                                                   AS status,
+        case
+        when DATEDIFF(now(), td.end_date) &lt; 0
+        then 1
+        else 2 end                                                                        as early_warning_type,
+        CONCAT('隐患名称:', td.danger_name, ',整改责任人:', su.user_name, ',即将到达整改截止日期!!')           AS alarm_desc,
+        td.business_id                                                                      as business_id,
+        su.dept_id                                                                          as dept_id,
+        td.id                                                                               as alarm_id,
+        'YHZGXS'                                                                            as alarm_type,
+        DATEDIFF(now(), DATE_SUB(td.end_date, INTERVAL tews.rectification_limited_day DAY)) as numbers,
+        DATEDIFF(now(), td.end_date)                                                        as meno,
+        case when ewr.id is null then 1 else 2 end                                             factor,
+        ewr.id                                                                              as id
+        FROM t_danger td
+        inner join sys_user su on (td.dochange_user_id = su.user_id)
+        inner join t_early_warning_settings tews on tews.business_id = td.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'YHZGXS' and ewr.status = '0' and ewr.alarm_id = td.id
+        WHERE (td.STATUS = 1 OR td.STATUS = 2)
+        AND DATEDIFF(td.end_date, now()) &lt;= tews.rectification_limited_day
+
+        UNION ALL
+
+        SELECT tsr.responsibility_name                                                                       AS alarm_obj,
+        0                                                                                             AS status,
+        case
+        when DATEDIFF(now(), tsr.responsibility_date) &lt; 0
+        then 1
+        else 2 end                                                                                  as early_warning_type,
+        CONCAT('安全责任状:', tsr.responsibility_name, ',文件日期即将到期!!')                                      AS alarm_desc,
+        tsr.business_id                                                                               as business_id,
+        tsr.dept_id                                                                                   as dept_id,
+        tsr.id                                                                                        as alarm_id,
+        'AQZRZ'                                                                                       as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tsr.responsibility_date, INTERVAL tews.security_responsibility DAY)) as numbers,
+        DATEDIFF(now(), tsr.responsibility_date)                                                      as meno,
+        case when ewr.id is null then 1 else 2 end                                                       factor,
+        ewr.id                                                                                        as id
+        FROM t_safety_responsibility tsr
+        inner join t_early_warning_settings tews on tews.business_id = tsr.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'AQZRZ' and ewr.status = '0' and ewr.alarm_id = tsr.id
+        WHERE DATEDIFF(tsr.responsibility_date, now()) &lt;= tews.security_responsibility
+
+        UNION ALL
+
+        SELECT tci.car_number                                                                     AS alarm_obj,
+        0                                                                                  AS status,
+        case
+        when DATEDIFF(now(), tcin.validity_date) &lt; 0
+        then 1
+        else 2 end                                                                       as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的保险(', td.dict_name, ')即将过期')                     AS alarm_desc,
+        tci.business_id                                                                    as business_id,
+        null                                                                               as dept_id,
+        tcin.id                                                                            as alarm_id,
+        'CLBX'                                                                             as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tcin.validity_date, INTERVAL tews.vehicle_insurance DAY)) as numbers,
+        DATEDIFF(now(), tcin.validity_date)                                                as meno,
+        case when ewr.id is null then 1 else 2 end                                            factor,
+        ewr.id                                                                             as id
+        FROM t_car_info tci
+        inner join t_car_insurance tcin on (tci.id = tcin.car_id)
+        inner join t_early_warning_settings tews on tews.business_id = tci.business_id
+        left join t_dict td on (tcin.insurance_type = td.id)
+        left join t_early_warning_report ewr on ewr.alarm_type = 'CLBX' and ewr.status = '0' and ewr.alarm_id = tcin.id
+        where tcin.create_date = (select max(tcin2.create_date)
+        from t_car_insurance tcin2
+        where tcin2.car_id = tcin.car_id
+        and tcin2.insurance_type = tcin.insurance_type)
+        and DATEDIFF(tcin.validity_date, now()) &lt;= tews.vehicle_insurance
+
+        # UNION ALL
+        #
+        # SELECT su.user_name                                                           AS alarm_obj,
+        #        0                                                                      AS status,
+        #        2                                                                      as early_warning_type,
+        #        CONCAT('员工:(', su.user_name, ')在安排课程(', tc.course_name, ')后5天未进行课程学习') AS alarm_desc,
+        #        tews.business_id                                                       as business_id,
+        #        su.dept_id                                                             as dept_id,
+        #        tca.id                                                                 as alarm_id,
+        #        'WXX'                                                                  as alarm_type
+        # from t_course_arrange tca
+        #        inner join t_user_course tuc on (tuc.course_arrange_id = tca.id)
+        #        join t_early_warning_settings tews on tews.business_id = tca.business_id
+        #        join sys_user su on (su.user_id = tuc.user_id)
+        #        join t_course tc on (tc.id = tca.course_id)
+        #        left join t_early_warning_report ewr on ewr.alarm_type = 'WXX' and ewr.status = '0' and ewr.alarm_id = tca.id
+        # where tuc.status = '0'
+        #   and DATEDIFF(CURRENT_TIMESTAMP(), DATE_ADD(tca.start_date, interval 5 DAY)) &gt;= 0
+        #   and DATEDIFF(CURRENT_TIMESTAMP(), DATE_ADD(tca.start_date, interval 5 DAY)) &lt;= tews.yz + 5
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                                                                AS alarm_obj,
+        0                                                                                               AS status,
+        case
+        when DATEDIFF(now(), tudi.physical_validity_period) &lt; 0
+        then 1
+        else 2 end                                                                                    as early_warning_type,
+        CONCAT('驾驶员:(', tudb.driver_name, ')的驾驶证即将过期')                                                  AS alarm_desc,
+        tudi.business_id                                                                                as business_id,
+        tudb.driver_dept                                                                                as dept_id,
+        tudi.id                                                                                         as alarm_id,
+        'JSZRQ'                                                                                         as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tudi.physical_validity_period, INTERVAL tews.driver_license_time DAY)) as numbers,
+        DATEDIFF(now(), tudi.physical_validity_period)                                                  as meno,
+        case when ewr.id is null then 1 else 2 end                                                         factor,
+        ewr.id                                                                                          as id
+        from t_user_driver_basic tudb
+        inner join t_user_driver_info tudi on (tudi.user_id = tudb.user_id)
+        inner join t_early_warning_settings tews on tews.business_id = tudb.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'JSZRQ' and ewr.status = '0' and ewr.alarm_id = tudi.id
+        where tudb.is_incumbency = 0
+        and DATEDIFF(tudi.physical_validity_period, now()) &lt;= tews.driver_license_time
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                  AS alarm_obj,
+        0                                                 AS status,
+        case
+        when DATEDIFF(now(), tudp.certificate_validity_period) &lt; 0
+        then 1
+        else 2 end                                      as early_warning_type,
+        CONCAT('驾驶员:(', tudb.driver_name, ')的从业资格证即将过期')  AS alarm_desc,
+        tudp.business_id                                  as business_id,
+        tudb.driver_dept                                  as dept_id,
+        tudp.id                                           as alarm_id,
+        'CYZGZ'                                           as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tudp.certificate_validity_period, INTERVAL tews.qualification_certificate
+        DAY))                    as numbers,
+        DATEDIFF(now(), tudp.certificate_validity_period) as meno,
+        case when ewr.id is null then 1 else 2 end           factor,
+        ewr.id                                            as id
+        from t_user_driver_basic tudb
+        inner join t_user_driver_practitioners tudp on (tudp.user_id = tudb.user_id)
+        inner join t_early_warning_settings tews on tews.business_id = tudb.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'CYZGZ' and ewr.status = '0' and ewr.alarm_id = tudp.id
+        where tudb.is_incumbency = 0
+        and DATEDIFF(tudp.certificate_validity_period, now()) &lt;= tews.qualification_certificate
+
+        UNION ALL
+
+        SELECT tudb.driver_name                                                                                   AS alarm_obj,
+        0                                                                                                  AS status,
+        case
+        when DATEDIFF(now(), tudp.agin_education_validity_period) &lt; 0
+        then 1
+        else 2 end                                                                                       as early_warning_type,
+        CONCAT('驾驶员:(', tudb.driver_name, ')的从业资格中的继续教育有效期即将过期')                                           AS alarm_desc,
+        tudp.business_id                                                                                   as business_id,
+        tudb.driver_dept                                                                                   as dept_id,
+        tudp.id                                                                                            as alarm_id,
+        'JSYJXJY'                                                                                          as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tudp.agin_education_validity_period, INTERVAL tews.driver_education DAY)) as numbers,
+        DATEDIFF(now(), tudp.agin_education_validity_period)                                               as meno,
+        case when ewr.id is null then 1 else 2 end                                                            factor,
+        ewr.id                                                                                             as id
+        from t_user_driver_basic tudb
+        inner join t_user_driver_practitioners tudp on (tudb.user_id = tudp.user_id)
+        inner join t_early_warning_settings tews on tews.business_id = tudb.business_id
+        left join t_early_warning_report ewr
+        on ewr.alarm_type = 'JSYJXJY' and ewr.status = '0' and ewr.alarm_id = tudp.id
+        where tudb.is_incumbency = 0
+        and DATEDIFF(tudp.agin_education_validity_period, now()) &lt;= tews.driver_education
+
+        UNION ALL
+
+        SELECT tci.car_number                                                                             AS alarm_obj,
+        0                                                                                          AS status,
+        case
+        when DATEDIFF(now(), tcte.testing_date) &lt; 0
+        then 1
+        else 2 end                                                                               as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的综合性能检测有效期即将到期')                                          AS alarm_desc,
+        tci.business_id                                                                            as business_id,
+        null                                                                                       as dept_id,
+        tcte.id                                                                                    as alarm_id,
+        'CLZHXNJC'                                                                                 as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tcte.testing_date, INTERVAL tews.driver_comprehensive_check DAY)) as numbers,
+        DATEDIFF(now(), tcte.testing_date)                                                         as meno,
+        case when ewr.id is null then 1 else 2 end                                                    factor,
+        ewr.id                                                                                     as id
+        from t_car_info tci
+        inner join t_car_testing_evaluate tcte on (tcte.car_id = tci.id)
+        inner join t_early_warning_settings tews on tews.business_id = tci.business_id
+        left join t_early_warning_report ewr
+        on ewr.alarm_type = 'CLZHXNJC' and ewr.status = '0' and ewr.alarm_id = tcte.id
+        where tcte.create_date = (SELECT max(create_date)
+        FROM t_car_testing_evaluate tcte2
+        WHERE tcte.car_id = tcte2.car_id
+        and tcte.testing_type = tcte2.testing_type)
+        and DATEDIFF(tcte.testing_date, now()) &gt;= tews.driver_comprehensive_check
+
+        UNION ALL
+
+        SELECT tci.car_number                                                                           AS alarm_obj,
+        0                                                                                        AS status,
+        case
+        when DATEDIFF(now(), tcc.validity_date) &lt; 0
+        then 1
+        else 2 end                                                                             as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的承运人责任险即将过期')                                           AS alarm_desc,
+        tci.business_id                                                                          as business_id,
+        null                                                                                     as dept_id,
+        tcc.id                                                                                   as alarm_id,
+        'CYRZRX'                                                                                 as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tcc.validity_date, INTERVAL tews.shipment_responsible_day DAY)) as numbers,
+        DATEDIFF(now(), tcc.validity_date)                                                       as meno,
+        case when ewr.id is null then 1 else 2 end                                                  factor,
+        ewr.id                                                                                   as id
+        from t_car_info tci
+        inner join t_car_carrier tcc on (tcc.car_id = tci.id)
+        inner join t_early_warning_settings tews on tews.business_id = tci.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'CYRZRX' and ewr.status = '0' and ewr.alarm_id = tcc.id
+        where DATEDIFF(tcc.validity_date, now()) &lt;= tews.shipment_responsible_day
+
+        UNION ALL
+
+        SELECT tci.car_number                                                                                 AS alarm_obj,
+        0                                                                                              AS status,
+        case
+        when DATEDIFF(now(), tcsu.validity_date) &lt; 0
+        then 1
+        else 2 end                                                                                   as early_warning_type,
+        CONCAT('车辆:(', tci.car_number, ')的罐体(', tcsu.device_code, ')的(', td.dict_name, ')检测报告有效期即将过期') AS alarm_desc,
+        tci.business_id                                                                                as business_id,
+        null                                                                                           as dept_id,
+        tcsu.id                                                                                        as alarm_id,
+        'CLGJ'                                                                                         as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tcsu.validity_date, INTERVAL tews.pot_check DAY))                     as numbers,
+        DATEDIFF(now(), tcsu.validity_date)                                                            as meno,
+        case when ewr.id is null then 1 else 2 end                                                        factor,
+        ewr.id                                                                                         as id
+        from t_car_info tci
+        inner join t_car_special_use tcsu on (tcsu.car_id = tci.id)
+        inner join t_early_warning_settings tews on tews.business_id = tci.business_id
+        left join t_dict td on (td.id = tcsu.testing_type)
+        left join t_early_warning_report ewr on ewr.alarm_type = 'CLGJ' and ewr.status = '0' and ewr.alarm_id = tcsu.id
+        where tcsu.create_date = (SELECT max(create_date)
+        FROM t_car_special_use tcsu2
+        WHERE tcsu.car_id = tcsu2.car_id
+        and tcsu.testing_type = tcsu2.testing_type
+        and tcsu.device_code = tcsu2.device_code)
+        and DATEDIFF(tcsu.validity_date, now()) &lt;= tews.pot_check
+
+        UNION ALL
+
+        SELECT tfe.equipment_name                                                                        AS alarm_obj,
+        0                                                                                         AS status,
+        case
+        when DATEDIFF(now(), tfe.next_check_date) &lt; 0
+        then 1
+        else 2 end                                                                              as early_warning_type,
+        CONCAT('设备设施:(', tfe.equipment_name, ')的即将到达下次检测日期!')                                     AS alarm_desc,
+        tfe.business_id                                                                           as business_id,
+        null                                                                                      as dept_id,
+        tfe.id                                                                                    as alarm_id,
+        'TZSBNJ'                                                                                  as alarm_type,
+        DATEDIFF(now(), DATE_SUB(tfe.next_check_date, INTERVAL tews.special_equipment_check DAY)) as numbers,
+        DATEDIFF(now(), tfe.next_check_date)                                                      as meno,
+        case when ewr.id is null then 1 else 2 end                                                   factor,
+        ewr.id                                                                                    as id
+        from t_facilities_equipment tfe
+        inner join t_early_warning_settings tews on tews.business_id = tfe.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'TZSBNJ' and ewr.status = '0' and ewr.alarm_id = tfe.id
+        where tfe.equipment_status = '0'
+        and DATEDIFF(tfe.next_check_date, now()) &lt;= tews.special_equipment_check
+
+        UNION ALL
+
+        SELECT ttm.line_name                                                                      AS alarm_obj,
+        0                                                                                  AS status,
+        case
+        when DATEDIFF(now(), ttm.permit_validity_date) &lt; 0
+        then 1
+        else 2 end                                                                       as early_warning_type,
+        CONCAT('线路牌:(', ttm.line_name, ')的许可有效期即将到期!')                                     AS alarm_desc,
+        ttm.business_id                                                                    as business_id,
+        null                                                                               as dept_id,
+        ttm.id                                                                             as alarm_id,
+        'XLPYXQ'                                                                           as alarm_type,
+        DATEDIFF(now(), DATE_SUB(ttm.permit_validity_date, INTERVAL tews.client_line DAY)) as numbers,
+        DATEDIFF(now(), ttm.permit_validity_date)                                          as meno,
+        case when ewr.id is null then 1 else 2 end                                            factor,
+        ewr.id                                                                             as id
+        from t_transport_management ttm
+        inner join t_early_warning_settings tews on tews.business_id = ttm.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'XLPYXQ' and ewr.status = '0' and ewr.alarm_id = ttm.id
+        where DATEDIFF(ttm.permit_validity_date, now()) &lt;= tews.client_line
+
+        UNION ALL
+
+        SELECT su.user_name                                                      AS alarm_obj,
+        0                                                                 AS status,
+        case
+        when DATEDIFF(now(), DATE_ADD(tuqb.reeducation_date, INTERVAL 1 YEAR)) &lt; 0
+        then 1
+        else 2 end                                                      as early_warning_type,
+        CONCAT(su.user_name, '的资格证书的再教育时间即将超时一年!')                        AS alarm_desc,
+        tews.business_id                                                  as business_id,
+        null                                                              as dept_id,
+        tuqb.id                                                           as alarm_id,
+        'RYZJY'                                                           as alarm_type,
+        DATEDIFF(now(),
+        DATE_SUB(DATE_ADD(tuqb.reeducation_date, INTERVAL 1 YEAR), INTERVAL tews.main_responsible_education
+        DAY))                                           as numbers,
+        DATEDIFF(now(), DATE_ADD(tuqb.reeducation_date, INTERVAL 1 YEAR)) as meno,
+        case when ewr.id is null then 1 else 2 end                           factor,
+        ewr.id                                                            as id
+        from t_early_warning_settings tews
+        inner join t_user_qualification_book tuqb on tews.business_id = tuqb.business_id
+        left join sys_user su on su.user_id = tuqb.user_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'RYZJY' and ewr.status = '0' and ewr.alarm_id = tuqb.id
+        where DATEDIFF(DATE_ADD(tuqb.reeducation_date, INTERVAL 1 YEAR), NOW()) &lt;= tews.main_responsible_education
+
+        UNION ALL
+
+        SELECT su.user_name                                                       AS alarm_obj,
+        0                                                                  AS STATUS,
+        CASE
+        WHEN EXTRACT(DAY FROM now()) &lt; 27 THEN 1
+        ELSE 2
+        END                                                               early_warning_type,
+        CONCAT('员工:(', su.user_name, ')在(', a.ym, a.not_learn, ')未进行课程学习') AS alarm_desc,
+        su.business_id                                                     AS business_id,
+        NULL                                                               AS dept_id,
+        a.id                                                               AS alarm_id,
+        'WXX'                                                              AS alarm_type,
+        (EXTRACT(DAY FROM now()) - a.not_learn)                            AS numbers,
+        (EXTRACT(DAY FROM now()) - 27)                                     AS meno,
+        CASE
+        WHEN ewr.id IS NULL THEN 1
+        ELSE 2
+        END                                                               factor,
+        ewr.id                                                             AS id
+        FROM (SELECT concat(tuc.user_id, EXTRACT(YEAR_MONTH FROM now())) id,
+        tuc.user_id,
+        EXTRACT(YEAR_MONTH FROM now())                      ym,
+        tews.not_learn
+        FROM t_course_arrange tca
+        JOIN t_user_course tuc ON tuc.course_arrange_id = tca.id
+        JOIN t_early_warning_settings tews ON tews.business_id = tca.business_id
+        JOIN t_class_hour_config chc ON 1 = 1
+        WHERE EXTRACT(DAY FROM now()) &gt;= tews.not_learn
+        GROUP BY tuc.user_id,
+        chc.class_hour
+        HAVING (
+        max(tuc.look_start_time) &lt; DATE_ADD(curdate(), INTERVAL -DAY(curdate()) + 1 DAY)
+        OR (
+        max(tuc.look_start_time) &gt; DATE_ADD(curdate(), INTERVAL -DAY(curdate()) + 1 DAY)
+        AND sum(tuc.look_time) &gt; chc.class_hour * 2
+        )
+        )) a
+        JOIN sys_user su ON su.user_id = a.user_id
+        LEFT JOIN t_early_warning_report ewr ON ewr.alarm_type = 'WXX'
+        AND ewr.STATUS = '0'
+        AND ewr.alarm_id = a.id
+        
+		UNION ALL 
+		select ewr.id,
+		DATEDIFF(now(),date_format(concat(right(ewr.alarm_id,6),'27'),'%Y%m%d')) meno,
+		2 factor
+		from t_early_warning_report ewr
+		where ewr.alarm_type = 'WXX' and ewr.status = '0' and right(ewr.alarm_id,6) &lt; EXTRACT(YEAR_MONTH FROM now())
+
+        UNION ALL
+
+        SELECT '隐患排查'                                                                                    AS alarm_obj,
+        0                                                                                         AS status,
+        case
+        when DATEDIFF(now(), DATE_ADD(DATE_ADD(CURDATE(), interval -day(CURDATE()) + 1 day), interval
+        4 + tews.month_not_check + 5 day)) &lt; 0
+        then 1
+        else 2 end                                                                              as early_warning_type,
+        CONCAT('本月未添加隐患排查信息')                                                                     AS alarm_desc,
+        tews.business_id                                                                          as business_id,
+        null                                                                                      as dept_id,
+        CONCAT(thti.business_id, EXTRACT(YEAR_MONTH FROM now()))                                  as alarm_id,
+        'YHPC'                                                                                    as alarm_type,
+        DATEDIFF(now(),
+        DATE_ADD(DATE_ADD(CURDATE(), interval -day(CURDATE()) + 1 day), interval 4 day)) as numbers,
+        DATEDIFF(now(),
+        DATE_ADD(DATE_ADD(CURDATE(), interval -day(CURDATE()) + 1 day), interval 4 + tews.month_not_check + 5
+        day))                                                                   as meno,
+        case when ewr.id is null then 1 else 2 end                                                   factor,
+        ewr.id                                                                                    as id
+        from t_early_warning_settings tews
+        inner join (select count(thti.id) as count, tb.id as business_id
+        from t_business tb
+        left join t_hidden_trouble_investigation thti on tb.id = business_id
+        where thti.create_time &gt;= DATE_ADD(CURDATE(), interval -day(CURDATE()) + 1 day)
+        group by tb.id) thti
+        left join t_early_warning_report ewr on ewr.alarm_type = 'YHPC' and ewr.status = '0' and
+        ewr.alarm_id = CONCAT(thti.business_id, EXTRACT(YEAR_MONTH FROM now()))
+        where thti.count = 0 and EXTRACT(DAY FROM now()) &gt;= 5
+
+        UNION ALL
+
+        SELECT '应急演练'                                                      AS alarm_obj,
+        0                                                           AS status,
+        case
+        when DATEDIFF(now(), DATE_ADD(MAKEDATE(YEAR(now()), 1), INTERVAL 11 month)) &lt;= 0
+        then 1
+        else 2 end                                                as early_warning_type,
+        CONCAT('本年末没有添加应急演练记录')                                     AS alarm_desc,
+        tews.business_id                                            as business_id,
+        null                                                        as dept_id,
+        CONCAT(tdr.business_id, EXTRACT(year FROM now()))           as alarm_id,
+        'YHPC'                                                      as alarm_type,
+        DATEDIFF(now(), DATE_SUB(DATE_ADD(MAKEDATE(YEAR(now()), 1), INTERVAL 11 month),
+        INTERVAL tews.year_not_check day)) as numbers,
+        DATEDIFF(now(), DATE_ADD(MAKEDATE(YEAR(now()), 1), INTERVAL 11 month)
+        )                                                       as meno,
+        case when ewr.id is null then 1 else 2 end                     factor,
+        ewr.id                                                      as id
+        from t_early_warning_settings tews
+        inner join (select count(tdr.id) as count, tb.id as business_id
+        from t_business tb
+        left join t_drill_record tdr on tdr.business_id = tb.id
+        where tdr.exercise_date &gt;= MAKEDATE(YEAR(now()), 1)) tdr on tews.business_id = tdr.business_id
+        left join t_early_warning_report ewr on ewr.alarm_type = 'YJYL' and ewr.status = '0' and
+        ewr.alarm_id = CONCAT(tdr.business_id, EXTRACT(YEAR FROM now()))
+        where tdr.count = 0
+        and DATE_SUB(DATE_ADD(MAKEDATE(YEAR(now()), 1), INTERVAL 11 month), INTERVAL tews.year_not_check day) &lt;= now();
+
+    </select>
+
+	<select id="selectEarlyWarningSolveInfo" resultMap="TEarlyWarningReportResult">
+		select ewr.id,
+			'1' status,
+			case when ewr.alarm_type = 'YXZ' then (select ifnull(trtl.update_user_id,trtl.add_user_id) from t_road_transport_log trtl where ewr.alarm_id = trtl.id)
+			when ewr.alarm_type = 'XSZ' then (select ifnull(tdll.update_user_id,tdll.add_user_id) from t_driving_license_log tdll where ewr.alarm_id = tdll.id)
+			when ewr.alarm_type = 'JSYNL' then (select ifnull(tudb.update_user_id,tudb.user_id) from t_user_driver_basic tudb where ewr.alarm_id = tudb.id)
+			when ewr.alarm_type = 'YHZGXS' then (select ifnull(td.update_user_id,td.add_user_id) from t_danger td where ewr.alarm_id = td.id)
+			when ewr.alarm_type = 'AQZRZ' then (select ifnull(tsr.update_user_id,tsr.user_id) from t_safety_responsibility tsr where ewr.alarm_id = tsr.id)
+			when ewr.alarm_type = 'CLBX' then (select ifnull(tcin.update_user_id,tcin.add_user_id) from t_car_insurance tcin where ewr.alarm_id = tcin.id)
+			when ewr.alarm_type = 'JSZRQ' then (select ifnull(tudi.update_user_id,tudi.user_id) from t_user_driver_info tudi where ewr.alarm_id = tudi.id)
+			when ewr.alarm_type = 'CYZGZ' then (select ifnull(tudp.update_user_id,tudp.user_id) from t_user_driver_practitioners tudp where ewr.alarm_id = tudp.id)
+			when ewr.alarm_type = 'JSYJXJY' then (select ifnull(tudp.update_user_id,tudp.user_id) from t_user_driver_practitioners tudp where ewr.alarm_id = tudp.id)
+			when ewr.alarm_type = 'CLZHXNJC' then (select ifnull(tcte.update_user_id,tcte.add_user_id) from t_car_testing_evaluate tcte where ewr.alarm_id = tcte.id)
+			when ewr.alarm_type = 'CYRZRX' then (select ifnull(tcc.update_user_id,tcc.add_user_id) from t_car_carrier tcc where ewr.alarm_id = tcc.id)
+			when ewr.alarm_type = 'CLGJ' then (select ifnull(tcsu.update_user_id,tcsu.add_user_id) from t_car_special_use tcsu where ewr.alarm_id = tcsu.id)
+			when ewr.alarm_type = 'TZSBNJ' then (select ifnull(tfe.update_user_id,tfe.user_id) from t_facilities_equipment tfe where ewr.alarm_id = tfe.id)
+			when ewr.alarm_type = 'XLPYXQ' then (select ifnull(ttm.update_user_id,ttm.user_id) from t_transport_management ttm where ewr.alarm_id = ttm.id)
+			when ewr.alarm_type = 'WXX' then left(ewr.alarm_id,length(ewr.alarm_id)-6)
+			end solve_user_id,
+			case when ewr.alarm_type = 'YXZ' then (select ifnull(trtl.update_time,now()) from t_road_transport_log trtl where ewr.alarm_id = trtl.id)
+			when ewr.alarm_type = 'XSZ' then (select ifnull(tdll.update_time,now()) from t_driving_license_log tdll where ewr.alarm_id = tdll.id)
+			when ewr.alarm_type = 'JSYNL' then (select ifnull(tudb.update_time,now()) from t_user_driver_basic tudb where ewr.alarm_id = tudb.id)
+			when ewr.alarm_type = 'YHZGXS' then (select ifnull(td.update_date,now()) from t_danger td where ewr.alarm_id = td.id)
+			when ewr.alarm_type = 'AQZRZ' then (select ifnull(tsr.update_time,now()) from t_safety_responsibility tsr where ewr.alarm_id = tsr.id)
+			when ewr.alarm_type = 'CLBX' then (select ifnull(tcin.update_date,now()) from t_car_insurance tcin where ewr.alarm_id = tcin.id)
+			when ewr.alarm_type = 'JSZRQ' then (select ifnull(tudi.update_time,now()) from t_user_driver_info tudi where ewr.alarm_id = tudi.id)
+			when ewr.alarm_type = 'CYZGZ' then (select ifnull(tudp.update_time,now()) from t_user_driver_practitioners tudp where ewr.alarm_id = tudp.id)
+			when ewr.alarm_type = 'JSYJXJY' then (select ifnull(tudp.update_time,now()) from t_user_driver_practitioners tudp where ewr.alarm_id = tudp.id)
+			when ewr.alarm_type = 'CLZHXNJC' then (select ifnull(tcte.update_date,now()) from t_car_testing_evaluate tcte where ewr.alarm_id = tcte.id)
+			when ewr.alarm_type = 'CYRZRX' then (select ifnull(tcc.update_date,now()) from t_car_carrier tcc where ewr.alarm_id = tcc.id)
+			when ewr.alarm_type = 'CLGJ' then (select ifnull(tcsu.update_date,now()) from t_car_special_use tcsu where ewr.alarm_id = tcsu.id)
+			when ewr.alarm_type = 'TZSBNJ' then (select ifnull(tfe.update_time,now()) from t_facilities_equipment tfe where ewr.alarm_id = tfe.id)
+			when ewr.alarm_type = 'XLPYXQ' then (select ifnull(ttm.update_time,now()) from t_transport_management ttm where ewr.alarm_id = ttm.id)
+			when ewr.alarm_type = 'WXX' then (select max(tuc.look_end_time) from t_user_course tuc where tuc.user_id = left(ewr.alarm_id,length(ewr.alarm_id)-6))
+			end solve_date,
+			case when ewr.alarm_type = 'YXZ' then '道路运输证信息已修改'
+			when ewr.alarm_type = 'XSZ' then '行驶证信息已修改'
+			when ewr.alarm_type = 'JSYNL' then '年龄即将到达60周岁信息已修改'
+			when ewr.alarm_type = 'YHZGXS' then '隐患信息已修改'
+			when ewr.alarm_type = 'AQZRZ' then '安全责任状信息已修改'
+			when ewr.alarm_type = 'CLBX' then '车辆保险信息已修改'
+			when ewr.alarm_type = 'JSZRQ' then '驾驶证信息已修改'
+			when ewr.alarm_type = 'CYZGZ' then '从业资格证信息已修改'
+			when ewr.alarm_type = 'JSYJXJY' then '从业资格中的继续教育信息已修改'
+			when ewr.alarm_type = 'CLZHXNJC' then '车辆综合性能检测信息已修改'
+			when ewr.alarm_type = 'CYRZRX' then '承运人责任险信息已修改'
+			when ewr.alarm_type = 'CLGJ' then '罐体检测报告信息已修改'
+			when ewr.alarm_type = 'TZSBNJ' then '设备设施信息已修改'
+			when ewr.alarm_type = 'XLPYXQ' then '线路牌信息已修改'
+			when ewr.alarm_type = 'WXX' then '未学习信息已修改'
+			end solve_reason
+		from t_early_warning_report ewr
+		where ewr.status = '0' and ewr.factor = 0
+	</select>
+	
+	<update id="updateTEarlyWarningReportByFactor">
+        update t_early_warning_report set factor = 0
+        where factor != 0
+	</update>
+	
+</mapper>

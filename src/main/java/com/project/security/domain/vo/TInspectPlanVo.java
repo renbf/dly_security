@@ -56,6 +56,8 @@ public class TInspectPlanVo implements Serializable
 	private String checkTeamName;
 	/** 检查项目列表 */
 	private List<Map<String,Object>> checkProjects;
+	/** 隐患id */
+	private String dangerId;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -222,6 +224,14 @@ public class TInspectPlanVo implements Serializable
 
 	public void setCheckProjects(List<Map<String, Object>> checkProjects) {
 		this.checkProjects = checkProjects;
+	}
+
+	public String getDangerId() {
+		return dangerId;
+	}
+
+	public void setDangerId(String dangerId) {
+		this.dangerId = dangerId;
 	}
 
 	public String toString() {

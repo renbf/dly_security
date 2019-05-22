@@ -27,6 +27,8 @@ public class TDangerVo implements Serializable
 	private Date checkDate;
 	/** 检查类型 */
 	private String checkType;
+	/** 隐患名称 */
+	private String dangerName;
 	/** 隐患部位 */
 	private String dangerPosition;
 	/** 隐患部门ID */
@@ -508,6 +510,14 @@ public class TDangerVo implements Serializable
 		this.riskResourceName = riskResourceName;
 	}
 
+	public String getDangerName() {
+		return dangerName;
+	}
+
+	public void setDangerName(String dangerName) {
+		this.dangerName = dangerName;
+	}
+
 	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
@@ -516,6 +526,7 @@ public class TDangerVo implements Serializable
             .append("checkUserId", getCheckUserId())
             .append("checkDate", getCheckDate())
             .append("checkType", getCheckType())
+            .append("dangerName", getDangerName())
             .append("dangerPosition", getDangerPosition())
             .append("dangerDeptId", getDangerDeptId())
             .append("dangerType", getDangerType())

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.project.system.tTransportManagement.mapper.TTransportManagementMapper">
+<mapper namespace="com.project.web.mapper.TTransportManagementMapper">
     
-    <resultMap type="TTransportManagement" id="TTransportManagementResult">
+    <resultMap type="com.project.web.domian.TTransportManagement" id="TTransportManagementResult">
         <result property="id"    column="id"    />
         <result property="lineName"    column="line_name"    />
         <result property="startCity"    column="start_city"    />
@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="permitValidityDate"    column="permit_validity_date"    />
         <result property="shiftsType"    column="shifts_type"    />
         <result property="dayMileage"    column="day_mileage"    />
-        <result property="organization"    column="organization"    />
+        <result property="deptId"    column="dept_id"    />
         <result property="passByStation"    column="pass_by_station"    />
         <result property="stopStation"    column="stop_station"    />
         <result property="filePath"    column="file_path"    />
@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTTransportManagementVo">
-        select tm.id, tm.line_name, tm.start_city, tm.end_city, tm.high_speed, tm.not_high_speed, tm.all_mileage, tm.line_type, tm.line_level, tm.is_super_long, tm.statr_station, tm.end_station, tm.day_vehicle, tm.permit_date, tm.permit_validity_date, tm.shifts_type, tm.day_mileage, tm.organization, tm.pass_by_station, tm.stop_station, tm.file_path, tm.create_time, tm.update_time, tm.user_id, tm.business_id, tm.update_user_id from t_transport_management tm
+        select tm.id, tm.line_name, tm.start_city, tm.end_city, tm.high_speed, tm.not_high_speed, tm.all_mileage, tm.line_type, tm.line_level, tm.is_super_long, tm.statr_station, tm.end_station, tm.day_vehicle, tm.permit_date, tm.permit_validity_date, tm.shifts_type, tm.day_mileage, tm.dept_id, tm.pass_by_station, tm.stop_station, tm.file_path, tm.create_time, tm.update_time, tm.user_id, tm.business_id, tm.update_user_id from t_transport_management tm
     </sql>
 	
     <select id="selectTTransportManagementList" parameterType="TTransportManagement" resultMap="TTransportManagementResult">
@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="permitValidityDate != null "> and tm.permit_validity_date = #{permitValidityDate}</if>
              <if test="shiftsType != null  and shiftsType != '' "> and tm.shifts_type = #{shiftsType}</if>
              <if test="dayMileage != null  and dayMileage != '' "> and tm.day_mileage = #{dayMileage}</if>
-             <if test="organization != null  and organization != '' "> and tm.organization = #{organization}</if>
+             <if test="deptId != null  and deptId != '' "> and tm.dept_id = #{deptId}</if>
              <if test="passByStation != null  and passByStation != '' "> and tm.pass_by_station = #{passByStation}</if>
              <if test="stopStation != null  and stopStation != '' "> and tm.stop_station = #{stopStation}</if>
              <if test="filePath != null  and filePath != '' "> and tm.file_path = #{filePath}</if>
@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="permitValidityDate != null  ">permit_validity_date,</if>
 			<if test="shiftsType != null  and shiftsType != ''  ">shifts_type,</if>
 			<if test="dayMileage != null  and dayMileage != ''  ">day_mileage,</if>
-			<if test="organization != null  and organization != ''  ">organization,</if>
+			<if test="deptId != null   ">dept_id,</if>
 			<if test="passByStation != null  and passByStation != ''  ">pass_by_station,</if>
 			<if test="stopStation != null  and stopStation != ''  ">stop_station,</if>
 			<if test="filePath != null  and filePath != ''  ">file_path,</if>
@@ -123,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="permitValidityDate != null  ">#{permitValidityDate},</if>
 			<if test="shiftsType != null  and shiftsType != ''  ">#{shiftsType},</if>
 			<if test="dayMileage != null  and dayMileage != ''  ">#{dayMileage},</if>
-			<if test="organization != null  and organization != ''  ">#{organization},</if>
+			<if test="deptId != null   ">#{deptId},</if>
 			<if test="passByStation != null  and passByStation != ''  ">#{passByStation},</if>
 			<if test="stopStation != null  and stopStation != ''  ">#{stopStation},</if>
 			<if test="filePath != null  and filePath != ''  ">#{filePath},</if>
@@ -154,7 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="permitValidityDate != null  ">permit_validity_date = #{permitValidityDate},</if>
             <if test="shiftsType != null  and shiftsType != ''  ">shifts_type = #{shiftsType},</if>
             <if test="dayMileage != null  and dayMileage != ''  ">day_mileage = #{dayMileage},</if>
-            <if test="organization != null  and organization != ''  ">organization = #{organization},</if>
+            <if test="deptId != null   ">dept_id = #{deptId},</if>
             <if test="passByStation != null  and passByStation != ''  ">pass_by_station = #{passByStation},</if>
             <if test="stopStation != null  and stopStation != ''  ">stop_station = #{stopStation},</if>
             <if test="filePath != null  and filePath != ''  ">file_path = #{filePath},</if>

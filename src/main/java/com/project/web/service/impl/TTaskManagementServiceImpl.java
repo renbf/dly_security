@@ -88,21 +88,22 @@ public class TTaskManagementServiceImpl implements ITTaskManagementService
 			tTaskManagement.setCreateTime(new Date());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(tasklFile)&&StringUtils.isNotEmpty(tasklFile.getOriginalFilename())){
-				String Str = fileService.upolad("weifaweizhang",uuid,"违法违章附件",tasklFile,0);
-				tTaskManagement.setFilePath(Str);				
+				String Str = fileService.upolad("weifaweizhang",uuid,"违法违章附件",tasklFile,0,tTaskManagement.getBusinessId());
+				tTaskManagement.setTaskFilePath(Str);				
 			}		
-
+			int i= tTaskManagementMapper.insertTTaskManagement(tTaskManagement);
+			if(i==1) {
+				return AjaxResult.success();
+			}else {
+				return AjaxResult.error();
+			}
 	
 										
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		int i= tTaskManagementMapper.insertTTaskManagement(tTaskManagement);
-		if(i==1) {
-			return AjaxResult.success();
-		}else {
-			return AjaxResult.error();
-		}
+		return null;
+	
 	}
 	
 	/**
@@ -132,7 +133,7 @@ public class TTaskManagementServiceImpl implements ITTaskManagementService
 			}
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(tasklFile)&&StringUtils.isNotEmpty(tasklFile.getOriginalFilename())){
-				String Str = fileService.upolad("weifaweizhang",tTaskManagement.getId(),"违法违章附件",tasklFile,0);
+				String Str = fileService.upolad("weifaweizhang",tTaskManagement.getId(),"违法违章附件",tasklFile,0,tTaskManagement.getBusinessId());
 				tTaskManagement.setFilePath(Str);				
 			}		
 			tTaskManagement.setUpdateTime(new Date());

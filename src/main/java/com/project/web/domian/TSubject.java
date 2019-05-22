@@ -2,8 +2,14 @@ package com.project.web.domian;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.alibaba.fastjson.JSON;
 import com.project.common.base.BaseEntity;
+
+import springfox.documentation.spring.web.json.Json;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 题库表 t_subject
@@ -21,8 +27,10 @@ public class TSubject extends BaseEntity
 	private String subject;
 	/** 注释 */
 	private String annotation;
-	/** 题目类型 */
+	/** 选择类型  0:单选  1:多选   2:判断 */
 	private String subjectType;
+	/** 题库类型 */
+	private String itemType;
 	/** 企业类型 */
 	private String businessType;
 	/** 专业类型 */
@@ -37,10 +45,106 @@ public class TSubject extends BaseEntity
 	private String addUserId;
 	/** 创建时间 */
 	private Date createDate;
+	/** 创建时间 */
+	private Date createDateEnd;
 	/** 修改时间 */
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
+	//所有选择的拼接字段
+	private String allOption;
+	private List<TSubjectOption> subList;
+
+    private String[] array;
+	private String subListDetail;
+	
+	//本道题的分值
+	private String subjectScore;
+	//本道题的排序
+	private String subjectSort;
+	//试卷id
+	private String paperId;
+	
+	
+
+
+
+
+	public String getSubjectScore() {
+		return subjectScore;
+	}
+
+	public void setSubjectScore(String subjectScore) {
+		this.subjectScore = subjectScore;
+	}
+
+	public String getSubjectSort() {
+		return subjectSort;
+	}
+
+	public void setSubjectSort(String subjectSort) {
+		this.subjectSort = subjectSort;
+	}
+
+	public String getPaperId() {
+		return paperId;
+	}
+
+	public void setPaperId(String paperId) {
+		this.paperId = paperId;
+	}
+
+	public String getSubListDetail() {
+		return subListDetail;
+	}
+
+	public void setSubListDetail(String subListDetail) {
+		this.subListDetail = subListDetail;
+	}
+
+	public String[] getIds() {
+		return array;
+	}
+
+	public void setIds(String[] ids) {
+		this.array = ids;
+	}
+
+	public Date getCreateDateEnd() {
+		return createDateEnd;
+	}
+
+	public void setCreateDateEnd(Date createDateEnd) {
+		this.createDateEnd = createDateEnd;
+	}
+
+	public String getAllOption() {
+		return allOption;
+	}
+
+	public void setAllOption(String allOption) {
+		this.allOption = allOption;
+	}
+
+
+	
+	
+	
+	public List<TSubjectOption> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<TSubjectOption> subList) {
+		this.subList = subList;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
 
 	public void setId(String id) 
 	{

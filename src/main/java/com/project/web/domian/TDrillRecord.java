@@ -48,7 +48,7 @@ public class TDrillRecord extends BaseEntity {
      */
     private String exerciseType;
     /**
-     * 参与人数     #
+     * 参与人数     ##
      */
     private Integer participantsNum;
     /**
@@ -93,9 +93,8 @@ public class TDrillRecord extends BaseEntity {
     private Long updateUserId;
 
 
-
     /*查询入参增加*/
-
+    private Integer participantsNum1;
 
     /*查询出参增加*/
     private String exerciseDateStr;
@@ -103,6 +102,15 @@ public class TDrillRecord extends BaseEntity {
     private String exerciseTypeName;
     private String participantsLevlName;
 
+
+    public Integer getParticipantsNum1() {
+        return participantsNum1;
+    }
+
+    public TDrillRecord setParticipantsNum1(Integer participantsNum1) {
+        this.participantsNum1 = participantsNum1;
+        return this;
+    }
 
     public String getExerciseDateStr() {
         return exerciseDateStr;

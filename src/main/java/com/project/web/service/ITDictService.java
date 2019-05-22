@@ -39,6 +39,14 @@ public interface ITDictService
      * @return 结果
      */
 	public int insertTDict(TDict tDict);
+
+	/**
+     * 新增字典
+     * 
+     * @param tDict 字典信息
+     * @return 结果
+     */
+	public AjaxResult insertTDictNew(TDict tDict);
 	
 	/**
      * 修改字典

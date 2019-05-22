@@ -87,11 +87,23 @@ public class TDepartureNewspaperClass extends BaseEntity {
     private String newspaperClassDateStr;
     private String createTimeStr;
     private String vehicleLicenseTypeName;
+    /**
+     * 最后一次同步时间
+     */
+    private String lastSynchroDateStr;
 
 
 
 
-    public Date getShiftsDate1() {
+    public String getLastSynchroDateStr() {
+		return lastSynchroDateStr;
+	}
+
+	public void setLastSynchroDateStr(String lastSynchroDateStr) {
+		this.lastSynchroDateStr = lastSynchroDateStr;
+	}
+
+	public Date getShiftsDate1() {
         return shiftsDate1;
     }
 

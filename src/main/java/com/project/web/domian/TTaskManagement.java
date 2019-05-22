@@ -63,6 +63,16 @@ public class TTaskManagement extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	private String taskFilePath;
+	
+
+	public String getTaskFilePath() {
+		return taskFilePath;
+	}
+
+	public void setTaskFilePath(String taskFilePath) {
+		this.taskFilePath = taskFilePath;
+	}
 
 	public void setId(String id) 
 	{

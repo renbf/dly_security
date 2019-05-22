@@ -58,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="userId != null "> and tp.user_id = #{userId}</if>
              <if test="meno != null  and meno != '' "> and tp.meno = #{meno}</if>
              <if test="businessId != null  and businessId != '' "> and tp.business_id = #{businessId}</if>
+             <if test="businessId != null  and businessId != '' "> and td.business_id = #{businessId}</if>
              <if test="updateUserId != null "> and tp.update_user_id = #{updateUserId}</if>
          </where>
          order by tp.create_time desc

@@ -100,7 +100,7 @@ public class TTrainingRecordServiceImpl implements ITTrainingRecordService {
         /*文件上传*/
         try {
             if (Objects.nonNull(trainFile) && StringUtils.isNotEmpty(trainFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("peixunjilu", uuid, "培训记录附件文件", trainFile, 0);
+                String upolad = this.fileService.upolad("peixunjilu", uuid, "培训记录附件文件", trainFile, 0,tTrainingRecord.getBusinessId());
                 tTrainingRecord.setTrainFilePath(upolad);
             }
         } catch (IOException e) {
@@ -148,7 +148,7 @@ public class TTrainingRecordServiceImpl implements ITTrainingRecordService {
         //文件上传
         try {
             if (Objects.nonNull(trainFile) && StringUtils.isNotEmpty(trainFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("peixunjilu", tTrainingRecord.getId(), "培训记录附件文件", trainFile, 0);
+                String upolad = this.fileService.upolad("peixunjilu", tTrainingRecord.getId(), "培训记录附件文件", trainFile, 0,tTrainingRecord.getBusinessId());
                 tTrainingRecord.setTrainFilePath(upolad);
             }
         } catch (IOException e) {

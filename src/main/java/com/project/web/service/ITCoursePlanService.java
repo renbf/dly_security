@@ -1,7 +1,10 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TCoursePlan;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 课程计划 服务层
@@ -33,7 +36,7 @@ public interface ITCoursePlanService
      * @param tCoursePlan 课程计划信息
      * @return 结果
      */
-	public int insertTCoursePlan(TCoursePlan tCoursePlan);
+	public AjaxResult insertTCoursePlan(TCoursePlan tCoursePlan,MultipartFile attachmentFile);
 	
 	/**
      * 修改课程计划
@@ -41,7 +44,7 @@ public interface ITCoursePlanService
      * @param tCoursePlan 课程计划信息
      * @return 结果
      */
-	public int updateTCoursePlan(TCoursePlan tCoursePlan);
+	public AjaxResult updateTCoursePlan(TCoursePlan tCoursePlan,MultipartFile attachmentFile);
 		
 	/**
      * 删除课程计划信息

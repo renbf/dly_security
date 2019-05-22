@@ -40,5 +40,5 @@ public interface IUserInfoService {
 	 * @param clientId
 	 * @return
 	 */
-	public DataResult bindingCid(String userId,String clientId);
+	public DataResult bindingCid(String userId,String clientId,String source);
 }

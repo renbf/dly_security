@@ -46,7 +46,7 @@ public class TTaskManagementController extends BaseController
 	/**
 	 * 查询作业管理列表
 	 */
-	@RequiresPermissions("system:tTaskManagement:list")
+//	@RequiresPermissions("system:tTaskManagement:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TTaskManagement tTaskManagement)
@@ -68,7 +68,7 @@ public class TTaskManagementController extends BaseController
 	/**
 	 * 新增保存作业管理
 	 */
-	@RequiresPermissions("system:tTaskManagement:add")
+//	@RequiresPermissions("system:tTaskManagement:add")
 	@Log(title = "作业管理", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
@@ -91,7 +91,7 @@ public class TTaskManagementController extends BaseController
 	/**
 	 * 修改保存作业管理
 	 */
-	@RequiresPermissions("system:tTaskManagement:edit")
+//	@RequiresPermissions("system:tTaskManagement:edit")
 	@Log(title = "作业管理", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -103,7 +103,7 @@ public class TTaskManagementController extends BaseController
 	/**
 	 * 删除作业管理
 	 */
-	@RequiresPermissions("system:tTaskManagement:remove")
+//	@RequiresPermissions("system:tTaskManagement:remove")
 	@Log(title = "作业管理", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

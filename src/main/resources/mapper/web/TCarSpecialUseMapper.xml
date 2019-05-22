@@ -22,20 +22,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarSpecialUsebasicColums">
-        select csu.id, csu.car_id, csu.validity_date, csu.device_name, csu.device_type, csu.device_code, csu.testing_type, csu.testing_unit, csu.remark, csu.file_url, csu.add_user_id, csu.create_date, csu.update_date, csu.update_user_id    </sql>
+        select csu.id, csu.car_id, csu.validity_date, csu.device_name, csu.device_type, csu.device_code,
+        csu.testing_type, csu.testing_unit, csu.remark, csu.file_url, csu.add_user_id, csu.create_date,
+        csu.update_date, csu.update_user_id ,
+        DATE_FORMAT(csu.validity_date,'%Y-%m-%d') as validityDateStr,
+        DATE_FORMAT(csu.create_date,'%Y-%m-%d') as createDateStr
+        from t_car_special_use csu
+
+</sql>
 	
     <select id="selectTCarSpecialUseList" parameterType="com.project.web.domian.TCarSpecialUse" resultMap="TCarSpecialUseResult">
         <include refid="selectTCarSpecialUsebasicColums"/>
-        from t_car_special_use csu
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and csu.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and csu.car_id = #{carId}</if>
              <if test="validityDate != null "> and csu.validity_date = #{validityDate}</if>
-             <if test="deviceName != null  and deviceName != '' "> and csu.device_name = #{deviceName}</if>
-             <if test="deviceType != null  and deviceType != '' "> and csu.device_type = #{deviceType}</if>
-             <if test="deviceCode != null  and deviceCode != '' "> and csu.device_code = #{deviceCode}</if>
+             <if test="deviceName != null  and deviceName != '' "> and csu.device_name like concat('%',#{deviceName},'%')</if>
+
+             <if test="deviceType != null  and deviceType != '' "> and csu.device_type like concat('%',#{deviceType},'%')</if>
+
+             <if test="deviceCode != null  and deviceCode != '' "> and csu.device_code like concat('%',#{deviceCode},'%')</if>
+
              <if test="testingType != null  and testingType != '' "> and csu.testing_type = #{testingType}</if>
-             <if test="testingUnit != null  and testingUnit != '' "> and csu.testing_unit = #{testingUnit}</if>
+             <if test="testingUnit != null  and testingUnit != '' "> and csu.testing_unit like concat('%',#{testingUnit},'%')</if>
+
              <if test="remark != null  and remark != '' "> and csu.remark = #{remark}</if>
              <if test="fileUrl != null  and fileUrl != '' "> and csu.file_url = #{fileUrl}</if>
              <if test="addUserId != null  and addUserId != '' "> and csu.add_user_id = #{addUserId}</if>
@@ -47,7 +57,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTCarSpecialUseById" parameterType="String" resultMap="TCarSpecialUseResult">
         <include refid="selectTCarSpecialUsebasicColums"/>
-        from t_car_special_use csu
         where csu.id = #{id}
     </select>
         
@@ -118,5 +127,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_special_use where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

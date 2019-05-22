@@ -25,19 +25,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTRiskLevelControlVo">
-        select rlc.id, rlc.risk_position, rlc.risk_name, rlc.risk_level, rlc.preventive_measures, rlc.accident_type, rlc.identification_date, rlc.basis, rlc.dept_id, rlc.person_liable, rlc.file_path, rlc.create_time, rlc.update_time, rlc.user_id, rlc.meno, rlc.business_id, rlc.update_user_id from t_risk_level_control rlc
+        select rlc.id, rlc.risk_position, rlc.risk_name, rlc.risk_level, rlc.preventive_measures, rlc.accident_type,
+         DATE_FORMAT(rlc.identification_date,'%Y-%m-%d') as identificationDateStr,
+         rlc.identification_date,
+         rlc.basis, rlc.dept_id, rlc.person_liable, rlc.file_path, rlc.create_time, rlc.update_time, rlc.user_id, rlc.meno, rlc.business_id, rlc.update_user_id from t_risk_level_control rlc
     </sql>
 	
     <select id="selectTRiskLevelControlList" parameterType="TRiskLevelControl" resultMap="TRiskLevelControlResult">
-        <include refid="selectTRiskLevelControlVo"/>
+              select rlc.id, rlc.risk_position, rlc.risk_name, rlc.risk_level, rlc.preventive_measures, rlc.accident_type,
+         DATE_FORMAT(rlc.identification_date,'%Y-%m-%d') as identificationDateStr,
+         rlc.identification_date,
+         rlc.basis, rlc.dept_id, rlc.person_liable, rlc.file_path, rlc.create_time, rlc.update_time, rlc.user_id, rlc.meno, rlc.business_id, rlc.update_user_id,
+     sd.dept_name as deptName
+from t_risk_level_control rlc
+LEFT JOIN sys_dept sd on rlc.dept_id = sd.dept_id 
         <where>  
             <if test="id != null  and id != '' "> and rlc.id = #{id}</if>
-             <if test="riskPosition != null  and riskPosition != '' "> and rlc.risk_position = #{riskPosition}</if>
-             <if test="riskName != null  and riskName != '' "> and rlc.risk_name = #{riskName}</if>
+             <if test="riskPosition != null  and riskPosition != '' "> and rlc.risk_position like concat('%',#{riskPosition},'%')</if>
+             <if test="riskName != null  and riskName != '' "> and rlc.risk_name like concat('%',#{riskName},'%')</if>
              <if test="riskLevel != null  and riskLevel != '' "> and rlc.risk_level = #{riskLevel}</if>
-             <if test="preventiveMeasures != null  and preventiveMeasures != '' "> and rlc.preventive_measures = #{preventiveMeasures}</if>
+             <if test="preventiveMeasures != null  and preventiveMeasures != '' "> and rlc.preventive_measures like concat('%',#{preventiveMeasures},'%')</if>
              <if test="accidentType != null  and accidentType != '' "> and rlc.accident_type = #{accidentType}</if>
-             <if test="identificationDate != null "> and rlc.identification_date = #{identificationDate}</if>
+            <if test="identificationDate != null  and identificationDate1 == null "> 
+           	 	and DATE_FORMAT(rlc.identification_date,'%Y%m%d') &gt;= DATE_FORMAT(#{identificationDate},'%Y%m%d')
+            </if>
+            <if test="identificationDate1 != null  and identificationDate == null "> 
+           		 and DATE_FORMAT(rlc.identification_date,'%Y%m%d') &lt;= DATE_FORMAT(#{identificationDate1},'%Y%m%d')
+            </if>
+            <if test="identificationDate1 != null  and identificationDate != null ">
+            	 and DATE_FORMAT(rlc.identification_date,'%Y%m%d') &gt;= DATE_FORMAT(#{identificationDate},'%Y%m%d')
+                 and   DATE_FORMAT(rlc.identification_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{identificationDate1},'%Y%m%d')
+            </if>  
+             
              <if test="basis != null  and basis != '' "> and rlc.basis = #{basis}</if>
              <if test="deptId != null  and deptId != '' "> and rlc.dept_id = #{deptId}</if>
              <if test="personLiable != null  and personLiable != '' "> and rlc.person_liable = #{personLiable}</if>

@@ -27,6 +27,8 @@ public class TManagementSystem extends BaseEntity
 	private String managementUnit;
 	/** 实时日期 */
 	private Date managementDate;
+	/** 实时日期字符串 */
+	private String managementDateStr;
 	/** 适用部门 */
 	private Long managementDeptId;
 	/** 是否适用 1:适用 0:不适用 */
@@ -47,6 +49,16 @@ public class TManagementSystem extends BaseEntity
 	private String businessId;
 	/** 修改人id */
 	private Long updateUserId;
+	private String deptName;
+	
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 
 	public void setId(String id) 
 	{
@@ -58,6 +70,14 @@ public class TManagementSystem extends BaseEntity
 		return id;
 	}
 	
+	public String getManagementDateStr() {
+		return managementDateStr;
+	}
+
+	public void setManagementDateStr(String managementDateStr) {
+		this.managementDateStr = managementDateStr;
+	}
+
 	public Date getCreateTimeEnd() {
 		return createTimeEnd;
 	}

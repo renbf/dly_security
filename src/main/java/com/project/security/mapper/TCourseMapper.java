@@ -87,4 +87,11 @@ public interface TCourseMapper
 	 */
 	public List<TCourseVo> courseCollection(Map<String,Object> param);
 	
+	/**
+	 * 搜索课程
+	 * @param userId
+	 * @return
+	 */
+	public List<TCourseVo> searchCource(@Param("userId") String userId,@Param("searchKey") String searchKey);
+	
 }

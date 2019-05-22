@@ -22,18 +22,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarInsurancebasicColums">
-        select ci.id, ci.car_id, ci.validity_date, ci.insurance_type, ci.insurance_unit, ci.insurance_number, ci.insurance_price, ci.insurance_cost, ci.remark, ci.file_url, ci.add_user_id, ci.create_date, ci.update_date, ci.update_user_id    </sql>
+        select ci.id, ci.car_id, ci.validity_date, ci.insurance_type, ci.insurance_unit, ci.insurance_number,
+        ci.insurance_price, ci.insurance_cost, ci.remark, ci.file_url, ci.add_user_id, ci.create_date,
+        ci.update_date, ci.update_user_id ,
+		DATE_FORMAT(ci.validity_date,'%Y-%m-%d') as validityDateStr,
+        DATE_FORMAT(ci.create_date,'%Y-%m-%d') as createDateStr
+        from t_car_insurance ci
+
+    </sql>
 	
     <select id="selectTCarInsuranceList" parameterType="com.project.web.domian.TCarInsurance" resultMap="TCarInsuranceResult">
         <include refid="selectTCarInsurancebasicColums"/>
-        from t_car_insurance ci
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and ci.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and ci.car_id = #{carId}</if>
-             <if test="validityDate != null "> and ci.validity_date = #{validityDate}</if>
+
+
+            <if test="validityDate != null  and validityDate1 == null "> and DATE_FORMAT(ci.validity_date,'%Y%m%d') &gt;= DATE_FORMAT(#{validityDate},'%Y%m%d')</if>
+            <if test="validityDate1 != null  and validityDate == null "> and DATE_FORMAT(ci.validity_date,'%Y%m%d') &lt;= DATE_FORMAT(#{validityDate1},'%Y%m%d')</if>
+            <if test="validityDate1 != null  and validityDate != null "> and DATE_FORMAT(ci.validity_date,'%Y%m%d') &gt;= DATE_FORMAT(#{validityDate},'%Y%m%d')
+                and   DATE_FORMAT(ci.validity_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{validityDate1},'%Y%m%d')
+            </if>
+
+
              <if test="insuranceType != null  and insuranceType != '' "> and ci.insurance_type = #{insuranceType}</if>
-             <if test="insuranceUnit != null  and insuranceUnit != '' "> and ci.insurance_unit = #{insuranceUnit}</if>
-             <if test="insuranceNumber != null  and insuranceNumber != '' "> and ci.insurance_number = #{insuranceNumber}</if>
+             <if test="insuranceUnit != null  and insuranceUnit != '' "> and ci.insurance_unit like concat('%',#{insuranceUnit},'%')</if>
+
+             <if test="insuranceNumber != null  and insuranceNumber != '' "> and ci.insurance_number like concat('%',#{insuranceNumber},'%')</if>
+
              <if test="insurancePrice != null  and insurancePrice != '' "> and ci.insurance_price = #{insurancePrice}</if>
              <if test="insuranceCost != null  and insuranceCost != '' "> and ci.insurance_cost = #{insuranceCost}</if>
              <if test="remark != null  and remark != '' "> and ci.remark = #{remark}</if>
@@ -118,5 +134,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_insurance where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

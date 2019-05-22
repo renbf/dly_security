@@ -60,4 +60,36 @@ public interface TSubjectMapper
      */
 	public int deleteTSubjectByIds(String[] ids);
 	//以上自动生成的尽量别动
+	
+	
+	/**
+     *	根据题库id 进行分组列表查询
+     * 
+     * @param tSubject 题库信息
+     * @return 题库集合
+     */
+	public List<TSubject> selectTSubjectListByOne(TSubject tSubject);
+	
+	/**
+     *	根据题库id 进行查询
+     * 
+     * @param tSubject 题库信息
+     * @return 题库集合
+     */
+	public List<TSubject> selectTSubjectListByPageId(String[] ids);
+	
+	/**
+     *	换题的时候，查询出本企业下  未生成题库的剩余题 
+     */
+	public List<TSubject> selectTSubjectListByBusiness(TSubject tSubject);
+	
+	/**
+     *	根据题库id 进行查询题的所有信息 包含分数 (换题时用)
+     * 
+     * @param tSubject 题库信息
+     * @return 题库集合
+     */
+	public List<TSubject> selectTSubjectListAllByPageId(TSubject tSubject);
+
+	
 }

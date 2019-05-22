@@ -1,6 +1,7 @@
 package com.project.security.domain.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class TUserPaperVo implements Serializable
 	/** 状态0未答题，1已答题 */
 	private String status;
 	/** 考试分数 */
-	private Integer paperScore;
+	private BigDecimal paperScore;
 	/** 答题开始时间 */
 	private Date startDate;
 	/** 交卷时间时间 */
@@ -105,12 +106,12 @@ public class TUserPaperVo implements Serializable
 	{
 		return status;
 	}
-	public void setPaperScore(Integer paperScore) 
+	public void setPaperScore(BigDecimal paperScore) 
 	{
 		this.paperScore = paperScore;
 	}
 
-	public Integer getPaperScore() 
+	public BigDecimal getPaperScore() 
 	{
 		return paperScore;
 	}

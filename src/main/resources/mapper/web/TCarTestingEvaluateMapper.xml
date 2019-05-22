@@ -21,17 +21,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarTestingEvaluatebasicColums">
-        select cte.id, cte.car_id, cte.testing_type, cte.testing_unit, cte.testing_date, cte.testing_validity, cte.report_number, cte.remark, cte.file_url, cte.add_user_id, cte.create_date, cte.update_date, cte.update_user_id    </sql>
+        select cte.id, cte.car_id, cte.testing_type, cte.testing_unit, cte.testing_date, cte.testing_validity,
+        cte.report_number, cte.remark, cte.file_url, cte.add_user_id, cte.create_date, cte.update_date, cte.update_user_id,
+             DATE_FORMAT(cte.testing_date,'%Y-%m-%d') as testingDateStr,
+             DATE_FORMAT(cte.create_date,'%Y-%m-%d') as createDateStr
+            from t_car_testing_evaluate cte
+
+
+
+         </sql>
 	
     <select id="selectTCarTestingEvaluateList" parameterType="com.project.web.domian.TCarTestingEvaluate" resultMap="TCarTestingEvaluateResult">
         <include refid="selectTCarTestingEvaluatebasicColums"/>
-        from t_car_testing_evaluate cte
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and cte.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and cte.car_id = #{carId}</if>
-             <if test="testingType != null  and testingType != '' "> and cte.testing_type = #{testingType}</if>
-             <if test="testingUnit != null  and testingUnit != '' "> and cte.testing_unit = #{testingUnit}</if>
-             <if test="testingDate != null "> and cte.testing_date = #{testingDate}</if>
+             <if test="testingType != null  and testingType != '' "> and cte.testing_type like concat('%',#{testingType},'%')</if>
+
+             <if test="testingUnit != null  and testingUnit != '' "> and cte.testing_unit like concat('%',#{testingUnit},'%')</if>
+
+
+            <if test="testingDate != null  and testingDate1 == null "> and DATE_FORMAT(cte.testing_date,'%Y%m%d') &gt;= DATE_FORMAT(#{testingDate},'%Y%m%d')</if>
+            <if test="testingDate1 != null  and testingDate == null "> and DATE_FORMAT(cte.testing_date,'%Y%m%d') &lt;= DATE_FORMAT(#{testingDate1},'%Y%m%d')</if>
+            <if test="testingDate1 != null  and testingDate != null "> and DATE_FORMAT(cte.testing_date,'%Y%m%d') &gt;= DATE_FORMAT(#{testingDate},'%Y%m%d')
+                and   DATE_FORMAT(cte.testing_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{testingDate1},'%Y%m%d')
+            </if>
+
+
              <if test="testingValidity != null "> and cte.testing_validity = #{testingValidity}</if>
              <if test="reportNumber != null  and reportNumber != '' "> and cte.report_number = #{reportNumber}</if>
              <if test="remark != null  and remark != '' "> and cte.remark = #{remark}</if>
@@ -45,7 +61,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTCarTestingEvaluateById" parameterType="String" resultMap="TCarTestingEvaluateResult">
         <include refid="selectTCarTestingEvaluatebasicColums"/>
-        from t_car_testing_evaluate cte
         where cte.id = #{id}
     </select>
         
@@ -113,5 +128,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_testing_evaluate where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

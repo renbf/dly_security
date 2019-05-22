@@ -122,7 +122,7 @@ public class TVehicleCheckServiceImpl implements ITVehicleCheckService {
         if (ValidationUtils.objIsNull(tVehicleCheck.getDriver())) {
             return AjaxResult.error(2, "驾驶员不能为空");
         }
-        if (ValidationUtils.objIsNull(tVehicleCheck.getCkeckDate())) {
+        if (ValidationUtils.objIsNull(tVehicleCheck.getCheckDate())) {
             return AjaxResult.error(2, "例检时间不能为空");
         }
         if (ValidationUtils.objIsNull(tVehicleCheck.getCheckResult())) {

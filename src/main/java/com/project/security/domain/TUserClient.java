@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 用户和设备关系表 t_user_client
  * 
  * @author rbf
- * @date 2019-04-30
+ * @date 2019-05-10
  */
 public class TUserClient implements Serializable
 {
@@ -18,6 +18,8 @@ public class TUserClient implements Serializable
 	private Long userId;
 	/** 设备唯一标识 */
 	private String clientId;
+	/** 来源1:ios,0:android */
+	private String source;
 
 	public void setUserId(Long userId) 
 	{
@@ -37,11 +39,21 @@ public class TUserClient implements Serializable
 	{
 		return clientId;
 	}
+	public void setSource(String source) 
+	{
+		this.source = source;
+	}
+
+	public String getSource() 
+	{
+		return source;
+	}
 
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("userId", getUserId())
             .append("clientId", getClientId())
+            .append("source", getSource())
             .toString();
     }
 }

@@ -1,7 +1,7 @@
 package com.project.security.service.impl;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,10 +27,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSON;
 import com.project.common.result.DataResult;
 import com.project.common.result.Result;
+import com.project.common.utils.DateUtils;
 import com.project.framework.config.ServerConfig;
 import com.project.framework.util.SpringUtils;
+import com.project.security.domain.TBanner;
 import com.project.security.domain.TBusiness;
 import com.project.security.domain.TCourse;
+import com.project.security.domain.TIndustryDynamics;
 import com.project.security.domain.TSubject;
 import com.project.security.domain.TSubjectPaper;
 import com.project.security.domain.TUserCourse;
@@ -42,9 +45,11 @@ import com.project.security.domain.vo.TUserCourseVo;
 import com.project.security.domain.vo.TUserPaperVo;
 import com.project.security.domain.vo.UserPaperDetailVo;
 import com.project.security.domain.vo.UserVo;
+import com.project.security.mapper.TBannerMapper;
 import com.project.security.mapper.TBusinessMapper;
 import com.project.security.mapper.TCourseMapper;
 import com.project.security.mapper.TDictMapper;
+import com.project.security.mapper.TIndustryDynamicsMapper;
 import com.project.security.mapper.TSubjectMapper;
 import com.project.security.mapper.TSubjectPaperMapper;
 import com.project.security.mapper.TUserCourseMapper;
@@ -101,6 +106,13 @@ public class TrainServiceImpl implements ITrainService {
 	@Autowired
 	@Qualifier("businessMapper")
 	private TBusinessMapper businessMapper;
+	@Autowired
+	@Qualifier("industryDynamicsMapper")
+	private TIndustryDynamicsMapper industryDynamicsMapper;
+	@Autowired
+	@Qualifier("bannerMapper")
+	private TBannerMapper bannerMapper;
+	
 	@Override
 	public DataResult courseArrange(Integer pageNumber,Long total,String userId) {
 		DataResult result = new DataResult();
@@ -133,7 +145,7 @@ public class TrainServiceImpl implements ITrainService {
 	}
 	
 	@Override
-	public DataResult uploadVideoProgress(String userCourseId,Long progress) {
+	public DataResult uploadVideoProgress(String userCourseId,Long progress,int type) {
 		DataResult result = new DataResult();
         try {
         	TUserCourse userCourse = userCourseMapper.selectTUserCourseById(userCourseId);
@@ -145,18 +157,39 @@ public class TrainServiceImpl implements ITrainService {
     			return result;
         	}
         	String status = userCourse.getStatus();
+        	TUserCourse tUserCourse = new TUserCourse();
+        	tUserCourse.setId(userCourseId);
         	if(!"2".equals(status)) {
-        		TUserCourse tUserCourse = new TUserCourse();
         		if("0".equals(status)) {
         			tUserCourse.setStatus("1");
         		}
-            	tUserCourse.setId(userCourseId);
             	tUserCourse.setProgress(progress);
             	if(progress != null && progress.longValue() >= (totalTimes.longValue() -2000)) {
             		tUserCourse.setStatus("2");
             	}
-            	userCourseMapper.updateTUserCourse(tUserCourse);
         	}
+        	Date now = new Date();
+        	if(type == 1) {
+        		Date lookEndTime = userCourse.getLookEndTime();
+        		String month = DateUtils.parseDateToStr(DateUtils.YYYY_MM, now);
+        		String lastMonth = null;
+        		if(lookEndTime != null) {
+        			lastMonth = DateUtils.parseDateToStr(DateUtils.YYYY_MM, lookEndTime);
+        		}
+            	tUserCourse.setLookStartTime(now);
+            	if(!month.equals(lastMonth)) {
+            		tUserCourse.setLookTime(0l);
+        		}
+        	}else {
+        		Date lookStartTime = userCourse.getLookStartTime();
+        		Long lookTime = 0l;
+        		if(lookStartTime != null) {
+        			lookTime = now.getTime() - lookStartTime.getTime();
+        		}
+            	tUserCourse.setLookEndTime(now);
+            	tUserCourse.setLookTime(lookTime);
+        	}
+        	userCourseMapper.updateTUserCourse(tUserCourse);
         	result.setMessage("上传视频进度成功");
 			result.setStatus(Result.SUCCESS);
 			return result;
@@ -328,13 +361,13 @@ public class TrainServiceImpl implements ITrainService {
         	if(StringUtils.isNotEmpty(userAnswer) && trueAnswer.equals(userAnswer)) {
         		isTrue = "1";
         		userSubject.setIsTrue(isTrue);
-        		Integer paperScore = userPaper.getPaperScore();
+        		BigDecimal paperScore = userPaper.getPaperScore();
             	if(paperScore == null) {
-            		paperScore = 0;
+            		paperScore = BigDecimal.ZERO;
             	}
             	TUserPaper tUserPaper = new TUserPaper();
             	tUserPaper.setId(userSubject.getUserPaperId());
-            	tUserPaper.setPaperScore(paperScore.intValue()+subjectPaper.getSubjectScore().intValue());
+            	tUserPaper.setPaperScore(paperScore.add(subjectPaper.getSubjectScore()));
             	userPaperMapper.updateTUserPaper(tUserPaper);
         	}else {
         		userSubject.setIsTrue(isTrue);
@@ -359,6 +392,7 @@ public class TrainServiceImpl implements ITrainService {
         	}
         	Map<String, Object> mapResult = new HashMap<>();
 			mapResult.put("userSubjectId", userSubjectId);
+			mapResult.put("isTrue", isTrue);
     		result.setResult(mapResult);
 			result.setMessage("提交题目成功");
 			result.setStatus(Result.SUCCESS);
@@ -461,14 +495,10 @@ public class TrainServiceImpl implements ITrainService {
 	public DataResult imgAuthentication(String userId, MultipartFile file) {
 		DataResult result = new DataResult();
         try {
-        	HttpURLConnection conn = null;
         	UserVo userVo = userMapper.selectUserByUserId(Long.valueOf(userId));
         	String authUrl = userVo.getAuthUrl();
-        	URL url = new URL(authUrl);
-            conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(20 * 1000);
-            String content_1 = AESDecode.encodeImageToBase64(conn.getInputStream());
+        	InputStream in = AESDecode.getInputStreamByUrl(authUrl);
+            String content_1 = AESDecode.encodeImageToBase64(in);
             content_1 = content_1.replaceAll("[\\s*\t\n\r]", "");
             String content_2 = AESDecode.encodeImageToBase64(file.getInputStream());
             content_2 = content_2.replaceAll("[\\s*\t\n\r]", "");
@@ -478,7 +508,7 @@ public class TrainServiceImpl implements ITrainService {
             faceVerifyParam.setContent_2(content_2);
             FaceVerifyResponse faceVerifyResponse = AESDecode.sendPost(faceVerifyParam);
             if(faceVerifyResponse != null && faceVerifyResponse.getErrno() == 0) {
-            	if(faceVerifyResponse.getConfidence() > 8.0) {
+            	if(faceVerifyResponse.getConfidence() > 80.0) {
             		result.setMessage("图片认证成功");
         			result.setStatus(Result.SUCCESS);
         			return result;
@@ -523,12 +553,43 @@ public class TrainServiceImpl implements ITrainService {
 	}
 
 	@Override
+	public DataResult sendVideoTotalTimes(String courseId, Long totalTimes) {
+		DataResult result = new DataResult();
+        try {
+        	TCourse course = courseMapper.selectTCourseById(courseId);
+        	if(Objects.nonNull(course) && Objects.isNull(course.getTotalTimes())) {
+        		TCourse tCourse = new TCourse();
+        		tCourse.setId(courseId);
+        		tCourse.setTotalTimes(totalTimes);
+        		courseMapper.updateTCourse(tCourse);
+        	}
+        	result.setMessage("发送视频时长成功");
+			result.setStatus(Result.SUCCESS);
+			return result;
+		} catch (Exception e) {
+			log.error("发送视频时长接口异常",e);
+			throw new RuntimeException("发送视频时长接口异常");
+		}
+	}
+
+	@Override
 	public String introductionUrl(String courseId) {
 		TCourse tCourse = courseMapper.selectTCourseById(courseId);
 		if(Objects.nonNull(tCourse)) {
 			return tCourse.getIntroduction();
 		}
 		return null;
+	}
+
+	@Override
+	public TIndustryDynamics industryDynamicsWebUrl(String industryDynamicsId) {
+		TIndustryDynamics industryDynamics = industryDynamicsMapper.selectTIndustryDynamicsById(industryDynamicsId);
+		return industryDynamics;
+	}
+
+	@Override
+	public TBanner bannerWebUrl(String bannerId) {
+		return bannerMapper.selectTBannerById(bannerId);
 	}
 
 	/**

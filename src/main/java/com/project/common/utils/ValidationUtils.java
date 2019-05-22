@@ -13,7 +13,7 @@ public class ValidationUtils {
         if (obj == null) {
             return true;
         }
-        if (obj instanceof String && ((String) obj).isEmpty()) {
+        if (obj instanceof String && ((String) obj).trim().isEmpty()) {
             return true;
         }
         if (obj instanceof Date && ((Date) obj).getTime() == 0) {

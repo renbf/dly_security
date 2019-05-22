@@ -41,7 +41,12 @@ public class TUserCourse implements Serializable
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
-
+	/** 累计观看时长 */
+	private Long lookTime;
+	/** 观看开始时间 */
+	private Date lookStartTime;
+	/** 观看结束时间 */
+	private Date lookEndTime;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -160,7 +165,31 @@ public class TUserCourse implements Serializable
 		return updateUserId;
 	}
 
-    public String toString() {
+    public Long getLookTime() {
+		return lookTime;
+	}
+
+	public void setLookTime(Long lookTime) {
+		this.lookTime = lookTime;
+	}
+
+	public Date getLookStartTime() {
+		return lookStartTime;
+	}
+
+	public void setLookStartTime(Date lookStartTime) {
+		this.lookStartTime = lookStartTime;
+	}
+
+	public Date getLookEndTime() {
+		return lookEndTime;
+	}
+
+	public void setLookEndTime(Date lookEndTime) {
+		this.lookEndTime = lookEndTime;
+	}
+
+	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("userId", getUserId())

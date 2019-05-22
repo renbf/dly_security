@@ -29,6 +29,14 @@ public interface TDangerMapper
 	public List<TDanger> selectTDangerList(TDanger tDanger);
 	
 	/**
+	 * 根据整改责任人 查询隐患接收列表
+     * 
+     * @param tDanger 隐患信息
+     * @return 隐患集合
+     */
+	public List<TDanger> selectTDangerListByDochangeUser(TDanger tDanger);
+	
+	/**
      * 新增隐患
      * 
      * @param tDanger 隐患信息

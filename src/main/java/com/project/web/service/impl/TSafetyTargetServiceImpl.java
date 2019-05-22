@@ -66,7 +66,7 @@ public class TSafetyTargetServiceImpl implements ITSafetyTargetService {
         //目标文件上传和保存
         try {
             if (Objects.nonNull(targetFile) && StringUtils.isNotEmpty(targetFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquanmubiao", uuid, "安全目标附件文件", targetFile, 0);
+                String upolad = this.fileService.upolad("anquanmubiao", uuid, "安全目标附件文件", targetFile, 0,tSafetyTarget.getBusinessId());
                 tSafetyTarget.setTargetFilePath(upolad);
             }
         } catch (IOException e) {
@@ -93,7 +93,7 @@ public class TSafetyTargetServiceImpl implements ITSafetyTargetService {
         //目标文件上传和保存
         try {
             if (Objects.nonNull(targetFile) && StringUtils.isNotEmpty(targetFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquanmubiao", tSafetyTarget.getId(), "安全目标附件文件", targetFile, 0);
+                String upolad = this.fileService.upolad("anquanmubiao", tSafetyTarget.getId(), "安全目标附件文件", targetFile, 0,tSafetyTarget.getBusinessId());
                 tSafetyTarget.setTargetFilePath(upolad);
             }
         } catch (IOException e) {

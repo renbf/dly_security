@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.web.mapper.TInspectPlanMainMapper">
+
+    <resultMap type="TInspectPlanMain" id="TInspectPlanMainResult">
+        <result property="titleId"    column="title_id"    />
+        <result property="checkTitle"    column="check_title"    />
+        <result property="checkYear"    column="check_year"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="remark"    column="remark"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+
+    <sql id="selectTInspectPlanMainVo">
+        select ipm.title_id, ipm.check_title, ipm.check_year, ipm.check_time, ipm.check_type, ipm.remark,
+        ipm.business_id, ipm.add_user_id, ipm.create_date, ipm.update_date, ipm.update_user_id ,
+        DATE_FORMAT(ipm.check_time,'%Y-%m-%d') as checkTimeStr,
+        DATE_FORMAT(ipm.create_date,'%Y-%m-%d') as createDateStr,
+        tip.userName as userName,
+        dic.dict_name as checkTypeName,
+        titt.projectName as projectName,
+        tip2.deptName as deptName
+
+
+
+        from t_inspect_plan_main ipm
+        left join (select group_concat(distinct su1.user_name separator '、') as userName , tip1.title_id as title_id
+                    from t_inspect_plan tip1
+                    left join sys_user su1 on (tip1.user_id = su1.user_id)
+                    group by tip1.title_id) tip on (ipm.title_id = tip.title_id)
+
+        left join t_dict dic on (dic.id = ipm.check_type)
+
+        left join (select group_concat(distinct dic1.dict_name separator '、') as projectName , titt1.title_id as title_id
+                    from t_inspect_title_team titt1
+                    left join t_dict dic1 on (titt1.check_team = dic1.id)
+                    group by titt1.title_id) titt on (ipm.title_id = titt.title_id)
+
+        left join (select group_concat(distinct sd2.dept_name separator '、') as deptName , tip2.title_id as title_id
+                    from t_inspect_plan tip2
+                    left join sys_dept sd2 on (tip2.dept_id = sd2.dept_id)
+                    group by tip2.title_id) tip2 on (ipm.title_id = tip2.title_id)
+    </sql>
+
+    <select id="selectTInspectPlanMainList" parameterType="TInspectPlanMain" resultMap="TInspectPlanMainResult">
+        <include refid="selectTInspectPlanMainVo"/>
+        <where>
+            <if test="titleId != null  and titleId != '' "> and ipm.title_id = #{titleId}</if>
+            <if test="checkTitle != null  and checkTitle != '' "> and ipm.check_title like concat('%',#{checkTitle},'%')</if>
+
+            <if test="checkYear != null  and checkYear != '' "> and ipm.check_year = #{checkYear}</if>
+
+
+            <if test="checkTime != null  and checkTime1 == null "> and DATE_FORMAT(ipm.check_time,'%Y%m%d') &gt;= DATE_FORMAT(#{checkTime},'%Y%m%d')</if>
+            <if test="checkTime1 != null  and checkTime == null "> and DATE_FORMAT(ipm.check_time,'%Y%m%d') &lt;= DATE_FORMAT(#{checkTime1},'%Y%m%d')</if>
+            <if test="checkTime1 != null  and checkTime != null "> and DATE_FORMAT(ipm.check_time,'%Y%m%d') &gt;= DATE_FORMAT(#{checkTime},'%Y%m%d')
+                and   DATE_FORMAT(ipm.check_time,'%Y%m%d') &lt;=  DATE_FORMAT(#{checkTime1},'%Y%m%d')
+            </if>
+
+
+            <if test="checkType != null  and checkType != '' "> and ipm.check_type = #{checkType}</if>
+            <if test="remark != null  and remark != '' "> and ipm.remark = #{remark}</if>
+            <if test="businessId != null  and businessId != '' "> and ipm.business_id = #{businessId}</if>
+            <if test="addUserId != null  and addUserId != '' "> and ipm.add_user_id = #{addUserId}</if>
+            <if test="createDate != null "> and ipm.create_date = #{createDate}</if>
+            <if test="updateDate != null "> and ipm.update_date = #{updateDate}</if>
+            <if test="updateUserId != null  and updateUserId != '' "> and ipm.update_user_id = #{updateUserId}</if>
+
+
+
+            <if test="userName != null  and userName != '' "> and tip.userName like concat('%',#{userName},'%')</if>
+            <if test="projectName != null  and projectName != '' "> and titt.projectName like concat('%',#{projectName},'%')</if>
+
+            <if test="deptId != null and deptId != '' ">
+                ipm.title_id in
+                (select tip3.title_id
+                from t_inspect_plan tip3
+                where tip3.dept_id = #{deptId})
+            </if>
+
+
+        </where>
+    </select>
+
+    <select id="selectTInspectPlanMainById" parameterType="String" resultMap="TInspectPlanMainResult">
+        <include refid="selectTInspectPlanMainVo"/>
+        where ipm.title_id = #{titleId}
+    </select>
+
+    <insert id="insertTInspectPlanMain" parameterType="TInspectPlanMain">
+        insert into t_inspect_plan_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="titleId != null  and titleId != ''  ">title_id,</if>
+            <if test="checkTitle != null  and checkTitle != ''  ">check_title,</if>
+            <if test="checkYear != null  and checkYear != ''  ">check_year,</if>
+            <if test="checkTime != null  ">check_time,</if>
+            <if test="checkType != null  and checkType != ''  ">check_type,</if>
+            <if test="remark != null  and remark != ''  ">remark,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="createDate != null  ">create_date,</if>
+            <if test="updateDate != null  ">update_date,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="titleId != null  and titleId != ''  ">#{titleId},</if>
+            <if test="checkTitle != null  and checkTitle != ''  ">#{checkTitle},</if>
+            <if test="checkYear != null  and checkYear != ''  ">#{checkYear},</if>
+            <if test="checkTime != null  ">#{checkTime},</if>
+            <if test="checkType != null  and checkType != ''  ">#{checkType},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="createDate != null  ">#{createDate},</if>
+            <if test="updateDate != null  ">#{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTInspectPlanMain" parameterType="TInspectPlanMain">
+        update t_inspect_plan_main
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkTitle != null  and checkTitle != ''  ">check_title = #{checkTitle},</if>
+            <if test="checkYear != null  and checkYear != ''  ">check_year = #{checkYear},</if>
+            <if test="checkTime != null  ">check_time = #{checkTime},</if>
+            <if test="checkType != null  and checkType != ''  ">check_type = #{checkType},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where title_id = #{titleId}
+    </update>
+
+    <delete id="deleteTInspectPlanMainById" parameterType="String">
+        delete from t_inspect_plan_main where title_id = #{titleId}
+    </delete>
+
+    <delete id="deleteTInspectPlanMainByIds" parameterType="String">
+        delete from t_inspect_plan_main where title_id in
+        <foreach item="titleId" collection="array" open="(" separator="," close=")">
+            #{titleId}
+        </foreach>
+    </delete>
+
+</mapper>

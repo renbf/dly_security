@@ -18,10 +18,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="publishDate"    column="publish_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+        <result property="lookTime"    column="look_time"    />
+        <result property="lookStartTime"    column="look_start_time"    />
+        <result property="lookEndTime"    column="look_end_time"    />
     </resultMap>
 	
 	<sql id="selectTUserCoursebasicColums">
-        select uc.id, uc.user_id, uc.start_date, uc.course_id, uc.level_type, uc.status, uc.class_hour, uc.progress, uc.is_collect, uc.add_user_id, uc.publish_date, uc.update_date, uc.update_user_id    </sql>
+        select uc.id, uc.user_id, uc.start_date, uc.course_id, uc.level_type, uc.status, uc.class_hour, uc.progress, uc.is_collect, uc.add_user_id, uc.publish_date, uc.update_date, uc.update_user_id,uc.look_time,uc.look_start_time,uc.look_end_time    </sql>
 	
     <select id="selectTUserCourseList" parameterType="com.project.security.domain.TUserCourse" resultMap="TUserCourseResult">
         <include refid="selectTUserCoursebasicColums"/>
@@ -98,6 +101,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="publishDate != null  ">publish_date = #{publishDate},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
             <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+            <if test="lookTime != null">look_time = ifnull(look_time,0) + #{lookTime},</if>
+            <if test="lookStartTime != null">look_start_time = #{lookStartTime},</if>
+            <if test="lookEndTime != null">look_end_time = #{lookEndTime},</if>
         </trim>
         where id = #{id}
     </update>

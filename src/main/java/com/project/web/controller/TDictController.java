@@ -91,6 +91,18 @@ public class TDictController extends BaseController
 		return toAjax(tDictService.insertTDict(tDict));
 	}
 	
+	/**
+	 * 新增保存字典
+	 */
+//	@RequiresPermissions("web:tDict:add")
+	@Log(title = "字典", businessType = BusinessType.INSERT)
+	@PostMapping("/addInfo")
+	@ResponseBody
+	public AjaxResult saveInfo(TDict tDict)
+	{		
+		return tDictService.insertTDictNew(tDict);
+	}
+	
 
 	/**
 	 * 修改字典

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.common.annotation.Log;
 import com.project.common.base.AjaxResult;
@@ -45,7 +47,7 @@ public class TTransportManagementController extends BaseController
 	/**
 	 * 查询客运管理列表
 	 */
-	@RequiresPermissions("system:tTransportManagement:list")
+//	@RequiresPermissions("system:tTransportManagement:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TTransportManagement tTransportManagement)
@@ -67,13 +69,13 @@ public class TTransportManagementController extends BaseController
 	/**
 	 * 新增保存客运管理
 	 */
-	@RequiresPermissions("system:tTransportManagement:add")
+//	@RequiresPermissions("system:tTransportManagement:add")
 	@Log(title = "客运管理", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TTransportManagement tTransportManagement)
+	public AjaxResult addSave(TTransportManagement tTransportManagement,@RequestParam(name = "transportFile",required = false) MultipartFile transportFile)
 	{		
-		return toAjax(tTransportManagementService.insertTTransportManagement(tTransportManagement));
+		return tTransportManagementService.insertTTransportManagement(tTransportManagement,transportFile);
 	}
 
 	/**
@@ -90,19 +92,19 @@ public class TTransportManagementController extends BaseController
 	/**
 	 * 修改保存客运管理
 	 */
-	@RequiresPermissions("system:tTransportManagement:edit")
+//	@RequiresPermissions("system:tTransportManagement:edit")
 	@Log(title = "客运管理", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TTransportManagement tTransportManagement)
+	public AjaxResult editSave(TTransportManagement tTransportManagement,@RequestParam(name = "transportFile",required = false) MultipartFile transportFile)
 	{		
-		return toAjax(tTransportManagementService.updateTTransportManagement(tTransportManagement));
+		return tTransportManagementService.updateTTransportManagement(tTransportManagement,transportFile);
 	}
 	
 	/**
 	 * 删除客运管理
 	 */
-	@RequiresPermissions("system:tTransportManagement:remove")
+//	@RequiresPermissions("system:tTransportManagement:remove")
 	@Log(title = "客运管理", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

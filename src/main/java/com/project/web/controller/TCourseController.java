@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.common.annotation.Log;
 import com.project.common.enums.BusinessType;
 import com.project.web.domian.TCourse;
@@ -43,7 +46,7 @@ public class TCourseController extends BaseController
 	/**
 	 * 查询课程列表
 	 */
-	@RequiresPermissions("web:tCourse:list")
+//	@RequiresPermissions("web:tCourse:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TCourse tCourse)
@@ -65,13 +68,16 @@ public class TCourseController extends BaseController
 	/**
 	 * 新增保存课程
 	 */
-	@RequiresPermissions("web:tCourse:add")
+//	@RequiresPermissions("web:tCourse:add")
 	@Log(title = "课程", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(TCourse tCourse)
+	public AjaxResult addSave(TCourse tCourse,
+			@RequestParam(name = "courseImg",required = false) MultipartFile courseImg, //课程图片
+			@RequestParam(name = "videoFile",required = false) MultipartFile videoFile,//视频文件
+			@RequestParam(name = "courseFile",required = false) MultipartFile courseFile)//课程文件
 	{		
-		return toAjax(tCourseService.insertTCourse(tCourse));
+		return tCourseService.insertTCourse(tCourse,courseImg,videoFile,courseFile);
 	}
 
 	/**
@@ -88,19 +94,22 @@ public class TCourseController extends BaseController
 	/**
 	 * 修改保存课程
 	 */
-	@RequiresPermissions("web:tCourse:edit")
+//	@RequiresPermissions("web:tCourse:edit")
 	@Log(title = "课程", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(TCourse tCourse)
+	public AjaxResult editSave(TCourse tCourse,
+			@RequestParam(name = "courseImg",required = false) MultipartFile courseImg, //课程图片
+			@RequestParam(name = "videoFile",required = false) MultipartFile videoFile,//视频文件
+			@RequestParam(name = "courseFile",required = false) MultipartFile courseFile)//课程文件
 	{		
-		return toAjax(tCourseService.updateTCourse(tCourse));
+		return tCourseService.updateTCourse(tCourse,courseImg,videoFile,courseFile);
 	}
 	
 	/**
 	 * 删除课程
 	 */
-	@RequiresPermissions("web:tCourse:remove")
+//	@RequiresPermissions("web:tCourse:remove")
 	@Log(title = "课程", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

@@ -54,6 +54,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
              <if test="exerciseType != null  and exerciseType != '' "> and dr.exercise_type = #{exerciseType}</if>
              <if test="participantsNum != null "> and dr.participants_num = #{participantsNum}</if>
+
+
+            <if test="participantsNum != null  and participantsNum1 == null "> and dr.participants_num &gt;= #{participantsNum}</if>
+            <if test="participantsNum1 != null  and participantsNum == null "> and dr.participants_num &lt;= #{participantsNum1}</if>
+            <if test="participantsNum1 != null  and participantsNum != null "> and dr.participants_num &gt;= #{participantsNum}
+                and   dr.participants_num &lt;=  #{participantsNum1}
+            </if>
+
+
              <if test="participantsLevl != null  and participantsLevl != '' "> and dr.participants_levl = #{participantsLevl}</if>
              <if test="checkInNum != null "> and dr.check_in_num = #{checkInNum}</if>
              <if test="exercisePlace != null  and exercisePlace != '' "> and dr.exercise_place = #{exercisePlace}</if>

@@ -46,7 +46,7 @@ public class TBusinessFileController extends BaseController
 	/**
 	 * 查询企业文件列表
 	 */
-	@RequiresPermissions("system:tBusinessFile:list")
+//	@RequiresPermissions("system:tBusinessFile:list")
 	@PostMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(TBusinessFile tBusinessFile)
@@ -68,7 +68,7 @@ public class TBusinessFileController extends BaseController
 	/**
 	 * 新增保存企业文件
 	 */
-	@RequiresPermissions("system:tBusinessFile:add")
+//	@RequiresPermissions("system:tBusinessFile:add")
 	@Log(title = "企业文件", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
@@ -91,7 +91,7 @@ public class TBusinessFileController extends BaseController
 	/**
 	 * 修改保存企业文件
 	 */
-	@RequiresPermissions("system:tBusinessFile:edit")
+//	@RequiresPermissions("system:tBusinessFile:edit")
 	@Log(title = "企业文件", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
@@ -103,7 +103,7 @@ public class TBusinessFileController extends BaseController
 	/**
 	 * 删除企业文件
 	 */
-	@RequiresPermissions("system:tBusinessFile:remove")
+//	@RequiresPermissions("system:tBusinessFile:remove")
 	@Log(title = "企业文件", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody

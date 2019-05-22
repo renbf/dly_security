@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TUserPaper;
 import java.util.List;
 
@@ -51,4 +52,20 @@ public interface ITUserPaperService
      */
 	public int deleteTUserPaperByIds(String ids);
 	//以上自动生成的尽量别动
+
+
+	/**
+	 * 提醒
+	 * @param userPaperId
+	 * @return
+	 */
+	public AjaxResult remind(String userPaperId);
+
+
+	/**
+	 * 重新考试,   其实就是修改下状态.
+	 * @param userPaperId
+	 * @return
+	 */
+	public AjaxResult repaper(String userPaperId);
 }

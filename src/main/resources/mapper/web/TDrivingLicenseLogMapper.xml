@@ -1,77 +1,121 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.web.mapper.TDrivingLicenseLogMapper">
-    
-    <resultMap type="com.project.web.domian.TDrivingLicenseLog" id="TDrivingLicenseLogResult">
+
+    <resultMap type="TDrivingLicenseLog" id="TDrivingLicenseLogResult">
         <result property="id"    column="id"    />
+        <result property="carInfoId"    column="car_info_id"    />
         <result property="travelNumber"    column="travel_number"    />
-        <result property="validityTerm"    column="validity_term"    />
-        <result property="attachmentUrl"    column="attachment_url"    />
+        <result property="validityDate"    column="validity_date"    />
         <result property="startDate"    column="start_date"    />
+        <result property="photoFilePath"    column="photo_file_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="meno"    column="meno"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
     </resultMap>
-	
-	<sql id="selectTDrivingLicenseLogbasicColums">
-        select dll.id, dll.travel_number, dll.validity_term, dll.attachment_url, dll.start_date    </sql>
-	
-    <select id="selectTDrivingLicenseLogList" parameterType="com.project.web.domian.TDrivingLicenseLog" resultMap="TDrivingLicenseLogResult">
-        <include refid="selectTDrivingLicenseLogbasicColums"/>
-        from t_driving_license_log dll
-        <where>  
+
+    <sql id="selectTDrivingLicenseLogVo">
+        select dll.id, dll.car_info_id, dll.travel_number, dll.validity_date, dll.start_date, dll.photo_file_path,
+        dll.create_time, dll.update_time, dll.add_user_id, dll.meno, dll.business_id, dll.update_user_id,
+		DATE_FORMAT(dll.validity_date,'%Y-%m-%d') as validityDateStr,
+        DATE_FORMAT(dll.create_time,'%Y-%m-%d') as createTimeStr
+
+         from t_driving_license_log dll
+    </sql>
+
+    <select id="selectTDrivingLicenseLogList" parameterType="TDrivingLicenseLog" resultMap="TDrivingLicenseLogResult">
+        <include refid="selectTDrivingLicenseLogVo"/>
+        <where>
             <if test="id != null  and id != '' "> and dll.id = #{id}</if>
-             <if test="travelNumber != null  and travelNumber != '' "> and dll.travel_number = #{travelNumber}</if>
-             <if test="validityTerm != null  and validityTerm != '' "> and dll.validity_term = #{validityTerm}</if>
-             <if test="attachmentUrl != null  and attachmentUrl != '' "> and dll.attachment_url = #{attachmentUrl}</if>
-             <if test="startDate != null "> and dll.start_date = #{startDate}</if>
-         </where>
+            <if test="carInfoId != null  and carInfoId != '' "> and dll.car_info_id = #{carInfoId}</if>
+            <if test="travelNumber != null  and travelNumber != '' "> and dll.travel_number = #{travelNumber}</if>
+            <if test="validityDate != null "> and dll.validity_date = #{validityDate}</if>
+            <if test="startDate != null "> and dll.start_date = #{startDate}</if>
+            <if test="photoFilePath != null  and photoFilePath != '' "> and dll.photo_file_path = #{photoFilePath}</if>
+            <if test="createTime != null "> and dll.create_time = #{createTime}</if>
+            <if test="updateTime != null "> and dll.update_time = #{updateTime}</if>
+            <if test="addUserId != null  and addUserId != '' "> and dll.add_user_id = #{addUserId}</if>
+            <if test="meno != null  and meno != '' "> and dll.meno = #{meno}</if>
+            <if test="businessId != null  and businessId != '' "> and dll.business_id = #{businessId}</if>
+            <if test="updateUserId != null  and updateUserId != '' "> and dll.update_user_id = #{updateUserId}</if>
+        </where>
     </select>
-    
+
     <select id="selectTDrivingLicenseLogById" parameterType="String" resultMap="TDrivingLicenseLogResult">
-        <include refid="selectTDrivingLicenseLogbasicColums"/>
-        from t_driving_license_log dll
+        <include refid="selectTDrivingLicenseLogVo"/>
         where dll.id = #{id}
     </select>
-        
-    <insert id="insertTDrivingLicenseLog" parameterType="com.project.web.domian.TDrivingLicenseLog">
+
+    <insert id="insertTDrivingLicenseLog" parameterType="TDrivingLicenseLog">
         insert into t_driving_license_log
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">id,</if>
-			<if test="travelNumber != null  and travelNumber != ''  ">travel_number,</if>
-			<if test="validityTerm != null  and validityTerm != ''  ">validity_term,</if>
-			<if test="attachmentUrl != null  and attachmentUrl != ''  ">attachment_url,</if>
-			<if test="startDate != null  ">start_date,</if>
-         </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="carInfoId != null  and carInfoId != ''  ">car_info_id,</if>
+            <if test="travelNumber != null  and travelNumber != ''  ">travel_number,</if>
+            <if test="validityDate != null  ">validity_date,</if>
+            <if test="startDate != null  ">start_date,</if>
+            <if test="photoFilePath != null  and photoFilePath != ''  ">photo_file_path,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id,</if>
+            <if test="meno != null  and meno != ''  ">meno,</if>
+            <if test="businessId != null  and businessId != ''  ">business_id,</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null  and id != ''  ">#{id},</if>
-			<if test="travelNumber != null  and travelNumber != ''  ">#{travelNumber},</if>
-			<if test="validityTerm != null  and validityTerm != ''  ">#{validityTerm},</if>
-			<if test="attachmentUrl != null  and attachmentUrl != ''  ">#{attachmentUrl},</if>
-			<if test="startDate != null  ">#{startDate},</if>
-         </trim>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="carInfoId != null  and carInfoId != ''  ">#{carInfoId},</if>
+            <if test="travelNumber != null  and travelNumber != ''  ">#{travelNumber},</if>
+            <if test="validityDate != null  ">#{validityDate},</if>
+            <if test="startDate != null  ">#{startDate},</if>
+            <if test="photoFilePath != null  and photoFilePath != ''  ">#{photoFilePath},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">#{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">#{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">#{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+        </trim>
     </insert>
-	 
-    <update id="updateTDrivingLicenseLog" parameterType="com.project.web.domian.TDrivingLicenseLog">
+
+    <update id="updateTDrivingLicenseLog" parameterType="TDrivingLicenseLog">
         update t_driving_license_log
         <trim prefix="SET" suffixOverrides=",">
+            <if test="carInfoId != null  and carInfoId != ''  ">car_info_id = #{carInfoId},</if>
             <if test="travelNumber != null  and travelNumber != ''  ">travel_number = #{travelNumber},</if>
-            <if test="validityTerm != null  and validityTerm != ''  ">validity_term = #{validityTerm},</if>
-            <if test="attachmentUrl != null  and attachmentUrl != ''  ">attachment_url = #{attachmentUrl},</if>
+            <if test="validityDate != null  ">validity_date = #{validityDate},</if>
             <if test="startDate != null  ">start_date = #{startDate},</if>
+            <if test="photoFilePath != null  and photoFilePath != ''  ">photo_file_path = #{photoFilePath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="meno != null  and meno != ''  ">meno = #{meno},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
         </trim>
         where id = #{id}
     </update>
 
-	<delete id="deleteTDrivingLicenseLogById" parameterType="String">
+    <delete id="deleteTDrivingLicenseLogById" parameterType="String">
         delete from t_driving_license_log where id = #{id}
     </delete>
-	
+
     <delete id="deleteTDrivingLicenseLogByIds" parameterType="String">
-        delete from t_driving_license_log where id in 
+        delete from t_driving_license_log where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_driving_license_log where car_info_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

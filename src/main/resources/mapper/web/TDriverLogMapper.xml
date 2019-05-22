@@ -30,20 +30,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTDriverLogbasicColums">
-        select dl.id, dl.write_time, dl.car_number, dl.ideal_tonnage, dl.actual_tonnage, dl.goods_name, dl.type, dl.transpor_address, dl.goal_address, dl.transport_date, dl.arrive_date, dl.km, dl.status, dl.first_driver_id, dl.second_driver_id, dl.escort_id, dl.temperature, dl.weather, dl.add_user_id, dl.create_date, dl.update_date, dl.update_user_id    </sql>
+        select dl.id, dl.write_time, dl.car_number, dl.ideal_tonnage, dl.actual_tonnage, dl.goods_name, dl.type,
+         dl.transpor_address, dl.goal_address, dl.transport_date, dl.arrive_date, dl.km, dl.status, dl.first_driver_id,
+         dl.second_driver_id, dl.escort_id, dl.temperature, dl.weather, dl.add_user_id, dl.create_date, dl.update_date,
+          dl.update_user_id  ,
+		DATE_FORMAT(dl.write_time,'%Y-%m-%d') as writeTimeStr,
+        DATE_FORMAT(dl.transport_date,'%Y-%m-%d') as transportDateStr,
+        DATE_FORMAT(dl.arrive_date,'%Y-%m-%d') as arriveDateStr,
+        DATE_FORMAT(dl.create_date,'%Y-%m-%d') as createDateStr
+
+
+
+            </sql>
 	
     <select id="selectTDriverLogList" parameterType="com.project.web.domian.TDriverLog" resultMap="TDriverLogResult">
         <include refid="selectTDriverLogbasicColums"/>
+        ,ci.brand_model as carModel
         from t_driver_log dl
-        <where>  
-            <if test="id != null  and id != '' "> and dl.id = #{id}</if>
+          left join t_car_log cl on (cl.car_number = dl.car_number)
+          left join t_car_info ci on (cl.car_info_id = ci.id)
+
+        <where>
+             <if test="id != null  and id != '' "> and dl.id = #{id}</if>
              <if test="writeTime != null "> and dl.write_time = #{writeTime}</if>
-             <if test="carNumber != null  and carNumber != '' "> and dl.car_number = #{carNumber}</if>
+             <if test="carNumber != null  and carNumber != '' "> and dl.car_number like concat('%',#{carNumber},'%')</if>
+
              <if test="idealTonnage != null  and idealTonnage != '' "> and dl.ideal_tonnage = #{idealTonnage}</if>
              <if test="actualTonnage != null  and actualTonnage != '' "> and dl.actual_tonnage = #{actualTonnage}</if>
              <if test="goodsName != null  and goodsName != '' "> and dl.goods_name = #{goodsName}</if>
              <if test="type != null  and type != '' "> and dl.type = #{type}</if>
-             <if test="transporAddress != null  and transporAddress != '' "> and dl.transpor_address = #{transporAddress}</if>
+             <if test="transporAddress != null  and transporAddress != '' "> and dl.transpor_address like concat('%',#{transporAddress},'%')</if>
+
              <if test="goalAddress != null  and goalAddress != '' "> and dl.goal_address = #{goalAddress}</if>
              <if test="transportDate != null "> and dl.transport_date = #{transportDate}</if>
              <if test="arriveDate != null "> and dl.arrive_date = #{arriveDate}</if>
@@ -55,15 +72,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="temperature != null  and temperature != '' "> and dl.temperature = #{temperature}</if>
              <if test="weather != null  and weather != '' "> and dl.weather = #{weather}</if>
              <if test="addUserId != null  and addUserId != '' "> and dl.add_user_id = #{addUserId}</if>
-             <if test="createDate != null "> and dl.create_date = #{createDate}</if>
+
+
+            <if test="createDate != null  and createDate1 == null "> and DATE_FORMAT(dl.create_date,'%Y%m%d') &gt;= DATE_FORMAT(#{createDate},'%Y%m%d')</if>
+            <if test="createDate1 != null  and createDate == null "> and DATE_FORMAT(dl.create_date,'%Y%m%d') &lt;= DATE_FORMAT(#{createDate1},'%Y%m%d')</if>
+            <if test="createDate1 != null  and createDate != null "> and DATE_FORMAT(dl.create_date,'%Y%m%d') &gt;= DATE_FORMAT(#{createDate},'%Y%m%d')
+                and   DATE_FORMAT(dl.create_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{createDate1},'%Y%m%d')
+            </if>
+
+
              <if test="updateDate != null "> and dl.update_date = #{updateDate}</if>
              <if test="updateUserId != null  and updateUserId != '' "> and dl.update_user_id = #{updateUserId}</if>
+
+
+            <if test="carModel != null and carModel != ''"> and ci.brand_model like concat('%',#{carModel},'%')</if>
+
          </where>
     </select>
     
     <select id="selectTDriverLogById" parameterType="String" resultMap="TDriverLogResult">
         <include refid="selectTDriverLogbasicColums"/>
         from t_driver_log dl
+
         where dl.id = #{id}
     </select>
         

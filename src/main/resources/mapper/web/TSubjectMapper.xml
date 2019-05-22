@@ -18,10 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
         <result property="updateUserId"    column="update_user_id"    />
+                <result property="itemType"    column="item_type"    />
     </resultMap>
 	
 	<sql id="selectTSubjectbasicColums">
-        select s.id, s.subject, s.annotation, s.subject_type, s.business_type, s.major_type, s.true_answer, s.subject_source, s.business_id, s.add_user_id, s.create_date, s.update_date, s.update_user_id    </sql>
+        select s.id, s.subject, s.annotation, s.item_type,s.subject_type, s.business_type, s.major_type, s.true_answer, s.subject_source, s.business_id, s.add_user_id, s.create_date, s.update_date, s.update_user_id    </sql>
 	
     <select id="selectTSubjectList" parameterType="com.project.web.domian.TSubject" resultMap="TSubjectResult">
         <include refid="selectTSubjectbasicColums"/>
@@ -65,6 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">create_date,</if>
 			<if test="updateDate != null  ">update_date,</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">update_user_id,</if>
+			<if test="itemType != null  and itemType != ''  ">item_type,</if>
+			
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null  and id != ''  ">#{id},</if>
@@ -80,6 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="createDate != null  ">#{createDate},</if>
 			<if test="updateDate != null  ">#{updateDate},</if>
 			<if test="updateUserId != null  and updateUserId != ''  ">#{updateUserId},</if>
+			<if test="itemType != null  and itemType != ''  ">#{itemType},</if>
          </trim>
     </insert>
 	 
@@ -98,6 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null  ">create_date = #{createDate},</if>
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
             <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+            <if test="itemType != null  and itemType != ''  ">item_type = #{itemType},</if>
         </trim>
         where id = #{id}
     </update>
@@ -114,4 +119,93 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
     
+   <select id="selectTSubjectListByOne" parameterType="com.project.web.domian.TSubject" resultMap="TSubjectResult">     
+		SELECT
+		  ts.id,
+		  ts.subject,
+		  ts.`item_type`,
+		  ts.true_answer, 
+		  ts.subject_type,
+		  group_concat(tso.option_value,':', tso.content separator ';') as allOption,
+		  DATE_FORMAT(ts.create_date ,'%Y-%m-%d') as startCreateTime 
+		FROM
+			t_subject ts
+		LEFT JOIN t_subject_option tso on ts.id =tso.subject_id
+
+        <where>  
+            <if test="id != null  and id != '' "> and ts.id = #{id}</if>
+             <if test="subject != null  and subject != '' "> and ts.subject like CONCAT('%',#{subject},'%')</if>
+             <if test="annotation != null  and annotation != '' "> and ts.annotation = #{annotation}</if>
+             <if test="subjectType != null  and subjectType != '' "> and ts.subject_type = #{subjectType}</if>
+             <if test="businessType != null  and businessType != '' "> and ts.business_type = #{businessType}</if>
+             <if test="majorType != null  and majorType != '' "> and ts.major_type = #{majorType}</if>
+             <if test="trueAnswer != null  and trueAnswer != '' "> and ts.true_answer = #{trueAnswer}</if>
+             <if test="subjectSource != null  and subjectSource != '' "> and ts.subject_source = #{subjectSource}</if>
+             <if test="businessId != null  and businessId != '' "> and ts.business_id = #{businessId}</if>
+             <if test="addUserId != null  and addUserId != '' "> and ts.add_user_id = #{addUserId}</if>
+             <if test="(createDate != null  ) and createDateEnd == null "> 
+                 	and DATE_FORMAT(ts.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createDate},'%Y-%m-%d')
+             </if>
+             <if test="(createDateEnd != null ) and createDate == null  "> 
+             		and DATE_FORMAT(ts.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createDateEnd},'%Y-%m-%d')
+             </if>
+             <if test="(createDateEnd != null  ) and createDate != null  "> 
+             		 and DATE_FORMAT(ts.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{createDate},'%Y-%m-%d')
+                     and DATE_FORMAT(ts.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{createDateEnd},'%Y-%m-%d')                    
+             </if>
+         </where>
+         GROUP BY tso.subject_id
+        ORDER BY
+ 		tso.option_value desc,
+		startCreateTime desc
+    </select>
+    
+    <!-- 根据题库ID集合 查询下面所有的题 -->
+    <select id="selectTSubjectListByPageId" parameterType="String" resultMap="TSubjectResult">      
+		SELECT
+		  ts.id,
+		  ts.subject,
+		  ts.true_answer, 
+		  group_concat(tso.option_value,':', tso.content separator ';') as allOption,
+		  ts.subject_type
+		FROM
+			t_subject ts
+		LEFT JOIN t_subject_option tso on ts.id =tso.subject_id
+		where ts.id in 
+         <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <!-- 换题的时候，查询出本企业下  未生成题库的剩余题 -->      
+   <select id="selectTSubjectListByBusiness" parameterType="com.project.web.domian.TSubject" resultMap="TSubjectResult">     
+		SELECT
+		  ts.id
+		FROM
+			t_subject ts
+		LEFT JOIN t_subject_option tso on ts.id =tso.subject_id
+		where ts.id not in 
+            <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        	</foreach>
+             <if test="businessId != null  and businessId != '' "> and ts.business_id = #{businessId}</if>
+    group by ts.id
+    </select>
+    
+        <!-- 根据题库ID集合 查询下面所有的题（2） -->
+    <select id="selectTSubjectListAllByPageId" parameterType="com.project.web.domian.TSubject" resultMap="TSubjectResult">      
+		SELECT
+		  ts.id,
+		  ts.subject,
+		  ts.true_answer, 
+		  group_concat(tso.option_value,':', tso.content separator ';') as allOption,
+		  ts.subject_type,
+		  tsp.subject_score as subjectScore,
+  		  tsp.subject_sort as subjectSort
+		FROM
+			t_subject ts
+		LEFT JOIN t_subject_option tso on ts.id =tso.subject_id
+		LEFT JOIN t_subject_paper tsp on tsp.subject_id = tso.subject_id
+		where ts.id =#{id}
+         <if test="paperId != null  and paperId != '' "> and tsp.paper_id = #{paperId}</if> 
+    </select>
 </mapper>

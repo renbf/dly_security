@@ -19,18 +19,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTCarTroublebasicColums">
-        select ct.id, ct.car_id, ct.trouble_date, ct.trouble_address, ct.trouble_type, ct.trouble_duty, ct.loss_situation, ct.add_user_id, ct.create_date, ct.update_date, ct.update_user_id    </sql>
+        select ct.id, ct.car_id, ct.trouble_date, ct.trouble_address, ct.trouble_type, ct.trouble_duty,
+        ct.loss_situation, ct.add_user_id, ct.create_date, ct.update_date, ct.update_user_id,
+        DATE_FORMAT(ct.trouble_date,'%Y-%m-%d') as troubleDateStr,
+        DATE_FORMAT(ct.create_date,'%Y-%m-%d') as createDateStr
+
+        from t_car_trouble ct
+</sql>
 	
     <select id="selectTCarTroubleList" parameterType="com.project.web.domian.TCarTrouble" resultMap="TCarTroubleResult">
         <include refid="selectTCarTroublebasicColums"/>
-        from t_car_trouble ct
-        <where>  
+        <where>
             <if test="id != null  and id != '' "> and ct.id = #{id}</if>
              <if test="carId != null  and carId != '' "> and ct.car_id = #{carId}</if>
-             <if test="troubleDate != null "> and ct.trouble_date = #{troubleDate}</if>
-             <if test="troubleAddress != null  and troubleAddress != '' "> and ct.trouble_address = #{troubleAddress}</if>
+
+
+            <if test="troubleDate != null  and troubleDate1 == null "> and DATE_FORMAT(ct.trouble_date,'%Y%m%d') &gt;= DATE_FORMAT(#{troubleDate},'%Y%m%d')</if>
+            <if test="troubleDate1 != null  and troubleDate == null "> and DATE_FORMAT(ct.trouble_date,'%Y%m%d') &lt;= DATE_FORMAT(#{troubleDate1},'%Y%m%d')</if>
+            <if test="troubleDate1 != null  and troubleDate != null "> and DATE_FORMAT(ct.trouble_date,'%Y%m%d') &gt;= DATE_FORMAT(#{troubleDate},'%Y%m%d')
+                and   DATE_FORMAT(ct.trouble_date,'%Y%m%d') &lt;=  DATE_FORMAT(#{troubleDate1},'%Y%m%d')
+            </if>
+  
+
+             <if test="troubleAddress != null  and troubleAddress != '' "> and ct.trouble_address like concat('%',#{troubleAddress},'%')</if>
+
              <if test="troubleType != null  and troubleType != '' "> and ct.trouble_type = #{troubleType}</if>
-             <if test="troubleDuty != null  and troubleDuty != '' "> and ct.trouble_duty = #{troubleDuty}</if>
+             <if test="troubleDuty != null  and troubleDuty != '' "> and ct.trouble_duty like concat('%',#{trouble_duty},'%')</if>
+
              <if test="lossSituation != null  and lossSituation != '' "> and ct.loss_situation = #{lossSituation}</if>
              <if test="addUserId != null  and addUserId != '' "> and ct.add_user_id = #{addUserId}</if>
              <if test="createDate != null "> and ct.create_date = #{createDate}</if>
@@ -41,7 +56,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTCarTroubleById" parameterType="String" resultMap="TCarTroubleResult">
         <include refid="selectTCarTroublebasicColums"/>
-        from t_car_trouble ct
         where ct.id = #{id}
     </select>
         
@@ -103,5 +117,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <!-- 以上是自动生成的代码尽量别动 -->
-    
+
+    <delete id="deleteByCarInfoId" parameterType="String">
+        delete from t_car_trouble where car_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

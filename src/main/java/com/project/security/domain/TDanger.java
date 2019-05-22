@@ -9,7 +9,7 @@ import java.util.Date;
  * 隐患表 t_danger
  * 
  * @author rbf
- * @date 2019-04-18
+ * @date 2019-05-06
  */
 public class TDanger implements Serializable
 {
@@ -27,6 +27,8 @@ public class TDanger implements Serializable
 	private Date checkDate;
 	/** 检查类型 */
 	private String checkType;
+	/** 隐患名称 */
+	private String dangerName;
 	/** 隐患部位 */
 	private String dangerPosition;
 	/** 隐患部门ID */
@@ -41,14 +43,14 @@ public class TDanger implements Serializable
 	private String maybeResult;
 	/** 隐患照片 */
 	private String dangerUrl;
-	/** 备注 */
+	/** 隐患验收备注 */
 	private String remark;
 	/** 状态0未整改、1整改中、2已整改待验收、3已验收4拒绝整改 */
 	private String status;
 	/** 整改截止时间 */
 	private Date endDate;
 	/** 整改责任人 */
-	private String dochangeUserId;
+	private Long dochangeUserId;
 	/** 整改部门 */
 	private Long dochangeDeptId;
 	/** 整改措施 */
@@ -64,7 +66,7 @@ public class TDanger implements Serializable
 	/** 拒绝原因 */
 	private String refuseText;
 	/** 验收责任人 */
-	private String checkAcceptUserId;
+	private Long checkAcceptUserId;
 	/** 验收部门 */
 	private Long checkAcceptDeptId;
 	/** 验收时间 */
@@ -81,7 +83,10 @@ public class TDanger implements Serializable
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
-
+	/** 企业ID */
+	private String businessId;
+	/** 用户检查计划ID */
+	private String inspectPlanId;
 	public void setId(String id) 
 	{
 		this.id = id;
@@ -135,6 +140,15 @@ public class TDanger implements Serializable
 	public String getCheckType() 
 	{
 		return checkType;
+	}
+	public void setDangerName(String dangerName) 
+	{
+		this.dangerName = dangerName;
+	}
+
+	public String getDangerName() 
+	{
+		return dangerName;
 	}
 	public void setDangerPosition(String dangerPosition) 
 	{
@@ -226,12 +240,12 @@ public class TDanger implements Serializable
 	{
 		return endDate;
 	}
-	public void setDochangeUserId(String dochangeUserId) 
+	public void setDochangeUserId(Long dochangeUserId) 
 	{
 		this.dochangeUserId = dochangeUserId;
 	}
 
-	public String getDochangeUserId() 
+	public Long getDochangeUserId() 
 	{
 		return dochangeUserId;
 	}
@@ -298,12 +312,12 @@ public class TDanger implements Serializable
 	{
 		return refuseText;
 	}
-	public void setCheckAcceptUserId(String checkAcceptUserId) 
+	public void setCheckAcceptUserId(Long checkAcceptUserId) 
 	{
 		this.checkAcceptUserId = checkAcceptUserId;
 	}
 
-	public String getCheckAcceptUserId() 
+	public Long getCheckAcceptUserId() 
 	{
 		return checkAcceptUserId;
 	}
@@ -380,7 +394,23 @@ public class TDanger implements Serializable
 		return updateUserId;
 	}
 
-    public String toString() {
+    public String getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
+
+	public String getInspectPlanId() {
+		return inspectPlanId;
+	}
+
+	public void setInspectPlanId(String inspectPlanId) {
+		this.inspectPlanId = inspectPlanId;
+	}
+
+	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("inspectDeptId", getInspectDeptId())
@@ -388,6 +418,7 @@ public class TDanger implements Serializable
             .append("checkUserId", getCheckUserId())
             .append("checkDate", getCheckDate())
             .append("checkType", getCheckType())
+            .append("dangerName", getDangerName())
             .append("dangerPosition", getDangerPosition())
             .append("dangerDeptId", getDangerDeptId())
             .append("dangerType", getDangerType())

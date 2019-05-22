@@ -1,5 +1,6 @@
 package com.project.web.service;
 
+import com.project.common.base.AjaxResult;
 import com.project.web.domian.TCarTrouble;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface ITCarTroubleService
      * @param tCarTrouble 车辆机损事故登记信息
      * @return 结果
      */
-	public int insertTCarTrouble(TCarTrouble tCarTrouble);
+	public AjaxResult insertTCarTrouble(TCarTrouble tCarTrouble);
 	
 	/**
      * 修改车辆机损事故登记
@@ -41,7 +42,7 @@ public interface ITCarTroubleService
      * @param tCarTrouble 车辆机损事故登记信息
      * @return 结果
      */
-	public int updateTCarTrouble(TCarTrouble tCarTrouble);
+	public AjaxResult updateTCarTrouble(TCarTrouble tCarTrouble);
 		
 	/**
      * 删除车辆机损事故登记信息

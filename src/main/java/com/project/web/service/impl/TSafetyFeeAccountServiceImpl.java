@@ -71,7 +71,7 @@ public class TSafetyFeeAccountServiceImpl implements ITSafetyFeeAccountService {
         //文件上传
         try {
             if (Objects.nonNull(feeFile) && StringUtils.isNotEmpty(feeFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquanfeiyongtaizhang", uuid, "安全费用台账附件文件", feeFile, 0);
+                String upolad = this.fileService.upolad("anquanfeiyongtaizhang", uuid, "安全费用台账附件文件", feeFile, 0,tSafetyFeeAccount.getBusinessId());
                 tSafetyFeeAccount.setFeeFilePath(upolad);
             }
         } catch (IOException e) {
@@ -97,7 +97,7 @@ public class TSafetyFeeAccountServiceImpl implements ITSafetyFeeAccountService {
         //文件上传
         try {
             if (Objects.nonNull(feeFile) && StringUtils.isNotEmpty(feeFile.getOriginalFilename())) {
-                String upolad = this.fileService.upolad("anquanfeiyongtaizhang", tSafetyFeeAccount.getId(), "安全费用台账附件文件", feeFile, 0);
+                String upolad = this.fileService.upolad("anquanfeiyongtaizhang", tSafetyFeeAccount.getId(), "安全费用台账附件文件", feeFile, 0,tSafetyFeeAccount.getBusinessId());
                 tSafetyFeeAccount.setFeeFilePath(upolad);
             }
         } catch (IOException e) {

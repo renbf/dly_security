@@ -127,5 +127,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteTInspectPlanByTitleId" parameterType="String">
+        delete from t_inspect_plan where title_id in
+        <foreach item="titleId" collection="titleIds" open="(" separator="," close=")">
+            #{titleId}
+        </foreach>
+    </delete>
+
+
+
+
+
+    <update id="updateTInspectPlanByTitleId" parameterType="com.project.web.domian.TInspectPlan">
+        update t_inspect_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="titleId != null  and titleId != ''  ">title_id = #{titleId},</if>
+            <if test="checkTitle != null  and checkTitle != ''  ">check_title = #{checkTitle},</if>
+            <if test="checkYear != null  and checkYear != ''  ">check_year = #{checkYear},</if>
+            <if test="checkTime != null  ">check_time = #{checkTime},</if>
+            <if test="checkType != null  and checkType != ''  ">check_type = #{checkType},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="userId != null  and userId != ''  ">user_id = #{userId},</if>
+            <if test="checkTeam != null  and checkTeam != ''  ">check_team = #{checkTeam},</if>
+            <if test="checkStatus != null  and checkStatus != ''  ">check_status = #{checkStatus},</if>
+            <if test="businessId != null  and businessId != ''  ">business_id = #{businessId},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="addUserId != null  and addUserId != ''  ">add_user_id = #{addUserId},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="updateUserId != null  and updateUserId != ''  ">update_user_id = #{updateUserId},</if>
+        </trim>
+        where title_id = #{titleId}
+    </update>
     
 </mapper>

@@ -71,7 +71,7 @@ public class TBusinessFileServiceImpl implements ITBusinessFileService
 		try {			
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(businessFile)&&StringUtils.isNotEmpty(businessFile.getOriginalFilename())){
-				String Str = fileService.upolad("qiyewenjian",uuid,"企业文件附件",businessFile,0);
+				String Str = fileService.upolad("qiyewenjian",uuid,"企业文件附件",businessFile,0,tBusinessFile.getBusinessId());
 				tBusinessFile.setBusinessFilePath(Str);
 			}	
 		} catch (Exception e) {
@@ -94,7 +94,7 @@ public class TBusinessFileServiceImpl implements ITBusinessFileService
 			tBusinessFile.setUpdateUserId(ShiroUtils.getUserId());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(businessFile)&&StringUtils.isNotEmpty(businessFile.getOriginalFilename())){
-				String Str = fileService.upolad("qiyewenjian",tBusinessFile.getId(),"企业文件附件",businessFile,0);
+				String Str = fileService.upolad("qiyewenjian",tBusinessFile.getId(),"企业文件附件",businessFile,0,tBusinessFile.getBusinessId());
 				tBusinessFile.setBusinessFilePath(Str);
 			}	
 		} catch (Exception e) {

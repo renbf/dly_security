@@ -243,4 +243,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     
+    <select id="selectTEarlyWarningSettingsByBusinessId" parameterType="String" resultMap="TEarlyWarningSettingsResult">
+        <include refid="selectTEarlyWarningSettingsVo"/>
+        where ews.business_id = #{businessId}
+    </select>
+    
 </mapper>

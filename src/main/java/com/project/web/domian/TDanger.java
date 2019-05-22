@@ -25,6 +25,10 @@ public class TDanger extends BaseEntity
 	private String checkUserId;
 	/** 检查日期 */
 	private Date checkDate;
+	/** 检查日期 */
+	private Date checkDate1;
+	/** 检查日期字符串 */
+	private String checkDateStr;
 	/** 检查类型 */
 	private String checkType;
 	/** 隐患部位 */
@@ -48,7 +52,7 @@ public class TDanger extends BaseEntity
 	/** 整改截止时间 */
 	private Date endDate;
 	/** 整改责任人 */
-	private String dochangeUserId;
+	private Long dochangeUserId;
 	/** 整改部门 */
 	private Long dochangeDeptId;
 	/** 整改措施 */
@@ -64,7 +68,7 @@ public class TDanger extends BaseEntity
 	/** 拒绝原因 */
 	private String refuseText;
 	/** 验收责任人 */
-	private String checkAcceptUserId;
+	private Long checkAcceptUserId;
 	/** 验收部门 */
 	private Long checkAcceptDeptId;
 	/** 验收时间 */
@@ -81,6 +85,36 @@ public class TDanger extends BaseEntity
 	private Date updateDate;
 	/** 修改人id */
 	private String updateUserId;
+	/**
+	 *用户检查计划ID(t_inspect_plan表id)
+	 * @return
+	 */
+	private String inspectPlanId;
+	
+	
+	public String getInspectPlanId() {
+		return inspectPlanId;
+	}
+
+	public void setInspectPlanId(String inspectPlanId) {
+		this.inspectPlanId = inspectPlanId;
+	}
+
+	public Date getCheckDate1() {
+		return checkDate1;
+	}
+
+	public void setCheckDate1(Date checkDate1) {
+		this.checkDate1 = checkDate1;
+	}
+
+	public String getCheckDateStr() {
+		return checkDateStr;
+	}
+
+	public void setCheckDateStr(String checkDateStr) {
+		this.checkDateStr = checkDateStr;
+	}
 
 	public void setId(String id) 
 	{
@@ -226,15 +260,7 @@ public class TDanger extends BaseEntity
 	{
 		return endDate;
 	}
-	public void setDochangeUserId(String dochangeUserId) 
-	{
-		this.dochangeUserId = dochangeUserId;
-	}
-
-	public String getDochangeUserId() 
-	{
-		return dochangeUserId;
-	}
+	
 	public void setDochangeDeptId(Long dochangeDeptId) 
 	{
 		this.dochangeDeptId = dochangeDeptId;
@@ -298,15 +324,7 @@ public class TDanger extends BaseEntity
 	{
 		return refuseText;
 	}
-	public void setCheckAcceptUserId(String checkAcceptUserId) 
-	{
-		this.checkAcceptUserId = checkAcceptUserId;
-	}
 
-	public String getCheckAcceptUserId() 
-	{
-		return checkAcceptUserId;
-	}
 	public void setCheckAcceptDeptId(Long checkAcceptDeptId) 
 	{
 		this.checkAcceptDeptId = checkAcceptDeptId;
@@ -380,7 +398,23 @@ public class TDanger extends BaseEntity
 		return updateUserId;
 	}
 
-    public String toString() {
+    public Long getDochangeUserId() {
+		return dochangeUserId;
+	}
+
+	public void setDochangeUserId(Long dochangeUserId) {
+		this.dochangeUserId = dochangeUserId;
+	}
+
+	public Long getCheckAcceptUserId() {
+		return checkAcceptUserId;
+	}
+
+	public void setCheckAcceptUserId(Long checkAcceptUserId) {
+		this.checkAcceptUserId = checkAcceptUserId;
+	}
+
+	public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("inspectDeptId", getInspectDeptId())
@@ -398,7 +432,6 @@ public class TDanger extends BaseEntity
             .append("remark", getRemark())
             .append("status", getStatus())
             .append("endDate", getEndDate())
-            .append("dochangeUserId", getDochangeUserId())
             .append("dochangeDeptId", getDochangeDeptId())
             .append("dochangeStep", getDochangeStep())
             .append("dochangeCapital", getDochangeCapital())
@@ -406,7 +439,6 @@ public class TDanger extends BaseEntity
             .append("dochangeDate", getDochangeDate())
             .append("dochangeType", getDochangeType())
             .append("refuseText", getRefuseText())
-            .append("checkAcceptUserId", getCheckAcceptUserId())
             .append("checkAcceptDeptId", getCheckAcceptDeptId())
             .append("checkAcceptDate", getCheckAcceptDate())
             .append("checkAcceptResult", getCheckAcceptResult())

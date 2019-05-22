@@ -71,7 +71,7 @@ public class TOperatingProceduresServiceImpl implements ITOperatingProceduresSer
 		try {			
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(operatingFile)&&StringUtils.isNotEmpty(operatingFile.getOriginalFilename())){
-				String Str = fileService.upolad("caozuoguicheng",uuid,"操作规程文件",operatingFile,0);
+				String Str = fileService.upolad("caozuoguicheng",uuid,"操作规程文件",operatingFile,0,tOperatingProcedures.getBusinessId());
 				tOperatingProcedures.setOperatingFilePath(Str);
 			}	
 		} catch (Exception e) {
@@ -94,7 +94,7 @@ public class TOperatingProceduresServiceImpl implements ITOperatingProceduresSer
 			tOperatingProcedures.setUpdateUserId(ShiroUtils.getUserId());
 			//若文件不为空   则进行上传文件
 			if(Objects.nonNull(operatingFile)&&StringUtils.isNotEmpty(operatingFile.getOriginalFilename())){
-				String Str = fileService.upolad("caozuoguicheng",tOperatingProcedures.getId(),"操作规程文件",operatingFile,0);
+				String Str = fileService.upolad("caozuoguicheng",tOperatingProcedures.getId(),"操作规程文件",operatingFile,0,tOperatingProcedures.getBusinessId());
 				tOperatingProcedures.setOperatingFilePath(Str);
 			}	
 		} catch (Exception e) {

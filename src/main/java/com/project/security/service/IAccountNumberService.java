@@ -78,5 +78,9 @@ public interface IAccountNumberService {
 	 * @return
 	 */
 	public DataResult getUserInfo(String userId);
-	
+	/**
+	 * 搜索课程接口
+	 * @return
+	 */
+	public DataResult searchCource(Integer pageNumber,Long total,String userId,String searchKey);
 }
